@@ -1,0 +1,114 @@
+<div class="body-gradient">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 col-sm-8 col-xs-12 col-md-offset-3 pt-80 pb-80 pt-sm-20 pb-sm-20">
+        <div class="login-box">
+          <div class="login-logo">
+            <img class="center" alt="Company Logo" src="{{file1_input}}">
+          </div>
+          <div class="top-header">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 heading">
+                <h4>Change Password</h4>
+              </div>
+            </div>
+          </div>
+          <h4 style="color: red; text-align: center;" *ngIf="msg">
+            {{msg}}
+          </h4>
+          <form class="form-box" #loginForm="ngForm">
+            <div class="form-group row" style="margin-bottom: 30px;">
+              <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
+                <i class="fa fa-key login-icon" aria-hidden="true"></i>
+              </div>
+              <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" placeholder="Enter New Password" [pattern]="passwordPattern"
+                  #password="ngModel" name="password" [(ngModel)]="user.password" required invalid
+                  [ngClass]="{ 'is-invalid': loginForm.submitted && password.invalid }"
+                  title="Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character">
+                <div class="text-danger" *ngIf="password.touched && password.errors">
+                  <p *ngIf="password.touched && password.errors.required">Please enter your Password</p>
+                  <p *ngIf="password.invalid ">
+                    Minimum eight characters, at least one uppercase letter, one lowercase letter,
+                    one number and one special character
+
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" style="margin-bottom: 30px;">
+              <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
+                <i class="fa fa-key login-icon" aria-hidden="true"></i>
+              </div>
+              <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" placeholder="Re-enter Password" #cpassword="ngModel"
+                  name="cpassword" [(ngModel)]="user.cpassword" required>
+
+
+                <div class="text-danger"
+                  *ngIf="(cpassword.touched && cpassword.errors) || user.password!=user.cpassword">
+                  <p *ngIf="cpassword.touched && cpassword.errors">Please Confirm Password</p>
+                  <p *ngIf="cpassword.touched && user.password!=user.cpassword">password didn't match</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-3 col-lg-3 col-sm-3 col-xs-4">
+                <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid"
+                  (click)="changePassword()">Reset</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<!--popupbox_wrap-->
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+      <form class="form-box" #loginForm="ngForm">
+    <p>Link has been expired. Resend password Link to Mail</p>
+    <h4 style="color: red; text-align: center;" *ngIf="error">
+      {{error}}
+    </h4>
+    <div class="alert alert-success alert-dismissible" data-auto-dismiss role="alert" style=" text-align: center;" *ngIf="msg">
+    <h4><strong>{{msg}}</strong></h4>
+  </div>
+    <div class="alert alert-danger alert-dismissible" data-auto-dismiss role="alert" style=" text-align: center;"*ngIf="error_msg">
+        <h4><strong>{{error_msg}}</strong></h4>
+      </div>
+    <div>
+      <input type="text" class="form-control" placeholder="Enter your Email" #emailId="ngModel" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" name="emailId" id="email" [(ngModel)]="sendData.emailId" required><br/>
+      <div class="text-danger" *ngIf="emailId.touched && emailId.errors">
+        <p *ngIf="emailId.touched && emailId.errors.required">Please enter Email</p>
+      </div>
+      <div *ngIf="emailId.errors?.pattern" class="invalid-feedback">
+          Please enter a valid email id 
+      </div>
+    </div><br/>
+    <div class="row text-center">
+      <button class="btn btn-success" id="closebtn" [disabled]="!loginForm.valid" (click)="sendMail()" > Send Link</button>
+    </div>
+    </form>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox" style="margin-left: 30%">
+      <p>{{message}}</p>
+      <div class="row"> 
+        <a class="btn btn-primary" style="margin-left: 40%" id="nextPage" routerLink="/vms/candidate-login-register">Login</a>
+      </div>
+    </div>
+    <!--popupbox-->
+  </div>

@@ -1,0 +1,47 @@
+<div class="body-gradient">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 col-sm-8 col-xs-12 col-md-offset-3 pt-80 pb-80 pt-sm-20 pb-sm-20">
+        <div class="login-box">
+         
+         <div class="login-logo">
+          <img class="center" alt="logoUrl.." src="{{this.logoUrl}}">
+        </div>
+          <div class="top-header">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 heading">
+                <h4>Activation</h4>
+              </div>
+            </div>
+          </div>
+       
+          <form class="form-box" #loginForm="ngForm" (ngSubmit)="loginForm.form.valid" novalidate>
+              
+              <div class="form-group row" style="margin-bottom: 30px;">
+                <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                  <h4>Please wait .....</h4>
+                  </div>
+                <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                    <p>{{this.message}}</p>
+                    <p>{{this.message2}}</p>
+                    <p>{{this.message3}}</p>
+                    <p>{{this.message4}}</p>
+                    <p>{{this.message5}}</p>
+                </div>
+                  
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+
+
+
+
+
+

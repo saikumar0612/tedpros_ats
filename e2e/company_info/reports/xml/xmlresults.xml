@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites disabled="0" errors="0" failures="0" tests="9" time="56.009">
+ <testsuite name="Code for Company Info under Config  Module" timestamp="2019-11-07T17:01:05" hostname="localhost" time="56.009" errors="0" tests="9" skipped="0" disabled="0" failures="0">
+  <testcase classname="Code for Company Info under Config  Module" name="open the browser" time="36.756" />
+  <testcase classname="Code for Company Info under Config  Module" name="Enter the username" time="1.072" />
+  <testcase classname="Code for Company Info under Config  Module" name="Enter the password" time="0.915" />
+  <testcase classname="Code for Company Info under Config  Module" name="click on login button" time="0.851" />
+  <testcase classname="Code for Company Info under Config  Module" name="Mouse hover CRM icon" time="9.05" />
+  <testcase classname="Code for Company Info under Config  Module" name="click on company info" time="1.852" />
+  <testcase classname="Code for Company Info under Config  Module" name="click on  company plans" time="1.505" />
+  <testcase classname="Code for Company Info under Config  Module" name="click on  company invoices" time="0.484" />
+  <testcase classname="Code for Company Info under Config  Module" name="click on  company invoice download" time="3.522" />
+ </testsuite>
+</testsuites>

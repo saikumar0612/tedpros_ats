@@ -1,0 +1,180 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-4 col-lg-4 heading">
+        <h4>Preview <input class="btn btn-primary" id="saveResume" type="button" value="Download" (click)="captureScreen()" /> </h4>
+      </div>
+      <div class="col-md-1 col-lg-1 heading">
+          <strong> Previews </strong>
+      </div>
+
+      <div class="col-md-2 col-lg-2 heading" >
+        <select class="form-control" id="selectInfemation" #info (change)="onNavigate(info.value)" >
+          <option value="/candidate/preview/{{id}}" selected>Preview -1</option>
+          <option value="/candidate/preview-1/{{id}}">Preview -2</option>
+          <option value="/candidate/preview-2/{{id}}">Preview -3</option>
+            
+        </select>
+      </div>
+      <div class="col-md-4 col-lg-4 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/candidate'>Candidates</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Candidates Resume</li>
+        </ul>
+      </div>
+    </div>
+  </div> 
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" id="contentToConvert">
+          <div id="wrapper">
+            <div class="wrapper-top"></div>
+            <div class="wrapper-mid">
+              <!-- Begin Paper -->
+              <div id="paper">
+                <div class="paper-top"></div>
+                <div id="paper-mid">
+                  <div class="entry">
+                    <!-- <div class="form-group row" >
+                      <div class="col-md-6">
+                          <h1 class="name">{{candidateInfo.firstName }} {{candidateInfo.lastName }}<br />
+                            <span>{{this.jobTitle}}</span></h1>
+                          <ul>
+                            <li class="mail">{{candidateInfo.emailId}}</li>
+                            <li class="tel">{{candidateInfo.phoneNo}}</li>
+                          </ul>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="profile-picture" style="border:none; ">
+                              <img alt="" src="assets/images/avatar.png" alt="profile pic" *ngIf="candidateInfo.image == ''"
+                                style="width: 100%; margin: auto;display: block;border: 1px solid #000;float: right;">
+    
+                              <img alt="profile pic" src="{{candidateInfo.image}}" *ngIf="candidateInfo.image != ''" style="width: 100%; margin: auto;display: block;border: 1px solid #000;float: right;">
+                            </div>
+                      </div>
+                    </div> -->
+                    <!-- Begin Personal Information --> 
+                    <div class="self header">
+                      <h1 class="name">{{candidateInfo.firstName }} {{candidateInfo.lastName }}<br />
+                        <span>{{this.jobTitle}}</span></h1>
+                      <ul>
+                        <li class="mail">{{candidateInfo.emailId}}</li>
+                        <li class="tel">{{candidateInfo.phoneNo}}</li>
+                        <!-- <li ><i class="fa fa-linkedin-square" ></i></li> -->
+                      </ul>
+                      <span><i class="fa fa-linkedin-square" ></i>&nbsp;&nbsp; {{candidateInfo.linkedin}}</span>
+                    </div>
+                      <div class="self">
+                        <div  style="border:none; ">
+                          <img alt="profile pic" class="img-thumbnail" src="assets/images/avatar.png" alt="profile pic" *ngIf="candidateInfo.image == ''"
+                            style="width: 80%; margin: auto;display: block;float: right;">
+
+                          <img alt="profile pic" class="img-thumbnail" src="{{candidateInfo.image}}" *ngIf="candidateInfo.image != ''" style="width: 80%; margin: auto;display: block;float: right;">
+                        </div>
+                    </div>
+                    <!-- End Personal Information -->
+                  </div>
+                  <!-- Begin 1st Row -->
+                  <div class="entry">
+                    <h2 class="title">PROFILE</h2>
+                    <p class="contentData" style="margin-top: 0px;">{{ candidateInfo.summary }}</p>
+                  </div>
+                  <!-- End 1st Row -->
+                  <!-- Begin 2nd Row -->
+                  <div class="entry">
+                    <h2 class="title">EDUCATION</h2>
+                    <div class="content" *ngFor="let education of educationData" style="padding-top: 0px">
+                        <h3 class="contentData" >{{education.passingYear}}</h3>
+                      <p>
+                        <span class="contentData">{{education.instituteName | uppercase }}</span><br>
+                        <span class="contentData">{{ education.specialization }}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <!-- End 2nd Row -->
+                  <!-- Begin 3rd Row -->
+                  <div class="entry" *ngIf="experienceData" >
+                    <h2 class="title" >EXPERIENCE</h2>
+                    <div class="content" *ngFor="let exp of experienceData">
+                      <h3  class="contentData">{{exp.startDate | date: 'MM-dd-yyyy'}} - {{exp.endDate | date: 'MM-dd-yyyy'}}</h3>
+                      <p class="subTitle">{{exp.employer}}<br />
+                        <span class="contentData">{{exp.jobTitle}}</span></p>
+                      <ul class="info">
+                        <li><span class="contentData">{{exp.description}} </span></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- End 3rd Row -->
+                  <!-- Begin 4th Row -->
+                  <div class="entry" *ngIf="this.skillsData">
+                    <h2 class="title">Other Information</h2>
+                    <br />
+                        <p class="skill">Expected Salary: <span class="contentData"> $ {{ this.candidateInfo.expectedPay }} / {{this.candidateInfo.per.pay_frequency}}</span></p>
+                    
+                  </div>
+                  <!-- End 4th Row -->
+                  <!-- Begin 5th Row -->
+                  
+                  <div class="entry" *ngIf="this.skillsData">
+                    <h2 class="title">SKILLS</h2>
+                    <br />
+                    <p class="contentData" *ngFor="let skills of skillsData" style="margin:0 0 0px"> {{ skills.skillName | uppercase }}</p>
+                  </div>
+                  <div class="entry">
+                    <h2 class="title">Pie Chart Showing Your Skills</h2>
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-8">
+                      <div>
+                        <canvas
+                            baseChart
+                            [chartType]="'pie'"
+                            [datasets]="pieChartData"
+                            [labels]="pieChartLabels"
+                            [options]="pieChartOptions"
+                            [legend]="true"
+                            [colors]="pieChartColor"
+                            (chartClick)="onChartClick($event)">
+                        </canvas>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+      
+                    </div>
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div class="paper-bottom"></div>
+              </div>
+              <!-- End Paper -->
+            </div>
+            <div class="wrapper-bottom"></div> 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button class="btn btn-info mlr-5" id="closeResume" (click)="cancel()">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.error">
+    <br>
+    <div class="danger text-center">
+      <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+    </div>
+    <div class="row text-center">
+      <button class="btn btn-primary" (click)="closePopup()" id="closePopup" >Back</button>   
+    </div>
+  </div>
+</div>

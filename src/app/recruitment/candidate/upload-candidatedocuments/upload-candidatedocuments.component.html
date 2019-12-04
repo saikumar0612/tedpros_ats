@@ -1,0 +1,211 @@
+<style>
+        input[type="file"] {
+            display: block;
+            right: 0;
+            cursor: pointer;
+            bottom: -1px;
+            font-size: 12px;
+            opacity: 1;
+            position: relative;
+            width: 100%;
+            z-index: 0;
+        }
+            
+    </style>
+    <div class="content">
+        <div class="top-header">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 heading">
+                    <h4>Upload Documents</h4>
+                </div>
+                <div class="col-md-6 col-lg-6 breadcrumb">
+                    <ul class="breadcrumb-items">
+                        <li><a routerLink='/dashboard'>Home</a>
+                        </li>
+                        <li>/</li>
+                        <li>Documents</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+        <div class="element-content">
+            <div class="job-box">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <form class="search-form" #uploadFrm="ngForm" name="form" (ngSubmit)="uploadFrm.form.valid" novalidate>
+                            <div class="form-header">
+                                <h5>Upload Documents</h5>
+                            </div>
+                            <div class="padding-20">
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label class="col-sm-4 col-form-label">Type <span class="req-field">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control mb-10" id="type" name="type" [(ngModel)]="documentData.type" #type = "ngModel" [ngClass]="{ 'is-invalid': uploadFrm.submitted && type.invalid }" required>
+                                                <option selected disabled >-- Select Document Type --</option>
+                                                <option value="H1" >H1</option>
+                                                <option value="w4">W4</option>
+                                                <option value="i9">I9</option>
+                                                <option value="Passport">Passport</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-sm-4 col-form-label">Title <span class="req-field">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control mb-10" id="title" placeholder="Enter Title " name="title"  [ngClass]="{ 'is-invalid': uploadFrm.submitted && titlt.invalid }" [(ngModel)]="documentData.title" #title = "ngModel" pattern="^([a-zA-Z0-9.&*]+\s)*[a-zA-Z0-9.&*]+$" required>
+                                            <div *ngIf="title.touched && title.invalid" class="invalid-feedback">
+                                                <div *ngIf="title.errors.required">Please Enter Title</div>
+                                            </div>
+                                            <div *ngIf="title.errors?.pattern" class="invalid-feedback">
+                                                Enter valid title name
+                                            </div>
+                                        </div>
+                                    </div>                               
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label class="col-sm-4 col-form-label">Expiry Date <span class="req-field">*</span></label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="expiryDate" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="documentData.expiryDate" (dateTimeInput)="dateValidate()" #expiryDate="ngModel" >
+                                            <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                                            <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-sm-4 col-form-label">Comment <span class="req-field">*</span></label>
+                                        <div class="col-sm-8">
+                                            <textarea type="text" rows="3" class="form-control mb-10" id="comment" placeholder="Enter Comment " name="comment"  [ngClass]="{ 'is-invalid': uploadFrm.submitted && jobCode.invalid }" [(ngModel)]="documentData.comment" #comment = "ngModel" required></textarea>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label class="col-sm-12 col-form-label">Choose Document <span class="req-field">*</span></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="file" id="document" ng2FileSelect [uploader]="uploader" name="document" accept="application/pdf,application/docx" (change)="getFiles($event)" [(ngModel)]="documentData.fileData" class="form-control mb-10 passwordField" [disabled]="fileName || !uploadFrm.valid">
+                                        </div>
+                                        <div class="col-md-5" *ngIf="fileName">
+                                                <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                    <th style="width:20%">Name</th>
+                                                    <th style="width:40%">Progress</th>
+                                                    <th style="width:5%">Status</th>
+                                                    <th style="width:35%">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of uploader.queue">
+                                                    <td><strong>{{ item?.file?.name }}</strong></td>
+                                                    <td>
+                                                        <div class="progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                            [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                                                        <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                                                        <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                                                    </td>
+                                                    <td>
+                                                        <button *ngIf="!dateError" type="button" class="btn btn-success" id="uploadDoc" (click)="item.upload()"
+                                                        [disabled]="item.isReady || item.isUploading || item.isSuccess ">
+                                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                                        </button>
+                                                    </td>
+                                                    
+                            <!-- on successfull insertion-->
+                            <div class="popupbox_wrap" *ngIf="item.isSuccess">
+                                <div class="popupbox text-center">
+                                    <p *ngIf="docMessage" class="bg-success">{{docMessage}}</p>
+                                    <p *ngIf="docErrorMessage" class="bg-danger">{{docErrorMessage}}</p>
+                                    <div class="row text-center"> <a class="btn btn-success" id="closei9doc" (click)="[item.isSuccess = false,fileName=false,close(uploadFrm), uploader.queue = []]"> Close</a>
+                                    </div>
+                                    <!--row-->
+                                </div>
+                            <!--popupbox-->
+                            </div>
+                            <!--popupbox_wrap-->
+    
+                            
+                            <!-- on failed insertion-->
+                            <div class="popupbox_wrap" *ngIf="item.isError">
+                                <div class="popupbox text-center">
+                                    <p *ngIf="docErrorMessage" class="bg-danger">{{docErrorMessage}}</p>
+                                    <div class="row text-center"> <a class="btn btn-success" id="closeErrordoc" (click)="[item.isError = false,fileName=false,close(uploadFrm), uploader.queue = []]"> Close</a>
+                                    </div>
+                                    <!--row-->
+                                </div>
+                                <!--popupbox-->
+                            </div>
+                                <!--popupbox_wrap-->
+                                                    </tr>
+                                                </tbody>
+                                                </table>
+                                        </div>
+                                       
+                                    
+                                    </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="element-content" *ngIf="documents">
+            <div class="job-box">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <form class="search-form" #uploadFrmDetails="ngForm" name="form" (ngSubmit)="uploadFrmDetails.form.valid" novalidate>
+                            <div class="form-header">
+                                <h5>Documents Details</h5>
+                            </div>
+                            <div class="padding-20">
+                                <div class="form-group">
+                                    <!-- <div *ngIf="!i9details" class="text-center">No records found</div> -->
+                                    <div class="table-responsive" >
+                                    <table class="table table-bordered" style="width: 100%; text-align: center; margin: auto">
+                                        <thead class="form-header">
+                                        <tr>
+                                            <th style="width: 3%; text-align: center;"></th>
+                                            <th style="width: 17%; text-align: center;">Document</th>
+                                            <th style="width: 20%; text-align: center;">Document Type</th>
+                                            <th style="width: 20%; text-align: center;">Expiry Date</th>
+                                            <th style="text-align: center;">Title</th>
+                                            <th style="text-align: center;">Comment</th>
+                                            <th style="width: 15%; text-align: center;"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let x of documents ,let i = index">
+                                                <td>{{i+1}}</td>
+                                                <td style="width: 20%;">
+                                                    <a href="{{documentUrl}}{{x.document}}" target="blank">{{x.document}}</a>
+                                                </td>
+                                                <td style="width: 20%;">{{x.type | titlecase}}</td>
+                                                <td style="width: 20%;">{{x.expiryDate | date:'MM-dd-yyyy'}}</td>
+                                                <td style="width: 20%;">{{x.title | titlecase}}</td>
+                                                <td style="width: 30%;">{{x.comment}}</td>      
+                                                <td style="width: 20%;">
+                                                    <a class="btn btn-danger " title="Delete Document" id="DeleteDocument" (click)="deleteDoc(x.id)" style="color: white;margin: 5px;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table> 
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </form>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>

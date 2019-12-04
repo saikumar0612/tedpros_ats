@@ -1,0 +1,749 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Administrator Evaluation Form
+          <button class="btn btn-primary" *ngIf="trackerData.status == 3" id="printForm"
+            (click)="printToSave('printSectionId')">Print</button>
+        </h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a href="javascript:history.back()">Review List</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Evaluation Form</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div>
+    <!-- view details -->
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <h5>Review Details</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Employee Name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ trackerData.user.name }}</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Job Title:</label>
+                  <div class="col-sm-8">
+                    <p *ngIf="trackerData.jobTitle; else elseBlock">{{ trackerData.jobTitle.name }}</p>
+                    <ng-template #elseBlock>Job Title not assigned</ng-template>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Review Period:</label>
+                  <div class="col-sm-8">
+                    <p>{{ trackerData.startDate | date: 'MM-dd-yyyy' }} -
+                      {{ trackerData.endDate | date: 'MM-dd-yyyy' }}</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Review Due Date:</label>
+                  <div class="col-sm-8">
+                    <p>{{ trackerData.dueDate | date: 'MM-dd-yyyy' }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">                
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">KPI Type:</label>
+                  <div class="col-sm-8">
+                    <p>{{ trackerData.kpiType.name }}</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Status:</label>
+                  <div class="col-sm-8">
+                    <p *ngIf="trackerData.status == 1">In Progress</p>
+                    <p *ngIf="trackerData.status == 2">Activated</p>
+                    <p *ngIf="trackerData.status == 3">Approved</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+            <div class="">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="form-header">
+                    <tr>
+                      <th>Reviewer Type</th>
+                      <th>Reviewer Name</th>
+                      <th>Review Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Employee</td>
+                      <td>{{ trackerData.user.name }}</td>
+                      <td>
+                        <span *ngIf="commentData.userComment == null">Pending</span>
+                        <span *ngIf="commentData.userComment != null && trackerData.status == 2">Activated</span>
+                        <span *ngIf="trackerData.status == 3">Approved</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Supervisor</td>
+                      <td>{{ trackerData.supervisor.name }}</td>
+                      <td>
+                        <span *ngIf="commentData.supervisorComment == null">Pending</span>
+                        <span *ngIf="commentData.supervisorComment != null && trackerData.status == 2">Activated</span>
+                        <span *ngIf="trackerData.status == 3">Approved</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- user comments if enterered  -->
+    <div class="element-content" *ngIf="commentData.userComment != null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0" style="background-color: #ccc;">
+              <h5 style="color: #4e4e4e;">Evaluation by Employee</h5>
+            </div>
+            <div class="">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="form-header">
+                    <tr>
+                      <th style="width: 20%;">KPI</th>
+                      <th style="width: 5%;">Min</th>
+                      <th style="width: 5%;">Max</th>
+                      <th style="width: 5%;">Rating</th>
+                      <th>Comment</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let kpi of userObjects">
+                      <td>{{ kpi.indicator }}</td>
+                      <td>{{ kpi.minRating }}</td>
+                      <td>{{ kpi.maxRating }}</td>
+                      <td>{{ kpi.kpiRating }}</td>
+                      <td>{{ kpi.kpiComment }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <form  #addJobFrm = "ngForm" (ngSubmit)="addJobFrm.form.valid" novalidate name="form">
+    <!-- evaluation by employee -->
+    <div class="element-content" *ngIf="userId != trackerData.supervisor.id && commentData.userComment == null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0" style="background-color: #ccc;">
+              <h5 style="color: #4e4e4e;">Evaluation by Employee</h5>
+            </div>
+            <div class="">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="form-header">
+                    <tr>
+                      <th style="width: 20%;">KPI</th>
+                      <th style="width: 5%;">Min</th>
+                      <th style="width: 5%;">Max</th>
+                      <th style="width: 5%;">Rating</th>
+                      <th>Comment</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let kpi of kipsFormObject">
+                      <td>{{ kpi.indicator }}</td>
+                      <td>{{ kpi.minRating }}</td>
+                      <td>{{ kpi.maxRating }}</td>
+                      <td>
+                        <input type="number" id="kpiRating" class="form-control mb-10" #kpiRating="ngModel" name="kpiRating_{{kpi.kpiId}}" [(ngModel)]="kpi.kpiRating" pattern="^[0-9]*$" min="{{ kpi.minRating }}" max="{{ kpi.maxRating }}" [class.errorBorder]="kpiRating.touched && (kpi.kpiRating < kpi.minRating || kpi.kpiRating > kpi.maxRating)" required [ngClass]="{ 'is-invalid': addJobFrm.submitted && kpiRating.invalid }">
+
+                        <div *ngIf="(kpiRating.touched && kpiRating.invalid) || (kpi.kpiRating < kpi.minRating) || (kpi.kpiRating > kpi.maxRating)" class="invalid-feedback"></div>
+
+                        <div *ngIf="kpiRating.errors?.min || kpiRating.errors?.max && (kpi.kpiRating < kpi.minRating || kpi.kpiRating > kpi.maxRating)" class="invalid-feedback">Rating should be in between {{ kpi.maxRating }} and {{ kpi.minRating }}</div>
+
+                        <div *ngIf="kpiRating.touched && kpiRating.invalid" class="invalid-feedback">
+                          <div *ngIf="kpiRating.errors.required">Rating is required</div>
+                        </div>
+                      </td>
+                      <td>
+                        <textarea class="form-control mb-10" id="kpiComment" #kpiComment="ngModel" name="kpiComment_{{kpi.kpiId}}" [(ngModel)]="kpi.kpiComment" rows="2" required [ngClass]="{ 'is-invalid': addJobFrm.submitted && kpiComment.invalid }"></textarea>
+
+                        <div *ngIf="kpiComment.touched && kpiComment.invalid" class="invalid-feedback">
+                          <div *ngIf="kpiComment.errors.required">Comment is required</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </form>
+
+    <!-- final comment if not null -->
+    <div class="element-content" *ngIf="commentData.userfinal != null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <h5>Final comments by User</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Final Comment <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <p>{{ commentData.userfinal.finalComment }}</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Final Rating <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <p>{{ commentData.userfinal.finalRating }}</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Completed Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <p>{{ commentData.userfinal.finalDate | date: 'MM-dd-yyyy' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <form #addJobFrm = "ngForm" (ngSubmit)="addJobFrm.form.valid" novalidate name="form">
+    <!-- Finalization -->
+    <div class="element-content" *ngIf="this.userId != this.trackerData.supervisor.id && commentData.userfinal == null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <h5>Final comments by User</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Final Comment <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control mb-10" id="finalComment" name="finalComment" [(ngModel)]="kpiComments.finalComment" required #finalComment="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && finalComment.invalid }"></textarea>
+                    
+                    <div *ngIf="finalComment.touched && finalComment.invalid" class="invalid-feedback">
+                      <div *ngIf="finalComment.errors.required">Final comment is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Final Rating <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="number" id="finalRating" class="form-control mb-10" name="finalRating" [(ngModel)]="kpiComments.finalRating" required pattern="^[0-9]*$" #finalRating="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && finalRating.invalid }">
+                    
+                    <div *ngIf="finalRating.touched && finalRating.invalid" class="invalid-feedback">
+                      <div *ngIf="finalRating.errors.required">Final rating is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Completed Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="date" id="finalDate" class="form-control mb-10" name="finalDate" [(ngModel)]="kpiComments.finalDate" required #finalDate="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && finalDate.invalid }">
+                    
+                    <div *ngIf="finalDate.touched && finalDate.invalid" class="invalid-feedback">
+                      <div *ngIf="finalDate.errors.required">Select a date</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+    <!-- supervisor comments if enterered  -->
+    <div class="element-content" *ngIf="commentData.supervisorComment != null ">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0" style="background-color: #ccc;">
+              <h5 style="color: #4e4e4e;">Evaluation by Supervisor</h5>
+            </div>
+            <div class="">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="form-header">
+                    <tr>
+                      <th style="width: 20%;">KPI</th>
+                      <th style="width: 5%;">Min</th>
+                      <th style="width: 5%;">Max</th>
+                      <th style="width: 5%;">Rating</th>
+                      <th>Comment</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let kpi of supervisorObjects">
+                      <td>{{ kpi.indicator }}</td>
+                      <td>{{ kpi.minRating }}</td>
+                      <td>{{ kpi.maxRating }}</td>
+                      <td>{{ kpi.kpiRating }}</td>
+                      <td>{{ kpi.kpiComment }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- evaluation by supervisor -->
+    <div class="element-content"
+      *ngIf="this.userId == this.trackerData.supervisor.id &&commentData.supervisorComment == null ">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0" style="background-color: #ccc;">
+              <h5 style="color: #4e4e4e;">Evaluation by Supervisor</h5>
+            </div>
+            <div class="">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="form-header">
+                    <tr>
+                      <th style="width: 20%;">KPI</th>
+                      <th style="width: 5%;">Min</th>
+                      <th style="width: 5%;">Max</th>
+                      <th style="width: 5%;">Rating</th>
+                      <th>Comment</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let kpi of kipsFormObject">
+                      <td>{{ kpi.indicator }}</td>
+                      <td>{{ kpi.minRating }}</td>
+                      <td>{{ kpi.maxRating }}</td>
+                      <td>
+
+                        <input type="number" id="supervisorRating" class="form-control mb-10" #kpiRating="ngModel" name="kpiRating_{{kpi.kpiId}}" [(ngModel)]="kpi.kpiRating" pattern="^[0-9]*$" min="{{ kpi.minRating }}" max="{{ kpi.maxRating }}" [class.errorBorder]="kpiRating.touched && (kpi.kpiRating < kpi.minRating || kpi.kpiRating > kpi.maxRating)" required [ngClass]="{ 'is-invalid': addJobFrm.submitted && kpiRating.invalid }">
+
+                        <div *ngIf="(kpiRating.touched && kpiRating.invalid) || (kpi.kpiRating < kpi.minRating) || (kpi.kpiRating > kpi.maxRating)" class="invalid-feedback"></div>
+
+                        <div *ngIf="kpiRating.errors?.min || kpiRating.errors?.max && (kpi.kpiRating < kpi.minRating || kpi.kpiRating > kpi.maxRating)" class="invalid-feedback">Rating should be in between {{ kpi.maxRating }} and {{ kpi.minRating }}</div>
+
+                        <div *ngIf="kpiRating.touched && kpiRating.invalid" class="invalid-feedback">
+                          <div *ngIf="kpiRating.errors.required">Rating is required</div>
+                        </div>
+
+                      </td>
+                      <td>
+                        <textarea class="form-control mb-10" #kpiComment="ngModel" name="kpiComment_{{kpi.kpiId}}" [(ngModel)]="kpi.kpiComment" rows="2" required [ngClass]="{ 'is-invalid': addJobFrm.submitted && kpiComment.invalid }"></textarea>
+
+                        <div *ngIf="kpiComment.touched && kpiComment.invalid" class="invalid-feedback">
+                          <div *ngIf="kpiComment.errors.required">Comment is required</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- final comment if not null -->
+    <div class="element-content" *ngIf="commentData.supervisorfinal != null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <h5>Final comments by Supervisor</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Final Comment <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <p>{{ commentData.supervisorfinal.finalComment }}</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Final Rating <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <p>{{ commentData.supervisorfinal.finalRating }}</p>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Completed Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <p>{{ commentData.supervisorfinal.finalDate | date: 'MM-dd-yyyy' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Finalization -->
+    <div class="element-content"
+      *ngIf="this.userId == this.trackerData.supervisor.id && commentData.supervisorfinal == null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <h5>Final comments by Supervisor</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Final Comment <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control mb-10" id="supervisorFinalComment" name="finalComment" [(ngModel)]="kpiComments.finalComment" required #finalComment="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && finalComment.invalid }"></textarea>
+                    
+                    <div *ngIf="finalComment.touched && finalComment.invalid" class="invalid-feedback">
+                      <div *ngIf="finalComment.errors.required">Final comment is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Final Rating <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="number" id="supervisorFinalRating" class="form-control mb-10" name="finalRating" [(ngModel)]="kpiComments.finalRating" required pattern="^[0-9]*$" #finalRating="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && finalRating.invalid }">
+                    
+                    <div *ngIf="finalRating.touched && finalRating.invalid" class="invalid-feedback">
+                      <div *ngIf="finalRating.errors.required">Final rating is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Completed Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="date" id="supervisorFinalDate" class="form-control mb-10" name="finalDate" [(ngModel)]="kpiComments.finalDate" required #finalDate="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && finalDate.invalid }">
+                    
+                    <div *ngIf="finalDate.touched && finalDate.invalid" class="invalid-feedback">
+                      <div *ngIf="finalDate.errors.required">Select a date</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- !(commentData.userfinal != null).valid -->
+    <!-- (this.userId != commentData.userfinal == null).valid -->
+    <!-- buttons -->
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <button class="btn btn-primary mlr-5" id="saveUserComment" (click)="save()"
+                    *ngIf="commentData.review.status != '3' && ((commentData.userComment == null && userId != trackerData.supervisor.id) || ( commentData.userfinal == null && userId != trackerData.supervisor.id))" [disabled]="!addJobFrm.valid">Save</button>
+
+                  <button class="btn btn-primary mlr-5" id="saveSupervisorComment" (click)="save()"
+                    *ngIf="commentData.review.status != '3' && (commentData.supervisorComment == null && commentData.supervisorfinal == null && userId == trackerData.supervisor.id)" [disabled]="!addJobFrm.valid">Save</button>
+
+                  <button class="btn btn-success mlr-5"
+                    *ngIf="userId == trackerData.supervisor.id && userComment != null && supervisorComment == null && commentData.review.status == '2' && commentData.review.status != '3'" [disabled]="!addJobFrm.valid" id="approved" (click)="approve()">Approve</button>
+
+                  <button class="btn btn-success mlr-5"
+                  *ngIf="userId == trackerData.supervisor.id && userComment != null && supervisorComment != null && commentData.review.status == '2' && commentData.review.status != '3'" [disabled]="!addJobFrm.valid" (click)="activate()" id="activate">Approve</button>
+
+                 
+                  <button class="btn btn-info mlr-5" (click)="cancel()">Back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- print page view -->
+  <div class="content">
+    <div id="printSectionId" style="display: none;">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12">
+            <div class="logo text-center">
+              <img src="{{ logo }}" style="width: 100%; height: 100%; display: block; margin: auto;" alt="logo">
+            </div>
+            <h1 style="text-transform:uppercase; text-align: center;">Personal Evaluation Report</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="element-content">
+            <div class="job-box">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="form-header row mlr-0" style="background-color: #ccc;">
+                    <h5>Review Details</h5>
+                  </div>
+                  <div class="">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <tbody>
+                          <tr>
+                            <th>Employee Name</th>
+                            <td>{{ trackerData.user.name }}</td>
+                          </tr>
+                          <tr>
+                            <th>Job Title</th>
+                            <td>
+                              <p *ngIf="trackerData.jobTitle; else elseBlock">{{ trackerData.jobTitle.name }}</p>
+                              <ng-template #elseBlock>Job Title not assigned</ng-template>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Review Period</th>
+                            <td>{{ trackerData.startDate | date: 'MM-dd-yyyy' }} -
+                              {{ trackerData.endDate | date: 'MM-dd-yyyy' }}</td>
+                          </tr>
+                          <tr>
+                            <th>Review Due Date</th>
+                            <td>{{ trackerData.dueDate | date: 'MM-dd-yyyy' }}</td>
+                          </tr>
+                          <tr>
+                            <th>KPI type</th>
+                            <td>{{ trackerData.kpiType.name }}</td>
+                          </tr>
+                          <tr>
+                            <th>Status</th>
+                            <td>
+                              <p *ngIf="trackerData.status == 1">In Progress</p>
+                              <p *ngIf="trackerData.status == 2">Activated</p>
+                              <p *ngIf="trackerData.status == 3">Approved</p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="form-header row mlr-0" style="background-color: #ccc;">
+                    <h5 style="color: #4e4e4e;">Individual Evaluation Status</h5>
+                  </div>
+                  <div class="">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <thead class="form-header">
+                          <tr>
+                            <th>Reviewer Type</th>
+                            <th>Reviewer Name</th>
+                            <th>Review Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Employee</td>
+                            <td>{{ this.trackerData.user.name }}</td>
+                            <td>
+                              <span *ngIf="commentData.userComment == null">Pending</span>
+                              <span *ngIf="commentData.userComment != null && trackerData.status == 2">Activated</span>
+                              <span *ngIf="trackerData.status == 3">Approved</span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Supervisor</td>
+                            <td>{{ this.trackerData.supervisor.name }}</td>
+                            <td>
+                              <span *ngIf="commentData.supervisorComment == null">Pending</span>
+                              <span
+                                *ngIf="commentData.supervisorComment != null && trackerData.status == 2">Activated</span>
+                              <span *ngIf="trackerData.status == 3">Approved</span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="element-content" *ngIf="commentData.userComment != null">
+            <div class="job-box">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="form-header row mlr-0" style="background-color: #ccc;">
+                    <h5 style="color: #4e4e4e;">Evaluation by Employee</h5>
+                  </div>
+                  <div class="">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <thead class="form-header">
+                          <tr>
+                            <th style="width: 20%;">KPI</th>
+                            <th style="width: 5%;">Min</th>
+                            <th style="width: 5%;">Max</th>
+                            <th style="width: 5%;">Rating</th>
+                            <th>Comment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let kpi of userObjects">
+                            <td>{{ kpi.indicator }}</td>
+                            <td>{{ kpi.minRating }}</td>
+                            <td>{{ kpi.maxRating }}</td>
+                            <td>{{ kpi.kpiRating }}</td>
+                            <td>{{ kpi.kpiComment }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="element-content" *ngIf="commentData.userfinal != null">
+            <div class="job-box">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="form-header row mlr-0">
+                    <h5>Final comments by User</h5>
+                  </div>
+                  <div class="">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <tbody>
+                          <tr>
+                            <td>Final Comment</td>
+                            <td>{{ commentData.userfinal.finalComment }}</td>
+                          </tr>
+                          <tr>
+                            <td>Final Rating</td>
+                            <td>{{ commentData.userfinal.finalRating }}</td>
+                          </tr>
+                          <tr>
+                            <td>Completed Date</td>
+                            <td>{{ commentData.userfinal.finalDate | date: 'MM-dd-yyyy' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- supervisor comments if enterered  -->
+          <div class="element-content" *ngIf="commentData.supervisorComment != null ">
+            <div class="job-box">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="form-header row mlr-0" style="background-color: #ccc;">
+                    <h5 style="color: #4e4e4e;">Evaluation by Supervisor</h5>
+                  </div>
+                  <div class="">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <thead class="form-header">
+                          <tr>
+                            <th style="width: 20%;">KPI</th>
+                            <th style="width: 5%;">Min</th>
+                            <th style="width: 5%;">Max</th>
+                            <th style="width: 5%;">Rating</th>
+                            <th>Comment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let kpi of supervisorObjects">
+                            <td>{{ kpi.indicator }}</td>
+                            <td>{{ kpi.minRating }}</td>
+                            <td>{{ kpi.maxRating }}</td>
+                            <td>{{ kpi.kpiRating }}</td>
+                            <td>{{ kpi.kpiComment }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- final comment if not null -->
+          <div class="element-content" *ngIf="commentData.supervisorfinal != null">
+            <div class="job-box">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="form-header row mlr-0">
+                    <h5>Final comments by Supervisor</h5>
+                  </div>
+                  <div class="">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <tbody>
+                          <tr>
+                            <td>Final Comment</td>
+                            <td>{{ commentData.supervisorfinal.finalComment }}</td>
+                          </tr>
+                          <tr>
+                            <td>Final Rating</td>
+                            <td>{{ commentData.supervisorfinal.finalRating }}</td>
+                          </tr>
+                          <tr>
+                            <td>Completed Date</td>
+                            <td>{{ commentData.supervisorfinal.finalDate | date: 'MM-dd-yyyy' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+  </div>

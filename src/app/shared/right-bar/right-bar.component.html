@@ -1,0 +1,118 @@
+<div class="row" id="sidebar" [ngClass]="{'hidden': sideNavService.hideSideNav }">
+  <div class="right-sidebar">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 heading">
+          <h4>Recent Activities</h4>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="row" *ngFor="let logs of logsData">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <a routerLink='{{logs.actionPath}}' class="btn btn-full text-left"> <i class="fa fa-angle-double-right" aria-hidden="true" style="font-weight: 600; font-size: 17px;"></i>{{logs.actionTitle}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 heading">
+          <h4>Team Members</h4>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="element-box-tp">
+        <div class="input-search-w">
+            <input class="form-control" placeholder="Search team members..." type="search">
+        </div>
+        <div class="users-list-w">
+            <div class="user-w with-status status-green">
+                <div class="user-avatar-w">
+                    <div class="user-avatar"><img alt="" src="assets/images/avatar.png"></div>
+                </div>
+                <div class="user-name">
+                    <h6 class="user-title">John Mayers</h6>
+                    <div class="user-role">Account Manager</div>
+                </div>
+                <a class="user-action" href="#">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="user-w with-status status-green">
+                <div class="user-avatar-w">
+                    <div class="user-avatar"><img alt="" src="assets/images/avatar.png"></div>
+                </div>
+                <div class="user-name">
+                    <h6 class="user-title">Ben Gossman</h6>
+                    <div class="user-role">Administrator</div>
+                </div>
+                <a class="user-action" href="#">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="user-w with-status status-red">
+                <div class="user-avatar-w">
+                    <div class="user-avatar"><img alt="" src="assets/images/avatar.png"></div>
+                </div>
+                <div class="user-name">
+                    <h6 class="user-title">Phil Nokorin</h6>
+                    <div class="user-role">HR Manger</div>
+                </div>
+                <a class="user-action" href="#">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="user-w with-status status-green">
+                <div class="user-avatar-w">
+                    <div class="user-avatar"><img alt="" src="assets/images/avatar.png"></div>
+                </div>
+                <div class="user-name">
+                    <h6 class="user-title">Jenny Miksa</h6>
+                    <div class="user-role">Lead Developer</div>
+                </div>
+                <a class="user-action" href="#">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="user-w with-status status-green">
+                <div class="user-avatar-w">
+                    <div class="user-avatar"><img alt="" src="assets/images/avatar.png"></div>
+                </div>
+                <div class="user-name">
+                    <h6 class="user-title">Jenny Miksa</h6>
+                    <div class="user-role">Lead Developer</div>
+                </div>
+                <a class="user-action" href="#">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="user-w with-status status-green">
+                <div class="user-avatar-w">
+                    <div class="user-avatar"><img alt="" src="assets/images/avatar.png"></div>
+                </div>
+                <div class="user-name">
+                    <h6 class="user-title">Jenny Miksa</h6>
+                    <div class="user-role">Lead Developer</div>
+                </div>
+                <a class="user-action" href="#">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="user-w with-status status-green">
+                <div class="user-avatar-w">
+                    <div class="user-avatar"><img alt="" src="assets/images/avatar.png"></div>
+                </div>
+                <div class="user-name">
+                    <h6 class="user-title">Jenny Miksa</h6>
+                    <div class="user-role">Lead Developer</div>
+                </div>
+                <a class="user-action" href="#">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>

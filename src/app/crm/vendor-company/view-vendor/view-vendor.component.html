@@ -1,0 +1,312 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4><span *ngIf="logo">
+            <img src="{{logo}}" alt="{{comInfo.companyName}}" style="max-width: 50px; height:auto">
+          </span>{{comInfo.companyName | uppercase}}</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li><a routerLink='/vendors'>Vendor Companies</a></li>
+          <li>/</li>
+          <li>View Vendor Company</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="form-header">
+            <h5>Essentials</h5>
+          </div>
+          <div class="padding-20">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Company Code:</label>
+                <div class="col-sm-8">
+                  <p> {{ comInfo.companyId }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Company Name:</label>
+                <div class="col-sm-8">
+                  <p> {{ comInfo.companyName }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Industry:</label>
+                <div class="col-sm-8">
+                  <p> {{ comInfo.industry.name }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Primary Phone:</label>
+                <div class="col-sm-8">
+                  <p> {{ comInfo.primaryPhone }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Country:</label>
+                <div class="col-sm-8">
+                  <p> {{ comInfo.country.name }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Email:</label>
+                <div class="col-sm-8">
+                  <p> {{ comInfo.emailId }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Account Owner:</label>
+                <div class="col-sm-8">
+                  <p> {{ comInfo.owner.name }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ngb-tabset type="pills">
+            <ngb-tab title="Details">
+              <ng-template ngbTabContent>
+                <div class="padding-20">
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">DUNS#:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.dunNo }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">FIN#:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.finNo }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Billing Contact:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.billingContact }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Phone Number:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.phoneNumber }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Status:</label>
+                      <div class="col-sm-8">
+                        <p *ngIf=" comInfo.status == 1">Active</p>
+                        <p *ngIf=" comInfo.status == 0">Inactive</p>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label class="col-sm-2 col-form-label">Description:</label>
+                      <div class="col-sm-10">
+                        <!-- {{ comInfo|json}} -->
+                        <p> {{ comInfo.description }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Address">
+              <ng-template ngbTabContent>
+                <div class="padding-20">
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Address 1:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.address.addressLine1 }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Address 2/Suite:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.address.addressLine2 }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">State:</label>
+                      <div class="col-sm-8">
+                        <p> {{ state }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">City:</label>
+                      <div class="col-sm-8">
+                        <p> {{ city }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Zip Code:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.address.zipCode }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Secondary Phone:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.address.secondaryPhone }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Website:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.address.webSite }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Specialization">
+              <ng-template ngbTabContent>
+                <div class="padding-20">
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Partners/ certification:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.specialisation.certification }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Awards:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.specialisation.awards }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Company Rating:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.specialisation.rating }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Specialization:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.specialisation.specialisation }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Social">
+              <ng-template ngbTabContent>
+                <div class="padding-20">
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Twitter:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.social.twitter }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">LinkedIn:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.social.linkedin }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Facebook:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.social.facebook }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Vendor Personnels">
+              <ng-template ngbTabContent>
+                <div class="padding-20">
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label class="col-sm-4 col-form-label">Employee Name:</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.vendorPersonal.employeeName }}</p>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="col-sm-4 col-form-label">Employee Email :</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.vendorPersonal.email }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label class="col-sm-4 col-form-label">Contact Number :</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.vendorPersonal.phone }}</p>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="col-sm-4 col-form-label">Type :</label>
+                      <div class="col-sm-8">
+                        <p> {{ comInfo.vendorPersonal.type }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-6">
+                      <label class="col-sm-4 col-form-label">Status :</label>
+                      <div class="col-sm-8">
+                        <p *ngIf=" comInfo.vendorPersonal.status=='1'">
+                          Active
+                        </p>
+                        <p *ngIf=" comInfo.vendorPersonal.status!=='1'">
+                          In Active
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+
+          <!-- {{contactInfo|json}} -->
+
+          <div class="padding-20">
+            <div class="row">
+              <div class="col-sm-10">
+                <button class="btn btn-info mlr-5" (click)="cancel()">Back</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

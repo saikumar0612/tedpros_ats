@@ -1,0 +1,148 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Employee Reports</h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items">
+            <li><a routerLink='/dashboard'>Home</a></li>
+            <li>/</li>
+            <li>Employee Reports</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <h5>Employee Report </h5>
+            </div>
+            <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Employee Name <span class="req-field">*</span>:</label>
+                    <div class="col-sm-6">
+                      <ng-multiselect-dropdown name="userId" id="userId" #userId [placeholder]="'Select User(s)'" [data]="users"
+                      [(ngModel)]="userInfo" [settings]="dropdownSettings">
+                      </ng-multiselect-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label class="col-sm-6 col-form-label">Project</label>
+                      <div class="col-sm-6">
+                        <select class="form-control mb-10"  id="project" name="project" [(ngModel)]="assignInfo.projectId" (change)="activites(project.value)" #project required>
+                          <option value="0" selected>All</option>
+                          <option *ngFor="let project of projects" value="{{project.projectId}}">{{project.projectName}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6">
+                                    <p *ngIf="userError" style="color:red;font-weight:bold;">{{ userError |titlecase}}</p>
+                            </div>
+                        
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Activity Name</label>
+                    <div class="col-sm-6">
+                      <select class="form-control mb-10" id="activityName" name="activityName" [(ngModel)]="assignInfo.activityId" #activityName required>
+                        <option value="0" selected>All</option>
+                        <option *ngFor="let activityinfo of activitieslist" value="{{activityinfo.id}}">
+                          {{activityinfo.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Project Date Range <span class="req-field">*</span>:</label>
+                    <div class="col-sm-3">
+                      <input class="form-control mb-10" placeholder="MM/DD/YYYY" [owlDateTimeTrigger]="fromDate" [owlDateTime]="fromDate" [(ngModel)]="timesheetData.fromDate" #fromDate="ngModel" name="fromDate" (dateTimeInput)="dateValidate()" required>
+                      <owl-date-time [pickerType]="'calendar'" #fromDate></owl-date-time>
+                      
+                    </div>
+                    <div class="col-sm-3">
+                      <input class="form-control mb-10" placeholder="MM/DD/YYYY" [owlDateTimeTrigger]="toDate" [owlDateTime]="toDate" [(ngModel)]="timesheetData.toDate" #toDate="ngModel" name="toDate" (dateTimeInput)="dateValidate()" required>
+                      <owl-date-time [pickerType]="'calendar'" #toDate></owl-date-time>
+                    </div>
+                  </div>
+                  <div class="col-md-6"></div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6">
+                                    <p *ngIf="startDateError" style="color:red;font-weight:bold;">{{ startDateError |titlecase}}</p>
+                            </div>
+                        
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-danger mlr-5" id="backLocation"> Back </button>
+                        <button type="button" class="btn btn-info mlr-5" id="getTimesheet"
+                            (click)="getTimesheetData()">View</button>
+                    </div>
+                    </div>
+                </div>
+                <div class="padding-20">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                    <thead class="form-header">
+                        <tr>
+                        <th>Project</th>
+                        <th>Activity Name</th>
+                        <th>Time (Hours)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="availableRecords; else noData">
+                        <tr *ngFor="let report of reportInfo">
+                            <td>{{ report.project.projectName }}</td>
+                            <td>{{ report.activity[0].name }}</td>
+                            <td>{{ report.totalDuration }}</td>
+                        </tr>
+                        <tr>
+                          <th colspan="2">Total</th>
+                          <td>{{ totalDuration }}</td>
+                        </tr>
+                      </ng-container>
+                      <ng-template #noData>
+                          <tr>
+                            <td colspan="3" class="text-danger" style="text-align: center;">
+                              No Records Found
+                            </td>
+                          </tr>
+                        </ng-template>
+                    </tbody>
+                    
+                    <tfoot>
+                        
+                    </tfoot>
+                    </table>
+                </div>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="../../../assets/images/loginloader.gif" alt=""></div>
+  </div>
+  

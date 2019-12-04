@@ -1,0 +1,144 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Review List <a class="btn btn-primary" routerLink="/reviews/add-review" *ngIf="userPermissions.createReview" id="addReview">+ Add</a></h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items"> 
+            <li><a routerLink="/dashboard">Home</a></li>
+            <li>&nbsp;/&nbsp;</li>
+            <li>Review List</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <!-- {{finalData|json}} -->
+            <div class="table-responsive">
+                <table class="table table-bordered" [mfData]="finalData" #mf="mfDataTable" [mfRowsOnPage]="10">
+                  <thead class="form-header">
+                    <tr>
+                      <th style="width: 4%; text-align: center;"></th>
+                      <th style="width: 4%; text-align: center;"></th>
+                      <th>Employee</th>
+                      <th>Due Date</th>
+                      <th>Review Date</th>
+                      <th>Job Title</th>
+                      <th>KPI Type</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="finalData === ''">
+                    <tr>
+                      <td colspan="8">
+                        No Records Found
+                      </td>                     
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="finalData !== ''">
+                    <tr>
+                      <td colspan="2"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'user')"
+                        class="search-filter form-control" id="searchUser"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'dueDate')"
+                        class="search-filter form-control" id="searchDueDate"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'reviewDate')" class="search-filter form-control" id="searchreviewDate"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'jobTitle')" class="search-filter form-control" id="searchJobTitle"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'kpiType')" class="search-filter form-control" id="searchkpiType"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'status')" class="search-filter form-control" id="searchStatus"></td>
+                      
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                      <tr *ngFor="let review of mf.data, index as i">
+                        <td style="text-align: center;">{{i+1}}</td>
+                        <td style="text-align: center;" id="subMenu">
+                          <div class="activity-main-menu">
+                            <ul class="menu-items">
+                              <li class="activity-sub-menu">
+                                <a>
+                                  <div class="icon-w">
+                                      <i class="fa fa-bars" aria-hidden="true"></i>
+                                  </div>
+                                </a>
+                                <div class="sub-menu-list">
+                                  <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                      <li *ngIf="userPermissions.readReview"><a class="mlr-5" (click)="showDetails(review.id)" id="showDetails" title="View details"><button type="button" class="tabledit-delete-button btn btn-primary"><em class="fa fa-eye"></em></button></a></li>
+                                      <li *ngIf="review.status != 'Approved' && userPermissions.updateReview">
+                                        <a class="mlr-5" [routerLink]="['/reviews/edit-review', review.id]">
+                                          <button type="button" id="editReview" class="tabledit-edit-button btn btn-danger">
+                                            <em class="fa fa-pencil-square-o" aria-hidden="true"></em>
+                                          </button>
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                        <td>{{ review.user.name | uppercase }}</td>
+                        <td>{{ review.dueDate | date: 'MM-dd-yyyy' }}</td>
+                        <td>{{ review.startDate | date: 'MM-dd-yyyy' }} - {{ review.endDate | date: 'MM-dd-yyyy' }}</td>
+                        <td>
+                          <span  *ngIf="review.jobTitle; else elseBlock">{{ review.jobTitle.name | titlecase }}</span>
+                          <ng-template #elseBlock></ng-template>
+                        </td>
+                        <td>{{ review.kpiType.name | titlecase }}</td>
+                        <td>{{ review.status | titlecase }}</td>
+                      </tr>
+                    </ng-container>
+                    <ng-template #noData> 
+                      <tr>
+                        <td colspan="8" class="text-danger" style="text-align: center;">
+                          No Records Found 
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="8"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,35]"></mfBootstrapPaginator></td>
+                    </tr>
+                  </tfoot>
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+  </div>
+  
+  <div class="popupbox_wrap" *ngIf="isShowPopup">
+    <div class="popupbox">
+      <button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+      <div class="show_user_details" *ngIf="isShowDetails">
+        <table class="table table-bordered">
+          <tr><td colspan="2"><strong>Employee Name:</strong> &nbsp;<span>{{singleReview.user.name | titlecase}}</span></td></tr>
+          <tr><td colspan="2"><strong>Supervisor Name:</strong> &nbsp;<span>{{ singleReview.supervisor.name | titlecase }}</span></td></tr><tr><td colspan="2"><strong>KPI Type:</strong> &nbsp;<span>{{ singleReview.kpiType.name }}</span></td></tr>
+          <tr>
+            <td colspan="2"><strong>Job Title:</strong> &nbsp;
+              <span  *ngIf="singleReview.jobTitle; else elseBlock">{{ singleReview.jobTitle.name | titlecase }}</span>
+              <ng-template #elseBlock></ng-template>
+            </td>
+          </tr>
+          <tr><td colspan="2"><strong>Work Period Start Date:</strong> &nbsp;<span>{{ singleReview.startDate | date: 'MM-dd-yyyy' }}</span></td></tr>
+          <tr><td colspan="2"><strong>Work Period End Date:</strong> &nbsp;<span>{{ singleReview.endDate | date: 'MM-dd-yyyy' }}</span></td></tr>
+          <tr><td colspan="2"><strong>Due Date:</strong> &nbsp;<span>{{ singleReview.dueDate | date: 'MM-dd-yyyy' }}</span></td></tr>
+          <tr>
+            <td colspan="2"><strong>Status:</strong> &nbsp;{{ singleReview.status }}</td>
+          </tr>
+        </table>
+        <div class="row text-center" *ngIf="userPermissions.updateReview && singleReview.status != 'Approved'"><a id="editReviewDetails" [routerLink]="['/reviews/edit-review', singleReview.id]" class="btn btn-primary"><em class="fa fa-pencil-square-o"></em> Edit Review</a></div>
+      </div><!--show_user_details-->
+    </div><!--popupbox-->
+  </div><!--popupbox_wrap-->

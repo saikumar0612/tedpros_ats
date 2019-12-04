@@ -1,0 +1,76 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Roles &nbsp;&nbsp;<a class="btn btn-primary" routerLink="/user-roles/role-activity" *ngIf="userPermissions.createRole" id="addrole">+ Add</a></h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/</li>
+          <li>&nbsp;Users Roles</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="10">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th></th>
+                  <th>Role Name</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="2"></td>
+                  <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'role_name')"
+                    class="search-filter form-control" id="Searchname"></td>
+                  <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'description')" id="Searchvalue"
+                    class="search-filter form-control"></td>
+                </tr>
+                <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let role of mf.data, index as i">
+                  <td style="text-align: center;" id="menutab">{{i+1}}</td>
+                  <td style="width: 50;">
+                    <div class="activity-main-menu"><ul class="menu-items">
+                        <li class="activity-sub-menu"><a><div class="icon-w"><i class="fa fa-bars" aria-hidden="true"></i></div></a><div class="sub-menu-list"><div class="sub-menu-i">
+                          <ul class="sub-menu">
+                            <li><a class="mlr-5" [routerLink]="['/user-roles/edit-role-permissions', role.id]" title="Edit Role" *ngIf="userPermissions.updateRole" id="edituserroles"><button type="button" class="tabledit-delete-button btn btn-primary"><i class="fa fa-key" aria-hidden="true"></i></button></a></li>
+                          </ul></div></div></li></ul></div>
+                  </td>
+                  <td>{{ role.role_name }}</td>
+                  <td>{{ role.description }}</td>
+                </tr>
+              </ng-container>
+              <ng-template #noData>
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="6"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,35]"></mfBootstrapPaginator></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+</div>

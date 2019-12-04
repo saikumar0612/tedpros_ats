@@ -1,0 +1,62 @@
+<div class="container">
+	<main id="jf-main" class="jf-main jf-haslayout">
+		<div class="jf-dbsectionspace jf-haslayout">
+			<div class="row">
+				<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="jf-dashboardbox jf-myappliedjobs">
+						<div class="jf-dashboardboxtitle">
+							<h2>Recent Shortlisted Jobs</h2>
+						</div>
+						<ng-container *ngIf="availableRecords; else noData">
+							<table [mfData]="shortListdata" #mf="mfDataTable" [mfRowsOnPage]="4">
+								<div class="jf-dashbboardcontent jf-myjobsapplications jf-myjobsapplicationsvtwo">
+									<ul>
+										<li *ngFor="let job of mf.data">
+											<div class="jf-featurejob">
+												<div class="jf-companycontent">
+													<div class="jf-companyhead"> 
+														<a class="jf-btnjobtag jf-internship">{{job.jobdata.employmentType}}</a>
+													</div>
+													<div class="jf-companyname">
+														<h3>{{job.jobdata.internalCode}} - {{job.jobdata.techJobTitle | titlecase}} - <strong>({{job.statusType}})</strong></h3>
+													</div>
+													<div> <span><strong>Salary :</strong> {{job.jobdata.externalBillRate}}</span>
+													</div>
+													<div> <strong>Skills :</strong><span *ngFor="let skill of job.jobdata.skill"> {{skill.skillName}},</span>
+													</div>
+													<div> <span><strong>Location :</strong> {{job.jobdata.country.name}}, {{job.jobdata.state.name}}, {{job.jobdata.city.name}}</span>
+													</div>
+													<div> <strong>Description :</strong><span [innerHTML]="job.jobdata.description |slice:0:200"></span>
+													</div>
+                                                </div>
+                                                
+                                                <div class="jf-companyhead" *ngIf="job.status != '4'"> 
+                                                    <button class="jf-btnjobtag mlr-5" style="background-color: #036bd7;" [disabled]="!job.consent" (click)="acceptLetter(job.jobdata.internalCode,1)">Right to Represent Consent Form</button>
+                                                    <button class="jf-btnjobtag mlr-5" style="background-color: #5bc0de;" [disabled]="!job.compete" (click)="acceptLetter(job.jobdata.internalCode,2)">Non-Compete and Non-Solicitation Agreement</button>
+                                                    <button class="jf-btnjobtag mlr-5" style="background-color: #11a700;" [disabled]="!job.nda" (click)="acceptLetter(job.jobdata.internalCode,3)">Non-Disclosure Agreement</button>
+                                                </div>
+											</div>
+											<ul class="jf-jobmatadata">
+                                                <li>
+                                                    <button class="btn btn-info" id="jobDetails" [routerLink]="['/job/jobdetails', job.jobdata.internalCode]"><em class="fa fa-external-link"></em> Read More</button>
+                                                </li>
+                                        </ul>
+										</li>
+									</ul>
+								</div>
+								<div>
+									<mfBootstrapPaginator [rowsOnPageSet]="[4,8,24,32]"></mfBootstrapPaginator>
+								</div>
+							</table>
+						</ng-container>
+						<ng-template #noData>
+							<div style="text-align: center">
+								<h4>You have no shortlisted jobs </h4>
+							</div>
+						</ng-template>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>

@@ -1,0 +1,111 @@
+<div>
+	<form class="login100-form validate-form" #registerFrm="ngForm" name="form" (ngSubmit)="registerFrm.form.valid" novalidate>
+		<div class="jf-dashboardbox jf-myappliedjobs">
+			<div class="jf-dashboardboxtitle">
+				<div class="row">
+					<div class="col-md-6">
+						<h2>{{ companyName | uppercase}} CURRENT POSITIONS</h2>
+					</div>
+					<div class="col-md-6">
+						<button class="btn btn-primary btn-lg pull-right" id="login" style="margin-right: 10px" routerLink="/vms/candidate-login-register">Login / Register</button>
+					</div>
+				</div>
+			</div>
+			<div class="table-responsive">
+				<table class="table" [mfData]="jobsList" #mf="mfDataTable" [mfRowsOnPage]="4">
+					<tbody>
+                        <tr>
+                            <td>
+                                <div class="jf-dashbboardcontent jf-myjobsapplications jf-myjobsapplicationsvtwo">
+                                    <ng-container *ngIf="showData">
+                                        <div>
+                                            <ul>
+                                                <li *ngFor="let job of mf.data">
+                                                    <div class="jf-featurejob">
+                                                        <div class="jf-companycontent">
+                                                            <div class="jf-companyhead">
+                                                                <a class="jf-btnjobtag jf-internship"></a>
+                                                            </div>
+                                                            <div class="jf-companyname">
+                                                                <h3 class="header">{{job.internalCode}} - {{job.tech_title | titlecase}}</h3>
+                                                            </div>
+                                                            <div class="subheader"> <strong>Skills :</strong>
+                                                                <span *ngFor="let x of job.skill"> {{x.skillName}},</span>
+                                                            </div>
+                                                            <div class="subheader"> <strong>Salary:</strong>
+                                                                <span> $ {{job.external_bill}} </span>
+                                                            </div>
+                                                            <div class="subheader"> <strong>Location:</strong>
+                                                                <span> {{job.country.name}}, {{job.state.name}}, {{job.city.name}}</span>
+                                                            </div>
+                                                            <div class="subheader"> <strong>Posted Date:</strong>
+                                                                <span> {{job.datePosted}}</span>
+                                                            </div>
+                                                            <div> <strong>Description :</strong><span [innerHTML]="job.description |slice:0:100"></span> 
+                                                            </div>
+                                                            <div>
+                                                                <button class="btn btn-success " id="jobDetails" style="float: right;margin-right: 10px;" (click)="applyPopup()">Apply Now</button>
+                                                                <button class="btn btn-info " id="jobDetails" [routerLink]="['/vms/jobdetail', job.internalCode]" style="float: right;margin-right: 10px;"><em class="fa fa-external-link"></em> Read More</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </ng-container>
+                                    <ng-template *ngIf="!showData">
+                                        <div style="text-align: center">
+                                            <h4>No Current Jobs </h4>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+					</tbody>
+					<tfoot>
+                        <tr>
+                            <td>
+                                <mfBootstrapPaginator [rowsOnPageSet]="[4,8,12,16]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>						
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</form>
+</div>
+<footer id="footer">
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 padding-left">
+                    <span>&#169; {{currentYear}} {{companyName}}. All rights reserved.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="popupbox_wrap" *ngIf="jobPopup">
+	<div class="popupbox" style="margin-left: 30%;border-top: 0px solid #e9ecef;">
+		<table class="table table-bordered">
+			<tr>
+				<td class="sucess text-center">
+					<h2>Please Login For More Information</h2>
+					<br/>
+					<button class="btn btn-success btn-lg" id="closebtn" routerLink="/vms/candidate-login-register"><i class="fa fa-arrow-right" aria-hidden="true"></i> Login</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox" style="margin-left: 30%;width: 27%;">
+        <div class="row pull-right">
+            <button id="closePopup1" class="close" type="button" style="padding-right: 15px;" (click)="close1()"><span class="close-label">Close</span><span class="os-icon os-icon-close"></span>
+        </button>
+    </div>
+		<p>Please Login for applying for jobs!</p>
+		<div class="row"> <span class="btn btn-primary btn-lg" style="margin-left: 40%" id="nextPage" routerLink="/vms/candidate-login-register">Login</span>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,136 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Add Work Shift</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/&nbsp;</li>
+          <li><a routerLink="/work-shifts">Work Shifts</a></li>
+          <li>/</li>
+          <li>Add Work Shift</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addApplyFrm = "ngForm" name="form" (ngSubmit)="addApplyFrm.form.valid"  novalidate>
+            <div class="form-header">
+              <h5>Add Work Shift</h5>
+            </div>
+            <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Shift Name <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control mb-10" placeholder="Enter Shift Name" name="shiftName" #shiftName="ngModel" [(ngModel)]="shiftData.shiftName" required (keyup)="checkName()" pattern="^(?!.*[.&*]{2})([a-zA-Z0-9.&*]+\s)*[a-zA-Z0-9.&*]+$">
+                        <div class="invalid-feedback" *ngIf="nameError">
+                          <span>{{ name.data }}</span>
+                        </div>
+                        <div *ngIf="shiftName.touched && shiftName.invalid" class="invalid-feedback">
+                          <div *ngIf="shiftName.touched && shiftName.errors.required">Shift name is required</div>
+                        </div>
+                        <div *ngIf="shiftName.errors?.pattern" class="invalid-feedback">
+                          Enter a valid shift Name
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Assign To Employees <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <ng-multiselect-dropdown
+                        name="employees" 
+                        class="mb-10"
+                        [placeholder]="'Select User(s)'"
+                        [data]="users"
+                        [settings]="dropdownSettings"
+                        #employees="ngModel" 
+                        [(ngModel)]="shiftData.assignedEmployee" 
+                        required>
+                      </ng-multiselect-dropdown>
+                      <div *ngIf="employees.touched && employees.invalid" class="invalid-feedback">
+                        <div *ngIf="employees.touched && employees.errors.required">Select atleast one employee</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Start Hours <span class="req-field">*</span></label>
+                    <div class="col-sm-8 mb-10">
+                      <ngb-timepicker name="startTime" class="timepicker" [(ngModel)]="shiftData.startTime" #startTime="ngModel" [meridian]="meridian" [spinners]="spinners" (change)="timediff()"></ngb-timepicker>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">End Hours <span class="req-field">*</span></label>                  
+                    <div class="col-sm-8 mb-10">
+                      <ngb-timepicker name="endTime" class="timepicker" [(ngModel)]="shiftData.endTime" #endTime="ngModel" [meridian]="meridian" [spinners]="spinners" (change)="timediff()"></ngb-timepicker>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Total Working Hours</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" readonly name="totalTime" #totalTime="ngModel" [(ngModel)]="shiftData.totalTime">
+                    </div>
+                  </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary mlr-5" [disabled]="!addApplyFrm.valid" (click)="addShift()">Submit</button>
+                  <!-- added the click event to reset form - sharmistha - 08-23-2019 - start -->
+                  <button (click)="resetForm(addApplyFrm)" class="btn btn-info mlr-5">Reset</button>
+                  <!-- added the click event to reset form - sharmistha - 08-23-2019 - end -->
+                  <button class="btn btn-danger mlr-5" (click)="cancel()">Cancel</button>
+                </div>
+              </div>
+              <div class="form-group row mt-10">
+                <div class="col-sm-12">
+                  <div class="invalid-feedback" *ngIf="error"><p>Enter valid data</p></div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox">
+      <div class="row"><button class="close" type="button" (click)="close(addApplyFrm)"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+      <p class="bg-success">{{ shift.data }}</p>
+      <div class="row text-center">
+        <a class="btn btn-success mlr-5" routerLink="/work-shifts"><i class="fa fa-users" aria-hidden="true"></i> View all Shifts</a>
+        <a class="btn btn-info" (click)="add(addApplyFrm)"><i class="fa fa-plus" aria-hidden="true"></i> Add Work Shift</a>
+      </div>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+  
+  
+  <div class="popupbox_wrap" *ngIf="isFailure">
+    <div class="popupbox">
+      <div class="row"><button class="close" type="button" (click)="closePopup()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+      <p class="bg-danger">{{ shift.errorMessages }}</p>
+      <div class="row text-center">
+        <a class="btn btn-success" routerLink="/work-shifts"><i class="fa fa-users" aria-hidden="true"></i> View all Shifts</a>
+      </div>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap--> 

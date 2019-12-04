@@ -1,0 +1,271 @@
+<style>
+    input[type="file"] {
+      display: block;
+      right: 0;
+      cursor: pointer;
+      bottom: -1px;
+      font-size: 12px;
+      opacity: 1;
+      position: relative;
+      width: 100%;
+      z-index: 0;
+    }
+  </style>
+
+
+
+
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Theme Information</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li>Theme Info</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" enctype="multipart/form-data" #addJobFrm = "ngForm" name="form" (ngSubmit)="addJobFrm.form.valid" novalidate>
+            <div class="form-header">
+              <h5>Theme Color</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row" style="margin-bottom: 10px;">
+                <div class="col-md-3" *ngFor="let color of colors">
+                  <label class="theme">
+                    <input type="radio" value="{{ color.color }}" name="themeColor" [(ngModel)]="themeData.themeColor" #themeColor="ngModel" id="color">
+                    <span class="checkmark p-10" [ngStyle]="{'background-color': color.color}" style="color: #fff; width: 180px;">{{ color.color }}</span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <button class="btn btn-primary mlr-5" (click)="addColor()" id="submit">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+             <!-- Select Logo -->
+             <div class="element-content">
+              <div class="job-box">
+                  <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <form class="search-form">
+                            <div class="form-header">
+                                <h5>Logo</h5>
+                            </div>
+                            <div class="padding-20">
+                              <div class="row">
+
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                      <div class="col-md-12">
+                                        <label class="col-form-label">Logo</label>
+                                        <div class="">
+                                          <img src="{{file1_input}}" alt="company logo" style="width: 60%;"> 
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+          
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                      <div class="col-md-12">
+                                        <label class="col-form-label">Select Logo</label>
+                                        <div class="">
+                                          <input type="file" ng2FileSelect [uploader]="uploader" name="photo" accept="image/png, image/jpeg, image/jpg" class="form-control mb-10" id="selectlogo" (change)="getFiles($event)" [disabled]="fileName"  [(ngModel)]="companyData.logo">
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" style="margin-bottom: 40px">
+                          
+                                    <label class="col-form-label">Upload Status</label>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 25%">Name</th>
+                                            <th style="width: 50%">Progress</th>
+                                            <th style="width: 5%">Status</th>
+                                            <th style="width: 20%">Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr *ngFor="let item of uploader.queue">
+                                            <td><strong>{{ item?.file?.name }}</strong></td>
+                                            <td>
+                                              <div class="progress">
+                                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                              </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                                                <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                                                <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                                            </td>
+                                            <td>
+                                              <button type="button" class="btn btn-success btn-xs"
+                                                      (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess" id="uploadbtn1">
+                                                  <span class="glyphicon glyphicon-upload"></span> Upload
+                                              </button>
+                                              <button type="button" class="btn btn-danger btn-xs" id="remove document" (click)="[item.remove(),fileName=false, companyData.logo='']">
+                                                <span class="glyphicon glyphicon-trash"></span> Cancel
+                                              </button>
+                                            </td>
+                                                                                                                  
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+  <div class="popupbox text-center">
+    <p class="bg-success">Logo uploaded successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-primary" (click)="closemodal()"><em class="fa fa-close"></em> &nbsp;Close
+     </a>&nbsp;&nbsp;
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                </div>
+                              </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+              </div>
+            </div>
+                            <!-- Select favIcon -->
+            <div class="element-content">
+                <div class="job-box">
+                    <div class="row">
+                      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                          <form class="search-form">
+                              <div class="form-header">
+                                  <h5>Favicon</h5>
+                              </div>
+                              <div class="padding-20">
+                                <div class="row">
+
+                                  <div class="col-md-3">            
+                                      <div class="form-group row">
+                                        <div class="col-md-12">
+                                          <label class="col-form-label">Favicon</label>
+                                          <div class="">
+                                            <img src="{{file2_input}}" alt="company favicon" style="width: 60%;">
+                                          </div>
+                                        </div>
+                                      </div>
+                                  </div>
+            
+                                  <div class="col-md-3">            
+                                      <div class="form-group row">
+                                        <div class="col-md-12">
+                                          <label class="col-form-label">Select Favicon</label>
+                                          <div class="">
+                                            <input type="file" ng2FileSelect [uploader]="uploader1" name="favicon" accept="image/png, image/jpeg, image/jpg"  class="form-control mb-10" id="selectfavicon">
+                                          </div>
+                                        </div>
+                                      </div>
+                                  </div>
+                            
+                                  <div class="col-md-6" style="margin-bottom: 40px">
+                            
+                                      <label class="col-form-label">Upload Status</label>
+                                      <table class="table">
+                                          <thead>
+                                          <tr>
+                                              <th style="width: 25%">Name</th>
+                                              <th style="width: 50%">Progress</th>
+                                              <th style="width: 5%">Status</th>
+                                              <th style="width: 20%">Actions</th>
+                                          </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let item of uploader1.queue">
+                                              <td><strong>{{ item?.file?.name }}</strong></td>
+                                              <td>
+                                                <div class="progress">
+                                                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader1.progress + '%' }"></div>
+                                                </div>
+                                              </td>
+                                              <td class="text-center">
+                                                  <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                                                  <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                                                  <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                                              </td>
+                                              <td>
+                                                <button type="button" class="btn btn-success btn-xs"
+                                                        (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess" id="uploadbtn">
+                                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                                </button>
+                                              </td>
+                                                                                                                                                               
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+  <div class="popupbox text-center">
+    <p class="bg-success">Fav icon updated successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-primary" (click)="close()"><em class="fa fa-close"></em> &nbsp;Close
+     </a>&nbsp;&nbsp;
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+ 
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                  </div>
+                                </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+                </div>
+              </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+    <table class="table table-bordered">
+      <tr *ngIf="this.message" >
+        <td class="success text-center">
+          <h5>{{message}}</h5>
+        </td>
+      </tr>
+      <tr *ngIf="this.errorStatus">
+        <td class="danger text-center">
+          <h5>{{errorStatus}}</h5>
+        </td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <a class="btn btn-primary" (click)="close()"><em class="fa fa-close"></em> &nbsp;Close
+     </a>&nbsp;&nbsp;
+    </div>
+  </div>
+</div>
+
+ 
+

@@ -1,0 +1,132 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Work Shifts <a class="btn btn-primary" routerLink="/work-shifts/add-work-shifts" *ngIf="userPermissions.createWorkShifts" id="addworkshifts">+ Add</a></h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Work Shifts</li>
+        </ul>
+      </div>  
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+              <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="10">
+                <thead class="form-header">
+                  <tr>
+                    <th style="width: 4%; text-align: center;"></th>
+                    <th style="width: 4%; text-align: center;"></th>
+                    <th>Shift Name</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Hours Per Day</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="!filterData">
+                  <tr>
+                    <td colspan="7">
+                      No Records Found
+                    </td>                    
+                  </tr>
+                </tbody>
+                <tbody *ngIf="filterData">
+                    <tr>
+                      <td colspan="2"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'name')" class="search-filter form-control" id="searchname"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'starttime')" class="search-filter form-control" id="searchstarttime"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'endtime')" class="search-filter form-control" id="searchendtime"></td>
+                      <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'hours')" class="search-filter form-control" id="searchhours"></td>
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                    <tr *ngFor = "let shift of mf.data, index as i">
+                      <td style="text-align: center;" id="menutab">{{i+1}}</td>
+                      <td style="text-align: center;">
+                        <div class="activity-main-menu">
+                          <ul class="menu-items">
+                            <li class="activity-sub-menu">
+                              <a>
+                                <div class="icon-w">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </div>
+                              </a>
+                              <div class="sub-menu-list">
+                                <div class="sub-menu-i">
+                                  <ul class="sub-menu" *ngIf="userPermissions.updateWorkShifts || userPermissions.readWorkShifts">
+                                    <li>
+                                      <a class="mlr-5" id="showUserDetails" (click)="showUserDetails(shift.id)" title="View details"><button type="button" class="tabledit-delete-button btn btn-primary"><em class="fa fa-eye"></em></button></a>
+                                    </li>
+                                    <li>
+                                      <a class="mlr-5" id="editUserDetails" [routerLink]="['/work-shifts/edit-work-shifts', shift.id]" title="Edit details">
+                                        <button type="button" class="tabledit-edit-button btn btn-danger">
+                                          <em class="fa fa-pencil-square-o" aria-hidden="true"></em>
+                                        </button>
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                      <td><a id="popupshowUserDetails" (click)="showUserDetails(shift.id)">{{ shift.name | uppercase }}</a></td>
+                      <td>{{ shift.start_time }}</td>
+                      <td>{{ shift.end_time }}</td>
+                      <td>{{ shift.hours_per_day }}</td>
+                    </tr>
+                  </ng-container>
+                  <ng-template #noData> 
+                    <tr>
+                      <td colspan="7" class="text-danger" style="text-align: center;">
+                        No Records Found 
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="6"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,35]"></mfBootstrapPaginator></td>
+                  </tr>
+                </tfoot>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+    <button class="close" type="button" id="close" (click)="closePopup()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <div class="show_user_details" *ngIf="isShowDetails">
+      <table class="table table-bordered">
+        <tr><td colspan="2"><strong>Name:</strong> &nbsp;<span>{{singleShift.name}}</span></td></tr>
+        <tr><td colspan="2"><strong>Start Time:</strong> &nbsp;<span>{{ singleShift.start_time }}</span></td></tr>
+        <tr><td colspan="2"><strong>End Time:</strong> &nbsp;<span>{{ singleShift.end_time }}</span></td></tr>
+        <tr><td colspan="2"><strong>Total Duration:</strong> &nbsp;<span>{{ singleShift.hours_per_day }}</span></td></tr>
+        <tr>
+          <td><strong>Assigned Users:</strong></td>
+          <td>
+            <tr *ngFor="let user of singleShift.users">
+              <td>
+                <em class="fa fa-circle" style="font-size: 9px;"></em> {{ user.firstName | titlecase }} {{ user.lastName | titlecase }}
+              </td>
+            </tr>
+          </td>
+        </tr>
+      </table>
+    </div><!--show_user_details-->
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->

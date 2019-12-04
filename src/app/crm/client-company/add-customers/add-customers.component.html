@@ -1,0 +1,600 @@
+<style>
+  input[type="file"] {
+    display: block;
+    right: 0;
+    cursor: pointer;
+    bottom: -1px;
+    font-size: 12px;
+    opacity: 1;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+  }
+</style>
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Add Client Company</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/customers'>Client Companies</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Add Client Company</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addComFrm="ngForm" name="form" (ngSubmit)="addComFrm.form.valid" novalidate>
+            <div class="form-header">
+              <h5>Client Essentials</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Client Company <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" placeholder="Enter Company Name" name="companyName"
+                      [pattern]="companyNamePattern" id="companyName" [(ngModel)]="cusData.companyName"
+                      #companyName="ngModel" [ngClass]="{ 'is-invalid': addComFrm.submitted && companyName.invalid }"
+                      required appTitleCase>
+                    <div *ngIf="companyName.touched && companyName.invalid" class="invalid-feedback">
+                      <div *ngIf="companyName.touched && companyName.errors.required">Company Name is required</div>
+                    </div>
+                    <div *ngIf="companyName.errors?.pattern" class="invalid-feedback">
+                      Please enter valid Company Name
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Industry</label>
+                  <div class="col-sm-6">
+                    <select class="form-control mb-10" name="industryType" [(ngModel)]="cusData.industryType"
+                      id="industryType" #industryType="ngModel">
+                      <option value="" disabled selected>Choose an industry</option>
+                      <option *ngFor="let industry of industries" value="{{ industry.id }}">{{industry.name |titlecase}}
+                      </option>
+                    </select>
+                  </div>
+                  <a type="button" id="addcompany" class="btn  text-left" (click)="addcomp()">+ Add </a>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Primary Phone </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" placeholder="+XXX-XXXXXXXXXX"
+                      pattern="([+]?\d{1,3}[-])?\d{10}" name="primaryPhone" [(ngModel)]="cusData.primaryPhone"
+                      id="primaryPhone" #primaryPhone="ngModel"
+                      [ngClass]="{ 'is-invalid': addComFrm.submitted && primaryPhone.invalid }">
+
+                    <div *ngIf="primaryPhone.errors?.pattern" class="invalid-feedback">
+                      Mobile number not valid.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Country <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="countryId" #countryid [(ngModel)]="cusData.countryId"
+                      #countryId="ngModel" (change)="change(countryid.value)" id="selectcountry"
+                      [ngClass]="{ 'is-invalid': addComFrm.submitted && countryId.invalid }" required>
+                      <option value="" disabled selected>Choose a country</option>
+                      <option *ngFor="let country of countries" value="{{country.id}}">{{country.name }}</option>
+                    </select>
+                    <div *ngIf="countryId.touched && countryId.invalid" class="invalid-feedback">
+                      <div *ngIf="countryId.errors.required">Select any one country</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Email <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="email" class="form-control mb-10" placeholder="Enter email"
+                      pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" id="emailId" name="emailId"
+                      [(ngModel)]="cusData.emailId" #emailId="ngModel"
+                      [ngClass]="{ 'is-invalid': addComFrm.submitted && emailId.invalid }" required>
+                    <div *ngIf="emailId.touched && emailId.invalid" class="invalid-feedback">
+                      <div *ngIf="emailId.errors.required">Primary Email is required</div>
+                    </div>
+                    <div *ngIf="emailId.errors?.pattern" class="invalid-feedback">
+                      Email Address is not valid.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Account Owner</label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="owner" [(ngModel)]="cusData.owner" #owner="ngModel"
+                      id="owner">
+                      <option value="" disabled selected>Select an employee</option>
+                      <option *ngFor="let user of users" value="{{user.id}}">{{user.first_name |titlecase}}
+                        {{user.last_name |titlecase}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- added code in ngb-tabset tag - sharmistha - 08-13-2019 -->
+            <ngb-tabset type="pills" [destroyOnHide]="false">
+              <ngb-tab title="Details">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">DUNS#</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="XXXXXXXXX" [pattern]="dunNoPattern"
+                            name="dunNo" [(ngModel)]="cusData.dunNo" #dunNo="ngModel" id="dunNo"
+                            [ngClass]="{ 'is-invalid': addComFrm.submitted && dunNo.invalid }">
+                          <div *ngIf="dunNo.errors?.pattern" class="invalid-feedback">
+                            DUNS number not valid. Please enter valid 9 digit code.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">FIN#</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="XXXXXXXXX" [pattern]="finNoPattern"
+                            name="finNo" [(ngModel)]="cusData.finNo" #finNo="ngModel" id="finNo"
+                            [ngClass]="{ 'is-invalid': addComFrm.submitted && finNo.invalid }">
+                          <div *ngIf="finNo.errors?.pattern" class="invalid-feedback">
+                            FIN number not valid. Please enter valid 9 digit code.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Billing Contact Name</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="Enter Billing Contact Name"
+                            id="billingContact" name="billingContact" [(ngModel)]="cusData.billingContact"
+                            #billingContact="ngModel" pattern="^([a-zA-Z]+\s)*[a-zA-Z0-9]+$">
+                          <div *ngIf="billingContact.errors?.pattern" class="invalid-feedback">
+                            Please enter valid Name
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Phone Number</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="+XXX-XXXXXXXXXX" name="phoneNumber"
+                            pattern="([+]?\d{1,3}[-])?\d{10}" [(ngModel)]="cusData.phoneNumber" id="phoneNumber"
+                            #phoneNumber="ngModel">
+                          <div *ngIf="phoneNumber.errors?.pattern" class="invalid-feedback">
+                            Mobile number not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Status</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" name="status" [(ngModel)]="cusData.status"
+                            #status="ngModel" id="status">
+                            <option value="" disabled selected>Select Status</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control" rows="4" id="comment" name="description"
+                            [(ngModel)]="cusData.description" #description="ngModel"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Address">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address Line 1</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="Enter Address" name="addressLine1"
+                            id="addressLine1" [(ngModel)]="cusData.address.addressLine1" #addressLine1="ngModel"
+                            [pattern]="addressPattern">
+                          <div *ngIf="addressLine1.errors?.pattern" class="invalid-feedback">
+                            Enter a valid address
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address Line 2</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="Enter Address" name="addressLine2"
+                            [(ngModel)]="cusData.address.addressLine2" #addressLine2="ngModel" id="addressLine2"
+                            [pattern]="addressPattern">
+                          <div *ngIf="addressLine2.errors?.pattern" class="invalid-feedback">
+                            Enter a valid address
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">State</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" #stateId (change)="state(stateId.value)" name="stateId"
+                            id="selectstate" [(ngModel)]="cusData.address.stateId" #stateId="ngModel">
+                            <option *ngFor="let state of states" value="{{state.id}}">{{state.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">City</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" name="cityId" [(ngModel)]="cusData.address.cityId"
+                            id="selectcityId" #cityId="ngModel">
+                            <option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Zip Code</label>
+                        <div class="col-sm-8">
+                          <input type="number" class="form-control mb-10" placeholder="Enter Zip Code" name="zipCode"
+                            id="zipCode" [(ngModel)]="cusData.address.zipCode" #zipCode="ngModel" (blur)="getAddress()">
+                          <p *ngIf="zipError" style="color:red;font-weight:bold;">{{zipError}}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Secondary Phone</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="+XXX-XXXXXXXXXX"
+                            name="secondaryPhone" pattern="([+]?\d{1,3}[-])?\d{10}"
+                            [(ngModel)]="cusData.address.secondaryPhone" id="secondaryPhone" #secondaryPhone="ngModel">
+                          <div *ngIf="secondaryPhone.errors?.pattern" class="invalid-feedback">
+                            Mobile number not valid.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Website</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="Eg:http//www.tedpro.com/"
+                            id="webSite" name="webSite" [(ngModel)]="cusData.address.webSite" #webSite="ngModel"
+                            pattern="^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}">
+                          <div *ngIf="webSite.errors?.pattern" class="invalid-feedback">
+                            Website is not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Specialization">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Partners/certification</label>
+                        <div class="col-sm-8">
+                          <textarea class="form-control mb-10" rows="3" id="certification" name="certification"
+                            [(ngModel)]="cusData.specialisation.certification" #certification="ngModel"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Awards</label>
+                        <div class="col-sm-8">
+                          <textarea class="form-control mb-10" rows="3" id="awards" name="awards"
+                            [(ngModel)]="cusData.specialisation.awards" #awards="ngModel"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Company Rating</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" name="rating" [(ngModel)]="cusData.specialisation.rating"
+                            id="rating" #rating="ngModel">
+                            <option value="0">Select Company Rating</option>
+                            <option value="5">5 Star</option>
+                            <option value="4">4 Star</option>
+                            <option value="3">3 Star</option>
+                            <option value="2">2 Star</option>
+                            <option value="1">1 Star</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Specialization</label>
+                        <div class="col-sm-8">
+                          <textarea class="form-control mb-10" rows="3" id="specialisation" name="specialisation"
+                            [(ngModel)]="cusData.specialisation.specialisation" #specialisation="ngModel"></textarea>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Social">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Twitter</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" placeholder="Eg: www.twitter.com/Tedpros"
+                            id="twitter" name="twitter" [(ngModel)]="cusData.social.twitter" #twitter="ngModel"
+                            [pattern]="twitterPattern">
+                          <div *ngIf="twitter.errors?.pattern" class="invalid-feedback">
+                            Twitter url is not valid.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">LinkedIn</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" placeholder="Eg: www.linkedin.com/Tedpros"
+                            id="linkedin" name="linkedin" [(ngModel)]="cusData.social.linkedin" #linkedin="ngModel"
+                            [pattern]="linkedInPattern">
+                          <div *ngIf="linkedin.errors?.pattern" class="invalid-feedback">
+                            LinkedIn url is not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Facebook</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" placeholder="Eg: www.facebook.com/Tedpros"
+                            id="facebook" name="facebook" [(ngModel)]="cusData.social.facebook" #facebook="ngModel"
+                            [pattern]="facebookPattern">
+                          <div *ngIf="facebook.errors?.pattern" class="invalid-feedback">
+                            Facebook url is not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Logo">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="row">
+
+                      <div class="col-md-3">
+                        <div class="form-group row">
+                          <div class="col-md-12">
+                            <label class="col-form-label">Select Logo</label>
+                            <div class="">
+                              <input type="file" ng2FileSelect [uploader]="uploader" name="photo"
+                                accept="image/png, image/jpeg, image/jpg" class="form-control mb-10" id="selectlogo">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                      <div class="col-md-9" style="margin-bottom: 40px">
+
+                        <h5><strong>Upload queue</strong></h5>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th style="width: 20%">Name</th>
+                              <th style="width: 40%">Progress</th>
+                              <th style="width: 5%">Status</th>
+                              <th style="width: 35%">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of uploader.queue">
+                              <td><strong>{{ item?.file?.name }}</strong></td>
+                              <td>
+                                <div class="progress">
+                                  <div class="progress-bar" role="progressbar"
+                                    [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <span *ngIf="item.isSuccess || uploaded"><em class="glyphicon glyphicon-ok"></em></span>
+                                <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                                <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                              </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-xs" (click)="item.upload()"
+                                  [disabled]="item.isReady || item.isUploading || item.isSuccess" id="uploadbtn1">
+                                  <span class="glyphicon glyphicon-upload"></span> Upload
+                                </button>
+                              </td>
+
+                              <!-- on successfull insertion-->
+                              <div class="popupbox_wrap" *ngIf="item.isSuccess">
+                                <div class="popupbox text-center">
+                                  <p class="bg-success">Logo uploaded successfully!</p>
+                                  <div class="row text-center">
+                                    <a class="btn btn-primary" (click)="close()"><em class="fa fa-close"></em>
+                                      &nbsp;Close
+                                    </a>&nbsp;&nbsp;
+                                  </div>
+                                  <!--row-->
+                                </div>
+                                <!--popupbox-->
+                              </div>
+                              <!--popupbox_wrap-->
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+
+            <div class="form-header">
+              <h5>Delivery Personals</h5>
+            </div>
+            <form #addUser="ngForm" name="form" (ngSubmit)="addUser.form.valid" novalidate>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-5">
+                    <label class="col-sm-4 col-form-label">Employee Name</label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" #userId name="userId" id="slectuserId"
+                        [(ngModel)]="cusData.deliveryPersonal.userId" #userId="ngModel"
+                        [ngClass]="{ 'is-invalid': addUser.submitted && userId.invalid }" required>
+                        <option [ngValue]="" disabled selected>Choose an Employee</option>
+                        <option *ngFor="let user of users" value="{{user.id}}">{{user.first_name |titlecase}}
+                          {{user.last_name |titlecase}}
+                        </option>
+                      </select>
+                      <div *ngIf="userId.touched && userId.invalid" class="invalid-feedback">
+                        <div *ngIf="userId.errors.required">Select any user</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <label class="col-sm-4 col-form-label">Description</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" #description name="description"
+                        [(ngModel)]="cusData.deliveryPersonal.description" #description="ngModel" id="personaldesc"
+                        [ngClass]="{ 'is-invalid': addUser.submitted && description.invalid }" required>
+                      <div *ngIf="description.touched && description.invalid" class="invalid-feedback">
+                        <div *ngIf="description.errors.required">Write a description</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="col-sm-12">
+                      <button type="button" class="btn btn-success mlr-5" id="clickadd"
+                        (click)="addContact(addUser,userId.value,'null',description.value)">Add</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="this.addContactError">
+                  <div class="col-sm-10 alert alert-danger">
+                    <p style="color:red;font-weight:bold;">{{ this.addContactError |titlecase}}</p>
+                  </div>
+
+                </div>
+              </div>
+            </form>
+            <!-- {{contacts|json}} -->
+            <div class="table-responsive col-md-8 col-md-offset-2">
+              <table class="table table-bordered">
+                <thead class="form-header">
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Description</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let contact of contacts" style="margin-bottom: 10px;">
+                    <td>{{contact.name|titlecase }}</td>
+                    <td>{{contact.description|titlecase}}</td>
+                    <td><button id="clickremove" (click)="removeContact(contact)">Delete</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="padding-20">
+              <div class="row">
+                <div class="col-sm-10">
+                  <button type="button" class="btn btn-success mlr-5" [disabled]="!addComFrm.valid"
+                    (click)="addCom(addComFrm)" id="submit">Submit</button>
+                  <button (click)="formReset(addComFrm)" class="btn btn-info mlr-5" id="reset">Reset</button>
+                  <button (click)="cancel()" class="btn btn-danger mlr-5" id="cancel">Cancel</button>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.message">
+    <button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <table class="table table-bordered">
+      <tr>
+        <td class="sucess text-center">
+          <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+        </td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <button class="btn btn-primary" id="closepop" (click)="closePopup()"><i class="fa fa-user-plus"
+          aria-hidden="true"></i> Add
+        another Client</button>&nbsp;&nbsp;
+      <a class="btn btn-success" id="clickcustomers" routerLink="/customers"><i class="fa fa-users"
+          aria-hidden="true"></i> View all Clients</a>
+    </div>
+  </div>
+  <div class="popupbox" *ngIf="this.error">
+    <button class="close" type="button" id="close" (click)="closePopup()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <br>
+    <div class="danger text-center">
+      <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+    </div>
+  </div>
+</div>
+<!-- saikumar 21/08/2019 started here added the popup -->
+<div class="popupbox_wrap" *ngIf="companypopup">
+  <div class="popupbox">
+    <button class="close" type="button" id="closebtn" (click)="closecompPopup()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <form class="search-form" #addindFrm="ngForm" name="form" (ngSubmit)="addindFrm.form.valid" novalidate>
+      <div class="padding-20">
+        <table class="table">
+          <tr>
+            <td>
+              <label class="col-sm-5 col-form-label">Industry <span class="req-field">*</span></label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control mb-10" placeholder="Enter Industry Name" name="industryType"
+                  [(ngModel)]="industriesData.industryType"
+                  [ngClass]="{ 'is-invalid': addindFrm.submitted && industryType.invalid }" #industryType="ngModel"
+                  required [pattern]="companyNamePattern" id="popupcompany">
+                <div *ngIf="industryType.touched && industryType.invalid" class="invalid-feedback">
+
+                  <div *ngIf="industryType.touched && industryType.errors.required">Industry Name is required</div>
+                </div>
+                <div *ngIf="industryType.errors?.pattern" class="invalid-feedback">
+                  Please enter valid Industry Name
+                </div>
+              </div>
+            </td>
+          </tr>
+          <div class="row text-center">
+            <button type="button" class="btn btn-success" id="addpopup"
+              (click)="addindustry(industryType.value,addindFrm)" [disabled]="!addindFrm.valid"> Submit</button>
+          </div>
+        </table>
+      </div>
+      <p *ngIf="contactError" style="color:red;font-weight:bold">{{ contactError }}</p>
+    </form>
+  </div>
+</div>
+<!-- end company popup -->
+
+<!-- saikumar 21/08/2019 ended here -->

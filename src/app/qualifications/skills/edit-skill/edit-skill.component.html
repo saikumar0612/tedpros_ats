@@ -1,0 +1,92 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Edit Skills</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink="/skills">Skills</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Edit Skills</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #editSkillFrm = "ngForm" name="form" (ngSubmit)="editSkillFrm.form.valid" novalidate>
+            <div class="form-header">
+              <h5>Edit Skills</h5>
+            </div>
+            <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Name <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <!-- pattern change for skills name - sharmistha - 08-30-2019 - start -->
+                        <input type="text" class="form-control mb-10" placeholder="Enter Name" value="{{ skillInfo.name }}" name="qalName" [(ngModel)]="skillInfo.name" #qalName="ngModel" [ngClass]="{ 'is-invalid': editSkillFrm.submitted && qalName.invalid }" required  pattern="^(?!.*[+]{3})(?!.*[#]{2})(?!.*[.,*/&]{2})([a-zA-Z0-9.#*&/+,]+[\s,&_\-])*[a-zA-Z0-9.#*&_/+,]+$" id="qalName">
+                      <!-- pattern change for skills name - sharmistha - 08-30-2019 - end-->
+                        <div *ngIf="qalName.touched && qalName.invalid" class="invalid-feedback">
+                          <div *ngIf="qalName.touched && qalName.errors.required">Name is required</div>
+                        </div>
+                        <div *ngIf="qalName.errors?.pattern" class="invalid-feedback">
+                          Enter a valid Skill Name
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Description <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                        <input type="textarea" class="form-control mb-10" placeholder="Description" value="{{ skillInfo.description }}" name="qalDesc" [(ngModel)]="skillInfo.description" #qalDesc="ngModel" [ngClass]="{ 'is-invalid': editSkillFrm.submitted && qalDesc.invalid }" required id="qalDesc">
+                        <div *ngIf="qalDesc.touched && qalDesc.invalid" class="invalid-feedback">
+                          <div *ngIf="qalDesc.touched && qalDesc.errors.required">Description is required</div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <div class="col-sm-10">
+                      <button type="submit" class="btn btn-primary mlr-5" [disabled]="!editSkillFrm.valid" (click)="editSkill()" id="submit">Submit</button>
+                      
+                      <button (click)="cancel()" class="btn btn-danger mlr-5" id="cancel">Cancel</button>
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="closePopup" (click)="close()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">{{ skill.data }}</p>
+    <div class="row text-center">
+      <a class="btn btn-success ml-5" routerLink="/skills"><i class="fa fa-users" aria-hidden="true"></i> View all skills</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+  
+  
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+    <div class="row"><button class="close"  id="close" type="button" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">{{ skill.errorMessages }}</p>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->  

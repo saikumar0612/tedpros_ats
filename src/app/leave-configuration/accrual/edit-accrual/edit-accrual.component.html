@@ -1,0 +1,211 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Edit Accruals</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink="/accrual/accruals">Accruals</a></li>
+          <i>&nbsp;/&nbsp;</i>
+          <li>Edit Accruals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="job-box">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        <form class="search-form" #editLeaveFrm="ngForm" name="form" (ngSubmit)="editLeaveFrm.form.valid" novalidate>
+          <div class="form-header">
+            <h5>Edit Leave Accrual</h5>
+          </div>
+          <div class="padding-20">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Employee Type <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" name="employeeType" [(ngModel)]="userData.employeeType.id"
+                    #employeeType="ngModel" required>
+                    <option value="" [selected]=true>Select a Employee Type</option>
+                    <option *ngFor="let role of roles" value="{{role.id}}">{{role.name}}</option>
+                  </select>
+                  <div *ngIf="employeeType.touched && employeeType.invalid" class="invalid-feedback">
+                    <div *ngIf="employeeType.errors.required">Employee Type is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Leave Type <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" name="leaveType" [(ngModel)]="userData.leaveType.id"
+                    #leaveType="ngModel" required>
+                    <!-- <option [ngValue]="undefined" disabled >Select a Job Title</option> -->
+                    <option value="" selected>Select Leave Type</option>
+                    <option *ngFor="let leave of data" value="{{leave.id}}">{{leave.name}}</option>
+                  </select>
+                  <div *ngIf="leaveType.touched && leaveType.invalid" class="invalid-feedback">
+                    <div *ngIf="leaveType.errors.required">Leave Type is required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Accrual frequency <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" name="frequency" [(ngModel)]="userData.accrualFrequency.id"
+                    #frequency="ngModel" required>
+                    <!-- <option [ngValue]="undefined" disabled >Select a Job Title</option> -->
+                    <option value="" selected>Select Frequency</option>
+                    <!-- <option *ngFor="let branch of branches" value="{{branch.name}}">{{branch.name}}</option> -->
+                    <option value="1">Annually</option>
+                  </select>
+                  <div *ngIf="frequency.touched && frequency.invalid" class="invalid-feedback">
+                    <div *ngIf="frequency.errors.required">Accrual frequency is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Accrual Interval <span class="req-field">*</span></label>
+                <div class="col-sm-6">
+                  <select class="form-control mb-10" name="interval" [(ngModel)]="userData.accrualInterval"
+                    #interval="ngModel" required>
+                    <!-- <option [ngValue]="undefined" disabled >Select a Job Title</option> -->
+                    <option value="" selected>Select Interval</option>
+                    <!-- <option *ngFor="let branch of branches" value="{{branch.name}}">{{branch.name}}</option> -->
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                  <div *ngIf="interval.touched && interval.invalid" class="invalid-feedback">
+                    <div *ngIf="interval.errors.required">Accrual interval is required</div>
+                  </div>
+                </div>
+                <div class="col-sm-2">Years</div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Day of crediting <span class="req-field">*</span></label>
+                <div class="col-sm-4">
+                  <select class="form-control mb-10" name="creditingMonth" [(ngModel)]="userData.creditingMonth"
+                    #creditingMonth="ngModel" required>
+                    <!-- <option [ngValue]="undefined" disabled >Select a Job Title</option> -->
+                    <option value="" selected>Select Month</option>
+                    <!-- <option *ngFor="let branch of branches" value="{{branch.name}}">{{branch.name}}</option> -->
+                    <option *ngFor="let month of monthName " value="{{month}}">{{month}}</option>
+                  </select>
+                  <div *ngIf="creditingMonth.touched && creditingMonth.invalid" class="invalid-feedback">
+                    <div *ngIf="creditingMonth.errors.required">Month is required</div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <select class="form-control mb-10" name="creditingDay" [(ngModel)]="userData.creditingDay"
+                    #creditingDay="ngModel" required>
+                    <!-- <option [ngValue]="undefined" disabled >Select a Job Title</option> -->
+                    <option value="" selected>Select Day</option>
+                    <!-- <option *ngFor="let branch of branches" value="{{branch.name}}">{{branch.name}}</option> -->
+                    <option *ngFor="let day of days " value="{{day}}">{{day}}</option>
+                  </select>
+                  <div *ngIf="creditingDay.touched && creditingDay.invalid" class="invalid-feedback">
+                    <div *ngIf="creditingDay.errors.required">Day is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Accrual Valid From <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" name="validFrom" [(ngModel)]="userData.validFrom.id"
+                    #validFrom="ngModel" required>
+                    <!-- <option [ngValue]="undefined" disabled >Select a Job Title</option> -->
+                    <option value="" selected>Select From Validity</option>
+                    <!-- <option *ngFor="let branch of branches" value="{{branch.name}}">{{branch.name}}</option> -->
+                    <option value="1">Date of Accrual</option>
+                    <option value="2">Date of Joining</option>
+                  </select>
+                  <div *ngIf="validFrom.touched && validFrom.invalid" class="invalid-feedback">
+                    <div *ngIf="validFrom.errors.required">Accrual Validity is required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">First accrual of new Employee <span
+                    class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" name="firstAccrual" [(ngModel)]="userData.firstAccrual.id"
+                    #firstAccrual="ngModel" required>
+                    <!-- <option [ngValue]="undefined" disabled >Select a Job Title</option> -->
+                    <option value="" selected>Select</option>
+                    <!-- <option *ngFor="let branch of branches" value="{{branch.name}}">{{branch.name}}</option> -->
+                    <option value="1">Always Accrue Full Amount</option>
+                  </select>
+                  <div *ngIf="firstAccrual.touched && firstAccrual.invalid" class="invalid-feedback">
+                    <div *ngIf="firstAccrual.errors.required">First accrual of new Employee is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Location</label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="location" name="location" [(ngModel)]="userData.location.id"
+                    #location="ngModel">
+                    <option value="" selected>Select Location</option>
+                    <option *ngFor="let branch of branches" value="{{branch.id}}">{{branch.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="padding-20">
+            <div class="row">
+              <div class="col-sm-10">
+                <button type="button" class="btn btn-success mlr-5" [disabled]="!editLeaveFrm.valid"
+                  (click)="editAccrual(editLeaveFrm)" id="submit">Submit</button>
+                <!-- <button type="reset" class="btn btn-info mlr-5" id="reset">Reset</button> -->
+                <button (click)="cancel()" class="btn btn-danger mlr-5" id="cancel">Cancel</button>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" (click)="close()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-success">{{ leaveData.data }}</p>
+    <div class="row text-center">
+      <a class="btn btn-success ml-5" routerLink="/accrual/accruals"><i class="fa fa-users" aria-hidden="true"></i>
+        View all
+        Accruals</a>
+      <!-- <a class="btn btn-success" (click)="close()"><i class="fa fa-users" aria-hidden="true"></i> Close</a> -->
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" (click)="closePopup()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-danger">{{ leaveData.errorMessages }}</p>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->

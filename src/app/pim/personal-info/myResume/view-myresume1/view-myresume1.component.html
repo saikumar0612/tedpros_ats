@@ -1,0 +1,203 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-4 col-lg-4 heading">
+        <h4>Preview &mdash;<input class="btn btn-primary" type="button" id="captureScreen" value="Download" (click)="captureScreen()" /> </h4>
+      </div>
+      <div class="col-md-1 col-lg-1 ">
+          <strong> Previews </strong>
+      </div>
+
+      <div class="col-md-2 col-lg-2 " >
+        <select class="form-control" id="selectInfemation" #info (change)="onNavigate(info.value)" >
+          <option value="/myInfo/view-myresume" >Preview -1</option>
+          <option value="/myInfo/view-myresume-1" selected>Preview -2</option>
+          <option value="/myInfo/view-myresume-2">Preview -3</option>
+            
+        </select>
+      </div>
+      <div class="col-md-4 col-lg-4 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/myInfo'>MyInfo</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/myInfo/my-resume'>My-Resume</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Preview</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <div id="contentToConvert">
+              <div id="doc2" class="yui-t7">
+                <div id="inner">
+
+                  <div id="hd">
+                    <div class="yui-gc" *ngIf="informationData">
+                      <div class="yui-u first" id="header">
+                        <div class="topheader">
+                          <p class="title" id="name">{{informationData.firstName }}
+                              {{informationData.lastName }}</p>
+                          <span class="contentData" id="email"><em class="fa fa-envelope" aria-hidden="true"></em> {{  informationData.email  }}</span><br/>
+                          <span class="contentData" id="contact"><em class="fa fa-phone" aria-hidden="true"></em> {{  informationData.contact  }}</span><br>
+                          <span *ngIf="informationData.linkedin" class="contentData"><em class="fa fa-linkedin-square" ></em> {{informationData.linkedin}}</span>
+                        </div>
+                      </div>
+
+                      <div class="yui-u">
+                        <div class="contact-info">
+                          <div class="profile-picture" style="border:none">
+                            <img alt="profile picture" class="img-thumbnail" src="assets/images/avatar.png" *ngIf="informationData.profilePic == ''" style="width: 61%; margin: auto;display: block;border: 1px solid #000">
+
+                            <img class="img-thumbnail" src="{{informationData.profilePic}}" *ngIf="informationData.profilePic != ''" style="width: 61%; margin: auto;display: block;border: 1px solid #000" alt="profile picture">
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                    <!--// .yui-gc -->
+                  </div>
+                  <!--// hd -->
+
+                  <div id="bd">
+                    <div id="yui-main">
+                      <div class="yui-b">
+                        <div class="yui-gf" *ngIf="informationData.summary">
+                          <div class="yui-u first">
+                            <p class="title">Profile</p>
+                          </div>
+                          <div class="yui-u">
+                            <span class="enlarge contentData">
+                              {{ informationData.summary }}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div class="yui-gf" *ngIf="skillsData">
+                          <div class="yui-u first">
+                            <p class="title">Skills</p>
+                          </div>
+                          <div class="yui-u" *ngFor="let skill of skillsData">
+                            <ul class="talent">
+                              <span class="contentData">{{ skill.name | uppercase }},</span>
+                            </ul>
+
+                          </div>
+                        </div>                      
+                        <div class="yui-gf" *ngIf="experienceData">
+                          <div class="yui-u first">
+                            <p class="title">Experience</p>
+                          </div>
+                          <!--// .yui-u -->
+                          <div class="yui-u" *ngFor="let experience of experienceData">
+                            <div class="job">
+                              <p class="subTitle">{{experience.pastCompany }}</p>
+                              <p class="contentData">{{experience.pastJobTitle }}</p>
+                              <span class="contentData">{{experience.fromDate }} - {{experience.toDate }}</span>
+                              <span class="contentData">{{experience.comment }}</span>
+                            </div>
+                          </div>
+                          <!--// .yui-u -->
+                        </div>
+                        <!--// .yui-gf -->
+
+                        <div class="yui-gf" *ngIf="educationData">
+                          <div class="yui-u first">
+                            <p class="title">Education</p>
+                          </div>
+                          <div class="yui-u" *ngFor="let education of educationData">
+                            <div class="job">
+                              <h2  class="contentData">{{education.institute | uppercase }}</h2>
+                              <h3  class="contentData">
+                                {{ education.educationname | uppercase  }},{{education.gpaScore | uppercase }}
+                              </h3>
+                              <h4  class="contentData">{{education.year | uppercase }}</h4>
+                            </div>
+                          </div>
+                        </div>
+                        <!--// .yui-gf-->
+                        <div class="yui-gf" *ngIf="licenseData">
+                          <div class="yui-u first">
+                            <p class="title">Licenses/Certification</p>
+                          </div>
+                          <!--// .yui-u -->
+                          <div class="yui-u" *ngFor="let licenseinfo of licenseData">
+                            <div class="job">
+                                <p class="subTitle" >{{ licenseinfo.name | uppercase }}, <span>{{ licenseinfo.type }}</span></p>
+                                <span class="contentData">{{licenseinfo.issued | date: 'MM-dd-yyyy' }} -
+                                  {{licenseinfo.expiry | date: 'MM-dd-yyyy' }}</span><br/>
+                                <span  class="contentData">{{ licenseinfo.type }} No. - {{licenseinfo.number}} </span>
+                            </div>
+                          </div>
+                          <!--// .yui-u -->
+                        </div>
+                        <!--// .yui-gf -->
+
+                        <div class="yui-gf" *ngIf="contactData">
+                          <div class="yui-u first">
+                            <p class="title">Contact Details</p>
+                          </div>
+                          <div class="yui-u">
+                            <ul class="talent">
+                              <li  class="contentData">
+                                {{ contactData.addressLine1 }},
+                                {{ contactData.addressLine2 }},
+                                {{ contactData.street }},
+                                {{ contactData.city.name }},
+                                {{ contactData.state.name }},
+                                {{ contactData.country.name }},
+                                {{ contactData.zip }}
+
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <!--// .yui-gf-->
+
+
+                        <div>
+                          <canvas baseChart [chartType]="'pie'" [datasets]="pieChartData" [labels]="pieChartLabels"
+                            [options]="pieChartOptions" [legend]="true" [colors]="pieChartColor"
+                            (chartClick)="onChartClick($event)">
+                          </canvas>
+                        </div>
+
+                      </div>
+                      <!--// .yui-b -->
+                    </div>
+                    <!--// yui-main -->
+                  </div>
+                  <!--// bd -->
+
+                  <div id="ft" *ngIf="informationData">
+                    <p><span id="name">{{informationData.firstName }}
+                        {{informationData.lastName }}</span>&mdash;
+                      <a href="mailto:{{ informationData.email }}" target="_blank"><span
+                          id="email">{{  informationData.email  }}</span></a> &mdash;
+                      <span id="contact">{{ informationData.contact }}</span>
+
+                    </p>
+                  </div>
+                  <!--// footer -->
+                </div><!-- // inner -->
+              </div>
+              <!--// doc -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button class="btn btn-info mlr-5" id="cancel" routerLink="/myInfo/my-resume">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

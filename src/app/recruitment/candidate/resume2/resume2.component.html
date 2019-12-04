@@ -1,0 +1,277 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-4 col-lg-4 heading">
+        <h4>Preview <input class="btn btn-primary" id="saveResume" type="button" value="Download" (click)="captureScreen()" /> </h4>
+      </div>
+      <div class="col-md-1 col-lg-1 heading">
+          <strong> Previews </strong>
+      </div>
+      <div class="col-md-2 col-lg-2 heading" >
+          <select class="form-control" id="selectInfemation" #info (change)="onNavigate(info.value)" >
+            <option value="/candidate/preview/{{id}}">Preview -1</option>
+            <option value="/candidate/preview-1/{{id}}">Preview -2</option>
+            <option value="/candidate/preview-2/{{id}}" selected>Preview -3</option>
+              
+          </select>
+      </div>
+      <div class="col-md-4 col-lg-4 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/candidate'>Candidates</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Candidates Resume</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row" id="contentToConvert">
+
+
+        <!-- Start Sidebar -->
+        <aside class="col l4 m12 s12 sidebar z-depth-1" id="sidebar">
+          <div class="feature-img text-center" >
+            <a href="index.html">
+              <img alt="" class="img-thumbnail" src="assets/images/avatar.png" *ngIf="candidateInfo.image == ''" class="responsive-img">
+
+              <img src="{{candidateInfo.image}}" class="img-thumbnail" alt="profile pic" *ngIf="candidateInfo.image != ''" class="responsive-img ">
+            </a>
+          </div>
+          <!--  Sidebar row -->
+          <div class="row">
+            <!-- sidebar info -->
+            <div class="col l12 m12 s12 sort-info sidebar-item">
+              <div class="row">
+                <div class="col m12 s12 l3 icon">
+                  <em class="fa fa-user"></em>
+                </div>
+                <div class="col m12 s12 l9 info wow fadeIn a1" data-wow-delay="0.1s">
+                  <div class="section-item-details">
+                    <p class="title">{{ candidateInfo.firstName }} {{ candidateInfo.lastName }}</p>
+                    <p class="subTitle small">{{this.jobTitle}}</p>
+                    <!-- <p>{{ candidateInfo.summary }}</p> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- MOBILE NUMBER -->
+            <div class="col l12 m12 s12  mobile sidebar-item">
+              <div class="row">
+                <div class="col m12 s12 l3 icon">
+                  <em class="fa fa-phone"></em> <!-- icon -->
+                </div>
+                <div class="col m12 s12 l9 info wow fadeIn a2" data-wow-delay="0.2s">
+                  <div class="section-item-details">
+                    <div class="personal">
+                      <span class="subTitle">{{ candidateInfo.phoneNo }}</span> <!-- Number -->
+                      <!-- <span>work mobile</span> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--  EMAIL -->
+            <div class="col l12 m12 s12  email sidebar-item ">
+              <div class="row">
+                <div class="col m12 s12 l3 icon">
+                  <em class="fa fa-envelope"></em> <!-- icon -->
+                </div>
+                <div class="col m12 s12 l9 info wow fadeIn a3" data-wow-delay="0.3s">
+                  <div class="section-item-details">
+                    <div class="personal">
+                        <span class="subTitle">{{candidateInfo.emailId }}</span> <!-- Email -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- linkedin -->
+            <div class="col l12 m12 s12  email sidebar-item ">
+              <div class="row">
+                <div class="col m12 s12 l3 icon">
+                  <i class="fa fa-linkedin-square" aria-hidden="true"></i> <!-- icon -->
+                </div>
+                <div class="col m12 s12 l9 info wow fadeIn a3" data-wow-delay="0.3s">
+                  <div class="section-item-details">
+                    <div class="personal">
+                        <span class="subTitle">{{candidateInfo.linkedin}}</span> <!-- Email -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ADDRESS  -->
+            <div class="col l12 m12 s12  address sidebar-item ">
+              <div class="row">
+                <div class="col l3 m12  s12 icon">
+                  <em class="fa fa-home"></em> <!-- icon -->
+                </div>
+                <div class="col m12 s12 l9 info wow fadeIn a4" data-wow-delay="0.4s">
+                  <div class="section-item-details">
+                    <div class="address-details">
+                      <!-- address  -->
+                      <span class="subTitle">{{candidateInfo.addressLine1}}, {{candidateInfo.addressLine2}}<br>
+                        {{candidateInfo.city.name}}, {{candidateInfo.state.name}}, {{candidateInfo.country.name}}.<br>
+                        <span>{{candidateInfo.zipCode}}</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- SKILLS -->
+            <div class="col l12 m12 s12  skills sidebar-item">
+              <div class="row">
+                <div class="col m12 l3 s12 icon">
+                  <em class="fa fa-calendar-o"></em> <!-- icon -->
+                </div>
+                <!-- Skills -->
+                <div class="col m12 l9 s12 skill-line a5 wow fadeIn" data-wow-delay="0.5s">
+                    <span class="subTitle">Professional Skills </span>
+
+                  <p class="skill" *ngFor="let skills of skillsData">{{ skills.skillName | uppercase }}</p>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end row -->
+        </aside><!-- end sidebar -->
+
+        <!-- =========================================
+                Work experiences
+            ==========================================-->
+
+        <section class="col s12 m12 l8 section">
+          <div class="row">
+
+              <div class="section-wrapper z-depth-1">
+                <div class="section-icon col s12 m12 l2">
+                  <em class="fa fa-user"></em>
+                </div>
+                <div class="custom-content col s12 m12 l10 wow fadeIn a1" data-wow-delay="0.1s">
+                  <p class="title">Profile</p>
+  
+                  <div class="custom-content-wrapper wow fadeIn a2" data-wow-delay="0.2s">
+                  <p class="contentData">  {{ this.candidateInfo.summary }}</p>
+                  </div>
+                </div>
+              </div>
+
+
+            <div class="section-wrapper z-depth-1" *ngIf="experienceData">
+              <div class="section-icon col s12 m12 l2">
+                <em class="fa fa-suitcase"></em>
+              </div>
+              <div class="custom-content col s12 m12 l10 wow fadeIn a1" data-wow-delay="0.1s" >
+                <p class="title" >Work Experience</p>
+
+                <div class="custom-content-wrapper wow fadeIn a2" data-wow-delay="0.2s"
+                  *ngFor="let experience of experienceData">
+                  <p class="subTitle">{{ experience.jobTitle }} <span>@{{ experience.employer }}</span></p>
+                  <span class="contentData">{{ experience.startDate | date: 'MM-dd-yyyy' }} - {{ experience.endDate | date: 'MM-dd-yyyy' }}
+                  </span>
+                  <div>
+                      <span class="contentData" >{{ experience.supervisorName }}</span>
+                  </div>
+                  <div>
+                      <span class="contentData" >{{ experience.supervisorPhone }}</span>
+                  </div>
+                  <div>
+                      <span class="contentData">{{ experience.description }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ========================================
+                      Education 
+                    ==========================================-->
+
+            <div class="section-wrapper z-depth-1">
+              <div class="section-icon col s12 m12 l2">
+                <em class="fa fa-graduation-cap"></em>
+              </div>
+              <div class="custom-content col s12 m12 l10 wow fadeIn a1" data-wow-delay="0.1s">
+                <p class="title">Education </p>
+
+                <div class="custom-content-wrapper wow fadeIn a2" data-wow-delay="0.2s"
+                  *ngFor="let education of educationData">
+                  <p class="subTitle">{{ education.qualification | uppercase }} <span>@{{ education.instituteName | uppercase }}</span>
+                  </p>
+                  <span class="contentData">{{ education.specialization | uppercase }}, {{ education.passingYear | uppercase }} </span>
+                </div>
+              </div>
+            </div>
+            <!-- =======================================
+                      portfolio Website Other Information
+                    ==========================================-->
+            <div class="section-wrapper z-depth-1">
+                <div class="section-icon col s12 m12 l2">
+                  <em class="fa fa-money"></em>
+                </div>
+                <div class="custom-content col s12 m12 l10 wow fadeIn a1" data-wow-delay="0.1s">
+                  <p class="title">Other Information </p>
+  
+                  <div class="custom-content-wrapper wow fadeIn a2" data-wow-delay="0.2s">
+                    <span class="contentData">Expected Salary: $ {{ this.candidateInfo.expectedPay }} / {{this.candidateInfo.per.pay_frequency}}</span>
+                  </div>
+                </div>
+              </div>
+            <div class="section-wrapper z-depth-1">
+              <div class="section-icon col s12 m12 l2">
+                <em class="fa fa-pie-chart"></em>
+              </div>
+              <div class="custom-content col s12 m12 l10 wow fadeIn a1" >
+                <p class="title">Pie Chart Showing Your Skills </p>
+              
+                <div  class="custom-content-wrapper wow fadeIn a2" data-wow-delay="0.2s">
+                    <div class="col-md-1">
+
+                      </div>
+                      <div class="col-md-10">
+                        <div>
+                          <canvas
+                              baseChart
+                              [chartType]="'pie'"
+                              [datasets]="pieChartData"
+                              [labels]="pieChartLabels"
+                              [options]="pieChartOptions"
+                              [legend]="true"
+                              [colors]="pieChartColor"
+                              (chartClick)="onChartClick($event)">
+                          </canvas>
+                        </div>
+                      </div>
+                      <div class="col-md-1">
+      
+                      </div>
+                </div>
+              </div>
+              <!-- </div> -->
+            </div>
+            
+          </div><!-- end row -->
+        </section><!-- end section -->
+      </div>
+
+
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button class="btn btn-info mlr-5" id="closeResume" (click)="cancel()">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.error">
+    <br>
+    <div class="danger text-center">
+      <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+    </div>
+    <div class="row text-center">
+      <button class="btn btn-primary" id="closepopup" (click)="closePopup()" >Back</button>   
+    </div>
+  </div>
+</div>

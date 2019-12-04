@@ -1,0 +1,144 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Leave Accrual Rules <a class="btn btn-primary" id="add" routerLink="/accrual/add-accrual">+ Add</a></h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Leave Accrual Rules</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Employee Type</th>
+                  <th>Leave Type</th>
+                  <th>Location</th>
+                  <th>Accrual Frequency</th>
+                  <th>Accrual Interval</th>
+                  <th>Credit Date</th>
+                  <th>Valid From</th>
+                  <th>New Employee Accrual</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th>
+                    <input type="text" placeholder="Search Employee Name" id="searchName"
+                      (keyup)="search($event.target.value,'employeeType')" class="search-filter form-control">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Leave Type" id="searchleaveType"
+                      (keyup)="search($event.target.value,'leave_type')" class="search-filter form-control">
+                  </th>
+                  <th><input type="text" placeholder="Search Branch" id="searchlocation"
+                      (keyup)="search($event.target.value,'location')" class="search-filter form-control"></th>
+                  <th>
+                    <input type="text" placeholder="Search Frequency" id="searchFrequency"
+                      (keyup)="search($event.target.value,'frequency')" class="search-filter form-control">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Accrual Interval" id="searchInterval"
+                      (keyup)="search($event.target.value,'accrualInterval')" class="search-filter form-control">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Credit Date" id="searchCredit"
+                      (keyup)="search($event.target.value,'creditDate')" class="search-filter form-control">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Valid From" id="searchValid"
+                      (keyup)="search($event.target.value,'validFrom')" class="search-filter form-control">
+                  </th>
+                  <th>
+                    <!-- <input type="text" placeholder="Search Frequency" id="searchlocation"
+                      (keyup)="search($event.target.value,'frequency')" class="search-filter form-control"> -->
+                  </th>
+                </tr>
+                <ng-container *ngIf="availableRecords; else noData">
+                  <tr *ngFor="let leave of mf.data;  let i = index">
+                    <td style="text-align: center;">
+                      <p>{{ i+1 }}</p>
+                    </td>
+
+                    <td style="text-align: center;" id="mainMenu">
+                      <div class="activity-main-menu">
+                        <ul class="menu-items">
+                          <li class="activity-sub-menu">
+                            <a>
+                              <div class="icon-w">
+                                <i class="fa fa-bars" aria-hidden="true"></i>
+                              </div>
+                            </a>
+                            <div class="sub-menu-list">
+                              <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                  <li>
+                                    <a class="mlr-5" id="edit" [routerLink]="['/accrual/edit-accrual',leave.id]">
+                                      <button type="button" class="tabledit-edit-button btn btn-danger">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a class="mlr-5" id="edit" [routerLink]="['/accrual/view-accrual',leave.id]">
+                                      <button type="button" class="tabledit-delete-button btn btn-success">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td>{{leave.employeeType.name}}</td>
+                    <td>{{leave.leaveType.name}}</td>
+                    <td>{{leave.location.name}}</td>
+                    <td>{{leave.accrualFrequency.value}}</td>
+                    <td>{{leave.accrualInterval}}</td>
+                    <td>{{leave.creditDate}}</td>
+                    <td>{{leave.validFrom.value}}</td>
+                    <td>{{leave.firstAccrual.value}}</td>
+                  </tr>
+                </ng-container>
+                <ng-template #noData>
+                  <tr>
+                    <td colspan="12" class="text-danger" style="text-align: center;">
+                      No Records Found
+                    </td>
+                  </tr>
+                </ng-template>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="12">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10]"></mfBootstrapPaginator>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

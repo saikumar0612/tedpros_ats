@@ -1,0 +1,210 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>My Info</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/myInfo'>My Info</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+            <a routerLink="/myInfo/personalInfo" id="personalDetails">
+              <div class="square-tile text-center" style="background-color: #f66d1c;">
+                <img src="assets/images/personal_details.png" alt="personal_details.png">
+                <p>Personal <br>Details</p>
+                <div class="tick">
+                  <img src="assets/images/tick-mark.png" alt="tick-mark.png" *ngIf="personalInfo">
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+            <a routerLink="/myInfo/contactInfo" id="contactDetails">
+              <div class="square-tile text-center" style="background-color: #c23291;">
+                <img src="assets/images/contact_details.png" alt="contact_details.png">
+                <p>Contact <br>Details</p>
+                <div class="tick">
+                  <img src="assets/images/tick-mark.png" *ngIf="contactInfo" alt="tick-mark.png">
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+            <a routerLink="/myInfo/dependentInfo" id="dependentsDetails">
+              <div class="square-tile text-center" style="background-color: #4b3a96;">
+                <img src="assets/images/emergency_contacts.png" alt="emergency_contacts.png">
+                <p>Dependents <br>Details</p>
+                <div class="tick">
+                  <img src="assets/images/tick-mark.png" *ngIf="dependentInfo" alt="tick-mark.png">
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+            <a routerLink="/myInfo/qualifications" id="qualificationsDetails">
+              <div class="square-tile text-center" style="background-color: #73c354;">
+                <img src="assets/images/qualification.png" alt="qualification.png">
+                <p>My <br>Qualifications</p>
+                <div class="tick">
+                  <img src="assets/images/tick-mark.png" alt="tick-mark.png"
+                    *ngIf="educationInfo && skillInfo && languageInfo">
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+            <a routerLink="/myInfo/salaryInfo" id="salaryInfoDetails">
+              <div class="square-tile text-center" style="background-color: #23bca7;">
+                <img src="assets/images/salary_details.png" alt="salary_details.png">
+                <p>Salary <br>Details</p>
+                <div class="tick">
+                  <img src="assets/images/tick-mark.png" *ngIf="professionalInfo" alt="tick-mark.png">
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+            <a routerLink="/myInfo/documentInfo" id="documentInfoDetails">
+              <div class="square-tile text-center" style="background-color: #ffa314;">
+                <img src="assets/images/mydocuments.png" alt="mydocuments.png">
+                <p>My <br>Documents</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6" *ngIf="dependentInfo && professionalInfo && educationInfo && skillInfo && languageInfo && contactInfo && personalInfo">
+            <a routerLink="/myInfo/my-resume" id="myResumeDetails"> 
+              <div class="square-tile text-center" style="background-color: #14beff;">
+                <img src="assets/images/resume.png" alt="resume.png">
+                <p>My <br>Details</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+            <a routerLink="/myInfo/offerletterInfo" id="myResumeDetails"> 
+              <div class="square-tile text-center" style="background-color: #5b8899;">
+                <img src="assets/images/offer-letter.png" alt="resume.png">
+                <p>My <br>Offer Letter</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6" *ngIf="resumeInfo">
+            <div class="square-tile text-center" style="background-color: #d0033b;">
+              <img src="assets/images/resume.png" alt="resume.png">
+              <p>My <br>Resume</p>
+              <div class="twin-buttons">
+                <div class="col-md-6">
+                  <div class="button">
+                    <a id="Delete" (click)="deleteResume()" style=" color:#fff; cursor: pointer;">
+                      <em class="fa fa-trash-o"></em>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="button">
+                    <a href="{{resumeUrl}}{{resumeInfo.document}}" id="resume" target="_blank" id="myResume" style=" color: #fff;">
+                      <em class="fa fa-eye"></em>
+                    </a>
+                  </div>
+                </div>
+              </div>                
+            </div>
+          </div>
+        </div>
+  
+        <div class="row" *ngIf="!userFlag">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <a routerLink='/dashboard' id="skip" class="btn btn-info">Skip</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <div class="job-box">
+        
+        <div class="form-group row mlr-0">
+          <!-- <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12" *ngIf="resumeInfo">
+            <div>
+              <p><strong><a href="{{resumeUrl}}{{resumeInfo.document}}" id="resume" target="_blank">{{resumeInfo.document}}</a></strong></p>
+            </div>
+          </div>
+          <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" *ngIf="resumeInfo">
+            <a class="mlr-5 pull-right" href="{{resumeUrl}}{{resumeInfo.document}}" download="{{resumeUrl}}{{resumeInfo.document}}" id="Download" target="blank">
+              <em class="fa fa-download" aria-hidden="true" style="font-size: 16px;;"></em>
+            </a>
+            <a class="mlr-5 pull-right" id="Delete" (click)="deleteResume()">
+              <em class="fa fa-trash-o" aria-hidden="true" style="font-size: 16px;;"></em>
+            </a>
+          </div>          -->
+          <div class="dashed-form col-md-12 col-lg-12 text-center pt-20 pb-20 pl-0 pr-0">
+            <div class="row mlr-0 text-center">
+              <div class="resume-pin">
+                <em class="fa fa-paperclip"></em>
+              </div>
+            </div>
+            <button [disabled]="fileName" class="text-lg non-button" id="Upload Resume" (click)="document.click()"><span class="blue-text">Browse files</span> to upload your resume</button>
+            <p *ngIf="fileName">{{ files[0].name }}</p>
+            <input type="file" id="document" ng2FileSelect [uploader]="uploader" name="document" accept="application/pdf,application/docx" class="form-control mb-10" #document (change)="getFiles($event)" style="display: none;">
+            <div style="color: #848484; font-size: 11px;;">Supported Formats: doc, docx, rtf, pdf, upto 2 MB</div>
+
+            <div class="col-md-12" *ngIf="fileName" class="plr-0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width:70%">Progress</th>
+                    <th style="width:5%">Status</th>
+                    <th style="width:25%">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of uploader.queue">
+                    <td>
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                          [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-success btn-xs" id="uploadDocument" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                        <span class="glyphicon glyphicon-upload"></span>
+                      </button>
+                      <button type="button" class="btn btn-danger btn-xs" id="remove document" (click)="[item.remove(),fileName=false]">
+                        <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+                    </td>
+
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+  <div class="popupbox">
+    <p class="bg-success">Resume uploaded successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-primary" id="userViews" (click)="[item.isSuccess = false, getResume(), fileName=false, uploader.queue = []]"><em class="fa fa-arrow-right" aria-hidden="true"></em> Close</a>
+    </div>
+  <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap--> 
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>  
+</div>

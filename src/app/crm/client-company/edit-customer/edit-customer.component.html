@@ -1,0 +1,680 @@
+<style>
+  input[type="file"] {
+    display: block;
+    right: 0;
+    cursor: pointer;
+    bottom: -1px;
+    font-size: 12px;
+    opacity: 1;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+  }
+</style>
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Edit Client Company</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/customers'>Client Companies</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Edit Client Company</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- {{this.cusInfo|json}} -->
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addComFrm="ngForm" (keydown.enter)="$event.preventDefault()">
+            <div class="form-header">
+              <h5>Essentials</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Client Company<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" value="{{ cusInfo.companyName }}" name="companyName"
+                      id="companyName" [(ngModel)]="cusInfo.companyName" #companyName="ngModel" readonly>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Industry:</label>
+                  <div class="col-sm-6">
+                    <select class="form-control mb-10" name="industryType" value="{{ cusInfo.industry.id }}"
+                      [(ngModel)]="cusInfo.industryType" #industryType="ngModel" id="selectindustryType">
+                      <option *ngFor="let industry of industries" value="{{ industry.id }}">{{ industry.name }}</option>
+                    </select>
+                  </div>
+                  <!-- saikumar 22/08/2019 started here -->
+                  <a type="button" id="addcompany" class="btn  text-left" (click)="addcomp()">+ Add </a>
+
+                  <!-- saikumar 22/08/2019 ended here -->
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Primary Phone<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" placeholder="Enter Primary Phone"
+                      value="{{ cusInfo.primaryPhone }}" name="primaryPhone" [(ngModel)]="cusInfo.primaryPhone"
+                      id="primaryPhone" #primaryPhone="ngModel" readonly>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Country<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="countryId" #countryid [(ngModel)]="cusInfo.country.id"
+                      id="selectcountryId" #countryId="ngModel" (change)="change(countryid.value)">
+                      <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Email<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <input type="email" class="form-control mb-10" placeholder="Enter email"
+                      value="{{ cusInfo.emailId }}" name="emailId" [(ngModel)]="cusInfo.emailId" #emailId="ngModel"
+                      id="emailId" readonly>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Account Owner:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="owner" value="{{ cusInfo.owner.id }}"
+                      [(ngModel)]="cusInfo.owner" #owner="ngModel" id="owner">
+                      <option *ngFor="let user of users" value="{{user.id}}">{{user.first_name}} {{user.last_name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- added code in ngb-tabset tag - sharmistha - 08-13-2019 -->
+            <ngb-tabset type="pills" [destroyOnHide]="false">
+              <ngb-tab title="Details">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">FIN#:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="XXXXXXXXX"
+                            value="{{ cusInfo.finNo }}" name="finNo" [(ngModel)]="cusInfo.finNo" #finNo="ngModel"
+                            id="finNo" [pattern]="finNoPattern">
+
+                          <div *ngIf="finNo.errors?.pattern" class="invalid-feedback">
+                            FIN number not valid. Please enter valid 9 digit code.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">DUNS#:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="XXXXXXXXX"
+                            value="{{ cusInfo.dunNo }}" name="dunNo" [(ngModel)]="cusInfo.dunNo" #dunNo="ngModel"
+                            id="dunNo" [pattern]="dunNoPattern">
+
+                          <div *ngIf="dunNo.errors?.pattern" class="invalid-feedback">
+                            DUNS number not valid. Please enter valid 9 digit code.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Billing Contact Name:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="Enter Billing Contact Name"
+                            id="billingContact" value="{{ cusInfo.billingContact }}" name="billingContact"
+                            [(ngModel)]="cusInfo.billingContact" #billingContact="ngModel"
+                            pattern="^([a-zA-Z]+\s)*[a-zA-Z0-9]+$">
+                          <div *ngIf="billingContact.errors?.pattern" class="invalid-feedback">
+                            Please enter valid Name
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Phone Number:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="+XXX-XXXXXXXXXX"
+                            value="{{ cusInfo.phoneNumber }}" name="phoneNumber" [(ngModel)]="cusInfo.phoneNumber"
+                            id="phoneNumber" pattern="([+]?\d{1,3}[-])?\d{10}" #phoneNumber="ngModel">
+
+
+                          <div *ngIf="phoneNumber.errors?.pattern" class="invalid-feedback">
+                            Mobile number not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Status:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" value="{{ cusInfo.status }}" name="status"
+                            [(ngModel)]="cusInfo.status" #status="ngModel" id="sealectstatus">
+                            <option value="" disabled selected>Select Status</option>
+                            <option value="1">Active</option>
+                            <option value="2">Inactive</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label class="col-sm-2 col-form-label">Description:</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control" rows="4" id="comment" name="description"
+                            value="{{ cusInfo.description }}" [(ngModel)]="cusInfo.description"
+                            #description="ngModel"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Address">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address Line 1:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="Enter Address"
+                            value="{{ cusInfo.address.addressLine1 }}" name="addressLine1"
+                            [(ngModel)]="cusInfo.address.addressLine1" #addressLine1="ngModel"
+                            [pattern]="addressPattern">
+                          <div *ngIf="addressLine1.errors?.pattern" class="invalid-feedback">
+                            Enter a valid address
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address Line 2:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="Enter Address"
+                            value="{{ cusInfo.address.addressLine2 }}" name="addressLine2"
+                            [(ngModel)]="cusInfo.address.addressLine2" #addressLine2="ngModel"
+                            [pattern]="addressPattern">
+                          <div *ngIf="addressLine2.errors?.pattern" class="invalid-feedback">
+                            Enter a valid address
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">State:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" #stateId (change)="state(stateId.value)"
+                            value="{{ cusInfo.address.stateId }}" name="stateId" [(ngModel)]="cusInfo.address.stateId"
+                            #stateId="ngModel">
+                            <option *ngFor="let state of states" value="{{state.id}}">{{state.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">City:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" value="{{ cusInfo.address.cityId }}" name="cityId"
+                            [(ngModel)]="cusInfo.address.cityId" #cityId="ngModel">
+                            <option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Zip Code:</label>
+                        <div class="col-sm-8">
+                          <input type="number" class="form-control mb-10" placeholder="Enter Zip Code"
+                            value="{{ cusInfo.address.zipCode }}" (blur)="getAddress()" name="zipCode"
+                            [(ngModel)]="cusInfo.address.zipCode" #zipCode="ngModel">
+                          <p *ngIf="zipError" style="color:red;font-weight:bold;">{{zipError}}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Secondary Phone:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="+XXX-XXXXXXXXXX"
+                            value="{{ cusInfo.address.secondaryPhone }}" name="secondaryPhone"
+                            [(ngModel)]="cusInfo.address.secondaryPhone" #secondaryPhone="ngModel"
+                            pattern="([+]?\d{1,3}[-])?\d{10}">
+                          <div *ngIf="secondaryPhone.errors?.pattern" class="invalid-feedback">
+                            Mobile number not valid.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Website:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" placeholder="Eg:http//www.tedpro.com/"
+                            value="{{ cusInfo.address.webSite }}" name="webSite" [(ngModel)]="cusInfo.address.webSite"
+                            #webSite="ngModel"
+                            pattern="^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}">
+                          <div *ngIf="webSite.errors?.pattern" class="invalid-feedback">
+                            Website is not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Specialization">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Partners/certification:</label>
+                        <div class="col-sm-8">
+                          <textarea class="form-control mb-10" rows="3" id="certification"
+                            value="{{ cusInfo.specialisation.certification }}" name="certification"
+                            [(ngModel)]="cusInfo.specialisation.certification" #certification="ngModel"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Awards:</label>
+                        <div class="col-sm-8">
+                          <textarea class="form-control mb-10" rows="3" id="awards"
+                            value="{{ cusInfo.specialisation.awards }}" name="awards"
+                            [(ngModel)]="cusInfo.specialisation.awards" #awards="ngModel"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Company Rating:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" value="{{ cusInfo.specialisation.rating }}" name="rating"
+                            id="rating" [(ngModel)]="cusInfo.specialisation.rating" #rating="ngModel">
+                            <option value="0">Select Company Rating</option>
+                            <option value="5">5 Star</option>
+                            <option value="4">4 Star</option>
+                            <option value="3">3 Star</option>
+                            <option value="2">2 Star</option>
+                            <option value="1">1 Star</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Specialization:</label>
+                        <div class="col-sm-8">
+                          <textarea class="form-control mb-10" rows="3" id="specialisation"
+                            value="{{ cusInfo.specialisation.specialisation }}" name="specialisation"
+                            [(ngModel)]="cusInfo.specialisation.specialisation" #specialisation="ngModel"></textarea>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Social">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Twitter:</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" placeholder="Eg: www.twitter.com/Tedpros"
+                            id="twitter" value="{{ cusInfo.social.twitter }}" name="twitter"
+                            [(ngModel)]="cusInfo.social.twitter" #twitter="ngModel" [pattern]="twitterPattern">
+                          <div *ngIf="twitter.errors?.pattern" class="invalid-feedback">
+                            Twitter url is not valid.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">LinkedIn</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" placeholder="Eg: www.linkedin.com/Tedpros"
+                            id="linkedin" value="{{ cusInfo.social.linkedin }}" name="linkedin"
+                            [(ngModel)]="cusInfo.social.linkedin" #linkedin="ngModel" [pattern]="linkedInPattern">
+                          <div *ngIf="linkedin.errors?.pattern" class="invalid-feedback">
+                            LinkedIn url is not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Facebook</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" placeholder="Eg: www.facebook.com/Tedpros"
+                            id="facebook" value="{{ cusInfo.social.facebook }}" name="facebook"
+                            [(ngModel)]="cusInfo.social.facebook" #facebook="ngModel" [pattern]="facebookPattern">
+                          <div *ngIf="facebook.errors?.pattern" class="invalid-feedback">
+                            Facebook url is not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Logo">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="row">
+
+                      <div class="col-md-3">
+                        <div class="form-group row">
+                          <div class="col-md-12">
+                            <label class="col-form-label">Select Logo</label>
+                            <div class="">
+                              <input type="file" ng2FileSelect [uploader]="uploader" name="photo"
+                                accept="image/png, image/jpeg, image/jpg" class="form-control mb-10" id="selectlogo">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                      <div class="col-md-6" style="margin-bottom: 40px">
+
+                        <h5><strong>Upload queue</strong></h5>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th style="width: 20%">Name</th>
+                              <th style="width: 40%">Progress</th>
+                              <th style="width: 5%">Status</th>
+                              <th style="width: 35%">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of uploader.queue">
+                              <td><strong>{{ item?.file?.name }}</strong></td>
+                              <td>
+                                <div class="progress">
+                                  <div class="progress-bar" role="progressbar"
+                                    [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <span *ngIf="item.isSuccess || uploaded"><em class="glyphicon glyphicon-ok"></em></span>
+                                <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                                <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                              </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-xs" (click)="item.upload()"
+                                  [disabled]="item.isReady || item.isUploading || item.isSuccess" id="uploadbtn1">
+                                  <span class="glyphicon glyphicon-upload"></span> Upload
+                                </button>
+                              </td>
+
+                              <!-- on successfull insertion-->
+                              <div class="popupbox_wrap" *ngIf="item.isSuccess">
+                                <div class="popupbox text-center">
+                                  <p class="bg-success">Logo uploaded successfully!</p>
+                                  <div class="row text-center">
+                                    <a class="btn btn-primary" (click)="close()"><em class="fa fa-close"></em>
+                                      &nbsp;Close
+                                    </a>&nbsp;&nbsp;
+                                  </div>
+                                  <!--row-->
+                                </div>
+                                <!--popupbox-->
+                              </div>
+                              <!--popupbox_wrap-->
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div class="col-md-3">
+                        <span *ngIf="logo">
+                          <img src="{{logo}}" alt="{{cusInfo.companyName}}" style="max-width: 50px; height:auto">
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+
+            <div class="form-header">
+              <h5>Delivery Personals</h5>
+            </div>
+            <form #addUser="ngForm" name="addUser" (ngSubmit)="addUser.form.valid" novalidate>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <input type="hidden" value="" name="id">
+                  <div class="col-md-5">
+                    <label class="col-sm-4 col-form-label">Employee Name<span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+
+                      <select class="form-control mb-10" #userId name="userId" #name="ngModel"
+                        [(ngModel)]="contact.userId" [ngClass]="{ 'is-invalid': addUser.submitted && userId.invalid }"
+                        required id="selectuserId">
+                        <option [ngValue]="undefined" disabled selected>Choose an Employee</option>
+                        <option *ngFor="let user of users" value="{{user.id}}">{{user.first_name}} {{user.last_name}}
+                        </option>
+                      </select>
+                      <div *ngIf="userId.touched && userId.invalid" class="invalid-feedback">
+                        <div *ngIf="userId.touched && userId.errors.required">Name is required</div>
+                      </div>
+
+
+                      <div *ngIf="userId.touched && userId.invalid" class="invalid-feedback">
+                        <div *ngIf="userId.errors.required">Select any user</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <label class="col-sm-4 col-form-label">Description<span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" #description name="description"
+                        #description="ngModel" [(ngModel)]="contact.description" id="contactdescription"
+                        [ngClass]="{ 'is-invalid': addUser.submitted && description.invalid }" required>
+                      <div *ngIf="description.touched && description.invalid" class="invalid-feedback">
+                        <div *ngIf="description.errors.required">Write a description</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="col-sm-12">
+                      <button type="button" id="clickadd" class="btn btn-success mlr-5" [disabled]="!addUser.valid"
+                        (click)="addContact(addUser,userId.value,'null',description.value,1)">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="form-group row" *ngIf="error">
+              <div class="col-sm-12" style="color:red;font-weight:bold;text-align:center">
+                {{ error }}
+              </div>
+            </div>
+            <div class="table-responsive col-md-10 col-md-offset-1">
+              <table class="table table-bordered">
+                <thead class="form-header">
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let contact of contacts;let i=index" style="margin-bottom: 10px;">
+                    <ng-container *ngIf="i==display; then b2 else b1"></ng-container>
+                    <ng-template #b1>
+                      <td>
+                        <p>{{ contact.name |titlecase }} <span class="invalid-feedback"
+                            *ngIf="contact.status == '2'">(marked for deletion)</span></p>
+                      </td>
+                      <td>
+                        <p>{{ contact.description|titlecase }}</p>
+                      </td>
+                      <td>
+                        <p *ngIf="contact.status == '1'">Active</p>
+                        <p *ngIf="contact.status == '0'">Inactive</p>
+                      </td>
+                    </ng-template>
+                    <ng-template #b2>
+                      <td>
+                        <select class="form-control mb-10" #editUser name="userId" [(ngModel)]="editcustomer.userId"
+                          id="selecteditcustomer" (change)="editsingleuser(editUser.value,i)" #userId="ngModel">
+                          <option [ngValue]="undefined" disabled selected>Choose an Employee</option>
+                          <option *ngFor="let user of users" value="{{user.id}}">{{user.first_name}} {{user.last_name}}
+                          </option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="text" class="form-control mb-10" #editdescription name="description"
+                          [(ngModel)]="editcustomer.description" (change)="editsingledesc (editdescription.value,i)"
+                          id="editdescription" #description="ngModel">
+                      </td>
+                      <td>
+                        <select class="form-control mb-10" #editStatus name="status" [(ngModel)]="editcustomer.status"
+                          #status="ngModel" (change)="editsinglestatus(editStatus.value,i)">
+                          <option value="" disabled selected>Select Status</option>
+                          <option value="1">Active</option>
+                          <option value="0">Inactive</option>
+                        </select>
+                      </td>
+                    </ng-template>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <a class="mlr-5" id="popupeditContact" (click)="editContact(contact)">
+                          <button type="button" class="tabledit-edit-button btn btn-primary">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>
+                        </a>
+                        <a class="mlr-5">
+                          <button id="popupupdateStatus" (click)="updateStatus('Update',contact)"
+                            class="tabledit-delete-button btn btn-danger">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </button>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="padding-20">
+              <div class="row">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-success mlr-5" id="clickeditCus"
+                    (click)="editCus()">Submit</button>
+                  <button (click)="cancel()" id="cancel" class="btn btn-danger mlr-5">Cancel</button>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.message">
+    <h5 class="sucess text-center" style="color:#4cae4c;font-weight:bold;text-transform: capitalize;">{{this.message}}
+    </h5>
+    <br>
+    <div class="row text-center">
+      <a class="btn btn-success" id="customerslink" routerLink="/customers"><i class="fa fa-users"
+          aria-hidden="true"></i> View all
+        Clients</a>&nbsp; &nbsp;
+      <button class="btn btn-success" type="button" id="closePop" (click)="closePopup()"><i class="fa fa-edit"
+          aria-hidden="true"></i>
+        Cont..</button>
+    </div>
+  </div>
+  <div class="popupbox" *ngIf="this.error">
+    <button class="close" type="button" id="close" (click)="closePopup()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <br>
+    <div class="danger text-center">
+      <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- added required field validation and design changes - sharmistha - 10-20-2019 - start -->
+<div class="popupbox_wrap" *ngIf="modelPopUp">
+  <div class="popupbox">
+    <button class="close" type="button" (click)="closeModal(deleteFrm);"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <form class="padding-20" #deleteFrm="ngForm">
+      <table class="table mb-0">
+        <tr>
+          <td>
+            <div class="form-check form-check-inline text-center">
+              <input class="form-check-input" type="radio" name="delete" value="0" style="margin-right: 10px;" id="delete" [(ngModel)]="statusData.delete" required>
+              <label class="form-check-label" for="inactive">Inactive</label>
+            </div>
+          </td>
+          <td>
+            <div class="form-check form-check-inline text-center">
+              <input class="form-check-input" type="radio" name="delete" value="2" style="margin-right: 10px;"
+                id="statusData" [(ngModel)]="statusData.delete" required>
+              <label class="form-check-label" for="delete">Force Delete</label>
+            </div>
+          </td>
+        </tr>
+        <br>
+        <tr>
+          <td colspan="2">
+            <button type="button" id="clicksubmit" [disabled]="!deleteFrm.form.valid" class="btn btn-success pull-right" (click)="assign();">Submit</button>
+          </td>
+        </tr>
+      </table>
+    </form> 
+  </div>
+</div>
+<!-- added required field validation and design changes - sharmistha - 10-20-2019 - end -->
+
+<!-- saikumar 22/08/2019 started here added the popup -->
+<div class="popupbox_wrap" *ngIf="companypopup">
+  <div class="popupbox">
+    <button class="close" type="button" id="closebtn" (click)="closecompPopup()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <form class="search-form" #addindFrm="ngForm" name="form" (ngSubmit)="addindFrm.form.valid" novalidate>
+      <div class="padding-20">
+        <table class="table">
+          <tr>
+            <td>
+              <label class="col-sm-5 col-form-label">Industry <span class="req-field">*</span></label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control mb-10" placeholder="Enter Industry Name" name="industryType"
+                  [(ngModel)]="industriesData.industryType"
+                  [ngClass]="{ 'is-invalid': addindFrm.submitted && industryType.invalid }" #industryType="ngModel"
+                  required pattern="^(?!.*[.&*]{2})([a-zA-Z0-9.,&*]+[\s])*[a-zA-Z0-9.,&*]+$" id="popupcompany">
+                <div *ngIf="industryType.touched && industryType.invalid" class="invalid-feedback">
+
+                  <div *ngIf="industryType.touched && industryType.errors.required">Industry Name is required</div>
+                </div>
+                <div *ngIf="industryType.errors?.pattern" class="invalid-feedback">
+                  Please enter valid Industry Name
+                </div>
+              </div>
+            </td>
+
+          </tr>
+          <div class="row text-center">
+            <button type="button" class="btn btn-success" id="addpopup"
+              (click)="addindustry(industryType.value,addindFrm)" [disabled]="!addindFrm.valid"> Submit</button>
+          </div>
+
+        </table>
+      </div>
+      <p *ngIf="contactError" style="color:red;font-weight:bold">{{ contactError }}</p>
+    </form>
+  </div>
+</div>
+<!-- end company popup -->
+
+<!-- saikumar 22/08/2019 ended here -->

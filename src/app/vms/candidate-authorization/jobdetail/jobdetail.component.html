@@ -1,0 +1,93 @@
+<div class="container">
+    <div >
+        <button class="btn btn-primary  pull-right" id="login"  style="margin-right: 10px" routerLink="/vms/candidate-login-register">Login / Register</button>
+    </div>
+    <main id="maincontent">
+        <section class="resume">
+            <div class="container">
+                <div class="row" >
+                    <div class="col-md-1">
+
+                    </div>
+                    <div class="col-md-10">
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <div >
+                                    <h4>{{details.internalCode}} - {{details.job.name | titlecase}} </h4>
+                                    <p >{{details.techJobTitle | titlecase}}</p>
+                                </div> 
+                                <div class="col-md-4 p-l">
+                                    <div class="packege">
+                                    <i class="fa fa-usd"></i>
+                                    {{details.externalBillRate}}
+                                </div> 
+                                </div>
+                                <div class="col-md-4 p-l">
+                                     <div class="packege">
+                                        <i class="fa fa-clock-o"></i>
+                                       {{diffDays}} Days Ago
+                                   </div>
+                                </div>
+                                <div class="col-md-4 p-l">
+                                    <div class="packege">
+                                        <i class="fa fa-suitcase" aria-hidden="true"></i> {{details.employmentType}}
+                                    </div> 
+                                </div>
+                              
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-8 p-l">
+                                    <div class="packege">
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        <span>{{details.country.name}}, {{details.state.name}}, {{details.city.name}}.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="page-heading"></div>
+                            <div class="packege">
+                                <span >Openings :</span> {{details.openings}}
+                            </div>
+                            <!-- <div class="page-heading">
+                                <h4>Internal Notes : </h4>
+                                <P >{{details.internalNotes}}</P>
+                                <br />
+                            </div> -->
+                            <div class="page_details">
+                                <h4>Job Description : </h4>
+                                <p [innerHTML]="details.description|safeHtml "></p>
+                            </div>
+                            <a  class="btn btn-default" (click)="loginPopup()">Apply For This Job</a>
+                            <a class="btn btn-danger pull-right" id="back" (click)="cancel()">Back</a>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+</div>
+<footer id="footer">
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 padding-left">
+                    <span>&#169; {{currentYear}} {{companyName}}. All rights reserved.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox" style="margin-left: 30%">
+        <p>Please Login for applying for jobs!</p>
+        <div class="row"> 
+        <span class="btn btn-primary " style="margin-left: 40%" id="nextPage" routerLink="/vms/candidate-login-register">Login</span>
+        </div>
+    </div>
+ </div>
+                

@@ -1,0 +1,1313 @@
+<style>
+  input[type="file"] {
+    display: block;
+    right: 0;
+    cursor: pointer;
+    bottom: -1px;
+    font-size: 12px;
+    opacity: 1;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+  }
+</style>
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Add-Candidate</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li><a routerLink='/candidate'>Candidates</a></li>
+          <li>/</li>
+          <li>Add Candidate</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aw-wizard >
+    <aw-wizard-step stepTitle="Personal Info" (ngSubmit)="addPersonalInfo.form.valid" >
+
+
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <form class="search-form">
+                <div class="form-header">
+                  <h5>Personal Info</h5>
+                </div>
+                <div class="padding-20">
+
+                  <form #addPersonalInfo="ngForm" name="form" (ngSubmit)="addPersonalInfo.form.valid" novalidate>
+
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">First Name<span class="req-field">*</span> :</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" id="addFirstName" name="firstName"
+                            [(ngModel)]="personalData.firstName" #firstName="ngModel" pattern="^([a-zA-Z])*$"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && firstName.invalid }" required>
+                          <div *ngIf="firstName.touched && firstName.invalid" class="invalid-feedback">
+                            <div *ngIf="firstName.errors.required">Enter First Name</div>
+                          </div>
+                          <div *ngIf="firstName.errors?.pattern" class="invalid-feedback">
+                            Enter valid First Name
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Last Name<span class="req-field">*</span> :</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" id="addLastName" name="lastName"
+                            [(ngModel)]="personalData.lastName" #lastName="ngModel" pattern="^([a-zA-Z])*$"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && lastName.invalid }" required>
+                          <div *ngIf="lastName.touched && lastName.invalid" class="invalid-feedback">
+                            <div *ngIf="lastName.errors.required">Enter Last Name</div>
+                          </div>
+                          <div *ngIf="lastName.errors?.pattern" class="invalid-feedback">
+                            Enter valid Last Name
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- changes --suresh-- 08-22-2018 start -->
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Gender<span class="req-field">*</span> :</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" id="addGender" [(ngModel)]="personalData.gender"
+                            name="gender" #gender="ngModel"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && gender.invalid }" required>
+                            <option [ngValue]="undefined" disabled selected>Select Gender</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="trans">Transgender</option>
+                          </select>
+                          <div *ngIf="gender.touched && gender.invalid" class="invalid-feedback">
+                            <div *ngIf="gender.touched && gender.errors.required">Select Gender</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Date Of Birth :</label>
+                        <div class="col-sm-8">
+                          <!-- //  changes --suresh-- 08-23-2019 start -->
+                          <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="dob" [owlDateTimeTrigger]="dob"
+                            (dateTimeInput)="dateOfBirthValidation()" [(ngModel)]="personalData.dob" #dob="ngModel"
+                            [owlDateTime]="dob" name="dob">
+                          <owl-date-time [pickerType]="'calendar'" #dob></owl-date-time>
+                          <p *ngIf="doberror" style="color: red;font-weight:bold;">{{ doberror }}</p>
+                          <!-- //  changes --suresh-- 08-23-2019 start -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- changes --suresh-- 08-22-2018 end -->
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address Line1<span class="req-field">*</span> :</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" id="addAddress" name="addressLine1"
+                            [(ngModel)]="personalData.addressLine1" #addressLine1="ngModel"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && addressLine1.invalid }" required>
+                          <div *ngIf="addressLine1.touched && addressLine1.invalid" class="invalid-feedback">
+                            <div *ngIf="addressLine1.errors.required">Please Enter Address</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address Line2 :</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" id="addAddress1" name="addressLine2"
+                            [(ngModel)]="personalData.addressLine2" #addressLine2="ngModel">
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Country<span class="req-field">*</span> &nbsp;:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" name="country" id="addCountry"
+                            [(ngModel)]="personalData.country.id" #country="ngModel" (change)="getState(country.value)"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && country.invalid }" required>
+                            <option [ngValue]="undefined" disabled selected>Choose a country</option>
+                            <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">State<span class="req-field">*</span> &nbsp;:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" name="state" id="addState"
+                            [(ngModel)]="personalData.state.id" #state="ngModel" (change)="getCity(state.value)"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && state.invalid }" required>
+                            <option [ngValue]="undefined" disabled selected>Choose a state</option>
+                            <option *ngFor="let state of states" value="{{state.id}}">{{state.name}}</option>
+                          </select>
+                          <div *ngIf="state.touched && state.invalid" class="invalid-feedback">
+                            <div *ngIf="state.errors.required">Select any one state</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">City<span class="req-field">*</span> :</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" name="city" id="addCity" [(ngModel)]="personalData.city.id"
+                            #city="ngModel" [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && city.invalid }"
+                            required>
+                            <option [ngValue]="undefined" disabled selected>Choose a city</option>
+                            <option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</option>
+                          </select>
+                          <div *ngIf="city.touched && city.invalid" class="invalid-feedback">
+                            <div *ngIf="city.errors.required">Select any one city</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">ZIP Code<span class="req-field">*</span> :</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" id="addZipcode" name="zipCode"
+                            [(ngModel)]="personalData.zipCode" #zipCode="ngModel" (blur)="getAddress()"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && zipCode.invalid }" required>
+                          <p *ngIf="zipError" style="color:red;font-weight:bold;">{{zipError}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Email ID<span class="req-field">*</span> :</label>
+                        <div class="col-sm-8">
+                          <input type="email" class="form-control mb-10" id="addEmailId" name="emailId"
+                            [(ngModel)]="personalData.emailId" #emailId="ngModel" (blur)="checkEmail()"
+                            pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && emailId.invalid }" required>
+                          <p *ngIf="emailError" style="color:red;font-weight:bold;">{{emailError}}</p>
+                          <div *ngIf="emailId.touched && emailId.invalid" class="invalid-feedback">
+                            <div *ngIf="emailId.errors.required">Email Id is required</div>
+                          </div>
+                          <div *ngIf="emailId.errors?.pattern" class="invalid-feedback">
+                            Please enter a valid email id
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Phone No<span class="req-field">*</span> :</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" id="addPhoneNumber" name="phoneNo"
+                            [(ngModel)]="personalData.phoneNo" #phoneNo="ngModel"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && phoneNo.invalid }" required
+                            pattern="([+]?\d{1,3}[-])?\d{10}" placeholder="+XXX-XXXXXXXXXX">
+
+                          <div *ngIf="phoneNo.touched && phoneNo.invalid" class="invalid-feedback">
+                            <div *ngIf="phoneNo.errors.required">Phone Number is required</div>
+                          </div>
+                          <div *ngIf="phoneNo.errors?.pattern" class="invalid-feedback">
+                            Phone number not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Bill rate <span class="req-field">*</span>
+                          &nbsp;:</label>
+                        <div class="col-sm-3">
+                          <div class="form-row">
+                            <div class="input-group">
+                              <span class="input-group-addon">$</span>
+                              <input type="number" value="" min="0" step="0.01" data-number-to-fixed="2"
+                                data-number-stepfactor="100" class="form-control currency" id="c2"
+                                placeholder="Enter Number of openings" name="openings"
+                                [(ngModel)]="personalData.expectedPay" #expectedPay="ngModel"
+                                [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && expectedPay.invalid }" required>
+                            </div><br />
+                            <div *ngIf="expectedPay.touched && expectedPay.invalid" class="invalid-feedback">
+                              <div *ngIf="expectedPay.touched && expectedPay.errors.required">Bill Rate is required
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="col-sm-2">per <span class="req-field">*</span></div>
+                        <div class="col-sm-3">
+                          <select class="form-control mb-10" name="perHour" [(ngModel)]="personalData.per"
+                            #per="ngModel" id="addHour"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && per.invalid }" required>
+                            <option [ngValue]="undefined" disabled selected>Choose pay Frequency</option>
+                            <option *ngFor="let pay of payFrequency" value="{{pay.id}}">{{pay.pay_frequency}}</option>
+                          </select>
+                          <div *ngIf="per.touched && per.invalid" class="invalid-feedback">
+                            <div *ngIf="per.touched && per.errors.required">Select Frequency</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Status &nbsp;:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" name="status" id="status" [(ngModel)]="personalData.status"
+                            #status="ngModel">
+                            <option value="Available">Available</option>
+                            <option value="On hold">On hold</option>
+                            <option value="Do not disturb">Do not disturb</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">LinkedIn :</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" placeholder="Enter LinkedIn Url" id="linkedin"
+                            name="linkedin" [(ngModel)]="personalData.linkedin" #linkedin="ngModel"
+                            [pattern]="linkedInPattern"
+                            [ngClass]="{ 'is-invalid': addPersonalInfo.submitted && linkedin.invalid }">
+                          <div *ngIf="linkedin.errors?.pattern" class="invalid-feedback">
+                            LinkedIn url is not valid.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-sm-12">
+                        <div class="col-md-6">
+                          <button type="button" (click)="cancel()" id="cancelPersonalDetails" class="btn btn-danger">
+                            Cancel </button>
+                        </div>
+                        <div class="col-md-6">
+                          <button type="button" class="btn btn-success pull-right" [disabled]="!addPersonalInfo.valid"
+                            (click)="addCandidate()" id="addPersonalDetails">Save & Next</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popupbox_wrap" *ngIf="isShowPopup1">
+        <div class="popupbox" *ngIf="this.message">
+          <button class="close" type="button" id="closepersonalPopup" (click)="closePopup1()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <table class="table table-bordered">
+            <tr>
+              <td class="sucess text-center">
+                <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+              </td>
+            </tr>
+          </table>
+          <div class="row text-center">
+            <button class="btn btn-primary" id="profilePage" (click)="closePopup1()" awNextStep>Next</button>
+          </div>
+        </div>
+        <div class="popupbox" *ngIf="this.error">
+          <button class="close" type="button" id="closePersonalError" (click)="closePopup1()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <br>
+          <div class="danger text-center">
+            <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+          </div>
+
+        </div>
+      </div>
+
+    </aw-wizard-step>
+
+    <aw-wizard-step stepTitle="Profile Picture" >
+
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="form-header">
+                <h5>Profile Picture</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-md-4 col-form-label">Select Profile Picture</label>
+                    <div class="col-md-8">
+                      <input type="file" id="selectImage" (change)="fileChangeEvent($event)"
+                        accept="image/png, image/jpeg, image/jpg" class="form-control mb-10">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="col-md-8">
+                      <img [src]="image" *ngIf="image != null || image == ''" alt="profile pic" class="picture" />
+                    </div>
+                    <div class="col-md-4">
+                      <button type="submit" class="btn btn-primary mlr-5" id="uploadPicture" (click)="uploadPic()">Save
+                        & Next</button><br>
+                      <button type="submit" class="btn btn-info mlr-5 mt-10" id="persornalInfoPage"
+                        awNextStep>Skip</button><br />
+                      <button type="submit" class="btn btn-danger mlr-5 mt-10" id="backPersonalPage"
+                        awPreviousStep>Back</button>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6" style="margin-bottom: 40px">
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" id="imageCropper"
+                      [maintainAspectRatio]="true" [aspectRatio]="1/1" [resizeToWidth]="128" format="png"
+                      outputType="both" autoCrop="true" (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()"></image-cropper>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label class="col-form-label" style="color: #8e8e8e;"><em class="fa fa-circle"
+                        style="font-size: 9px;"></em> &nbsp;Ensure the uploaded file size should not exceed 100K.
+                    </label>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="col-form-label" style="color: #8e8e8e;"><em class="fa fa-circle"
+                        style="font-size: 9px;"></em> &nbsp;Ensure the file type should be either jpeg or jpg or png.
+                    </label>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="col-form-label" style="color: #8e8e8e;"><em class="fa fa-circle"
+                        style="font-size: 9px;"></em> &nbsp;Please see that the profile picture is of passport size
+                      photo.</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popupbox_wrap" *ngIf="isShowPopup1">
+        <div class="popupbox" *ngIf="this.message">
+          <button class="close" type="button" id="closeSuccessprofile" (click)="closePopup1()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <table class="table table-bordered">
+            <tr>
+              <td class="sucess text-center">
+                <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+              </td>
+            </tr>
+          </table>
+          <div class="row text-center">
+            <button class="btn btn-primary" (click)="closePopup1()" id="experiencepage" awNextStep>Next</button>
+          </div>
+        </div>
+        <div class="popupbox" *ngIf="this.error">
+          <button class="close" type="button" id="closeErrorprofile" (click)="closePopup1()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <br>
+          <div class="danger text-center">
+            <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+          </div>
+
+        </div>
+      </div>
+    </aw-wizard-step>
+
+
+    <aw-wizard-step stepTitle="Experience" >
+
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="form-header">
+                <h5>Experience</h5>
+              </div>
+              <div class="padding-20">
+                <form #addExperience="ngForm" name="form" (ngSubmit)="addExperience.form.valid" novalidate>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Employer<span class="req-field">*</span>:</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="addEmployee" class="form-control mb-10" name="employer"
+                          [(ngModel)]="experienceData.experience.employer" #employer="ngModel"
+                          [ngClass]="{ 'is-invalid': addExperience.submitted && employer.invalid }"
+                          pattern="^([a-zA-Z0-9.&*]+\s)*[a-zA-Z0-9.&*]+$" placeholder="Enter your Employer" required>
+                        <div *ngIf="employer.errors?.pattern" class="invalid-feedback">
+                          Employer name cannot contain special characters
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Job Title<span class="req-field">*</span>:</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="addJobTitle" class="form-control mb-10" name="jobTitle"
+                          [(ngModel)]="experienceData.experience.jobTitle" #jobTitle="ngModel"
+                          [pattern]="jobTitlePattern"
+                          [ngClass]="{ 'is-invalid': addExperience.submitted && jobTitle.invalid }"
+                          placeholder="Enter your Job Title" required>
+                        <div *ngIf="jobTitle.errors?.pattern" class="invalid-feedback">
+                          Job Title cannot contain special characters
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Supervisor Name&nbsp;:</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="addSupervisor" class="form-control mb-10" name="supervisorName"
+                          [(ngModel)]="experienceData.experience.supervisorName"
+                          pattern="^([a-zA-Z.&*]+\s)*[a-zA-Z.&*]+$" #supervisorName="ngModel">
+                        <div *ngIf="supervisorName.errors?.pattern" class="invalid-feedback">
+                          Supervisor name cannot numbers or contain special characters
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Supervisor Phone&nbsp;:</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="addSupervisorPhone" class="form-control mb-10" name="supervisorPhone"
+                          [(ngModel)]="experienceData.experience.supervisorPhone" #supervisorPhone="ngModel"
+                          [ngClass]="{ 'is-invalid': addExperience.submitted && supervisorPhone.invalid }"
+                          placeholder="+XXX-XXXXXXXXXX" pattern="([+]?\d{1,3}[-])?\d{10}">
+                        <div *ngIf="supervisorPhone.errors?.pattern" class="invalid-feedback">
+                          Phone number not valid.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <!-- changes in date picker --suresh-- on 08-07-2019 start -->
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Start Date<span class="req-field">*</span>:</label>
+                      <div class="col-sm-8">
+                        <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="addStartDate"
+                          [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate" name="startDate"
+                          [(ngModel)]="experienceData.experience.startDate"
+                          (dateTimeInput)="dateValidate1()" #startDate="ngModel" required>
+                        <owl-date-time [pickerType]="'calendar'" #startDate></owl-date-time>
+                        <p *ngIf="dateError1" style="color: red;font-weight:bold;">{{ dateError1 }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6" *ngIf="!experienceData.experience.check">
+                      <label class="col-sm-4 col-form-label">End Date:</label>
+                      <div class="col-sm-8">
+                        <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="addendDate"
+                          [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate" name="endDate"
+                          [(ngModel)]="experienceData.experience.endDate" (dateTimeInput)="dateValidate()"
+                          #endDate="ngModel">
+                        <owl-date-time [pickerType]="'calendar'" #endDate></owl-date-time>
+                        <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- changes in date picker --suresh-- on 08-07-2019 end -->
+                  <br>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Responsibilities :</label>
+                      <div class="col-sm-8">
+                        <textarea class="form-control" rows="4" id="responsibilities" name="responsibilities"
+                          [(ngModel)]="experienceData.experience.responsibilities"
+                          #responsibilities="ngModel"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Description :</label>
+                      <div class="col-sm-8">
+                        <textarea class="form-control" rows="4" id="description" name="description"
+                          [(ngModel)]="experienceData.experience.description" #description="ngModel"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-6 col-form-label">I Persently Work Here:</label>
+                      <div class="col-sm-2">
+                        <label class="switch">
+                            <input type="checkbox" id="editIsCurrent" name="isCurrent" #isCurrent [(ngModel)]="experienceData.experience.check">
+                          <input type="checkbox" id="isCurrent" name="isCurrent" #isCurrent
+                          [(ngModel)]="experienceData.experience.check">
+                          <span class="slider round"></span>
+                        </label>
+
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Technical Skills :</label>
+                      <div class="col-sm-8">
+                        <textarea class="form-control" id="techSkills" name="techSkills"
+                          pattern="^([a-zA-Z0-9.#*+]+[\s,&_\-])*[a-zA-Z0-9.#*_+]+$"
+                          [(ngModel)]="experienceData.experience.techSkills" #techSkills="ngModel"></textarea>
+                          <div *ngIf="techSkills.errors?.pattern" class="invalid-feedback" style="margin-top: 10px;">
+                            Special characters are not allowed
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group row">
+                    <div class="col-sm-12">
+                      <div class="col-md-4">
+                        <button type="submit" class="btn btn-danger" id="backProfilePage" awPreviousStep> Back </button>
+                      </div>
+                      <div class="col-md-4 text-center">
+                        <button type="button" class="btn btn-primary" [disabled]="!addExperience.valid"
+                          (click)="addExperiences(employer.value,jobTitle.value,description.value,supervisorName.value,supervisorPhone.value,responsibilities.value,techSkills.value,addExperience)"
+                          id="addSingleExperience">+
+                          Add Experience </button>
+                        <p *ngIf="experienceError" style="color:red;font-weight:bold;">{{ experienceError }}</p>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="button" id="educationPage" (click)="addCandidateExperience()"
+                          class="btn btn-success pull-right">Save & Next</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <br />
+                <div class="table-responsive col-md-12">
+                  <table class="table table-bordered">
+                    <thead class="form-header">
+                      <tr>
+                        <th>Employer</th>
+                        <th>Job Title</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Supervisor Name</th>
+                        <th>Supervisor Phone</th>
+                        <th>Responsibilities</th>
+                        <th>Description</th>
+                        <th>Technical Skills</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let experience of experiences" style="margin-bottom: 10px;">
+                        <td>{{experience.employer}}</td>
+                        <td>{{experience.jobTitle}}</td>
+                        <td>{{experience.startDate | date:"MM/dd/yyyy"}}</td>
+                        <td><span *ngIf="experience.isCurrent;else elseBlock">Still Working</span>
+                          <ng-template #elseBlock>{{experience.endDate | date:"MM/dd/yyyy"}}</ng-template>
+                        </td>
+                        <td>{{experience.supervisorName}}</td>
+                        <td>{{experience.supervisorPhone}}</td>
+                        <td>{{experience.responsibilities}}</td>
+                        <td>{{experience.description}}</td>
+                        <td>{{experience.techSkills}}</td>
+                        <td>
+                          <button type="button" id="editExperience" class="btn btn-primary"
+                            (click)="editExperience(experience)">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>
+                          <button type="button" class="btn btn-danger" id="removeExperience"
+                            (click)="removeExperience(experience)">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popupbox_wrap" *ngIf="isShowPopup1">
+        <div class="popupbox" *ngIf="this.message">
+          <button class="close" type="button" id="closeExperiencePopup" (click)="closePopup1()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <table class="table table-bordered">
+            <tr>
+              <td class="sucess text-center">
+                <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+              </td>
+            </tr>
+          </table>
+          <div class="row text-center">
+            <button class="btn btn-primary" (click)="closePopup1()" id="moveEducationPage" awNextStep>Next</button>
+          </div>
+        </div>
+        <div class="popupbox" *ngIf="this.error">
+          <button class="close" type="button" id="closeEcperienceError" (click)="closePopup1()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <br>
+          <div class="danger text-center">
+            <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+          </div>
+
+        </div>
+      </div>
+    </aw-wizard-step>
+
+    <aw-wizard-step stepTitle="Education" >
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="form-header">
+                <h5>Education</h5>
+              </div>
+              <div class="padding-20">
+
+                <form #addEducations="ngForm" name="form" (ngSubmit)="addEducations.form.valid" novalidate>
+
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Institution Name<span class="req-field">*</span> :</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="addinstituteName" class="form-control mb-10" name="instituteName"
+                          [(ngModel)]="educationData.education.instituteName" #instituteName="ngModel"
+                          [ngClass]="{ 'is-invalid': addEducations.submitted && addEducations.invalid }"
+                          pattern="^([a-zA-Z0-9.&*]+\s)*[a-zA-Z0-9.&*]+$" required>
+                        <div *ngIf="instituteName.touched && instituteName.invalid" class="invalid-feedback">
+                          <div *ngIf="instituteName.errors.required">Enter a institute name</div>
+                        </div>
+                        <div *ngIf="instituteName.errors?.pattern" class="invalid-feedback">
+                          Institution name cannot contain special characters
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Select Qualification<span class="req-field">*</span>
+                        :</label>
+                      <div class="col-sm-8">
+                        <select class="form-control mb-10" id="addQualification" name="qualification"
+                          [(ngModel)]="educationData.education.qualification" #qualification="ngModel"
+                          [ngClass]="{ 'is-invalid': addEducations.submitted && qualification.invalid }" required>
+                          <option selected>Select a Type</option>
+                          <option value="Bachelors">Bachelors</option>
+                          <option value="Masters">Masters</option>
+                          <option value="Doctorate">Doctorate</option>
+                        </select>
+                        <div *ngIf="qualification.touched && qualification.invalid" class="invalid-feedback">
+                          <div *ngIf="qualification.errors.required">Qualification is required</div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Specialization<span class="req-field">*</span> :</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control mb-10" id="addSpecialization" name="specialization"
+                          [(ngModel)]="educationData.education.specialization" #specialization="ngModel"
+                          pattern="^([a-zA-Z0-9]+.\s)*[a-zA-Z0-9]+$">
+                        <div *ngIf="specialization.errors?.pattern" class="invalid-feedback">
+                          Specialization cannot contain special characters
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-md-6" *ngIf="!educationData.education.isCurrent">
+                      <label class="col-sm-4 col-form-label">Year of Passing<span class="req-field">*</span> :</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control mb-10" id="addpassingYear" name="passingYear"
+                          [minlength]="4" [pattern]="yearPattern" [maxlength]="4"
+                          [(ngModel)]="educationData.education.passingYear" #passingYear="ngModel" required>
+                        <div *ngIf="passingYear.touched && passingYear.invalid" class="invalid-feedback">
+                          <div *ngIf="passingYear.errors.required">Year of Passing is required</div>
+                        </div>
+                        <div *ngIf="passingYear.errors?.pattern" class="invalid-feedback">
+                          Please enter a valid year of passing
+                        </div>
+                        <p *ngIf="passingYearError" style="color:red;font-weight:bold;">{{ passingYearError }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">GPA Score :</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control mb-10" id="addGPAScore" placeholder="Enter GPA Score"
+                          pattern="^(?:[0-3]\.\d{1,2}|4\.0{1,2}|[0-4]{1})$" name="gpaScore"
+                          [(ngModel)]="educationData.education.gpaScore" #gpaScore="ngModel">
+                        <div *ngIf="gpaScore.errors?.pattern" class="invalid-feedback">
+                          GPA Score is not valid.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-6 col-form-label">Do you currently study here:</label>
+                      <div class="col-sm-2">
+                        <label class="switch">
+                          <input type="checkbox" name="isCurrent" id="educationIsCurrent" #isCurrent
+                          [(ngModel)]="educationData.education.isCurrent">
+                          <span class="slider round"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="form-group row">
+                    <div class="col-sm-12">
+                      <div class="col-md-4">
+                        <button type="submit" class="btn btn-danger" id="backExperience" awPreviousStep> Back </button>
+                      </div>
+                      <div class="col-md-4 text-center">
+                        <button type="button" class="btn btn-primary" [disabled]="!addEducations.valid"
+                        (click)="addEducation(instituteName.value,qualification.value,specialization.value,gpaScore.value,addEducations)"
+                          id="addCandidateEducations">+
+                          Add Education </button>
+                        <p *ngIf="educationError" style="color:red;font-weight:bold;">{{ educationError }}</p>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="button" class="btn btn-info pull-right" id="saveCandidateEducation"
+                          (click)="addCandidateEducation()">Save & Next</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <br />
+                <div class="table-responsive col-md-12">
+                  <table class="table table-bordered">
+                    <thead class="form-header">
+                      <tr>
+                        <th>Name of the institution</th>
+                        <th>Qualification</th>
+                        <th>Specialization</th>
+                        <th>Year of passing</th>
+                        <th>GPA Score</th>
+                        <th>You currently study here</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let education of educations" style="margin-bottom: 10px;">
+                        <td>{{education.instituteName}}</td>
+                        <td>{{education.qualification}}</td>
+                        <td>{{education.specialization}}</td>
+                        <td>{{education.passingYear}}</td>
+                        <td>{{education.gpaScore}}</td>
+                        <td>
+                          <span *ngIf="education.isCurrent; else eduElse">Yes</span>
+                          <ng-template #eduElse>No</ng-template>
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-primary" id="editEduactions"
+                            (click)="editEduaction(education)">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>
+                          <button type="button" class="btn btn-danger" id="removeEducations"
+                            (click)="removeEducation(education)">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popupbox_wrap" *ngIf="isShowPopup1">
+        <div class="popupbox" *ngIf="this.message">
+          <button class="close" type="button" id="closeEducationPopup" (click)="closePopup1()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <table class="table table-bordered">
+            <tr>
+              <td class="sucess text-center">
+                <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+              </td>
+            </tr>
+          </table>
+          <div class="row text-center">
+            <button class="btn btn-primary" (click)="closePopup1()" id="skillsPage" awNextStep>Next</button>
+          </div>
+        </div>
+        <div class="popupbox" *ngIf="this.error">
+          <button class="close" type="button" id="closeEducationError" (click)="closePopup1()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <br>
+          <div class="danger text-center">
+            <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+          </div>
+
+        </div>
+      </div>
+    </aw-wizard-step>
+
+    <aw-wizard-step stepTitle="Skills" >
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="form-header">
+                <h5>Skills <strong>(Highlight 6-8 of your top skills)</strong></h5>
+              </div>
+              <div class="padding-20">
+                <form #addSkills="ngForm" name="form" (ngSubmit)="addSkills.form.valid" novalidate>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Skills:</label>
+                      <!-- saikumar 07/09/2019 started here -->
+                      <div class="col-sm-6">
+
+                        <select class="form-control mb-10" id="skillName" name="skillName" #skillName="ngModel"
+                          [(ngModel)]="skill.skillType" required>
+                          <option value="" disabled selected>Choose a skill</option>
+                          <!-- <option *ngFor="let skill of skillset" value="{{skill.name}}"> {{ skill.name }}</option> -->
+                          <option *ngFor="let skill of skillset" value="{{ skill.name }}">{{skill.name |titlecase}}
+                          </option>
+                        </select>
+
+                        <div *ngIf="skillName.touched && skillName.invalid" class="invalid-feedback">
+                          <div *ngIf="skillName.errors.required">Skill is required</div>
+                        </div>
+
+                      </div> <a type="button" id="addskill" class="btn  text-left" (click)="addnewskill()">+ Add </a>
+
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Experience :
+                        (In Months)<span class="req-field">*</span>
+                      </label>
+                      <div class="col-sm-8">
+                        <input type="number" id="addSkillExperience" class="form-control mb-10" name="experience"
+                          [(ngModel)]="skill.experience" #experience="ngModel"
+                          [ngClass]="{ 'is-invalid': addSkills.submitted && experience.invalid }" required>
+                      </div>
+
+                    </div>
+                  </div>
+                  <br />
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Last Used<span class="req-field">*</span> :</label>
+                      <div class="col-sm-6">
+                        <div class="form-group row">
+                          <div class="col-sm-6">
+                            <select class="form-control mb-10" id="skilLastUsed" name="month"
+                              [(ngModel)]="skill.last.month" #month="ngModel"
+                              [ngClass]="{ 'is-invalid': addSkills.submitted && month.invalid }" required>
+                              <option [ngValue]="undefined" selected disabled>Month</option>
+                              <option *ngFor="let month of months " value="{{month}}">{{month}}</option>
+
+                            </select>
+                           
+                          </div>
+                          <div class="col-sm-6">
+                            <select class="form-control mb-10" id="skillYear" name="year" [(ngModel)]="skill.last.year"
+                              #year="ngModel" [ngClass]="{ 'is-invalid': addSkills.submitted && year.invalid }"
+                              required>
+                              <option value="undefined" selected disabled>Year</option>
+                              <option *ngFor="let year of years " value="{{year}}">{{year}}</option>
+
+                            </select>
+
+                          </div>
+                          <p *ngIf="monthError" style="color:red;font-weight:bold;">{{ monthError }}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Comment :</label>
+                      <div class="col-sm-8">
+                        <textarea class="form-control mb-10" id="skillComment" name="comment"
+                          [(ngModel)]="skill.comment" #comment="ngModel"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-12">
+                      <div class="col-md-4">
+                        <button type="submit" class="btn btn-danger" id="backeducationPage" awPreviousStep> Back
+                        </button>
+                      </div>
+                      <!-- (click)="addSkill(skillName.value,null,experience.value,month.value,year.value,comment.value,addSkills)" -->
+                      <div class="col-md-4 text-center">
+                        <button type="button" class="btn btn-primary"
+                          [disabled]="skillName.invalid || experience.invalid || month.invalid || year.invalid" 
+                          (click)="addSkill(skillName.value,experience.value,month.value,year.value,comment.value,addSkills)"
+                          
+                          id="addCandidateSkill">+Add Skills
+                        </button>
+                        <br />
+                        <p *ngIf="skillError" style="color:red;font-weight:bold;">{{ skillError }}</p>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="button" class="btn btn-info pull-right" id="SummeryPage"
+                          (click)="addCandidateSkills()">Save & Next</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <br />
+                <div class="table-responsive col-md-12">
+                  <table class="table table-bordered">
+                    <thead class="form-header">
+                      <tr>
+                        <th>Skill</th>
+                        <th>Experience</th>
+                        <th>Last Used</th>
+                        <th>Comment</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let skill of skills" style="margin-bottom: 10px;">
+                        <td>{{skill.skillName}}</td>
+                        <td>{{skill.experience}} Months</td>
+                        <td>{{skill.lastUsed}}</td>
+                        <td>{{skill.comment}}</td>
+                        <td>
+                          <button type="button" class="btn btn-primary" id="editSkills" (click)="editSkill(skill)">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>
+                          <button type="button" class="btn btn-danger" id="removeSkills" (click)="removeSkill(skill)">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popupbox_wrap" *ngIf="isShowPopup1">
+        <div class="popupbox" *ngIf="this.message">
+          <button class="close" id="closeSkillPopup" type="button" (click)="closePopup1()"><span class="close-label"><i
+                class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <table class="table table-bordered">
+            <tr>
+              <td class="sucess text-center">
+                <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+              </td>
+            </tr>
+          </table>
+          <div class="row text-center">
+            <button class="btn btn-primary" (click)="closePopup1()" id="saveskills" awNextStep>Next</button>
+          </div>
+        </div>
+        <div class="popupbox" *ngIf="this.error">
+          <button class="close" type="button" id="closeSkillError" (click)="closePopup1()"><span class="close-label"><i
+                class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <br>
+          <div class="danger text-center">
+            <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+          </div>
+
+        </div>
+      </div>
+    </aw-wizard-step>
+
+    <aw-wizard-step stepTitle="Consent" >
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="form-header">
+                <h5>Consent </h5>
+              </div>
+              <div class="padding-20">
+                <form #consentData="ngForm" name="form" (ngSubmit)="consentData.form.valid" novalidate>
+                  <div class="form-group row">
+                    <input type="checkbox" id="veteran" name="veteran" [(ngModel)]="veteran">&nbsp;&nbsp;&nbsp;
+                    <strong>Would you like to declare yourself as the was veteran to the recruiter if applicable
+                      ?</strong>
+                  </div>
+                  <div class="form-group row">
+                    <input type="checkbox" id="disabled" name="disabled" [(ngModel)]="disabled">&nbsp;&nbsp;&nbsp;
+                    <strong>Would you like to declare yourself as physically disabled to the recruiter if applicable
+                      ?</strong>
+                  </div><br />
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <button type="submit" class="btn btn-danger" id="backskillPage" awPreviousStep> Back
+                      </button>
+                    </div>
+                    <div class="col-md-6">
+                      <button type="button" class="btn btn-info pull-right" id="SummeryPage"
+                        (click)="addConsentData()">Save & Next</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popupbox_wrap" *ngIf="consentPopup">
+        <div class="popupbox" *ngIf="this.message">
+          <button class="close" type="button" id="closeconsentPopup" (click)="consentClose()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <table class="table table-bordered">
+            <tr>
+              <td class="sucess text-center">
+                <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+              </td>
+            </tr>
+          </table>
+          <div class="row text-center">
+            <button class="btn btn-primary" (click)="closePopup1()" id="saveskills" awNextStep>Next</button>
+          </div>
+        </div>
+        <div class="popupbox" *ngIf="this.error">
+          <button class="close" type="button" id="closeConsentError" (click)="closeconsentPopup()"><span
+              class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+              class="os-icon os-icon-close"></span></button>
+          <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+        </div>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step stepTitle="Attach Resume" >
+        <div class="element-content">
+            <div class="job-box">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="form-header">
+                    <h5>Attach Resume </h5>
+                  </div>
+                  <div class="padding-20">
+                    <form action="#">
+                      <p><strong>Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.!</strong></p>
+                      <br>
+                     
+                      <div class="form-group row">
+                        <div class="col-md-4">
+                          <label class="col-form-label">Upload Resume</label>
+                          <div class="">
+                            <input type="file" id="resume" ng2FileSelect [uploader]="uploader" name="resume"
+                              accept="application/pdf,application/docx" class="form-control mb-10" (change)="getFiles($event)" [disabled]="fileName" [(ngModel)]="fileData.resume">
+                          </div>
+                        </div>
+                        <div class="col-md-4" *ngIf="fileName">
+                            <div style="margin-bottom: 40px">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th style="width:20%">Name</th>
+                                      <th style="width:40%">Progress</th>
+                                      <th style="width:5%">Status</th>
+                                      <th style="width:35%">Actions</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let item of uploader.queue">
+                                      <td><strong>{{ item?.file?.name }}</strong></td>
+                                      <td>
+                                        <div class="progress">
+                                          <div class="progress-bar" role="progressbar"
+                                            [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                        </div>
+                                      </td>
+                                      <td class="text-center">
+                                        <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                                        <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                                        <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                                      </td>
+                                      <td>
+                                        <button *ngIf="!dateError" type="button" class="btn btn-success" id="uploadDoc" (click)="item.upload()"
+                                          [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                          <span class="glyphicon glyphicon-upload"></span> Upload
+                                        </button>
+                                      </td>
+                                      
+            <!-- on successfull insertion-->
+            <div class="popupbox_wrap" *ngIf="item.isSuccess">
+              <div class="popupbox text-center">
+                <p class="bg-success">Resume uploaded successfully!</p>
+                <div class="row text-center">
+                  <a class="btn btn-success" id="closei9doc" (click)="[item.isSuccess = false, fileName=false, closeResumePopup(), uploader.queue = []]"><i class="fa fa-arrow-right" aria-hidden="true"></i> Close</a>
+                </div>
+                <!--row-->
+              </div>
+              <!--popupbox-->
+            </div>
+            <!--popupbox_wrap-->
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                        </div>
+                        <div class="col-md-4">
+                            <ng-container *ngIf="resume; else noData">
+                              <div class="pull-right">
+                                <!-- <i class="fa fa-book" aria-hidden="true"></i> -->
+                                <a href="{{resumeUrl}}{{resume}}" target="blank" style="margin: 50px;">Download Resume</a>
+                                <button class="btn btn-primary"   type="button" (click)="deleteResume()" ><i class="fa fa-trash-o"> Delete Resume </i></button> 
+                                <!-- <a ><i class="fa fa-download" aria-hidden="true"></i></a> -->
+                              </div>
+                              </ng-container>
+                              <ng-template #noData>
+                              </ng-template>
+                        </div>
+                      </div>
+                    
+                      <div class="form-group row">
+                        <div class="col-sm-12">
+                          <div class="col-md-6">
+                            <button type="submit" class="btn btn-danger" id="backSkills" awPreviousStep> Back </button>
+                          </div>
+                          <div class="col-md-6">
+                            <button type="button" id="resumeDetails"
+                              class="btn btn-success pull-right" awNextStep>Skip & Next</button>
+                          </div>
+                        </div>
+                      </div>
+                            
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="popupbox_wrap" *ngIf="resumePopup">
+            <div class="popupbox" *ngIf="this.error">
+              <button class="close" type="button" id="closeConsentError" (click)="closeconsentPopup()"><span
+                  class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+                  class="os-icon os-icon-close"></span></button>
+            </div>
+          </div>
+    </aw-wizard-step>
+
+    <aw-wizard-step stepTitle="Summary">
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <form class="search-form">
+                <div class="form-header">
+                  <h5>Professional Summary</h5>
+                </div>
+                <div class="padding-20">
+                  <form action="#">
+                    <p><strong>Write a short summary telling more about yourself, your strengths and experience. Feel
+                        free
+                        to use our pre-written example.</strong></p>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <label class="col-sm-2 col-form-label">Summary:</label>
+                        <div class="col-sm-8">
+                          <textarea class="form-control" rows="4" id="summary" name="summary"
+                            [(ngModel)]="summaryData.summary" #summary="ngModel"></textarea>
+                        </div>
+                      </div>
+
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                      <div class="col-sm-12">
+                        <div class="col-md-6">
+                          <button type="submit" class="btn btn-danger" id="backSkillPage" awPreviousStep> Back </button>
+                        </div>
+                        <div class="col-md-6">
+                          <button type="button" class="btn btn-info pull-right" id="addCandidateSummaryDetails"
+                            (click)="addCandidateSummary()">Save
+                            & Preview</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aw-wizard-step>
+  </aw-wizard>
+
+</div>
+
+<div class="popupbox" *ngIf="this.preview">
+  <button class="close" type="button" id="closePopupbox" (click)="closePopup()"><span class="close-label"><i
+        class="fa fa-times" aria-hidden="true"></i> Close</span><span
+      class="os-icon os-icon-close"></span></button><br />
+  <div>
+    <h5>Your resume has bees saved with us.</h5>
+    <p style="padding: 0px">Select any one preview to view your resume</p>
+  </div>
+  <div>
+    <table class="table table-bordered">
+      <tr>
+        <td>
+          <a [routerLink]="['/candidate/preview', single]" title="preview 1" id="candidatePreview">
+            <img src="assets/images/late2.png" alt="resume preview"
+              style="height:100px;width:70px; display:block; margin: auto;"></a>
+        </td>
+        <td>
+          <a [routerLink]="['/candidate/preview-1', single]" title="preview 2" id="candidatePreview1">
+            <img src="assets/images/late3.png" alt="resume preview"
+              style="height:100px;width:70px; display:block; margin: auto;"></a>
+        </td>
+        <td>
+          <a [routerLink]="['/candidate/preview-2', single]" title="preview 2" id="candidatePreview2">
+            <img src="assets/images/late1.png" alt="resume preview"
+              style="height:100px;width:70px; display:block; margin: auto;"></a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- saikumar 07/09/2019 started here added the popup -->
+<div class="popupbox_wrap" *ngIf="skillpopup">
+  <div class="popupbox">
+    <button class="close" type="button" id="closebtn" (click)="closeskillPopup()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <form class="search-form" #addindFrm="ngForm" name="form" (ngSubmit)="addindFrm.form.valid" novalidate>
+      <div class="padding-20">
+        <table class="table">
+          <tr>
+            <td>
+              <label class="col-sm-5 col-form-label">Skill <span class="req-field">*</span></label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control mb-10" placeholder="Enter Skill Name" name="skillType"
+                  pattern="^(?!.*[+]{3})(?!.*[#]{2})(?!.*[.,*/&]{2})([a-zA-Z0-9.#*&/+,]+[\s,&_\/-])*[a-zA-Z0-9.#*&_/+,]+$"
+                  [(ngModel)]="industriesData.skillType"
+                  [ngClass]="{ 'is-invalid': addindFrm.submitted && skillType.invalid }" #skillType="ngModel" required
+                  id="popupcompany">
+                <div *ngIf="skillType.touched && skillType.invalid" class="invalid-feedback">
+
+                  <div *ngIf="skillType.touched && skillType.errors.required">Skill Name is required</div>
+                </div>
+                <div *ngIf="skillType.errors?.pattern" class="invalid-feedback">
+                  Please enter valid Skill Name
+                </div>
+              </div>
+            </td>
+          </tr>
+          <div class="row text-center">
+            <button type="button" class="btn btn-success" id="addpopup" (click)="addskills(skillType.value,addindFrm)"
+              [disabled]="!addindFrm.valid"> Submit</button>
+          </div>
+        </table>
+      </div>
+      <p *ngIf="contactError" style="color:red;font-weight:bold">{{ contactError }}</p>
+    </form>
+  </div>
+</div>
+<!-- end company popup -->
+
+<!-- saikumar 07/09/2019 ended here -->

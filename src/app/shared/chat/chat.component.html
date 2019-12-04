@@ -1,0 +1,132 @@
+<!-- <div class="popupbox_wrap" *ngIf="popup"> -->
+ 
+    <!-- {{sortmsg | json}} -->
+    <!-- <div class="popupbox">
+      <div class="row"><button class="close" type="button" (click)="close()" id="close"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+      <p class="bg-success">Bulk mails sending successful </p>
+    
+    </div> -->
+    <!--popupbox-->
+
+
+      
+<style>.text > p:first-of-type{width:100%;margin-top:0;margin-bottom:auto;line-height: 13px;font-size: 12px;
+                } 
+                .text > p:last-of-type{
+                    width:100%;text-align:right;color:silver;margin-bottom:-7px;margin-top:auto;
+                }
+                
+                .msj:before{
+                  width: 0;
+                  height: 0;
+                  content:"";
+                  top:-5px;
+                  left:-14px;
+                  position:relative;
+                  border-style: solid;
+                  border-width: 0 13px 13px 0;
+                  border-color: transparent #ffffff transparent transparent;            
+              }
+              .msj-rta:after{
+                  width: 0;
+                  height: 0;
+                  content:"";
+                  top:-5px;
+                  left:14px;
+                  position:relative;
+                  border-style: solid;
+                  border-width: 13px 13px 0 0;
+                  border-color: whitesmoke transparent transparent transparent;           
+              }
+
+              .emoji-mart-search{
+                  display: none !important;
+              }
+               
+              </style>  
+<!-- emoji-mart-search, emoji-mart,emoji-mart-preview , emoji-mart-bar-->
+<div class="" *ngIf="!(closeDialog | async)"  style="    position: fixed;bottom: 0;right: 0; width:calc(100vw - 80vw);height:auto">
+        <!-- <div class="row" style="margin-top:10%">
+                <div class="col-sm-4">       
+                </div>
+                <div class="col-sm-4">  -->
+    <div class="frame " *ngIf="openPopup" id="chat-{{chatModel.fromId}}-{{chatModel.toId}}">
+        <form [formGroup]="formGroup" (ngSubmit)="sendMessage($event)">
+            <div class="toUser">
+                <span class="dot-green"></span>
+                <span (click)="toggleDialogOpen(chatModel.fromId,chatModel.toId)" class="userName">
+                 &nbsp;&nbsp;{{chatModel.to}}
+            </span>
+                <em class="fa fa-times pull-right chatClose" (click)="chatClose(chatModel.fromId,chatModel.toId)"></em>
+            </div>
+            <div style="height: calc(100vh - 60vh);overflow: scroll;overflow-x: hidden;display: flex;-webkit-box-orient: vertical;
+            -webkit-box-direction: normal;flex-direction: column; overflow-y: scroll;" [scrollTop]="chatUL.scrollHeight">
+                <div class="msg-list" style="margin-bottom:10px;">
+                    <ul #chatUL  [scrollTop]="chatUL.scrollHeight">
+                        
+                        <li style="width:100%" *ngFor="let msg of sortmsg">
+                                <div class="msj-rta" *ngIf="msg.from!==chatModel.toId" style="float:right;background:whitesmoke;margin-top:5px;width:85%;border-radius:5px;padding:5px;display:flex;">
+                                    <!-- <div class="avatar">
+                                    </div> -->
+                                    <div class="text" style="float:left;padding-right:10px;width:100%;display:flex;flex-direction:column;">
+                                        <p>{{msg.message}}</p>
+                                        <p><small>{{msg.timestamp}}</small></p>
+                                    </div>
+                                </div>
+                                
+                                        <div class="msj" *ngIf="msg.from===chatModel.toId"  style="float:left;background:white;margin-top:5px;width:85%;border-radius:5px;padding:5px;display:flex;">
+                                            <!-- <div class="avatar">
+                                            </div> -->
+                                            <div  class="text" style="float:left;padding-right:10px;width:100%;display:flex;flex-direction:column;">
+                                                <p>{{msg.message}}</p>
+                                                <p><small>{{msg.timestamp}}</small></p>
+                                            </div>
+                                        </div>
+                                  
+
+                        </li>
+                        
+
+                    </ul>
+                </div>
+                <emoji-mart [style]="{ position: 'relative', width:'100%',display:'none' }" (emojiClick)="addEmoji($event,chatModel.fromId,chatModel.toId)" id="emoji-{{chatModel.fromId}}-{{chatModel.toId}}"></emoji-mart>
+            </div>      
+                <div class="msg-box">
+                        
+                    <div class="msj-rta macro">
+                            <button type="button" class="btn btn-color" (click)="openemoji(chatModel.fromId,chatModel.toId)">
+                                    <i class="fa fa-smile-o" aria-hidden="true"></i>
+                                <!-- <span class="fa fa-comments-o"></span> --> 
+                                </button>
+                        <div class="text" style="background:whitesmoke !important">
+                            <input class="mytext" formControlName="inputMsg" placeholder="Type a message" #inputEl />
+                        </div>
+                        <button type="submit" class="btn btn-color" style="padding:2px 0px 2px 10px"> <span class="glyphicon glyphicon-share-alt"></span>
+                </button>
+                    </div>
+                </div>
+            
+        </form>
+    </div>
+<!-- </div> -->
+<!-- </div> -->
+    <div class="frame-min " *ngIf="openPopup" id="chatMin-{{chatModel.fromId}}-{{chatModel.toId}}" style="display:none;position:absolute;bottom:0px;">
+
+        <div class="min-toUser">
+            <span class="dot-green"></span>
+            <span (click)="toggleDialogClose(chatModel.fromId,chatModel.toId)" class="userName">
+                     &nbsp;&nbsp;{{chatModel.to}}
+                </span>
+            <em class="fa fa-times pull-right" (click)="chatClose(chatModel.fromId,chatModel.toId)"></em>
+        </div>
+
+
+    </div>
+    <!-- <emoji-mart title="Pick your emoji…" emoji="point_up"></emoji-mart> -->
+                               
+
+
+</div>
+
+<!-- </div> -->

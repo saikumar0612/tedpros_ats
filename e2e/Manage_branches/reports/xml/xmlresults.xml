@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites disabled="0" errors="0" failures="2" tests="17" time="642.688">
+ <testsuite name="Code for company number formate  under config" timestamp="2019-11-08T12:57:59" hostname="localhost" time="642.688" errors="0" tests="17" skipped="0" disabled="0" failures="2">
+  <testcase classname="Code for company number formate  under config" name="open the browser" time="20.57" />
+  <testcase classname="Code for company number formate  under config" name="Enter the username" time="1.392" />
+  <testcase classname="Code for company number formate  under config" name="Enter the password" time="0.937" />
+  <testcase classname="Code for company number formate  under config" name="click on login button" time="0.822" />
+  <testcase classname="Code for company number formate  under config" name="Mouse hover CRM icon" time="5.358" />
+  <testcase classname="Code for company number formate  under config" name="click on Manage Branches" time="2.27" />
+  <testcase classname="Code for company number formate  under config" name="click For editbranch" time="2.101" />
+  <testcase classname="Code for company number formate  under config" name="Edit the branch name" time="1.778" />
+  <testcase classname="Code for company number formate  under config" name="Edit the phone number" time="1.033" />
+  <testcase classname="Code for company number formate  under config" name="Edit the fax number" time="0.897" />
+  <testcase classname="Code for company number formate  under config" name="Edit the address" time="0.905" />
+  <testcase classname="Code for company number formate  under config" name="Enter the street" time="0.85" />
+  <testcase classname="Code for company number formate  under config" name="Edit the zipcode" time="0.786" />
+  <testcase classname="Code for company number formate  under config" name="Edit the description" time="1.065" />
+  <testcase classname="Code for company number formate  under config" name="Click For Save Changes" time="0.623" />
+  <testcase classname="Code for company number formate  under config" name="For successfull message" time="300.446">
+   <failure type="exception" message="Failed: No element found using locator: By(xpath, //p[contains(text(),&apos;Branch deatils updated&apos;)])"><![CDATA[NoSuchElementError: No element found using locator: By(xpath, //p[contains(text(),'Branch deatils updated')])
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:814:27
+    at ManagedPromise.invokeCallback_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:1376:14)
+    at TaskQueue.execute_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3084:14)
+    at TaskQueue.executeNext_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3067:27)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:2927:27
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:668:7
+    at processTicksAndRejections (internal/process/task_queues.js:89:5)Error
+    at ElementArrayFinder.applyAction_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:459:27)
+    at ElementArrayFinder.<computed> [as getText] (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:91:29)
+    at ElementFinder.<computed> [as getText] (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:831:22)
+    at UserContext.<anonymous> (H:\Jasmine\ConfigModule\Manage_branches\Editmanagebranchspec.js:166:89)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasminewd2\index.js:112:25
+    at new ManagedPromise (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:1077:7)
+    at ControlFlow.promise (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:2505:12)
+    at schedulerExecute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasminewd2\index.js:95:18)
+    at TaskQueue.execute_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3084:14)
+    at TaskQueue.executeNext_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3067:27)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:2927:27
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:668:7
+    at processTicksAndRejections (internal/process/task_queues.js:89:5)Error
+    at ElementArrayFinder.applyAction_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:459:27)
+    at ElementArrayFinder.<computed> [as getText] (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:91:29)
+    at ElementFinder.<computed> [as getText] (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:831:22)
+    at UserContext.<anonymous> (H:\Jasmine\ConfigModule\Manage_branches\Editmanagebranchspec.js:167:22)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasminewd2\index.js:112:25
+    at new ManagedPromise (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:1077:7)
+    at ControlFlow.promise (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:2505:12)
+    at schedulerExecute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasminewd2\index.js:95:18)
+    at TaskQueue.execute_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3084:14)
+    at TaskQueue.executeNext_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3067:27)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:2927:27
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:668:7
+    at processTicksAndRejections (internal/process/task_queues.js:89:5)
+From: Task: Run it("For successfull message") in control flow
+    at UserContext.<anonymous> (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasminewd2\index.js:94:19)
+    at attempt (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4297:26)
+    at QueueRunner.run (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4217:20)
+    at QueueRunner.execute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4199:10)
+    at Spec.queueRunnerFactory (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:909:35)
+    at Spec.execute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:526:10)
+    at UserContext.fn (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:5340:37)
+    at attempt (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4297:26)
+    at QueueRunner.run (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4217:20)
+    at runNext (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4257:20)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4264:13
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4172:9
+    at QueueRunner.complete [as onComplete] (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:533:9)
+    at Immediate.<anonymous> (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4231:12)
+    at processImmediate (internal/timers.js:439:21)
+From asynchronous test: 
+Error
+    at Suite.<anonymous> (H:\Jasmine\ConfigModule\Manage_branches\Editmanagebranchspec.js:165:5)
+    at addSpecsToSuite (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:1107:25)
+    at Env.describe (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:1074:7)
+    at describe (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4399:18)
+    at Object.<anonymous> (H:\Jasmine\ConfigModule\Manage_branches\Editmanagebranchspec.js:35:4)
+    at Module._compile (internal/modules/cjs/loader.js:774:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)
+    at Module.load (internal/modules/cjs/loader.js:641:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
+    at Module.require (internal/modules/cjs/loader.js:681:19)
+    at require (internal/modules/cjs/helpers.js:16:16)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine\lib\jasmine.js:93:5
+    at Array.forEach (<anonymous>)
+    at Jasmine.loadSpecs (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine\lib\jasmine.js:92:18)
+    at Jasmine.execute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine\lib\jasmine.js:197:8)]]>
+   </failure>
+  </testcase>
+  <testcase classname="Code for company number formate  under config" name="Click For View Branches" time="300.848">
+   <failure type="exception" message="Failed: No element found using locator: By(link text, View Branches)"><![CDATA[NoSuchElementError: No element found using locator: By(link text, View Branches)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:814:27
+    at ManagedPromise.invokeCallback_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:1376:14)
+    at TaskQueue.execute_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3084:14)
+    at TaskQueue.executeNext_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3067:27)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:2927:27
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:668:7
+    at processTicksAndRejections (internal/process/task_queues.js:89:5)Error
+    at ElementArrayFinder.applyAction_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:459:27)
+    at ElementArrayFinder.<computed> [as click] (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:91:29)
+    at ElementFinder.<computed> [as click] (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\built\element.js:831:22)
+    at UserContext.<anonymous> (H:\Jasmine\ConfigModule\Manage_branches\Editmanagebranchspec.js:176:31)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasminewd2\index.js:112:25
+    at new ManagedPromise (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:1077:7)
+    at ControlFlow.promise (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:2505:12)
+    at schedulerExecute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasminewd2\index.js:95:18)
+    at TaskQueue.execute_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3084:14)
+    at TaskQueue.executeNext_ (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:3067:27)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:2927:27
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\selenium-webdriver\lib\promise.js:668:7
+    at processTicksAndRejections (internal/process/task_queues.js:89:5)
+From: Task: Run it("Click For View Branches") in control flow
+    at UserContext.<anonymous> (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasminewd2\index.js:94:19)
+    at attempt (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4297:26)
+    at QueueRunner.run (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4217:20)
+    at QueueRunner.execute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4199:10)
+    at Spec.queueRunnerFactory (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:909:35)
+    at Spec.execute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:526:10)
+    at UserContext.fn (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:5340:37)
+    at attempt (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4297:26)
+    at QueueRunner.run (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4217:20)
+    at runNext (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4257:20)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4264:13
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4172:9
+    at QueueRunner.complete [as onComplete] (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:533:9)
+    at Immediate.<anonymous> (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4231:12)
+    at processImmediate (internal/timers.js:439:21)
+From asynchronous test: 
+Error
+    at Suite.<anonymous> (H:\Jasmine\ConfigModule\Manage_branches\Editmanagebranchspec.js:173:5)
+    at addSpecsToSuite (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:1107:25)
+    at Env.describe (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:1074:7)
+    at describe (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine-core\lib\jasmine-core\jasmine.js:4399:18)
+    at Object.<anonymous> (H:\Jasmine\ConfigModule\Manage_branches\Editmanagebranchspec.js:35:4)
+    at Module._compile (internal/modules/cjs/loader.js:774:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)
+    at Module.load (internal/modules/cjs/loader.js:641:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
+    at Module.require (internal/modules/cjs/loader.js:681:19)
+    at require (internal/modules/cjs/helpers.js:16:16)
+    at C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine\lib\jasmine.js:93:5
+    at Array.forEach (<anonymous>)
+    at Jasmine.loadSpecs (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine\lib\jasmine.js:92:18)
+    at Jasmine.execute (C:\Users\vijay\AppData\Roaming\npm\node_modules\protractor\node_modules\jasmine\lib\jasmine.js:197:8)]]>
+   </failure>
+  </testcase>
+ </testsuite>
+</testsuites>

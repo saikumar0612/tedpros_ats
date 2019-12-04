@@ -1,0 +1,644 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Contact Info
+          &nbsp;&nbsp;
+          <select class="form-control" id="selectInfermation" #info (change)="onNavigate(info.value)" style="display: inline; width:35%;">
+            <option [ngValue]="undefined" disabled selected>-- Select --</option>
+            <option value="myInfo/personalInfo">Personal Info</option>
+            <option value="myInfo/contactInfo">Contact Info</option>
+            <option value="myInfo/dependentInfo">Dependents Info</option>
+            <option value="myInfo/qualifications">Qualification Info</option>
+            <option value="myInfo/salaryInfo">Salary Info</option>
+            <option value="myInfo/documentInfo">Documents Info</option>
+            <option value="myInfo/my-resume">My Resume</option>
+          </select>
+        </h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/myInfo'>My Info</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Contact Info</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="this.displayContact==true; then a2 else a1"></ng-container>
+  <!-- view details -->
+  <ng-template #a1>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <div class="col-md-6">
+                <h5>CONTACT DETAILS</h5>
+              </div>
+              <div class="col-md-6">
+                <button (click)="editContact()" id="editContactDetails" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Edit</button>
+                <button (click)="cancel()" id="back" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+              </div>
+            </div>
+            <div class="padding-20" *ngIf="contactInfo">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Address Line 1:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.addressLine1 | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Address Line 2:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.addressLine2 | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Street:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.street | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">City:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.city.name | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">State/Province:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.state.name | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Zip/Postal Code:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.zip | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Country:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.country.name | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Home Telephone:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.homeTelephone }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Work Telephone:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.workTelephone }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Other Email Address:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.otherEmail }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- edit details -->
+  <ng-template #a2>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form class="search-form" #addContactFrm="ngForm" name="form" (ngSubmit)="addContactFrm.form.valid"
+              novalidate>
+              <div class="form-header">
+                <h5>CONTACT DETAILS</h5>
+              </div>
+              <div class="padding-20" *ngIf="contactInfo">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Address Line 1 <span class="req-field">*</span> </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="editAddress" class="form-control mb-10" name="addressLine1"
+                        [(ngModel)]="contactInfo.addressLine1" #addressLine1="ngModel"
+                        [ngClass]="{ 'is-invalid': addContactFrm.submitted && addressLine1.invalid }" required>
+                      <div *ngIf="addressLine1.touched && addressLine1.invalid" class="invalid-feedback">
+                        <div *ngIf="addressLine1.touched && addressLine1.errors.required">Address is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Address Line 2</label>
+                    <div class="col-sm-8">
+                      <input type="text" id="editAddress1" class="form-control mb-10" name="addressLine2"
+                        [(ngModel)]="contactInfo.addressLine2" #addressLine2="ngModel">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Street </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="editStreet" name="street" [(ngModel)]="contactInfo.street"
+                        #street="ngModel" [ngClass]="{ 'is-invalid': addContactFrm.submitted && street.invalid }">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Country <span class="req-field">*</span> </label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="editCountry" name="country" #country [(ngModel)]="contactInfo.country.id" #country="ngModel" (change)="change(country.value)"
+                        [ngClass]="{ 'is-invalid': addContactFrm.submitted && country.invalid }" required>
+                        <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                      </select>
+                      <div *ngIf="country.touched && country.invalid" class="invalid-feedback">
+                        <div *ngIf="country.touched && country.errors.required">Country is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label"> State/Province <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="editState" #state name="state" [(ngModel)]="contactInfo.state.id"
+                        #state="ngModel" [ngClass]="{ 'is-invalid': addContactFrm.submitted && state.invalid }"
+                        (change)="getCity(state.value)" required>
+                        <option *ngFor="let state of states" value="{{state.id}}">{{state.name}}</option>
+                      </select>
+                      <div *ngIf="state.touched && state.invalid" class="invalid-feedback">
+                        <div *ngIf="state.touched && state.errors.required">State is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">City <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="editCity" name="city" [(ngModel)]="contactInfo.city.id" #city="ngModel"
+                        [ngClass]="{ 'is-invalid': addContactFrm.submitted && city.invalid }" required>
+                        <option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</option>
+                      </select>
+                      <div *ngIf="city.touched && city.invalid" class="invalid-feedback">
+                        <div *ngIf="city.touched && city.errors.required">City is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Zip/Postal Code <span class="req-field">*</span> </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="editZipcode" name="zip" [(ngModel)]="contactInfo.zip"
+                        #zip="ngModel" [ngClass]="{ 'is-invalid': addContactFrm.submitted && zip.invalid }" required (blur)="getAddress()">
+                      <div *ngIf="zip.touched && zip.invalid" class="invalid-feedback">
+                        <div *ngIf="zip.touched && zip.errors.required">Zip Code is required</div>
+                      </div>
+                      <p *ngIf="zipError" style="color:red;font-weight:bold;">{{zipError}}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Other Email Address</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="editotheEmail" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" name="otherEmail" [(ngModel)]="contactInfo.otherEmail" #otherEmail="ngModel">
+                      <div *ngIf="otherEmail.errors?.pattern" class="invalid-feedback">
+                        Email Address is not valid.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Home Telephone</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="editHomeNumber" name="homeTelephone"
+                        [(ngModel)]="contactInfo.homeTelephone" #homeTelephone="ngModel" pattern="([+]?\d{1,3}[-])?\d{10}">
+                      <div *ngIf="homeTelephone.errors?.pattern" class="invalid-feedback">
+                        Telephone number not valid.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Work Telephone</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="editWorkTelephone" name="workTelephone"
+                        [(ngModel)]="contactInfo.workTelephone" #workTelephone="ngModel" pattern="([+]?\d{1,3}[-])?\d{10}">
+                      <div *ngIf="workTelephone.errors?.pattern" class="invalid-feedback">
+                        Telephone number not valid.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary mlr-5" id="editContactInfo" (click)="editContactInfo()"
+                      [disabled]="!addContactFrm.valid">Submit</button>
+                    <button (click)="resetForm(addContactFrm)" id="editReset" class="btn btn-info mlr-5">Reset</button>
+                    <button class="btn btn-danger mlr-5" id="editBack" (click)="backContact()">Cancel</button>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- add contact details -->
+              <div class="padding-20" *ngIf="!contactInfo">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Address Line 1 <span class="req-field">*</span> </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="addAddress" name="addressLine1"
+                        [(ngModel)]="contactDetails.addressLine1" #addressLine1="ngModel"
+                        [ngClass]="{ 'is-invalid': addContactFrm.submitted && addressLine1.invalid }" required>
+                      <div *ngIf="addressLine1.touched && addressLine1.invalid" class="invalid-feedback">
+                        <div *ngIf="addressLine1.touched && addressLine1.errors.required">Address is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Address Line 2</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="addAddress2" name="addressLine2"
+                        [(ngModel)]="contactDetails.addressLine2" #addressLine2="ngModel">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Street </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="addStreet" class="form-control mb-10" name="street" [(ngModel)]="contactDetails.street"
+                        #street="ngModel" [ngClass]="{ 'is-invalid': addContactFrm.submitted && street.invalid }">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Country <span class="req-field">*</span> </label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="addCountry" name="country" #country [(ngModel)]="contactDetails.country.id" #country="ngModel" (change)="change(country.value)"
+                        [ngClass]="{ 'is-invalid': addContactFrm.submitted && country.invalid }" required>
+                        <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                      </select>
+                      <div *ngIf="country.touched && country.invalid" class="invalid-feedback">
+                        <div *ngIf="country.touched && country.errors.required">Country is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label"> State/Province <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="addState" #state name="state" [(ngModel)]="contactDetails.state.id"
+                        #state="ngModel" [ngClass]="{ 'is-invalid': addContactFrm.submitted && state.invalid }"
+                        (change)="getCity(state.value)" required>
+                        <option *ngFor="let state of states" value="{{state.id}}">{{state.name}}</option>
+                      </select>
+                      <div *ngIf="state.touched && state.invalid" class="invalid-feedback">
+                        <div *ngIf="state.touched && state.errors.required">State is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">City <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="addCity" name="city" [(ngModel)]="contactDetails.city.id"
+                        #city="ngModel" [ngClass]="{ 'is-invalid': addContactFrm.submitted && city.invalid }" required>
+                        <option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</option>
+                      </select>
+                      <div *ngIf="city.touched && city.invalid" class="invalid-feedback">
+                        <div *ngIf="city.touched && city.errors.required">City is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Zip/Postal Code <span class="req-field">*</span> </label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="addZip" name="zip" [(ngModel)]="contactDetails.zip"
+                        #zip="ngModel" [ngClass]="{ 'is-invalid': addContactFrm.submitted && zip.invalid }" required (blur)="getAddress1()">
+                      <div *ngIf="zip.touched && zip.invalid" class="invalid-feedback">
+                        <div *ngIf="zip.touched && zip.errors.required">Zip Code is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Other Email Address</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="addotherEmail" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" name="otherEmail" [(ngModel)]="contactDetails.otherEmail" #otherEmail="ngModel">
+                      <div *ngIf="otherEmail.errors?.pattern" class="invalid-feedback">
+                        Email Address is not valid.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Home Telephone</label>
+                    <div class="col-sm-8">
+              <input type="text" class="form-control mb-10" id="addHoimeNumber"  pattern="([+]?\d{1,3}[-])?\d{10}"name="homeTelephone" [(ngModel)]="contactDetails.homeTelephone" #homeTelephone="ngModel">
+                      <div *ngIf="homeTelephone.errors?.pattern" class="invalid-feedback">
+                          Telephone number not valid.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Work Telephone</label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control mb-10" id="addWorknumber" name="workTelephone"
+                        [(ngModel)]="contactDetails.workTelephone" #workTelephone="ngModel" pattern="([+]?\d{1,3}[-])?\d{10}" >
+                        <div *ngIf="workTelephone.errors?.pattern" class="invalid-feedback">
+                          Telephone number not valid.
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary mlr-5" (click)="addContactInfo()"
+                      [disabled]="!addContactFrm.valid" id="addContactInfo">Submit</button>
+                    <button (click)="reset()" id="addReset" class="btn btn-info mlr-5">Reset</button>
+                    <button class="btn btn-danger mlr-5" id="addBack" (click)="backContact()">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-container *ngIf="this.displayEmergency==true; then b2 else b1"></ng-container>
+  <!-- view details -->
+  <ng-template #b1>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <div class="col-md-6">
+                <h5>EMERGENCY CONTACT DETAILS</h5>
+              </div>
+              <div class="col-md-6">
+                <button (click)="editEmergencyInfo()" class="btn btn-danger mlr-5 mtb-5"
+                  style="float: right;" id="editEmergencyDetails">Edit</button>
+                <button (click)="cancel()" id="backEmergencyDetails" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+              </div>
+            </div>
+            <div class="padding-20">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="form-header">
+                    <tr>
+                      <th>Name</th>
+                      <th>Relationship</th>
+                      <th>Contact</th>
+                      <th>Email</th>
+                      <!-- changes --suresh-- 08-13-2018 start -->
+                      <th>Date Of Birth</th>
+                      <!-- changes --suresh-- 08-13-2018 end -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let emergencyinfo of emergencylist1" style="margin-bottom: 10px;">
+                      <td>{{emergencyinfo.name | titlecase}}</td>
+                      <td>{{emergencyinfo.relationname}}</td>
+                      <td>{{emergencyinfo.contact}}</td>
+                      <td>{{emergencyinfo.email}}</td>
+                      <!-- changes --suresh-- 08-13-2018 start -->
+                      <td>{{emergencyinfo.dob | date: 'MM-dd-yyyy'}}</td>
+                      <!-- changes --suresh-- 08-13-2018 end -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- edit details -->
+  <ng-template #b2>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="search-form">
+              <div class="form-header">
+                <h5>EDIT EMERGENCY CONTACT DETAILS</h5>
+              </div>
+              <div class="padding-20">
+                <form #addUser="ngForm" name="form" (ngSubmit)="addUser.form.valid" novalidate>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Name <span class="req-field">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" id="editContactName" class="form-control mb-10" name="name" #name="ngModel"
+                          [(ngModel)]="emergencylist.name" [ngClass]="{ 'is-invalid': addUser.submitted && name.invalid }" required pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$">
+                        <div *ngIf="name.touched && name.invalid" class="invalid-feedback">
+                          <div *ngIf="name.touched && name.errors.required">Name is required</div>
+                        </div>
+                        <div *ngIf="name.errors?.pattern" class="invalid-feedback">
+                          Enter a valid Name
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Relationship</label>
+                      <div class="col-sm-8">
+                        
+                        <select class="form-control mb-10" id="editRelationship" #relation name="relation" #relation="ngModel" [(ngModel)]="emergencylist.relation">
+                          <option value="" disabled selected>Choose a Relation</option>
+                          <option *ngFor="let relation of relationset" value="{{relation.id}}">{{relation.relation}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Contact <span class="req-field">*</span></label>
+                      <div class="col-sm-8">
+                         <input type="text" id="editMobile" class="form-control mb-10" 
+                         name="contact"   pattern="([+]?\d{1,3}[-])?\d{10}" [(ngModel)]="emergencylist.contact"
+                         #contact="ngModel" [ngClass]="{ 'is-invalid': addUser.submitted && contact.invalid }"
+                         required>
+                         <div *ngIf="contact.touched && contact.invalid" class="invalid-feedback">
+                            <div *ngIf="contact.touched && contact.errors.required">Mobile Number is required</div>
+                          </div>
+                          <div *ngIf="contact.errors?.pattern" class="invalid-feedback">
+                            Mobile number not valid.
+                          </div>                      
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Email</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control mb-10" id="editEmergencyContactEmail" name="email" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" #email="ngModel" [(ngModel)]="emergencylist.email">
+                        <div *ngIf="email.errors?.pattern" class="invalid-feedback">
+                          Email is not valid.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- changes --suresh-- 08-13-2018 start -->
+                  <div class="form-group row"> 
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Date Of Birth <span class="req-field">*</span>:</label>
+                        <div class="col-sm-8">
+                          <input class="form-control mb-10"  placeholder="MM/DD/YYYY" id="dob" [owlDateTimeTrigger]="dob1" [(ngModel)]="emergencylist.dob" #dob="ngModel" [owlDateTime]="dob1" name="dob" (dateTimeInput)="dateOfBirthValidation()" required>
+                          <owl-date-time [pickerType]="'calendar'" #dob1></owl-date-time>
+                          <div *ngIf="dob.touched && dob.invalid" class="invalid-feedback">
+                             <div *ngIf="dob.touched && dob.errors.required">Date of birth is required</div>
+                          </div>
+                          <p *ngIf="dateOfBirthValidation" class="invalid-feedback">{{ doberror }}</p>
+                        </div>
+                      </div>
+                  </div>
+                  <!-- changes --suresh-- 08-13-2018 end -->
+                  <div class="form-group row">
+                    <div class="col-sm-10 mb-10">
+                      <button type="submit" class="btn btn-primary mlr-5"
+                        (click)="insertEmergency(addUser,name.value,relation.value,null,contact.value,email.value,dob.value)" [disabled]="!addUser.valid" id="addEmegencyContactDetails">Add</button>
+                      <button type="reset" class="btn btn-info mlr-5" id="reserEmergencyDetails">Reset</button>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-10" *ngIf="errormsg">
+                      <p class="invalid-feedback">{{ errormsg }}</p>
+                    </div>
+                    <div class="col-sm-10" *ngIf="doberrormsg">
+                      <p class="invalid-feedback">{{ doberrormsg }}</p>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="table-responsive margin-20">
+                  <table class="table table-bordered">
+                    <thead class="form-header">
+                      <tr>
+                        <th>Name</th>
+                        <th>Relationship</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <!-- changes --suresh-- 08-13-2018 start -->
+                        <th>Date Of Birth</th>
+                        <!-- changes --suresh-- 08-13-2018 end -->
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let emergencyinfo of emergencylist1" style="margin-bottom: 10px;">
+                        <td>{{emergencyinfo.name | titlecase}}</td>
+                        <td>{{emergencyinfo.relationname}}</td>
+                        <td>{{emergencyinfo.contact}}</td>
+                        <td>{{emergencyinfo.email}}</td>
+                        <!-- changes --suresh-- 08-13-2018 start -->
+                        <td>{{emergencyinfo.dob | date: 'MM-dd-yyyy'}}</td>
+                        <!-- changes --suresh-- 08-13-2018 end -->
+                        <td>
+                          <button (click)="editEmergency(emergencyinfo)" class="tabledit-delete-button btn btn-primary mlr-5" id="editEmergencyInfoDetails">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>
+                          <button (click)="removeEmergency(emergencyinfo)" class="tabledit-delete-button btn btn-danger" id="removeEmergenyInfoDetails">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="form-group row">
+                    <div class="col-sm-10">
+                      <button class="btn btn-primary mlr-5" id="submitEmergencyContactDetails" (click)="addEmergency()">Submit</button>
+                      <button class="btn btn-danger mlr-5" id="backEmergencyContact"  (click)="backEmergencyContact(addUser)">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.message">
+      <button class="close" type="button" id="closepopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="success text-center">
+            <h5> Contact details updated successfully!</h5>
+          </td>
+        </tr>
+      </table>  
+      <div class="row text-center">
+        <a class="btn btn-success" id="backTomyInfo" routerLink="/myInfo">
+          <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> Go to My Info
+        </a>    
+      </div>
+  </div>
+  <div class="popupbox" *ngIf="this.error">
+      <button class="close" type="button" id="errorpopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="danger text-center">
+            <h5>{{error }} </h5>
+          </td>
+        </tr>
+      </table>  
+  </div>
+</div>  
+<div class="popupbox_wrap" *ngIf="isShowPopup1">
+  <div class="popupbox" *ngIf="this.message1">
+      <button class="close" type="button" id="successPopup" (click)="closePopup1()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="success text-center">
+            <h5> Emergency contact details updated successfully! </h5>
+          </td>
+        </tr>
+      </table>  
+	  <div class="row text-center">
+        <a class="btn btn-success" id="closeEmergencyPopup" routerLink="/myInfo">
+          <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> Go to Myinfo</a>    
+       </div>
+  </div>
+  <div class="popupbox" *ngIf="this.error1">
+      <button class="close" type="button" id="closeEmergenctError" (click)="closePopup1()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="danger text-center">
+            <h5>{{error1 }} </h5>
+          </td>
+        </tr>
+      </table>  
+	  
+      <div class="row text-center">
+        <a class="btn btn-success" id="closeEmergenctErrorpopup" routerLink="/myInfo">
+          <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> Go to Myinfo</a>    
+       </div>
+  </div>
+</div>  
+
+
+
+
+
+

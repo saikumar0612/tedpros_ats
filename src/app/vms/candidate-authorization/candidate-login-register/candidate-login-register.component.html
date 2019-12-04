@@ -1,0 +1,270 @@
+<!-- adding --suresh-- 08-21-2019 start -->
+<div class="limiter">
+  <div class="container-login100" style="background-image: url('assets/images/bg-candidateReg.jpg');">
+    <div class="row" style="width: 100%">
+      <div class="col-sm-8">
+      <!-- <div>
+        <form class="login100-form validate-form" #registerFrm="ngForm" name="form" (ngSubmit)="registerFrm.form.valid" novalidate> 
+            <div class="jf-dashboardbox jf-myappliedjobs">
+                <div class="jf-dashboardboxtitle">
+                    <h2>{{ name | uppercase}} CURRENT OPENINGS</h2>
+                </div>
+                <div class="jf-dashbboardcontent jf-myjobsapplications jf-myjobsapplicationsvtwo">
+                  <div>
+                    <ul>
+                      <li *ngFor="let job of jobList | slice :0:5" >
+                        <div class="jf-featurejob">
+                          <div class="jf-companycontent">
+                              <div class="jf-companyhead">
+                                <a class="jf-btnjobtag jf-internship" ></a>
+                              </div>
+                              <div class="jf-companyname">
+                                <h3>{{job.job.name}}</h3>
+                                <h6></h6>
+                              </div>
+                              <div >
+                                <strong>Skills :</strong>
+                                <span *ngFor="let x of job.skill"> {{x.skillName}},</span>
+                              </div>
+                              <div>
+                                <strong>Salary:</strong>
+                                <span> ${{job.billRate}} / {{job.perHour.pay_frequency}}</span>
+                              </div>
+                              <div>
+                                <strong>Location:</strong>
+                                <span> {{job.country.name}}, {{job.state.name}}, {{job.city.name}}</span>
+                              </div>
+                              <div >
+                                <strong >Description :</strong><span [innerHTML]="job.description |slice:0:100"> {{job.description}}</span>        
+                              </div>
+                              <div>
+                                <button class="btn btn-info" id="jobDetails" (click)="readMore()" style="float: right;">Read More</button>
+                              </div>
+                          </div>
+                      </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+        
+        </form>
+      </div> -->
+      </div>
+      <!-- <div class="col-sm-2">
+
+      </div> -->
+      <div class="col-sm-4 ">
+        <div class="wrap-login100 p-l-26 p-r-26 p-t-39 p-b-0" style="width: 100%">
+            <form class="login100-form validate-form" #registerFrm="ngForm" name="form" (ngSubmit)="registerFrm.form.valid" novalidate> 
+                  <div class="p-b-20">
+                    <img class="img-center" style="width: 65%" alt="Company Logo" src="{{file1_input}}">
+                  </div>
+              <div class="form-container">
+                  <ngb-tabset type="pills">
+                      <ngb-tab title="Login">
+                        <ng-template ngbTabContent>
+                              <h2 style="color: red; text-align: center;">
+                                  <strong  *ngIf="error">
+                                          {{error}}
+                                  </strong>
+                              </h2>
+                              <form class="form-box" #loginForm="ngForm" >
+                                      <div class="form-group row" style="margin-bottom: 30px;margin-top: 12px">
+                                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
+                                          <i class="fa fa-envelope vms-login-icon" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                                          
+                                          <input type="text" class="form-control" placeholder="Enter your Email" #userName="ngModel" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" name="userName" id="userName" [(ngModel)]="user.userName" required invalid>
+                                          <div class="text-danger" *ngIf="userName.touched && userName.errors">
+                                            <p *ngIf="userName.touched && userName.errors.required">Please enter User Name</p>
+                                          </div>
+                                          <div *ngIf="userName.errors?.pattern" class="invalid-feedback1">
+                                              Please enter a valid email id 
+                                          </div>
+
+                                        </div>
+                                      </div>
+                                      <div class="form-group row" style="margin-bottom: 30px;">
+                                        <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
+                                          <i class="fa fa-key vms-login-icon" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                                          
+                                          <input type="password" class="form-control" placeholder="Enter your password" #password="ngModel"
+                                            name="password" id="password" [(ngModel)]="user.password" required>
+                                          <div class="text-danger" *ngIf="password.touched && password.errors" >
+                                            <p *ngIf="password.touched && password.errors.required">Please enter your Password</p>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                              </form>
+                              <div class="form-group row">
+                                <div class="col-md-3"></div>
+                                  <div class="col-md-3">
+                                      <button id="login" class="btn btn-primary btn-lg" [disabled]="!loginForm.valid"  (click)="userLogin()">Log me in</button>
+                                  </div>
+                                  <div class="col-md-3">
+                                      <button id="login" class="btn btn-info btn-lg"  routerLink='/authorization/login'>Employee Login</button>
+                                  </div>
+                              </div> 
+                              <div class="form-group row">
+                                  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                    <a routerLink='/vms/candidateforget' id="forget">Forget Password ?</a>
+                                  </div>
+                              </div>
+                          </ng-template>
+                      </ngb-tab>
+                      <ngb-tab title="Register">
+                        <ng-template ngbTabContent>
+                              <form class="login100-form validate-form" #registerFrm="ngForm" name="form" (ngSubmit)="registerFrm.form.valid" novalidate autocomplete="off">
+                                  <div style="margin-top: 12px">
+                                          <div class="form-group row">
+                                                  <div class="col-md-6 col-xs-12">
+                                                      <div class="form-group">
+                                                      <input type="text" name="firstName" id="firstName" class="form-control mb-10" placeholder="First Name*" [(ngModel)]="candidateData.firstName" #firstName="ngModel" [ngClass]="{ 'is-invalid': registerFrm.submitted && firstName.invalid }" required pattern="^([a-zA-Z])*$" autocomplete="false">
+                                                      <div *ngIf="firstName.touched && firstName.invalid" class="invalid-feedback1">
+                                                          <div *ngIf="firstName.errors.required">First name is required</div>
+                                                      </div>
+                                                      <div *ngIf="firstName.errors?.pattern" class="invalid-feedback1">Enter a valid First Name</div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-6 col-xs-12">
+                                                      <div class="form-group">
+                                                      <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Last Name*" [(ngModel)]="candidateData.lastName" #lastName="ngModel" [ngClass]="{ 'is-invalid': registerFrm.submitted && lastName.invalid }" pattern="^([a-zA-Z])*$" required>
+                                                      <div *ngIf="lastName.touched && lastName.invalid" class="invalid-feedback1">
+                                                          <div *ngIf="lastName.errors.required">Last name is required</div>
+                                                      </div>
+                                                      <div *ngIf="lastName.errors?.pattern" class="invalid-feedback1">Enter a valid Last Name</div>
+                                                      </div>
+                                                  </div>
+                                          </div>
+                                          <div class="form-group row">
+                                              <div class="col-md-6 col-xs-12">
+                                                  <div class="form-group">
+                                                  <input type="email" id="email" name="email" class="form-control" placeholder="Email Address*" [(ngModel)]="candidateData.email" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" #email="ngModel" [ngClass]="{ 'is-invalid': registerFrm.submitted && email.invalid }" (blur)="checkMail()" required>
+                                                  <p *ngIf="emailError" style="color:red;font-weight:bold;">{{emailError}}</p>
+                                                  <div *ngIf="email.touched && email.invalid" class="invalid-feedback1">
+                                                      <div *ngIf="email.errors.required">Email is required</div>
+                                                  </div>
+                                                  <div *ngIf="email.errors?.pattern" class="invalid-feedback1">Please enter a valid email id</div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-md-6 col-xs-12">
+                                                  <div class="form-group">
+                                                  <input type="text" name="number" id="phoneNumber" class="form-control mb-10" placeholder="Phone Number*" [(ngModel)]="candidateData.number" #number="ngModel" [ngClass]="{ 'is-invalid': registerFrm.submitted && number.invalid }" pattern="([+]?\d{1,3}[-])?\d{10}" required>
+                                                  <div *ngIf="number.touched && number.invalid" class="invalid-feedback1">
+                                                      <div *ngIf="number.errors.required">Phone Number is required</div>
+                                                  </div>
+                                                  <div *ngIf="number.errors?.pattern" class="invalid-feedback1">+XXX-XXXXXXXXXX is valid</div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="form-group row">
+                                              <div class="col-md-6 col-xs-12">
+                                                  <div class="form-group">
+                                                  <input type="password" name="password" class="form-control" placeholder="Set Password*" id="password" [(ngModel)]="candidateData.password" #password="ngModel" [ngClass]="{ 'is-invalid': registerFrm.submitted && password.invalid }" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{8,}" required title="Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character">
+                                                  <div *ngIf="password.touched && password.invalid" class="invalid-feedback1">
+                                                      <div *ngIf="password.errors.required">Password is required</div>
+                                                  </div>
+                                                  <div *ngIf="password.errors?.pattern" class="invalid-feedback1">Password should contain minimum eight characters, at least one uppercase & lowercase letter, one number and one special character</div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-md-6 col-xs-12">
+                                                  <div class="form-group">
+                                                  <input type="password" name="cppassword" class="form-control" placeholder="Confirm Password*" id="confirmPassword" [(ngModel)]="candidateData.cppassword" #cppassword="ngModel" [ngClass]="{ 'is-invalid': registerFrm.submitted && cppassword.invalid }" required>
+                                                  <div *ngIf="(cppassword.touched && cppassword.errors) || candidateData.password!=candidateData.cppassword">
+                                                      <p *ngIf="cppassword.touched && cppassword.errors" class="invalid-feedback1">Please Confirm Password</p>
+                                                      <p *ngIf="cppassword.touched && candidateData.password!=candidateData.cppassword" class="invalid-feedback1">Passwords didn't match</p>
+                                                  </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                  </div>
+                              </form>
+                              <div class="form-group row">
+                                  <div class="col-md-12" style="text-align: center;">
+                                      <button type="button" id="submitData" class="btn btn-primary btn-lg" style="padding: 0.7rem 6rem;" [disabled]="!registerFrm.valid" (click)="register(registerFrm)">REGISTER</button>
+                                  </div>
+                              </div>
+                        </ng-template>
+                      </ngb-tab>
+                    </ngb-tabset>
+                  </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap">
+    <img src="assets/images/loginloader.gif" alt="">
+  </div>
+</div>
+<div class="popupbox_wrap" *ngIf="isSuccess">
+  <div class="popupbox" style="margin-left: 30%">
+    <p>Registered Successfully. Please activate your account through the link sent to your mail.</p>
+    <div class="row"> 
+      <a class="btn btn-primary" style="margin-left: 40%" id="nextPage" (click)="closePopup()">Close</a>
+    </div>
+  </div>
+  <!--popupbox-->
+</div>
+      <!--popupbox_wrap-->
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox" style="margin-left: 30%">
+    <p>{{ registredData.errorMessages }}</p>
+    <div class="row text-center">
+      <button class="btn btn-success" id="closebtn" (click)="closeError()"> Close</button>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+      <!--popupbox_wrap-->
+
+
+      <!-- adding --suresh-- 08-21-2019 end -->
+
+      <!-- adding error popup messages suresh 09-03-2019 start -->
+<div class="popupbox_wrap" *ngIf="isFailure1">
+  <div class="popupbox" style="margin-left: 30%">
+    <p>{{ data.errorMessages }}</p>
+    <div class="row text-center">
+      <button class="btn btn-success" id="closebtn" (click)="closeError()"> Close</button>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+  <!--popupbox_wrap-->
+  <!-- adding error popup messages suresh 09-03-2019 end -->
+
+<!-- adding popup messages suresh 09-12-2019 start -->
+<!-- <div class="popupbox_wrap" *ngIf="jobPopup">
+  <div class="popupbox" style="margin-left: 30%">
+    <div class="row text-center">
+        <p>Please login</p>
+      <button class="btn btn-success" id="closebtn" (click)="closeError()">Close</button>
+    </div>
+  </div>
+</div> -->
+<!--popupbox_wrap-->
+<!-- adding popup messages suresh 09-12-2019 end -->
+
+<div class="popupbox_wrap" *ngIf="jobPopup">
+  <div class="popupbox" style="margin-left: 30%;border-top: 0px solid #e9ecef;">
+    <table class="table table-bordered">
+      <tr>
+        <td class="sucess text-center">
+          <h2 >Please Login For More Information</h2><br/>
+          <button  class="btn btn-success btn-lg" id="closebtn" (click)="closeError()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Login</button>
+          
+        </td>  
+      </tr>
+    </table>
+  </div>
+</div>

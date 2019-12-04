@@ -1,0 +1,201 @@
+@import '../../../../assets/vendor/bootstrap/css/bootstrap.min.css';
+@import '../../../../assets/vendor/css/util.css';
+@import '../../../../assets/vendor/css/main.css';
+@import '../../../../assets/vendor/css/main.css';
+
+@import '../../../../assets/vendor/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
+@import '../../../../assets/vendor/fonts/iconic/css/material-design-iconic-font.min.css';
+@import '../../../../assets/vendor/animate/animate.css';
+@import '../../../../assets/vendor/animsition/css/animsition.min.css';
+@import '../../../../assets/vendor/daterangepicker/daterangepicker.css';
+
+
+@media (min-width: 992px){
+.col-md-offset-3 {
+    margin-left: 0;
+}
+}
+
+.form-control {
+    font-size: 1.4rem;
+}
+
+.form-group{
+    margin-bottom: 10px;
+}
+select.form-control:not([size]):not([multiple]){
+    height:calc(3.25rem + 2px) !important;
+}
+
+.invalid-feedback1 {
+   
+    color: #dc3545;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: 32%;
+    margin-top:-7%;
+    width: 50%;
+    margin-bottom: 17px;
+  }
+
+
+ 
+
+/* styles for jobs list */
+.jf-dashboardbox {
+    width: 100%;
+    float: left;
+    background: #fff;
+    position: relative;
+    border-radius: 5px;
+    box-shadow: 0 0 15px 0 rgba(0,0,0,0.20);
+}
+@media (max-width: 1366px){
+    .jf-dashboardboxtitle {
+        padding: 30px 20px;
+    }
+}
+.jf-dashboardboxtitle {
+    width: 100%;
+    float: left;
+    padding: 30px;
+    position: relative;
+    border-bottom: 1px solid #eaedef;
+}
+.jf-dashboardboxtitle {
+    float: left;
+    margin: 0 0 10px;
+    font: 500 20px/15px 'Poppins', Arial, Helvetica, sans-serif;
+}
+.jf-dashboardboxtitle span {
+    clear: both;
+    float: left;
+    color: #767676;
+    display: block;
+    font: 400 14px/14px 'Open Sans', Arial, Helvetica, sans-serif;
+}
+.jf-myjobsapplications {
+    padding: 0;
+}
+.jf-dashbboardcontent {
+    width: 100%;
+    float: left;
+    padding: 20px;
+    overflow: hidden;
+    border-radius: 0 0 5px 5px;
+}
+.jf-myjobsapplications > ul {
+    width: 100%;
+    float: left;
+    list-style: none;
+}
+.jf-myjobsapplications > ul > li {
+    width: 100%;
+    float: left;
+    padding: 0 30px 0 20px;
+    list-style-type: none;
+}
+@media (max-width: 1680px){
+    .jf-myjobsapplications > ul > li {
+        padding: 0 20px;
+    }
+}
+.jf-featurejob {
+    width: 100%;
+    float: left;
+    padding: 10px;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #eff2f5;
+    box-shadow: 0 0 15px 0 rgba(0,0,0,0.31);
+    margin-bottom: 10px;
+}
+.jf-myjobsapplication > ul > li .jf-featurejob {
+    border: 0;
+    width: auto;
+    padding: 20px 0;
+    box-shadow: none;
+}
+@media (max-width: 1600px){
+    .jf-myjobsapplications > ul > li .jf-featurejob {
+        width: 50%;
+    }    
+}
+.jf-companycontent {
+    padding: 7px 0;
+    overflow: hidden;
+}
+.jf-companyname {
+    width: 100%;
+    float: left;
+}
+.jf-companyname h3 {
+    font-size: 16px;
+    margin: 0 0 5px;
+    font-weight: 400;
+    line-height: 20px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+/* strong {
+    color: #414141;
+} */
+.jf-jobmatadata {
+    margin: 0;
+    float: right;
+    padding: 42px 0;
+    list-style: none;
+    position: relative;
+}
+.jf-jobmatadata li {
+    float: left;
+    padding: 0 30px;
+    list-style-type: none;
+}
+@media (max-width: 1680px){
+    .jf-jobmatadata li {
+        padding: 0 38px;
+    }
+}
+.jf-matacontent {
+    overflow: hidden;
+}
+.jf-matacontent span {
+    color: #767676;
+    display: block;
+    font-size: 13px;
+    margin: 0 0 3px;
+    line-height: 17px;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+.jf-matacontent time {
+    color: #324b6e;
+    display: block;
+    font-size: 14px;
+    line-height: 17px;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+.jf-jobmatadata li:last-child {
+    padding-right: 0;
+}
+@media (max-width: 1680px){
+    .jf-jobmatadata li {
+        padding: 0 38px;
+    }
+}
+.img-center{
+    display: block;
+    margin: auto;;
+}
+
+
+.vms-login-icon {
+    font-size: 20px;
+    color: #0073ff;
+    line-height: 32px;
+}

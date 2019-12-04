@@ -1,0 +1,133 @@
+<style>
+	input[type="file"] {
+	      display: block;
+	      right: 0;
+	      cursor: pointer;
+	      bottom: -1px;
+	      font-size: 12px;
+	      opacity: 1;
+	      position: relative;
+	      width: 100%;
+	      z-index: 0;
+		}
+		.mt5{
+			margin-top: 5px;
+		}
+</style>
+<div class="content">
+	<div class="top-header">
+		<div class="row">
+			<div class="col-md-6 col-lg-6 heading">
+				<h4>Add Official Document</h4>
+			</div>
+			<div class="col-md-6 col-lg-6 breadcrumb">
+				<ul class="breadcrumb-items">
+					<li><a routerLink='/dashboard'>Home</a>
+					</li>
+					<li>&nbsp;/&nbsp;</li>
+					<li>Add Official Document</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="element-content">
+		<div class="job-box">
+			<div class="row">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<form class="search-form" #f="ngForm" name="form" (ngSubmit)="f.form.valid" novalidate>
+						<div class="form-header">
+							<h5>Add Official Document </h5>
+						</div>
+						<div class="padding-20">
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Select Document Type<span class="req-field">*</span> &nbsp;:</label>
+									<div class="col-md-8">
+										<select class="form-control mb-8" placeholder="Select" id="type" name="doc_type_id" [(ngModel)]="officalDoc.doc_type_id" #doc_type_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && doc_type_id.invalid }" required>
+											<option disabled>Select document type</option>
+											<option *ngFor="let document of documents" value="{{document.id}}">{{document.name}}</option>
+										</select>
+										<!-- saikumar 01/08/2019 added the validation for input types started-->
+										<div *ngIf="doc_type_id.touched && doc_type_id.invalid" class="invalid-feedback mt5">
+												<div *ngIf="doc_type_id.errors.required">Document Title Is Required</div>
+											  </div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Title<span class="req-field">*</span> &nbsp;:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control mb-20" placeholder="Enter Title" name="title" value="" required pattern="^(?!.*[\.\&\*\-\_\(\)]{2})([a-zA-Z0-9.&*-_()]+\s)*[a-zA-Z0-9.&*-_()]+$"
+										 id="title" [(ngModel)]="officalDoc.title" #title="ngModel" [ngClass]="{ 'is-invalid': f.submitted && title.invalid }">
+
+										<div *ngIf="title.errors?.pattern" class="invalid-feedback">
+											Title  Not Valid.
+										  </div>
+										  <div *ngIf="title.touched && title.invalid" class="invalid-feedback">
+											<div *ngIf="title.errors.required">Title Is Required</div>
+										  </div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Select Document<span class="req-field">*</span> &nbsp;:</label>
+									<div class="col-md-8">
+										<input type="file" id="officDoc" [disabled]="!f.valid" ng2FileSelect [uploader]="uploader" name="officDoc" accept="application/pdf,application/docx" class="form-control mb-10">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12" style="margin-bottom: 40px">
+								<table class="table">
+									<thead>
+										<tr>
+											<th style="width:20%">Name</th>
+											<th style="width:40%">Progress</th>
+											<th style="width:5%">Status</th>
+											<th style="width:35%">Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let item of uploader.queue">
+											<td><strong>{{ item?.file?.name }}</strong>
+											</td>
+											<td>
+												<div class="progress">
+													<div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+												</div>
+											</td>
+											<td class="text-center"> <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+												<span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+												<span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+											</td>
+											<td>
+												<button type="button" class="btn btn-success" id="uploadDoc" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess"> <span class="glyphicon glyphicon-upload"></span> Upload</button>
+											</td>
+											<!-- on successfull insertion-->
+											<div class="popupbox_wrap" *ngIf="item.isSuccess">
+												<div class="popupbox">
+													<p class="bg-success">Official document uploaded successfully!</p>
+													<div class="row text-center">
+														<button class="btn btn-primary" routerLink="/office-documents" id="closePopup"><i class="fa fa-user-plus" aria-hidden="true"></i> View All Office Documents</button>
+													</div>
+													<!--row-->
+												</div>
+												<!--popupbox-->
+											</div>
+											<!--popupbox_wrap-->
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="padding-20">
+							<div class="row">
+								<div class="col-sm-10"> 
+									<a class="btn btn-primary" id="addholidays" routerLink="/office-documents">Back</a>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>

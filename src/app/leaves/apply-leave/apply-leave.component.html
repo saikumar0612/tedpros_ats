@@ -1,0 +1,315 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Apply Leave</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <em>&nbsp;/&nbsp;</em>
+          <li>Apply Leave</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addleaveFrm="ngForm" name="form" (ngSubmit)="addleaveFrm.form.valid" novalidate>
+            <div class="form-header">
+              <h5>Apply Leave</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Leave Type <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" id="leavetype" name="leave_type"
+                      [(ngModel)]="applyData.leave_type" #leave_type="ngModel" (change)="getBalance(leave_type.value)"
+                      [ngClass]="{ 'is-invalid': addleaveFrm.submitted && leave_type.invalid }" required>
+                      <option *ngFor="let x of leaveTypes" value="{{x.leave_type.id}}">{{x.leave_type.name}}</option>
+                    </select>
+                    <div *ngIf="leave_type.touched && leave_type.invalid" class="invalid-feedback">
+                      <div *ngIf="leave_type.touched && leave_type.errors.required">Please Select Leave Type</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Leave Balance</label>
+                  <div class="col-sm-8">
+                    <h6>{{ balanceDays }}</h6>
+
+                  </div>
+                </div>
+
+              </div>
+              <!-- adding date pickers by suresh 08-10-2019 start -->
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">From Date <span class="req-field">*</span>:</label>
+                  <div class="col-sm-8">
+                    <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="fromDate"
+                      [owlDateTimeTrigger]="from_date" [owlDateTime]="from_date" name="from_date"
+                      [(ngModel)]="applyData.from_date" (dateTimeInput)="dateValidate()" #from_date="ngModel">
+                    <owl-date-time [pickerType]="'calendar'" #from_date></owl-date-time>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">To Date:</label>
+                  <div class="col-sm-8">
+                    <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="toDate"
+                      [owlDateTimeTrigger]="to_date" [owlDateTime]="to_date" name="to_date"
+                      [(ngModel)]="applyData.to_date" (dateTimeInput)="dateValidate()" #to_date="ngModel">
+                    <owl-date-time [pickerType]="'calendar'" #to_date></owl-date-time>
+                    <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                  </div>
+                </div>
+
+              </div>
+              <!-- adding date pickers by suresh 08-10-2019 end -->
+              <div class="form-group row">
+
+                <div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Partial Days </label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="partial" name="partial"
+                        (change)="onchange(partial.value,1)" [(ngModel)]="assignData.partial" #partial="ngModel">
+                        <option [ngValue]=undefined disabled [selected]="true">Select Partial Days</option>
+                        <option *ngFor="let day of leaveDays" value="{{day.id}}">{{day.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="!none">
+                <div class="form-group row">
+                  <div *ngIf="allDays">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Duration</label>
+                      <div class="col-md-4">
+                        <select class="form-control mb-10" id="startDay" name="start_day"
+                          [(ngModel)]="assignData.start_day" #start_day="ngModel" (change)="onchange2(start_day.value)">
+                          <option [ngValue]=undefined disabled [selected]="true">Select Day </option>
+                          <option *ngFor="let x of workDay" value="{{x.id}}">{{x.name}}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="halfDay1">
+                        <div class="col-md-4">
+                          <select class="form-control mb-10" id="startDayShift" name="start_day_shift"
+                            [(ngModel)]="assignData.start_day_shift" #start_day_shift="ngModel">
+                            <option [ngValue]=undefined disabled [selected]="true">Select Shift </option>
+                            <option *ngFor="let time of timings" value="{{time.id}}">{{time.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="startDay">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Start Day</label>
+                      <div class="col-md-4">
+                        <select class="form-control mb-10" id="PartialStartDay" name="start_day1"
+                          [(ngModel)]="assignData.start_day" #start_day="ngModel" (change)="onchange3(start_day.value)">
+                          <option [ngValue]=undefined disabled [selected]="true">Select Day </option>
+                          <option *ngFor="let x of workDay" value="{{x.id}}">{{x.name}}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="halfDay2">
+                        <div class="col-md-4">
+                          <select class="form-control mb-10" id="partialStartDdayShift" name="start_day_shift"
+                            [(ngModel)]="assignData.start_day_shift" #start_day_shift="ngModel">
+                            <option [ngValue]=undefined disabled [selected]="true">Select Shift </option>
+                            <option *ngFor="let time of timings" value="{{time.id}}">{{time.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div *ngIf="endDay">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">End Day</label>
+                      <div class="col-md-4">
+                        <select class="form-control mb-10" id="endDay" name="end_day" [(ngModel)]="assignData.end_day"
+                          #end_day="ngModel" (change)="onchange4(end_day.value)">
+                          <option [ngValue]=undefined disabled [selected]="true">Select Day </option>
+                          <option *ngFor="let x of workDay" value="{{x.id}}">{{x.name}}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="halfDay3">
+                        <div class="col-md-4">
+                          <select class="form-control mb-10" id="endDayShift" name="end_day_shift"
+                            [(ngModel)]="assignData.end_day_shift" #end_day_shift="ngModel">
+                            <option [ngValue]=undefined disabled [selected]="true">Select Shift </option>
+                            <option *ngFor="let time of timings" value="{{time.id}}">{{time.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div *ngIf="startEndDay">
+                    <div form-group row>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Start Day</label>
+                        <div class="col-md-4">
+                          <select class="form-control mb-10" id="partialEndDayShift" name="start_day"
+                            [(ngModel)]="assignData.start_day" #start_day="ngModel"
+                            (change)="onchange5(start_day.value)">
+                            <option [ngValue]=undefined disabled [selected]="true">Select Day </option>
+                            <option *ngFor="let x of workDay" value="{{x.id}}">{{x.name}}</option>
+                          </select>
+                        </div>
+                        <div *ngIf="halfDay4">
+                          <div class="col-md-4">
+                            <select class="form-control mb-10" id="PartialShift" name="start_day_shift"
+                              [(ngModel)]="assignData.start_day_shift" #start_day_shift="ngModel">
+                              <option [ngValue]=undefined disabled [selected]="true">Select Shift</option>
+                              <option *ngFor="let time of timings" value="{{time.id}}">{{time.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">End Day</label>
+                        <div class="col-md-4">
+                          <select class="form-control mb-10" id="partialAssignDay" name="end_day"
+                            [(ngModel)]="assignData.end_day" #end_day="ngModel" (change)="endDayChange(end_day.value)">
+                            <option [ngValue]=undefined disabled [selected]="true">Select Day </option>
+                            <option *ngFor="let x of workDay" value="{{x.id}}">{{x.name}}</option>
+
+                          </select>
+                        </div>
+                        <div *ngIf="halfdays5">
+                          <div class="col-md-4">
+                            <select class="form-control mb-10" id="PartialAssignShift" name="end_day_shift"
+                              [(ngModel)]="assignData.end_day_shift" #end_day_shift="ngModel">
+                              <option [ngValue]=undefined disabled [selected]="true">Select Shift</option>
+                              <option *ngFor="let time of timings" value="{{time.id}}">{{time.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+
+
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Comments</label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control" id="comment" rows="4" name="comment" [(ngModel)]="applyData.comment"
+                      #comment="ngModel" style="margin-bottom: 20px;"></textarea>
+                  </div>
+                </div>
+
+
+              </div>
+              <div class="row">
+                <div class="col-sm-10">
+                  <button type="button" id="applyLeave" class="btn btn-success mlr-5" [disabled]="!addleaveFrm.valid"
+                    (click)="applyLeave(addleaveFrm)">Apply</button>
+                  <p *ngIf="limitError" style="color:red;font-weight:bold;">{{limitError}}</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+    <div class="show_user_details" *ngIf="isShowDetails">
+      <h6>OrangeHRM - Leave Balance Details</h6>
+      <table class="table table-bordered">
+        <tr>
+          <td colspan="2">As of date : 2019-05-14&nbsp;<span></span></td>
+        </tr>
+        <tr>
+          <td colspan="2">Entitled:&nbsp;<span></span></td>
+        </tr>
+        <tr>
+          <td colspan="2">Taken:&nbsp;<span></span></td>
+        </tr>
+        <tr>
+          <td colspan="2">Pending Approval:&nbsp;<span></span></td>
+        </tr>
+        <tr>
+          <td colspan="2">Balance: &nbsp;<span></span></td>
+        </tr>
+      </table>
+      <div class="row text-center" class="btn btn-primary" (click)="closePopup()">OK</div>
+    </div>
+    <!--show_user_details-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isShowPopup1">
+  <div class="popupbox">
+    <div class="show_user_details" *ngIf="isShowDetails1">
+      <h4>OrangeHRM - Leave Balance Details</h4>
+      <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="10">
+        <thead class="form-header">
+          <tr>
+            <td>Leave Period</td>
+            <td>Initial Balance</td>
+            <td>Leave Date </td>
+            <td>Available Balance</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row text-center" class="btn btn-primary" (click)="closePopup1()">OK</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="popupbox_wrap" *ngIf="isShowPopup2">
+  <div class="popupbox" *ngIf="this.message">
+    <button class="close" type="button" id="closePopup" (click)="closePopup2()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <table class="table table-bordered">
+      <tr>
+        <td class="sucess text-center">
+          <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="popupbox" *ngIf="this.error">
+    <button class="close" type="button" id="closeError" (click)="closePopup2()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <br>
+    <div class="danger text-center">
+      <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+    </div>
+  </div>
+</div>

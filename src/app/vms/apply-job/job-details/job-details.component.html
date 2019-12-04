@@ -1,0 +1,173 @@
+<div class="container">
+  <main id="jf-main" class="jf-main jf-haslayout">
+    <div class="jf-dbsectionspace jf-haslayout">
+      <div class="row">
+        <div class="col-8 col-sm-8 col-md-8 col-lg-8 container-design">
+          <div class="row details">
+            <div class="col-sm-12">
+              <span class="title"><i class="fa fa-tag" aria-hidden="true"></i>{{details.internalCode}} -
+                {{details.techJobTitle | titlecase}}</span>
+            </div>
+            <!-- <div class="col-sm-12">
+                      <span class="subTitle"> <i class="fa fa-university" aria-hidden="true"></i> {{ details.company.name | titlecase }}</span>
+                    </div> -->
+
+
+          </div>
+          <div class="row job-strip">
+            <div class="col-sm-12">
+              <span class="stripData job-details"><i class="fa fa-list" aria-hidden="true"></i>
+                {{details.openings}}</span>
+              <span class="stripData job-details"><i class="fa fa-usd" aria-hidden="true"></i>
+                {{details.externalBillRate}}</span>
+              <span class="stripData job-details"><i class="fa fa-calendar-o" aria-hidden="true"></i>
+                {{details.datePosted}}</span>
+              <span class="contentData job-details"> <i class="fa fa-map-marker" aria-hidden="true"></i>
+                {{details.city.name}},{{details.state.name}},{{details.country.name}}</span>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <!-- <div class="col-sm-1"></div> -->
+            <div class="col-sm-12">
+              <div class="row">
+
+                <div class="col-sm-2 job-details-head">Skills</div>
+                <div class="col-sm-10">
+                  <p class="contentData" *ngFor="let x of details.skill">{{x.skillName}}, </p>
+                </div>
+                <!-- <div class="col-sm-2 job-details-head">Internal Notes:</div>
+                    <div class="col-sm-10">
+                        <p class="contentData1"  >{{ details.internalNotes }}</p>  
+                    </div> -->
+
+                <div class="col-sm-2 job-details-head">Description:</div>
+                <div class="col-sm-10">
+                  <p class="contentData1" [innerHTML]="details.description | safeHtml"></p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="row deleteButton">
+            <div class="row">
+              <div class="col-md-6">
+
+              </div>
+              <div class="col-md-6">
+                <div class="col-sm-6">
+                  <div  *ngIf="!details.applyStatus">
+                    <button class="btn btn-success pull-right small" id="jobApply" (click)="jobApply()">Apply Now</button>
+                  </div>
+                  <div class="jf-matacontent" *ngIf="details.applyStatus">
+                    <button class="btn btn-success pull-right small" disabled>Applied</button>
+                  </div>
+                </div>
+              <div class="col-sm-6">
+                <button class="btn btn-primary pull-right" id="addFavourite"
+                  (click)="addtoWishList(details.internalCode)"><i class="fa fa-star" aria-hidden="true"></i> Add to
+                  favourite</button>
+              </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="jf-dashboardbox jf-myappliedjobs">
+            <div class="jf-dashboardboxtitle latestjobs">
+              <h2>Matching Jobs</h2>
+            </div>
+            <ng-container *ngIf="showData">
+              <div class="jf-dashbboardcontent jf-myjobsapplications jf-myjobsapplicationsvtwo">
+                <ul style="padding: 0px;">
+                  <li *ngFor="let job of filterData| slice :0:5" class="displayedData">
+                    <div class="jf-featurejob">
+                      <div class="jf-companycontent">
+                        <div>
+                          <span class="jobData"><i class="fa fa-tag" aria-hidden="true"></i>{{job.code}} -
+                            {{job.tech_title | uppercase}}</span><br>
+                          <a class="jf-btnjobtag jf-internship data "> {{job.employment_type}}</a>
+                        </div><br>
+                        <div>
+                          <strong>Salary :</strong>
+                          <span>$ {{job.external_bill_rate}}</span>
+                        </div>
+                        <div>
+                          <strong>Skills :</strong><span *ngFor="let skill of job.skills"> {{skill.skillName}},</span>
+                          
+                        </div>
+                        <div>
+                          <button class="btn btn-info btn-xs pull-right" id="jobDetails"
+                            (click)="getjobdetails(job.code)"><i class="fa fa-external-link"></i> Read More</button>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </ng-container>
+            <ng-template *ngIf="!showData">
+              <div style="text-align: center">
+                <h4>You have no Jobs based on your Skills </h4>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+  <div class="popupbox">
+    <div class="row"><button id="closePopup" class="close" type="button" (click)="close()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-success">{{ data.data }}</p>
+    <div class="row text-center">
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" (click)="closePopup()"><span class="close-label"><i
+            class="fa fa-times" id="closebtn" aria-hidden="true"></i> Close</span><span
+          class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">{{ data.errorMessages }}</p>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess1">
+  <div class="popupbox">
+    <div class="row"><button id="closePopup1" class="close" type="button" (click)="close1()"><span
+          class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+          class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">{{ result.data }}</p>
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+<div class="popupbox_wrap" *ngIf="isFailure1">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" (click)="closePopup1()"><span class="close-label"><i
+            class="fa fa-times" id="closebtn1" aria-hidden="true"></i> Close</span><span
+          class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">{{ result.errorMessages }}</p>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->

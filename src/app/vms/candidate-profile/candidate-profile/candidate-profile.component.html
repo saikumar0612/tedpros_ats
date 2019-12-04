@@ -1,0 +1,293 @@
+<div class="conatiner-fuild" style="padding-top:0px;">
+<div class="row">
+  <div class="col-sm-3">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="jf-dashboardbox jf-basicformholder" >
+            <div class="margin-rt-10">
+              <div>
+               <button class="btn btn-primary pull-right" style="margin: 1px;;" title="Edit profile" id="editResume" routerLink="/resume/edit-resume"><em class="fa fa-edit"></em></button>
+               <div class="pull-right">
+                  <ng-container *ngIf="resume; else noData">
+                    <a class="btn btn-info pull-right mlr-5" id="viewCandidate"  href="{{resumeUrl}}{{resume}}" target="blank" title="Downlode Resume" style="background-color:#9e6b14;">
+                        <em class="fa fa-download" aria-hidden="true"></em>
+                       
+                      </a>
+                  </ng-container>
+                  <ng-template #noData>
+                  </ng-template>
+               </div>    
+               <a class="btn btn-info pull-right" routerLink="/profile/account" style="margin: 1px;;" title="Settings" id="editResume" ><em class="fa fa-cog"></em></a>
+               <a class="btn btn-info pull-right" routerLink="/resume/calendar" style="margin: 1px; background-color: #bb5a58c9;" title="Calendar" id="editResume" ><em class="fa fa-calendar-check-o"></em></a>
+              </div>
+             </div><br/>
+             <div class="headerpart">
+                <div class="" >
+                  <ng-container style="margin-top: 5px;">
+                      <img alt="" class="img-thumbnail" src="assets/images/avatar.png" *ngIf="candidateData.image == ''" alt="Profile Picture" style="margin-top:5px;max-width: 50%;" >
+        
+                      <img src="{{candidateData.image}}" class="img-thumbnail"  alt="Profile Picture" *ngIf="candidateData.image != ''" style="margin-top:5px;">
+                  </ng-container>
+                </div>
+                <div class="col-md-12">
+                  <div class="resume-exp-heading">
+                    {{candidateData.firstName }} {{ candidateData.lastName}}
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <em class="fa fa-envelope"></em>
+                  </div>
+                  <div class="col-md-10 col-sm-10 col-xs-10" style="text-align: left;">
+                    {{ candidateData.email }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <em class="fa fa-phone"></em>
+                  </div>
+                  <div class="col-md-10 col-sm-10 col-xs-10" style="text-align: left;">
+                    {{ candidateData.phoneNo }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10" *ngIf="candidateData.dob">
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <em class="fa fa-calendar"></em>
+                  </div>
+                  <div class="col-md-10 col-sm-10 col-xs-10" style="text-align: left;">
+                    {{ candidateData.dob | date:'MM/dd/yyyy' }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10" *ngIf="candidateData.linkedin">
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <em class="fa fa-linkedin-square"></em>
+                  </div>
+                  <div class="col-md-10 col-sm-10 col-xs-10" style="text-align: left;">
+                    {{ candidateData.linkedin }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <em class="fa fa-home"></em>
+                  </div>
+                  <div class="col-md-10 col-sm-10 col-xs-10" style="text-align: left;">
+                    {{ candidateData.addressLine1 }}, {{ candidateData.addressLine2 }}
+                  </div>
+                </div>
+                <div class="col-md-12 mt-10">
+                  <div class="col-md-2 col-sm-2 col-xs-2">
+                    <em class="fa fa-map-marker"></em>
+                  </div>
+                  <div class="col-md-10 col-sm-10 col-xs-10" style="text-align: left;">
+                    {{ candidateData.country.name }}, {{ candidateData.state.name }}, {{ candidateData.city.name }}
+                  </div>
+                </div>
+             </div>
+          </div>
+        </div>    
+  </div>
+
+  <div class="col-sm-6">
+    <div class="jf-dashboardbox jf-basicformholder" >
+      <div class="jf-dashboardboxtitle">
+        <div class="row" style="font-weight:bold;">
+            <a routerLink="/job/appliedJobs">
+              <div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3" >
+                  <div class="jf-dashboardbox jf-basicformholder">
+                    <div class="" >
+                      <span class="resume-content card-text" >Applied Jobs</span>
+                      <br>
+                      <p class="count" >  {{appliedJobs}} </p>
+                    </div>
+                  </div>
+                </div>
+            </a>
+            <a routerLink="/job/shortlistJobs">
+              <div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                  <div class="jf-dashboardbox jf-basicformholder" >
+                    <div class="" >
+                      <span class="resume-content card-text" >ShortListed Jobs </span><br>
+                      <p class="count" >  {{shortlistDataCount}}</p>
+                    </div>
+                  </div>
+                </div>
+            </a>
+            <div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+              <div class="jf-dashboardbox jf-basicformholder" >
+                <div class="" >
+                    <span class="resume-content card-text" >On Hold Jobs </span><br>
+                    <p class="count" > {{onHoldDataCount}}</p>
+                  </div>
+              </div>
+            </div>
+            <div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+              <div class="jf-dashboardbox jf-basicformholder" >
+                <div class="" >
+                    <span class="resume-content card-text" >Rejected Jobs </span><br>
+                    <p class="count" >  {{rejectedDataCount}}</p>
+                  </div>
+              </div>
+            </div>
+        </div><br/>
+        <div class="row">
+          <p class="resume-title"><em class="fa fa-suitcase" aria-hidden="true"></em>  Matching Jobs</p><br/>
+          <div *ngFor="let jobs of filterData | slice :0:5">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-bottom: 12px;">
+                  <div class="jf-dashboardbox jf-basicformholder" >
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10 job-content">
+                                <span >{{jobs.code}} - {{jobs.tech_title}}</span>                   
+                                <p class="pull-right" title="Posted date" style="color: #7b6c6c9e;"><em class="fa fa-calendar" aria-hidden="true"></em> {{jobs.posted_date | date:'MM-dd-yyyy'}}</p>
+                            </div><div class="col-sm-1"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10 ">
+                              <div *ngFor= "let x of jobs.skills" > 
+                                <span style="display: inline;clear:none;">{{x.skillName}},</span>
+                                
+                              </div>                     
+                                <div class="pull-right">
+                                    <span class="hover" style="margin-right: 10px;">
+                                        <a  id="addWishList" (click)="addtoWishList(jobs.code)" title="Add to favourite"><em class="fa fa-heart-o"></em></a>
+                                    </span>
+                                  <button type="button" title="View job" class="tabledit-delete-button btn btn-info viewButton"  [routerLink]="['/job/jobdetails', jobs.code]">
+                                    <em class="fa fa-eye" aria-hidden="true"></em>
+                                  </button>
+                                </div>
+                            </div><div class="col-sm-1"></div>
+                        </div><br/>
+                  </div>
+                </div>
+          </div>
+         
+         
+            
+        </div>
+        <div class="pull-right">
+          <a id="Resume" href="/job/job-list" ><em class="fa fa-long-arrow-right" aria-hidden="true"></em> View More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="jf-dashboardbox jf-basicformholder" >
+      <div class="jf-dashboardboxtitle">
+        <h2><em class="fa fa-bar-chart" aria-hidden="true"></em> Skills Trends (< 1 month)</h2>
+      </div>
+      <div class="jf-dashbboardcontent jf-basicinfo">
+        <div style="display: block">
+          <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [legend]="barChartLegend"
+            [chartType]="barChartType">
+          </canvas>
+        </div>
+      </div>
+
+      <div class="jf-dashbboardcontent jf-basicinfo eventsTop" >
+          <div style="display: block">
+            <a routerLink="/resume/calendar">
+              <h4 style="margin-top:0px"> <em class="fa fa-calendar-check-o"></em> Events - {{eventsCount}}</h4>
+            </a>
+          </div>
+          <div class="row" *ngIf="result">
+              <table class="table" >
+                <thead>
+                  <tr>
+                    <th style="width:59%">Job Title</th>
+                    <th>Interview Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of result | slice :0:5">
+                    <td>{{x.notes}}</td>
+                    <td>{{x.startDate | date:'MM-dd-yyyy'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+      </div>
+      
+    </div>
+    
+    
+  </div>
+</div>
+
+</div><br/>
+<!-- change Password -->
+<div class="popupbox_wrap" *ngIf="passwordPopup">
+  <div class="popupbox">
+    <h4>Change Password</h4>
+    <form class="search-form" #passwordForm="ngForm">
+      <div class="padding-20">
+        <div class="row">
+          <div class="col-md-12">
+            <label class="col-sm-12 " style="font-weight: bold;">Old Password <span class="req-field">*</span>
+              &nbsp;:</label>
+            <div class="col-sm-12">
+              <input type="password" id="oldPassword" class="form-control passwordField" placeholder="Enter your old password" name="oldPassword" [(ngModel)]="changesData.oldPassword " #oldPassword="ngModel" required>
+              <p *ngIf="error" style="color: red;padding: 0px;">{{error}}</p>
+            </div>
+          </div>
+          <div class="form-group row">
+              <div class="col-md-12 ">
+                  <label class="col-sm-12 " style="font-weight: bold;">Enter New Password <span class="req-field">*</span>
+                    &nbsp;:</label>
+                 <div class="col-sm-12">
+                    <input type="password" name="password" class="form-control passwordField" placeholder="Enter New Password*" id="password" [(ngModel)]="changesData.password " #password="ngModel" [ngClass]="{ 'is-invalid': passwordForm.submitted && password.invalid }" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{8,}" required title="Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character">
+                 </div>
+                 <div *ngIf="password.touched && password.invalid" class="invalid-feedback">
+                    <div *ngIf="password.errors.required">Password is required</div>
+                </div>
+                <div *ngIf="password.errors?.pattern" class="invalid-feedback">Password should contain minimum eight characters, at least one uppercase & lowercase letter, one number and one special character</div>
+                  
+              </div>
+              <div class="col-md-12">
+                  <label class="col-sm-12 " style="font-weight: bold;">Confirm Password <span class="req-field">*</span>
+                    &nbsp;:</label>
+                  <div class="col-sm-12">
+                      <input type="password" name="cpassword" class="form-control passwordField" placeholder="Confirm New Password*" id="confirmPassword" [(ngModel)]="changesData.cpassword" #cpassword="ngModel" [ngClass]="{ 'is-invalid': passwordForm.submitted && cpassword.invalid }" required>
+                      <div *ngIf="(cpassword.touched && cpassword.errors) || changesData.password!=changesData.cpassword">
+                          <p *ngIf="cpassword.touched && cpassword.errors" class="invalid-feedback">Please Confirm Password</p>
+                          <p *ngIf="cpassword.touched && changesData.password!=changesData.cpassword" class="invalid-feedback">Passwords didn't match</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="row" style="margin:10px;">
+          <button type="button" class="btn btn-success mlr-5" id="submitPassword" (click)="changePassword(passwordForm)"
+            [disabled]="!passwordForm.valid">Submit</button>
+          <button type="button" class="btn btn-info" (click)="closePasswordPopup(passwordForm)" id="closePasswordPopup">Close</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isSuccess1">
+    <div class="popupbox">
+        <div class="row"><button id="closePopup1" class="close" type="button" (click)="close1()"><span class="close-label"><em class="fa fa-times"
+                aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span></button></div>
+        <p class="bg-success">{{ addwishData.data }}</p>
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+
+<div class="popupbox_wrap" *ngIf="isFailure1">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" (click)="closePopup1()"><span class="close-label"><em class="fa fa-times" id="closebtn1"
+            aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">{{ addwishData.errorMessages }}</p>
+      <!--row-->  
+  </div>
+      <!--popupbox-->
+</div>
+    <!--popupbox_wrap-->

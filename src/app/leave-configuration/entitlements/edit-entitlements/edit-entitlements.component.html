@@ -1,0 +1,144 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Edit Leave Entitlements</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink="/entitlements">Entitlements</a></li>
+          <em>&nbsp;/&nbsp;</em>
+          <li>Edit Leave Entitlements</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="job-box">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        <form class="search-form" #addLeaveFrm="ngForm" name="form" (ngSubmit)="addLeaveFrm.form.valid" novalidate>
+          <div class="form-header">
+            <h5>Edit Leave Entitlements</h5>
+          </div>
+          <div class="padding-20">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label class="col-sm-4 col-form-label">Add to Multiple Employees</label>
+                <div class="col-sm-8">
+                  <input type="checkbox" id="employee" name="employee" #employee (change)="0" (change)="onchange(employee.value)"
+                    class="form-control mb-10" style="width: 15%; height: 15px; box-shadow: none;">
+                </div>
+              </div>
+            </div>
+            <div *ngIf="employee.checked">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Location</label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="location" name="location" [(ngModel)]="userData.location"
+                    #location="ngModel">
+                    <option *ngFor="let branch of branches" value="{{branch.name}}">{{branch.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Employee Type </label> 
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="role_name" name="role_name" [(ngModel)]="userData.role_name"
+                    #role_name="ngModel">
+                    <option value="" selected disabled>All</option>
+                    <option *ngFor="let role of roles" value="{{role.id}}">{{role.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6 divhidetxtdpatient" *ngIf="!employee.checked">
+                <label class="col-sm-4 col-form-label">Employee </label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="empname" name="empname" [(ngModel)]="userData.emp_id.userId"
+                    #empname="ngModel">
+                    <option *ngFor="let users of users" value="{{users.id}}">{{users.first_name}} {{users.last_name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Leave Type <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="leave_type" name="leave_type" [(ngModel)]="userData.leave_type.id"
+                    #leave_type="ngModel" [ngClass]="{ 'is-invalid': addLeaveFrm.submitted && leave_type.invalid }"
+                    required>
+                    <option value="" selected>Select Leave Type</option>
+                    <option *ngFor="let leave of data" value="{{leave.id}}">{{leave.name}} </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Leave Period <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="title" name="title" name="leave_period"
+                    [(ngModel)]="userData.leave_period.id" #leave_period="ngModel"
+                    [ngClass]="{ 'is-invalid': addLeaveFrm.submitted && leave_period.invalid }" required>
+                    <option value="" selected>Select Leave Period</option>
+                    <option *ngFor="let period of leavePeriod" value="{{period.id}}">
+                      {{period.startDate | date:'MM/dd/yyyy'}} to {{period.endDate | date:'MM/dd/yyyy'}}</option>
+
+
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Entitlement <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <input type="number" class="form-control mb-10" id="days" name="days" [(ngModel)]="userData.days"
+                    #days="ngModel" [ngClass]="{ 'is-invalid': addLeaveFrm.submitted && days.invalid }" required>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <button class="btn btn-primary mlr-5" id="add" [disabled]="!addLeaveFrm.valid" (click)="addLeave()">Save</button>
+                <button class="btn btn-danger mlr-5" id="cancel" (click)="cancel()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="close" (click)="closePopup1()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-success">{{ leaveData.data }}</p>
+    <div class="row text-center">
+      <a class="btn btn-success ml-5" id="viewAll" routerLink="/entitlements"><i class="fa fa-users" aria-hidden="true"></i> View all
+        Entitlements</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-danger">{{ leaveData.errorMessages }}</p>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->

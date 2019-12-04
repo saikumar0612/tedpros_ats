@@ -1,0 +1,123 @@
+.jf-footer {
+    /* padding: 15px 40px; */
+    border-top: 1px solid #ddd;
+}
+.jf-haslayout {
+    width: 100%;
+    float: left;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+    display: block;
+}
+.jf-addnav {
+    float: left;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+    display: block;
+}
+article, aside, footer, header, nav, section {
+    display: block;
+}
+.jf-addnav ul {
+    width: 100%;
+    float: left;
+    font-size: 14px;
+    line-height: 20px;
+    list-style: none;
+}
+
+ul {
+    margin: 0;
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+.jf-addnav ul li:first-child {
+    padding-left: 0;
+}
+
+.jf-addnav ul li {
+    padding: 0 10px;
+    position: relative;
+}
+
+.jf-addnav ul li {
+    float: left;
+    padding: 0 7px;
+    line-height: inherit;
+    list-style-type: none;
+}
+
+li {
+    line-height: 28px;
+    list-style: disc inside none;
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+.jf-addnav ul {
+    width: 100%;
+    float: left;
+    font-size: 14px;
+    line-height: 20px;
+    list-style: none;
+}
+.jf-addnav ul li a {
+    color: #767676;
+}
+.jf-addnav ul li a {
+    color: #fff;
+    display: block;
+}
+a {
+    text-decoration: none;
+}
+a {
+    background-color: transparent;
+}
+a, area, button, [role="button"], input, label, select, summary, textarea {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+.jf-addnav ul li {
+    float: left;
+    padding: 0 7px;
+    line-height: inherit;
+    list-style-type: none;
+}
+
+li {
+    line-height: 28px;
+    list-style: disc inside none;
+}
+li {
+    text-align: -webkit-match-parent;
+}
+.jf-copyrights {
+    float: right;
+    color: #767676;
+}
+.jf-addnav ul li a {
+    color: #767676;
+}
+p {
+    margin: 0 0 20px;
+    line-height: 20px;
+    letter-spacing: normal;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}

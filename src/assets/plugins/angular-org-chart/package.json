@@ -1,0 +1,75 @@
+{
+  "_from": "angular-org-chart",
+  "_id": "angular-org-chart@1.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-3D1e9l0f+qchEPHyl0owQWts7HbbqZa28Q4a1EQEH6AM61aDcTh6OG/kZS5n9tMN4MtFPQctxVLIWavIiJZ05A==",
+  "_location": "/angular-org-chart",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "angular-org-chart",
+    "name": "angular-org-chart",
+    "escapedName": "angular-org-chart",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-org-chart/-/angular-org-chart-1.0.3.tgz",
+  "_shasum": "f27a57c5498ef639f8c8f9117b7fc74ef9d8baf1",
+  "_spec": "angular-org-chart",
+  "_where": "D:\\tedpros-project\\tedproATS",
+  "bugs": {
+    "url": "https://github.com/er-shrey/org-chart/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  },
+  "deprecated": false,
+  "description": "An Angular 2+ library for displaying Organization charts. It's a very lightweigt library with the features currently not available in any other library. It's written in pure typescript and is developed focussing on Angular projects",
+  "devDependencies": {
+    "@angular-devkit/build-angular": "0.6.1",
+    "@angular/cli": "6.0.1",
+    "@angular/compiler-cli": "6.0.0",
+    "@angular/language-service": "6.0.0",
+    "@types/jasmine": "2.8.6",
+    "@types/jasminewd2": "2.0.3",
+    "@types/node": "8.9.4",
+    "codelyzer": "4.2.1",
+    "jasmine-core": "2.99.1",
+    "jasmine-spec-reporter": "4.2.1",
+    "karma": "1.7.1",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-coverage-istanbul-reporter": "1.4.2",
+    "karma-jasmine": "1.1.1",
+    "karma-jasmine-html-reporter": "0.2.2",
+    "ng-packagr": "^5.3.0",
+    "protractor": "5.3.0",
+    "ts-node": "5.0.1",
+    "tslint": "5.9.1",
+    "typescript": "2.7.2"
+  },
+  "es2015": "fesm2015/angular-org-chart.js",
+  "esm2015": "esm2015/angular-org-chart.js",
+  "esm5": "esm5/angular-org-chart.js",
+  "fesm2015": "fesm2015/angular-org-chart.js",
+  "fesm5": "fesm5/angular-org-chart.js",
+  "homepage": "https://github.com/er-shrey/org-chart#readme",
+  "main": "bundles/angular-org-chart.umd.js",
+  "metadata": "angular-org-chart.metadata.json",
+  "module": "fesm5/angular-org-chart.js",
+  "name": "angular-org-chart",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/er-shrey/org-chart.git"
+  },
+  "sideEffects": false,
+  "typings": "angular-org-chart.d.ts",
+  "version": "1.0.3"
+}

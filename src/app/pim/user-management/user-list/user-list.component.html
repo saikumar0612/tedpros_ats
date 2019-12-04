@@ -1,0 +1,128 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Users Management</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Users</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="10">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;" colspan="2"></th>
+                  <th>Employee Name</th>
+                  <th>User Name</th>
+                  <th>Job Title</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="2"></td>
+                  <td><input type="text" placeholder="Search Employee Name" (keyup)="search($event.target.value,'employeeName')" id="searchEmployeeName"
+                    class="search-filter form-control"></td>
+                  <td><input type="text" placeholder="Search User Name" (keyup)="search($event.target.value,'userName')" id="searchUserName" class="search-filter form-control"></td>
+                  <td><input type="text" placeholder="Search Job Title" (keyup)="search($event.target.value,'jobtitle')" id="searchJobTitle" class="search-filter form-control"></td>
+                  <td></td>
+                </tr>
+                <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let user of mf.data, index as i">
+                  <td style="text-align: center;">{{i+1}}</td>
+                  <td style="width:50">
+                    <div class="activity-main-menu"><ul class="menu-items">
+                        <li class="activity-sub-menu"><a><div class="icon-w"><i class="fa fa-bars" aria-hidden="true"></i></div></a><div class="sub-menu-list"><div class="sub-menu-i">
+                          <ul class="sub-menu">
+                            <li>
+                              <a class="mlr-5" id="viewProfile" [routerLink]="['/usersView/view-user-profile', user.id]" title="View Profile">
+                                <button type="button" class="tabledit-delete-button btn btn-primary"><em class="fa fa-eye"></em></button>
+                              </a>
+                            </li>
+                            <li *ngIf="userPermissions.readJobDetails">
+                              <a class="mlr-5" id="jobDetails" [routerLink]="['/usersView/userJobDetails', user.id]" title="Edit Job Details">
+                                <button type="button" class="tabledit-delete-button btn btn-info"><em class="fa fa-briefcase"></em></button>
+                              </a>
+                            </li>
+                            <li *ngIf="userPermissions.readSalaryComponent">
+                              <a class="mlr-5" id="salaryDetails" [routerLink]="['/usersView/userSalarydetails', user.id]" title="Edit Salary Component">
+                                <button type="button" class="tabledit-delete-button btn btn-success" style="padding: 2px 9px;"><em class="fa fa-usd"></em></button>
+                              </a>
+                            </li>
+                            <li *ngIf="user.jobTitle && user.salary">
+                              <a class="mlr-5" id="salaryDetails" [routerLink]="['/usersView/user-offerLetters', user.id]" title="Offer Letter">
+                                <button type="button" class="tabledit-delete-button btn btn-success"><em class="fa fa-book"></em></button>
+                              </a>
+                            </li>
+                            <li *ngIf="(!user.jobTitle) || (!user.salary)">
+                              <a class="mlr-5" id="salaryDetails" (click)="offerLetter(user.id)" title="Offer Letter">
+                                <button type="button" class="tabledit-delete-button btn btn-success"><em class="fa fa-book"></em></button>
+                              </a>
+                            </li>                                
+                          </ul></div></div></li></ul></div>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="user.isNew == 1">
+                      <span class="dot-green"></span>
+                    </ng-container>
+                    {{ user.first_name | uppercase }}<span *ngIf="user.middle_name">{{ ' '+user.middle_name |
+                      uppercase}}</span><span *ngIf="user.last_name">{{ ' ' +user.last_name | uppercase}}</span></td>
+                  <td>{{ user.username | uppercase }}</td>
+                  <td>
+                    <span *ngIf="user.jobTitle; else elseBlock">{{ user.jobTitle.job_title | uppercase }}</span>
+                    <ng-template #elseBlock></ng-template>
+                  </td>
+                  <td><span *ngIf="user.status=='1'" class="badge badge-primary"> Active </span><span *ngIf="user.status=='0'" class="badge badge-danger"> Deactive </span></td>
+                </tr>
+              </ng-container>
+              <ng-template #noData> 
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+              <tfoot>
+                <tr><td colspan="6"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,35]"></mfBootstrapPaginator></td></tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+    <div class="row">
+      <button class="close" type="button" id="labelClose" (click)="closePopup()"><span class="close-label"><em class="fa fa-times" aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+    </div>
+    <p class="bg-success">
+      Job and Salary details for {{ singleUser.fullname | titlecase }} has not been assigned. Assign job title to generate the offer letter.
+    </p>
+    <div class="row text-center">
+      <a *ngIf="!singleUser.jobTitle" class="btn btn-success mlr-5" id="userJob Details" [routerLink]="['/usersView/userJobDetails', singleUser.id]" title="Edit Job Details"><em class="fa fa-briefcase" aria-hidden="true"></em> Add job details</a>
+      <a *ngIf="!singleUser.salary" class="btn btn-success mlr-5" id="userSalary Details" [routerLink]="['/usersView/userSalarydetails', singleUser.id]" title="Edit Salary Details"><em class="fa fa-usd" aria-hidden="true"></em> Add salary details</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->

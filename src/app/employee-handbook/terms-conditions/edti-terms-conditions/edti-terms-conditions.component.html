@@ -1,0 +1,84 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Edit Terms & Conditions &nbsp;</h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items"> 
+            <li><a routerLink='/dashboard'>Home</a></li>
+            <li>&nbsp;/&nbsp;</li>
+            <li><a routerLink='/terms&conditions'>Terms & Conditions</a></li>
+            <li>&nbsp;/&nbsp;</li>
+            <li>Edit Terms & Condition</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form role="form" #myForm="ngForm" accept-charset="UTF-8" novalidate>
+              <div class="form-header">
+                <h5>Terms & Condition</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <ckeditor
+                    #myckeditor="ngModel"
+                    name="myckeditor"
+                    [(ngModel)]="data.content"
+                    [config]="{uiColor: '#d9e4fb'}"
+                    [readonly]="false"
+                    debounce="500"
+                    required>
+                  </ckeditor>
+                </div>
+                <div class="form-group row mt-10">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary mlr-5" id="editTerms" (click)="editTerms()">Submit</button>
+                    <button type="cancle" class="btn btn-danger mlr-5" id="terms&conditions" routerLink="/terms&conditions" >Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+  </div>
+
+  <div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox">
+      <div class="row"><button class="close" type="button" (click)="close()" id="close"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+      <p class="bg-success">Terms and Conditions updated successfully </p>
+      <div class="row text-center">
+        <a class="btn btn-success mlr-5" routerLink="/terms&conditions" id="conditions"><i class="fa fa-users" aria-hidden="true"></i> View</a>
+      </div>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+    
+    
+  <div class="popupbox_wrap" *ngIf="isFailure">
+    <div class="popupbox">
+      <div class="row"><button class="close" type="button" id="closePop" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+      <p class="bg-success">{{ result.errorMessages }}</p>
+      <div class="row text-center">
+        <a class="btn btn-danger" (click)="closePopup()"  id="closePopup"><i class="fa fa-times" aria-hidden="true"></i> Close</a>
+      </div>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->

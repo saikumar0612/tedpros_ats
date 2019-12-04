@@ -1,0 +1,271 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Add User</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li><a routerLink="/users-list">User</a></li>
+          <li>/&nbsp;</li>
+          <li>Add User</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addUserFrm="ngForm">
+            <div class="form-header">
+              <h5>Add User</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">First Name <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" placeholder="Enter First Name" name="firstName" id="firstName"
+                      [(ngModel)]="userData.firstName" #firstName="ngModel" required pattern="^([a-zA-Z])*$">
+                    <div *ngIf="firstName.touched && firstName.invalid" class="invalid-feedback">
+                      <div *ngIf="firstName.touched && firstName.errors.required">First Name is required</div>
+                    </div>
+                    <div *ngIf="firstName.errors?.pattern" class="invalid-feedback">
+                      Enter a valid First Name
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Middle Name</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" placeholder="Enter Middle Name" name="middleName" [(ngModel)]="userData.middleName" #middleName="ngModel" pattern="^([a-zA-Z])*$" id="middleName">
+                    <div *ngIf="middleName.errors?.pattern" class="invalid-feedback">
+                      Enter a valid Middle Name
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Last Name <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" name="lastName" class="form-control mb-10" [(ngModel)]="userData.lastName" id="lastName"
+                      #lastName="ngModel" placeholder="Enter Last Name" pattern="^([a-zA-Z])*$" required>
+                    <div *ngIf="lastName.touched && lastName.invalid" class="invalid-feedback">
+                      <div *ngIf="lastName.touched && lastName.errors.required">Last Name is required</div>
+                    </div>
+                    <div *ngIf="lastName.errors?.pattern" class="invalid-feedback">
+                      Enter a valid Last Name
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Email <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="email" name="email" class="form-control mb-10" [(ngModel)]="userData.email"
+                      #email="ngModel" placeholder=" Enter Email" [email]="true" required
+                      pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" id="email">
+                    <div *ngIf="email.touched && email.invalid" class="invalid-feedback">
+                      <div *ngIf="email.touched && email.errors.required">Email is required</div>
+                    </div>
+                    <div *ngIf="email.errors?.pattern" class="invalid-feedback">
+                      Email Address is not valid.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--row-->
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">User type <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <select name="userType" class="form-control mb-10" [(ngModel)]="userData.userType.id"
+                      #userType="ngModel" readonly required id="seluserType">
+                      <option value="">Select user type</option>
+                      <option *ngFor="let usertype of userTypesMaster" value="{{usertype.id}}">{{ usertype.typeName }}
+                      </option>
+                    </select>
+                    <div *ngIf="userType.touched && userType.errors" class="invalid-feedback">Select user
+                      type</div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Employee type <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <select name="employeeType" class="form-control mb-10" [(ngModel)]="userData.employeeType.id" id="selemployeeType" #employeeType="ngModel" required (change)="onSelect(employeeType.value)">
+                      <option value="" disabled selected>Select Employee type</option>
+                      <option *ngFor="let employeetype of employeeTypeMaster" value="{{employeetype.id}}">{{employeetype.name }}</option>
+                    </select>
+                    <div *ngIf="employeeType.touched && employeeType.errors" class="validation_errors text-danger">
+                      Please select employee type</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Password <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="password" name="password" class="form-control mb-10" [(ngModel)]="userData.password" id="password"
+                      [pattern]="passwordPattern" #password="ngModel" placeholder="Enter Password" required
+                      [ngClass]="{ 'is-invalid': addUserFrm.submitted && password.invalid }"
+                      title="Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character">
+                    <span></span>
+                    <div *ngIf="password.touched && password.invalid" class="invalid-feedback">
+                      <div *ngIf="password.errors.required">Password is required</div>
+                    </div>
+                    <div *ngIf="password.errors?.pattern" class="invalid-feedback">
+                      Password should contain minimum eight characters, at least one uppercase & lowercase letter, one
+                      number and one special character
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Retype Password <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="password" name="cpassword" class="form-control mb-10" placeholder="Re Enter Password" id="cpassword"
+                      [(ngModel)]="userData.passRetype" #cpassword="ngModel" required>
+                    <div *ngIf="(cpassword.touched && cpassword.errors) || userData.password!=userData.passRetype">
+                      <p *ngIf="cpassword.touched && cpassword.errors" class="invalid-feedback">Please Confirm Password</p>
+                      <p *ngIf="cpassword.touched && userData.password!=userData.passRetype" class="invalid-feedback">Passwords didn't match</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <!--row-->
+              <!-- added code to hide reporting to based on employee type and alignment changes - sharmistha - 09-28-2019 - start -->
+              <div class="row">
+                <div class="col-md-6 mb-10">
+                  <label class="col-sm-4 col-form-label">Role(s) <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <ng-multiselect-dropdown name="userRoles" placeholder="Select Role(s)" [data]="rolesMaster" id="selRoles" [(ngModel)]="selRoles" [settings]="dropdownSettings" required>
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+
+                <div *ngIf="hideReportingTo" class="col-md-6">
+                  <div *ngIf="!isAdmin">
+                    <label class="col-sm-4 col-form-label">Reporting To <span class="error_star">*</span></label>
+                    <div class="col-sm-8">
+                      <select name="reporting" class="form-control mb-10" [(ngModel)]="userData.reporting"
+                        #reporting="ngModel" required id="reporting">
+                        <option value="" disabled selected>Select Reporting person</option>
+                        <option *ngFor="let user of reportingTo" value="{{user.id}}">{{user.first_name | titlecase}} {{user.last_name | titlecase}}</option>
+                      </select>
+                      <div *ngIf="reporting.touched && reporting.errors" class="invalid-feedback">Select a
+                        reporting person</div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="isAdmin">
+                    <label class="col-sm-4 col-form-label">Reporting To</label>
+                    <div class="col-sm-8" *ngIf="isAdmin">
+                      <select name="reporting" class="form-control mb-10" [(ngModel)]="userData.reporting"
+                        #reporting="ngModel" id="reporting">
+                        <option value="" disabled selected>Select Reporting person</option>
+                        <option *ngFor="let user of reportingTo" value="{{user.id}}">{{user.first_name | titlecase}} {{user.last_name | titlecase}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Status <span class="error_star">*</span></label>
+                  <div class="col-sm-8">
+                    <select name="status" class="form-control mb-10" [(ngModel)]="userData.status" #status="ngModel" id="selectStatus" required>
+                      <option value="1" selected>Active</option>
+                      <option value="0">Deactive</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- added code to hide reporting to based on employee type and alignment changes - sharmistha - 09-28-2019 - end -->
+              <!--row-->
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary mlr-5" [disabled]="!addUserFrm.valid"
+                    (click)="addUser(addUserFrm)" id="submit">Submit</button>
+                  <a type="cancle" class="btn btn-danger mlr-5" id="cancel" (click)="cancel()">Cancel</a>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="error">
+                <div class="col-sm-10">
+                  <p style="color:red;font-weight:bold;">{{ error }}</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.message">
+    <button class="close" type="button" id="close" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table table-bordered">
+      <tr>
+        <td class="success text-center">
+          <h5>{{ newUserInfo.first_name }} successfully added!</h5>
+        </td>
+      </tr>
+      <tr>
+        <td>User Id: <span>{{newUserInfo.user_id}}</span></td>
+      </tr>
+      <tr>
+        <td>Full Name: {{ newUserInfo.first_name | uppercase }}<span *ngIf="newUserInfo.middle_name">{{ '
+            '+newUserInfo.middle_name | uppercase}}</span> <span *ngIf="newUserInfo.last_name">{{ ' '
+            +newUserInfo.last_name | uppercase}}</span></td>
+      </tr>
+      <tr *ngIf="newUserInfo.reporting_to">
+        <td>Reporting person: <span>{{ newUserInfo.reporting_to.fname | uppercase }} {{ newUserInfo.reporting_to.lname
+            | uppercase }}</span></td>
+      </tr>
+      <tr>
+        <td>Email: <span>{{ newUserInfo.email }}</span></td>
+      </tr>
+      <tr>
+        <td>Status: <span *ngIf="newUserInfo.status=='1'" class="badge badge-primary"> Active </span><span
+            *ngIf="newUserInfo.status=='0'" class="badge badge-danger"> Deactive </span></td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <button class="btn btn-primary" id="closePopup" (click)="closePopup()"><i class="fa fa-user-plus" aria-hidden="true"></i> Add
+        another user</button>&nbsp;&nbsp;
+      <a class="btn btn-success" routerLink="/users" id="viewusers"><i class="fa fa-users" aria-hidden="true"></i> View all
+        users</a>
+    </div>
+    <!--row-->
+  </div>
+</div>
+<!--popupbox_wrap-->
+<!--popupbox-->
+<div class="popupbox" *ngIf="this.error">
+  <button class="close" type="button" id="closepop" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+        aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  <table class="table table-bordered">
+    <tr>
+      <td class="danger text-center">
+        <h5>{{error }} </h5>
+      </td>
+    </tr>
+  </table>
+</div>

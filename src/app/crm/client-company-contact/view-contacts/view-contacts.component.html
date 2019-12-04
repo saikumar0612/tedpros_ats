@@ -1,0 +1,272 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>View Client Company Contact</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li><a routerLink='/company-contacts'>Client Company Contact</a></li>
+          <li>/</li>
+          <li>View Client Company Contact</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addcontactFrm="ngForm">
+            <div class="form-header">
+              <h5>Essentials</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Company Name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.companyName.name }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Department:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.department }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">First name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.firstName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Middle name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.middleName }}</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Last name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.lastName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Primary Email:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.emailId }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Designation:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.designation }}</p>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Phone<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactInfo.phoneNo }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ngb-tabset type="pills">
+              <ngb-tab title="Details">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Referred By:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.referredName }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+
+                        <label class="col-sm-4 col-form-label">Primary Contact:</label>
+                        <div class="col-sm-8" *ngIf="this.contactInfo.isPrimary==='1'">
+                          <p>Yes</p>
+                        </div>
+                        <div class="col-sm-8" *ngIf="this.contactInfo.isPrimary==='0'">
+                          <p>No</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Status:</label>
+                        <div class="col-sm-8">
+                          <p *ngIf="this.contactInfo.status == 1">Active</p>
+                          <p *ngIf="this.contactInfo.status == 0">Inactive</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Address">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Country:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.address.countryName }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">State:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.address.stateName }}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address 1:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.address.addressLine1 }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address 2:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.address.addressLine2 }}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">City:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.address.cityName }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Zip Code:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.address.zipCode }}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Mobile:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.address.mobileNo }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Alternate Number:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.address.alternateNo }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Personal">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Date of Birth:</label>
+                        <div class="col-sm-8">
+                          <p *ngIf="this.contactInfo.personalInfo.doBirth!=='0000-00-00'">
+                            {{ this.contactInfo.personalInfo.doBirth |date:"MM-dd-yyyy" }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Anniversary</label>
+                        <div class="col-sm-8">
+                          <p *ngIf="this.contactInfo.personalInfo.anniversary!=='0000-00-00'">
+                            {{ this.contactInfo.personalInfo.anniversary|date:"MM-dd-yyyy"  }}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <label class="col-sm-2 col-form-label">Likes:</label>
+                        <div class="col-sm-10">
+                          <p>{{ this.contactInfo.personalInfo.likes }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label class="col-sm-2 col-form-label">Dislikes:</label>
+                        <div class="col-sm-10">
+                          <p>{{ this.contactInfo.personalInfo.dislikes }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-12" *ngIf="userFieldPermissions.readInternalNotes">
+                        <label class="col-sm-2 col-form-label">Internal Notes:</label>
+                        <div class="col-sm-10">
+                          <p>{{ this.contactInfo.personalInfo.notes }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Social">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Twitter:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.social.twitter }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">LinkedIn:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.social.linkedin }}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Facebook:</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.contactInfo.social.facebook }}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+          </form>
+          <div class="padding-20">
+            <div class="row">
+              <div class="col-sm-10">
+                <button class="btn btn-info mlr-5" (click)="cancel()">Back</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

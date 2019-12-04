@@ -1,0 +1,1584 @@
+<style>
+    input[type="file"] {
+          display: block;
+          right: 0;
+          cursor: pointer;
+          bottom: -1px;
+          font-size: 12px;
+          opacity: 1;
+          position: relative;
+          width: 100%;
+          z-index: 0;
+        }
+  </style>
+  <div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4 *ngIf="userPermissions.createJob">Job Postings <a class="btn btn-primary" id="addJob"
+              routerLink="/jobs/add-jobs">+
+              Add</a>
+          </h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items">
+            <li><a routerLink='/dashboard'>Home</a>
+            </li>
+            <li>/</li>
+            <li>Job Postings</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <!-- {{data.data[0] | json}} -->
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+              <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+                <thead class="form-header">
+                  <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th style="width: 3%; text-align: center;">
+                      <div class="activity-main-menu">
+                        <ul class="menu-items"></ul>
+                      </div>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="companyName"><span style="color: #fff;">Job Code</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="owner"><span style="color: #fff;">Client Job Code</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="billingContact"><span style="color: #fff;">Job Title</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="phoneNumber"><span style="color: #fff;">Client</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="cityId"><span style="color: #fff;">Posted On</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="cityId"><span style="color: #fff;">Recruiter</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="cityId"><span style="color: #fff;">Active Resumes#</span>
+                      </mfDefaultSorter>
+                    </th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th>
+                      <input type="text" placeholder="Search Internal Code" id="searchinternalCode" (keyup)="search($event.target.value,'internalCode')" class="search-filter form-control">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Client Job Code" id="searchjobCode" (keyup)="search($event.target.value,'jobCode')" class="search-filter form-control">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Job Title" (keyup)="search($event.target.value,'job.name')" class="search-filter form-control" id="searchJobName">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Client" (keyup)="search($event.target.value,'company.name')" class="search-filter form-control" id="searchComapanyName">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Posted On" (keyup)="search($event.target.value,'datePosted')" class="search-filter form-control" id="searchDatePosted">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Recruiter" id="searchRecruiterName" (keyup)="search($event.target.value,'recruiter.firstName')" class="search-filter form-control">
+                    </th>
+                    <th></th>
+                  </tr>
+                  <ng-container *ngIf="availableRecords; else noData">
+                    <ng-container *ngFor="let jobs of mf.data; let i = index">
+                      <tr>
+                        <td style="text-align: center;" id="applicationCount">
+                         <button type="button" class="tabledit-edit-button btn btn-primary" [disabled]="!jobs.totalApplications" id="expand" (click)="expand[i+1]=!expand[i+1];setjobCode(jobs.internalCode);"> <i *ngIf="expand[i+1]; else elseMinus" class="fa fa-minus" aria-hidden="true"></i>
+                            <ng-template #elseMinus> <i class="fa fa-plus" aria-hidden="true"></i>
+                            </ng-template>
+                          </button>
+                        </td>
+                        <td style="text-align: center;" id="subMenu">
+                          <div class="activity-main-menu">
+                            <ul class="menu-items">
+                              <li class="activity-sub-menu">
+                                <a>
+                                  <div class="icon-w"> <i class="fa fa-bars" aria-hidden="true"></i>
+                                  </div>
+                                </a>
+                                <div class="sub-menu-list">
+                                  <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                      <li *ngIf="userPermissions.updateJob && (jobs.salesflag || jobs.recruiterfalg)">
+                                        <a class="mlr-5" id="editJobs" [routerLink]="['/jobs/edit-jobs', jobs.internalCode]" title="edit job">
+                                          <button type="button" class="tabledit-edit-button btn btn-danger"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                          </button>
+                                        </a> 
+                                      </li>
+                                      <li *ngIf="userPermissions.readJob">
+                                        <a class="mlr-5" id="viewJobs" [routerLink]="['/jobs/view-job', jobs.internalCode]" title="Read job">
+                                          <button type="button" class="tabledit-delete-button btn btn-success"> <i class="fa fa-eye" aria-hidden="true"></i>
+                                          </button>
+                                        </a>
+                                      </li>
+                                      <li *ngIf="userPermissions.readJob && jobs.recruiterfalg">
+                                        <a class="mlr-5" title="Select Candidate" id="candidateSelect">
+                                          <button type="button" class="tabledit-edit-button btn btn-primary" (click)="candidateSelect('applyModal',jobs.internalCode); setjobCode(jobs.internalCode)"> <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                          </button>
+                                        </a>
+                                      </li>
+                                      <li *ngIf="userPermissions.updateJob  && (jobs.salesflag || jobs.recruiterfalg)">
+                                        <a class="mlr-5" title="Assign Recruiter" id="assignRecruiter">
+                                          <button type="button" class="tabledit-edit-button btn btn-primary" (click)="recruiterAssign('modal',jobs.internalCode)"> <i class="fa fa-id-badge" aria-hidden="true"></i>
+                                          </button>
+                                        </a>
+                                      </li>
+                                      <li>
+                                        <a class="mlr-5" title="Send Link" id="sendEmailLink">
+                                          <button type="button" class="tabledit-edit-button btn btn-primary" (click)="linksend('linkmodal',jobs.internalCode)"> <i class="fa fa-share" aria-hidden="true"></i>
+                                          </button>
+                                        </a>
+                                      </li>
+                                      <li>
+                                        <a class="mlr-5" title="Copy Job" id="copyJob">
+                                          <button type="button" class="tabledit-edit-button btn btn-primary" (click)="copyJob(jobs.internalCode)"> <em class="fa fa-copy" aria-hidden="true"></em>
+                                          </button>
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                        <td>
+                          <a id="viewJobInternals" [routerLink]="['/jobs/view-job', jobs.internalCode]">
+                            <ng-container *ngIf="jobs.isPublished; else notPublished"> <span class="dot-green"></span>
+                            </ng-container>
+                            <ng-template #notPublished> <span class="dot"></span>
+                            </ng-template>{{ jobs.internalCode }}</a>
+                        </td>
+                        <td>
+                          <a id="viewJobCodeInternals" [routerLink]="['/jobs/view-job', jobs.internalCode]">{{ jobs.jobCode | uppercase }}</a>
+                        </td>
+                        <td>{{ jobs.jobName | uppercase }}</td>
+                        <td><a id="viewCompanyNames" [routerLink]="['/customers/view-customer', jobs.company.id]">{{ jobs.company.name | uppercase }}</a>
+                        </td>
+                        <td >{{ jobs.datePosted | date:'MM/dd/yyyy' }}</td>
+                        <td><a id="viewRecruiters" [routerLink]="['/usersView/view-user-profile',jobs.recruiter.id]">{{ jobs.recruiter.name | uppercase }}</a>
+                        </td>
+                        <td style="text-align: center;">
+                            <button class="btn btn-success"  title="Shortlisted">{{ jobs.applicationCount }}</button>
+                         
+                        </td>
+                        <!-- <td>
+                           <span class="view-btn" id="readmore[i+1]" (click)="readmore[i+1]=!readmore[i+1]" > <i *ngIf="readmore[i+1]; else elsereadmore" class="fa fa-eye-slash" aria-hidden="true"></i>
+                              <ng-template #elsereadmore> <i class="fa fa-eye" aria-hidden="true"></i>
+                              </ng-template>
+                            </span> 
+
+                          </td> -->
+                      </tr>
+                      <tr *ngIf="expand[i+1]">
+                        <td colspan="10" id="candidatesMenu">
+                          <div class="col-sm-12" style="margin: 10px;">
+                              <div class="col-sm-6">
+                                <div class="input-group">
+                                    <button class="btn btn-primary" style="border-radius: 0px;border-top-left-radius: 2px;border-bottom-left-radius: 2px;" title="Shortlisted">Shortlisted : {{ jobs.applicationCount }}</button>
+                                    <button class="btn btn-warning" style="border-radius: 0px;background-color: #ff5722;
+                                    border-color: #ff5722;" title="On Hold">On Hold : {{ jobs.onholdCount }}</button>
+                                    <button class="btn btn-success" style="border-radius: 0px" title="Selected">Selected : {{ jobs.selectedCount }}</button>
+                                    <button class="btn btn-danger" style="border-radius: 0px;border-top-right-radius: 2px;border-bottom-right-radius: 2px;" title="Rejected"> Rejected : {{ jobs.rejectedCount }}</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                <div style="color:#c6ccd9;padding:5px;margin:5px;cursor: pointer;" class="pull-right" title="Last Modified">
+                                    <em class="fa fa-clock-o"></em> {{jobs.dateupdated | date:'MMM dd ,yyyy h:mm a' }}
+                                  </div>
+                                  <div style="color:#c6ccd9;padding:5px;margin:5px;cursor: pointer;" class="pull-right" title="Job Created">
+                                      <em class="fa fa-calendar-plus-o"></em> {{jobs.dateadded | date:'MMM dd ,yyyy h:mm a' }}
+                                    </div>
+                                  </div>
+                            </div>
+                          <div class="col-sm-12">
+                          <ngb-tabset type="pills">
+                            <ngb-tab title="Shortlisted Candidates" id="Shortlisted" *ngIf="jobs.candidates.length">
+                              <ng-template ngbTabContent>
+                                <div class="padding-20">
+                                  <table class="table table-bordered" style="width:100%;" [mfData]="jobs.candidates" #mf="mfDataTable" [mfRowsOnPage]="5">
+                                    <thead class="form-header">
+                                      <tr>
+                                        <th style="width: 3%; text-align: center;"></th>
+                                        <th style="width: 16%;">
+                                          <mfDefaultSorter by="firstName"><span style="color: #fff;">Candidate Name</span>
+                                          </mfDefaultSorter>
+                                        </th>
+                                        <th style="width: 16%;">
+                                          <mfDefaultSorter by="skills[].skillName"><span style="color: #fff;"> Skills</span>
+                                          </mfDefaultSorter>
+                                        </th>
+                                        <th style="width: 16%;">
+                                          <mfDefaultSorter by="expectedPay"><span style="color: #fff;">Expected Pay</span>
+                                          </mfDefaultSorter>
+                                        </th>
+                                        <th style="width: 16%;">
+                                          <mfDefaultSorter by="city.name"><span style="color: #fff;">Negotiated Pay</span>
+                                          </mfDefaultSorter>
+                                        </th>
+                                        <th style="width: 45%;"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let candidates of mf.data">
+                                        <td style="text-align: center;" id="candidateSubMenu">
+                                          <div class="activity-main-menu">
+                                            <ul class="menu-items">
+                                              <li class="activity-sub-menu">
+                                                <a>
+                                                  <div class="icon-w"> <i class="fa fa-bars" aria-hidden="true"></i>
+                                                  </div>
+                                                </a>
+                                                <div class="sub-menu-list">
+                                                  <div class="sub-menu-i">
+                                                    <ul class="sub-menu">
+                                                      <li>
+                                                        <a class="mlr-5" id="viewCandidateDetais" title="View Candidate Details" [routerLink]="['/candidate/view-candidate', candidates.id]">
+                                                          <button type="button" class="tabledit-delete-button btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i>
+                                                          </button>
+                                                        </a>
+                                                      </li>
+                                                      <li *ngIf="userPermissions.readJob">
+                                                        <a class="mlr-5" title="View assigned documents" id="candidateSelect" *ngIf="jobs.salesflag ||jobs.recruiterfalg">
+                                                          <button type="button" class="tabledit-edit-button btn btn-primary" (click)="getAssignedDocs(jobs.internalCode,candidates.id)"> <i class="fa fa-eye" aria-hidden="true"></i>
+                                                          </button>
+                                                        </a>
+                                                      </li>
+                                                      <li *ngIf="userPermissions.readJob && (jobs.salesflag)">
+                                                        <a class="mlr-5" title="Send Resume to Client" id="candidateSelect">
+                                                          <button type="button" class="tabledit-edit-button btn btn-success" (click)="sendResumeToClient(jobs.internalCode,candidates.id)"> <i class="fa fa-share" aria-hidden="true"></i>
+                                                          </button>
+                                                        </a>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                        <td> <a id="viewCandidateName" [routerLink]="['/candidate/view-candidate', candidates.id]">{{ candidates.firstName | titlecase }} {{
+                                            candidates.lastName | titlecase }}</a>
+                                        </td>
+                                        <td><span *ngFor="let skills of candidates.skills">{{ skills.skillName | uppercase }},</span>
+                                        </td>
+                                        <td>{{ candidates.jobExpectedPay }}</td>
+                                        <td>
+                                          {{ candidates.clientPay }}
+                                         
+                                        </td>
+                                        <td> 
+                                         
+
+                                          <span *ngIf="candidates.Interviewing;">
+                                            <span *ngFor="let slot of candidates.Interviewing">
+                                              <button type="button" class=" btn btn-danger " style="margin:5px;background-color: #0b0b0b;border-color: #e7e8e9;"
+                                                  *ngIf="!slot.timeValidation && slot.slot && slot.status==='1'" title="Interview Time">
+                                                <em class="fa fa-calendar-plus-o" aria-hidden="true"></em>
+                                                {{slot.slot | date:' MMM  d, yy EE h:mm a'}} {{slot.timezone}}
+                                              </button> 
+
+                                              <button type="button" class=" btn btn-danger " style="margin:5px;background-color: #0b0b0b;border-color: #e7e8e9;"
+                                              *ngIf="slot.slot && slot.status==='0'" title="Interview Time">
+                                            <em class="fa fa-calendar-plus-o" aria-hidden="true"></em>
+                                           <del> {{slot.slot | date:' MMM  d, yy EE h:mm a'}} {{slot.timezone}}</del>
+                                          </button> 
+
+                                              <span  class=" btn btn-success " style="margin:5px;"
+                                              *ngIf="slot.timeValidation && slot.slot && slot.status==='1'" >
+                                                <em class="fa fa-calendar-plus-o" aria-hidden="true"></em>
+                                           
+                                                {{slot.slot | date:'MMM d,yy EE h:mm a'}} {{slot.timezone}}
+
+                                                
+                                                <span *ngIf="jobs.applicationCount != 0 && recruiterIdcheck == jobs.recruiter.id ">        
+                                                <em class="fa fa-edit" (click)="interviewEdit(slot.id)" title="Edit" style="margin-left:3px;margin-right:3px;"></em>
+                                                <em class="fa fa-close" (click)="interviewCancel(slot.id)" title="Cancel" style="margin-left:3px;margin-right:3px;color:red;"></em>
+                                                </span>
+
+                                            </span> 
+  
+                                            </span>
+                                          </span>
+                                          <span *ngIf="candidates.interviewCount;else Schedule ">
+                                          
+                                            <button type="button" class=" btn btn-success " style="margin:5px;" title="Selected" (click)="applyJob(candidates.id,candidates.emailId,3,'')" *ngIf="jobs.applicationCount != 0 && jobs.recruiterfalg "> <em class="fa fa-check" aria-hidden="true"></em>
+                                            </button>
+                                            <button type="button" class=" btn btn-danger " style="margin:5px;" title="Rejected" (click)="applyJob(candidates.id,candidates.emailId,4,'Rejected In Interview')" *ngIf="jobs.applicationCount != 0 &&jobs.recruiterfalg"> <em class="fa fa-times " aria-hidden="true"></em>
+                                            </button>
+                                            <button type="button" class=" btn btn-primary " style="margin:5px;" (click)="openEventPopUp(jobs.internalCode,candidates.id)" *ngIf="jobs.applicationCount != 0 && jobs.recruiterfalg" title="Re-Schedule Interview"> <em class="fa fa-calendar-plus-o" aria-hidden="true"></em>
+                                            </button>
+                                          </span>
+                                          <ng-template #Schedule>
+                                            <button type="button" class=" btn btn-primary " style="margin:5px;" (click)="openEventPopUp(jobs.internalCode,candidates.id)" *ngIf="jobs.applicationCount != 0 && jobs.recruiterfalg  " title="Schedule Interview"> <em class="fa fa-calendar-plus-o" aria-hidden="true"></em>
+                                            </button>
+                                          </ng-template>
+                                          <button type="button" class=" btn btn-danger" (click)="candidateCommentSelected(candidates.id,candidates.emailId,jobs.internalCode)" style="margin:5px;" *ngIf="jobs.applicationCount != 0 && jobs.recruiterfalg" title="On Hold Application"> <em class="fa fa-ban" aria-hidden="true"></em>
+                                          </button>
+                                          <button type="button" class="btn btn-info" (click)="candidateAssignDocument(candidates.id,candidates.emailId,jobs.internalCode)" id="assignConsentDocuments" *ngIf="jobs.applicationCount != 0 && (jobs.salesflag ||jobs.recruiterfalg)" title="Assign Documents" style="margin:5px;"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                    <tfoot>
+                                      <tr>
+                                        <td colspan="12">
+                                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                        </td>
+                                      </tr>
+                                    </tfoot>
+                                  </table>
+                                </div>
+                              </ng-template>
+                            </ngb-tab>
+                            <ngb-tab title="On Hold Candidates" id="onholdcandidates" *ngIf="jobs.onholdcandidates.length">
+                              <ng-template ngbTabContent>
+                                <div class="padding-20">
+                                  <table class="table table-bordered" style="width:100%;" [mfData]="jobs.onholdcandidates" #mf="mfDataTable" [mfRowsOnPage]="5">
+                                    <thead class="form-header">
+                                      <tr>
+                                        <th style="width: 3%; text-align: center;"></th>
+                                        <th style="width: 16%;"> <span style="color: #fff;">Candidate Name</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;"> Skills</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;">Expected Pay</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;">Negotiated Pay</span>
+                                        </th>
+                                        <th style="width: 45%;" *ngIf="jobs.salesflag ||jobs.recruiterfalg"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let onhold of  mf.data">
+                                        <td>
+                                          <div class="activity-main-menu">
+                                            <ul class="menu-items">
+                                              <li class="activity-sub-menu">
+                                                <a>
+                                                  <div class="icon-w"> <i class="fa fa-bars" aria-hidden="true"></i>
+                                                  </div>
+                                                </a>
+                                                <div class="sub-menu-list">
+                                                  <div class="sub-menu-i">
+                                                    <ul class="sub-menu">
+                                                      <li>
+                                                        <a class="mlr-5" id="viewCandidateDetais" title="View Candidate Details" [routerLink]="['/candidate/view-candidate', onhold.id]">
+                                                          <button type="button" class="tabledit-delete-button btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i>
+                                                          </button>
+                                                        </a>
+                                                      </li>
+                                                      <li *ngIf="userPermissions.readJob">
+                                                        <a class="mlr-5" title="Send Resume to Client" id="candidateSelect">
+                                                          <button type="button" class="tabledit-edit-button btn btn-success" (click)="sendResumeToClient(jobs.internalCode,onhold.id)" *ngIf="jobs.onholdCount != 0 && jobs.recruiterfalg"> <i class="fa fa-share" aria-hidden="true"></i>
+                                                          </button>
+                                                        </a>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                        <td><a [routerLink]="['/candidate/view-candidate', onhold.id]">{{onhold.firstName | titlecase}} {{onhold.lastName | titlecase}}</a></td>
+                                        <td> <span *ngFor="let skills of onhold.skills">{{ skills.skillName | uppercase }},</span>
+                                        </td>
+                                        <td>{{onhold.jobExpectedPay}}</td>
+                                        <td>{{onhold.expectedPay}}</td>
+                                        <td *ngIf="jobs.salesflag ||jobs.recruiterfalg">
+                                          <button type="button" class="btn btn-success mlr-5" id="applyJob" (click)="applyJob(onhold.id,onhold.emailId,0,'')" *ngIf="jobs.onholdCount != 0 && jobs.recruiterfalg">Select Candidate</button>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                    <tfoot>
+                                      <tr>
+                                        <td colspan="12">
+                                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                        </td>
+                                      </tr>
+                                    </tfoot>
+                                  </table>
+                                </div>
+                              </ng-template>
+                            </ngb-tab>
+                            <ngb-tab title="Selected Candidates" id="selectedcandidates" *ngIf="jobs.selectedcandidates.length">
+                              <ng-template ngbTabContent>
+                                <div class="padding-20">
+                                  <table class="table table-bordered" style="width:100%;" [mfData]="jobs.selectedcandidates" #mf="mfDataTable" [mfRowsOnPage]="5">
+                                    <thead class="form-header">
+                                      <tr>
+                                        <th style="width: 3%; text-align: center;"></th>
+                                        <th style="width: 16%;"> <span style="color: #fff;">Candidate Name</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;"> Skills</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;">Expected Pay</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;">Negotiated Pay</span>
+                                        </th>
+                                        <th style="width: 45%;" *ngIf="jobs.salesflag ||jobs.recruiterfalg"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let onhold of  mf.data">
+                                        <td>
+                                          <div class="activity-main-menu">
+                                            <ul class="menu-items">
+                                              <li class="activity-sub-menu">
+                                                <a>
+                                                  <div class="icon-w"> <i class="fa fa-bars" aria-hidden="true"></i>
+                                                  </div>
+                                                </a>
+                                                <div class="sub-menu-list">
+                                                  <div class="sub-menu-i">
+                                                    <ul class="sub-menu">
+                                                      <li>
+                                                        <a class="mlr-5" id="viewCandidateDetais" title="View Candidate Details" [routerLink]="['/candidate/view-candidate', onhold.id]">
+                                                          <button type="button" class="tabledit-delete-button btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i>
+                                                          </button>
+                                                        </a>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                        <td><a [routerLink]="['/candidate/view-candidate', onhold.id]">{{onhold.firstName | titlecase}} {{onhold.lastName | titlecase}}</a></td>
+                                        <td> <span *ngFor="let skills of onhold.skills">{{ skills.skillName | uppercase }},</span>
+                                        </td>
+                                        <td>{{onhold.jobExpectedPay}}</td>
+                                        <td>{{onhold.expectedPay}}</td>
+                                        <td>
+                                          <button type="button" class="btn btn-primary" (click)="candidateAssignHr(onhold.id,jobs.internalCode)" id="assignConsentDocuments" *ngIf="(jobs.salesflag ||jobs.recruiterfalg)" title="Assign HR" style="margin:5px;"> <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                    <tfoot>
+                                      <tr>
+                                        <td colspan="12">
+                                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                        </td>
+                                      </tr>
+                                    </tfoot>
+                                  </table>
+                                </div>
+                              </ng-template>
+                            </ngb-tab>
+                            <ngb-tab title="Rejected Candidates" id="rejectedcandidates" *ngIf="jobs.rejectedcandidates.length">
+                              <ng-template ngbTabContent>
+                                <div class="padding-20">
+                                  <table class="table table-bordered" style="width:100%;" [mfData]="jobs.rejectedcandidates" #mf="mfDataTable" [mfRowsOnPage]="5">
+                                    <thead class="form-header">
+                                      <tr>
+                                        <th style="width: 3%; text-align: center;"></th>
+                                        <th style="width: 16%;"> <span style="color: #fff;">Candidate Name</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;"> Skills</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;">Expected Pay</span>
+                                        </th>
+                                        <th style="width: 16%;"><span style="color: #fff;">Negotiated Pay</span>
+                                        </th>
+                                        <th style="width: 45%;" *ngIf="jobs.salesflag ||jobs.recruiterfalg"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let onhold of  mf.data">
+                                        <td>
+                                          <div class="activity-main-menu">
+                                            <ul class="menu-items">
+                                              <li class="activity-sub-menu">
+                                                <a>
+                                                  <div class="icon-w"> <i class="fa fa-bars" aria-hidden="true"></i>
+                                                  </div>
+                                                </a>
+                                                <div class="sub-menu-list">
+                                                  <div class="sub-menu-i">
+                                                    <ul class="sub-menu">
+                                                      <li>
+                                                        <a class="mlr-5" id="viewCandidateDetais" title="View Candidate Details" [routerLink]="['/candidate/view-candidate', onhold.id]">
+                                                          <button type="button" class="tabledit-delete-button btn btn-info"> <i class="fa fa-eye" aria-hidden="true"></i>
+                                                          </button>
+                                                        </a>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        </td>
+                                        <td><a [routerLink]="['/candidate/view-candidate', onhold.id]">{{onhold.firstName | titlecase}} {{onhold.lastName | titlecase}}</a></td>
+                                        <td> <span *ngFor="let skills of onhold.skills">{{ skills.skillName | uppercase }},</span>
+                                        </td>
+                                        <td>{{onhold.jobExpectedPay}}</td>
+                                        <td>{{onhold.expectedPay}}</td>
+                                        <td *ngIf="jobs.salesflag ||jobs.recruiterfalg"></td>
+                                      </tr>
+                                    </tbody>
+                                    <tfoot>
+                                      <tr>
+                                        <td colspan="12">
+                                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                        </td>
+                                      </tr>
+                                    </tfoot>
+                                  </table>
+                                </div>
+                              </ng-template>
+                            </ngb-tab>
+                          </ngb-tabset>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                  <ng-template #noData>
+                    <tr>
+                      <td colspan="12" class="text-danger" style="text-align: center;">No Records Found</td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="12">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    .popupbox {
+        
+        padding: unset;
+        padding: 10Px 10Px !important;
+      }
+      .view-btn{
+        display: inline-block;
+                            margin-bottom: 0;
+                            font-weight: normal;
+                            text-align: center;
+                            vertical-align: middle;
+                            touch-action: manipulation;
+                            cursor: pointer;
+                            white-space: nowrap;
+                            padding: 2px 2px;
+                            font-size: 18px;
+                            line-height: 1.42857143;
+                            -webkit-user-select: none;
+                            -moz-user-select: none;
+                            -ms-user-select: none;
+                            user-select: none;
+                            color:#dccbdc;
+
+      }
+      .view-btn:hover{
+        color:#0b0b0b;
+      }
+
+  </style>
+  <!-- select candidate  start-->
+  <div class="popupbox_wrap" id="applyModal" *ngIf="selectCandidate">
+    <div class="popupbox" style="width:90%;">
+      <div class="col-md-11 col-lg-11 col-sm-11 col-xs-11">
+        <h4 class="modal-title" id="exampleModalLabel2"><i class="fa fa-paperclip modal-icon" style='font-size:30px'
+            aria-hidden="true"></i>Select Candidate</h4> 
+      </div>
+      <div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
+        <button class="close" type="button" id="closeAllPopup" (click)="closeModal3();"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+        </button>
+      </div>
+      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        <form #editJobForm="ngForm">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <table class="table table-bordered"  [mfData]="candidates" #mf="mfDataTable" [mfRowsOnPage]="4">
+                <thead class="form-header">
+                  <tr>
+                    <th width="25%">Candidate Name</th>
+                    <th width="25%">Skills</th>
+                    <th width="10%">Rating</th>
+                    <th width="30%"></th>
+                  </tr>
+                </thead>
+                <ng-container *ngIf="candidatesAvailable; else noCanData">
+                  <tbody>
+                    <tr *ngFor="let candidate of  mf.data">
+                      <td>{{ candidate.firstName | titlecase }} {{ candidate.lastName | titlecase }} <span *ngIf="candidate.isApplied" style="color: #11a700;">(Applied)</span></td>
+                      <td><span *ngFor="let skill of candidate.skills">{{ skill.skillName | uppercase }},</span>
+                      </td>
+                      <td>
+                        <div class="star-ratings-sprite"><span [style.width.%]="candidate.rating * 100" class="star-ratings-sprite-rating"></span>
+                        </div>
+                      </td>
+                      <td>
+                          <button type="button" class="btn btn-primary mlr-5" id="viewCandidate" (click)="viewCandidate(candidate.id)">View Candidate</button>
+                      </td>
+                    </tr>
+                    <tr *ngIf="candidatesAvailable >4">
+                        <td colspan="12">
+                          <mfBootstrapPaginator [rowsOnPageSet]="[4,8]"></mfBootstrapPaginator>
+                        </td>
+                      </tr>
+
+                  </tbody>
+                </ng-container>
+                <ng-template #noCanData>
+                  <tr>
+                    <td colspan="4" class="text-danger" style="text-align: center;">No Records Found</td>
+                  </tr>
+                </ng-template>
+                
+              </table>
+            </div>
+          </div>
+          <div></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- select candidate  end -->
+  <!-- assign Recruiter  start-->
+  <div class="popupbox_wrap" id="modal" *ngIf="assignRecruiter">
+    <div class="popupbox">
+      <h4 class="modal-title" id="exampleModalLabel1"><i class="fa fa-paperclip modal-icon" style='font-size:30px'
+          aria-hidden="true"></i>Assign Recruiter</h4>
+      <form class="search-form" #editJobForm="ngForm">
+        <div class="modal-body">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-sm-4 col-form-label">Recruiter <span class="req-field">*</span> &nbsp;:</label>
+              <div class="col-sm-8">
+                <select class="form-control mb-10" name="recruiterId" [(ngModel)]="this.jobData.recruiter.userId" #recruiterId="ngModel" #recruiterId>
+                  <option *ngFor="let recruiter of users" value="{{recruiter.id}}">{{recruiter.first_name}} {{recruiter.last_name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success mlr-5" id="submitRecruiter" (click)="editJob()">Submit</button>
+          <button type="button" class="btn btn-info" (click)="closeModal1();" id="cancelSubmitRecruiter">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- assign Recruiter  end-->
+  <!-- job apply link  start-->
+  <div class="popupbox_wrap" id="linkmodal" *ngIf="jobApplyLink">
+    <div class="popupbox">
+      <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip modal-icon" style='font-size:30px'
+          aria-hidden="true"></i>Send Job Apply Link</h4>
+      <form class="search-form" #editJobForm="ngForm">
+        <div class="modal-body padding-20">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-sm-12 col-form-label">Enter Email Address <span class="req-field">*</span>
+                &nbsp;:</label>
+              <div class="col-sm-12">
+                <input type="email" id="emailAddress" class="form-control mb-10" placeholder="Enter Email" name="email" [(ngModel)]="emailData.email" #email="ngModel" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" [ngClass]="{ 'is-invalid': editJobForm.submitted && email.invalid }" required>
+                <div *ngIf="email.touched && email.invalid" class="invalid-feedback">
+                  <div *ngIf="email.errors.required">Email is required</div>
+                </div>
+                <div *ngIf="email.errors?.pattern" class="invalid-feedback">Email Address is not valid.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button type="button" class="btn btn-success mlr-5" id="sendLinkMail" (click)="sendLink()" [disabled]="!editJobForm.valid">Submit</button>
+            <button type="button" class="btn btn-info" (click)="closeModel2();" id="cancelsendLinkmail">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- job apply link  start-->
+  <!-- reson Popup start-->
+  <div class="popupbox_wrap" id="reasonModal" *ngIf="reasonPopUp">
+    <div class="popupbox">
+      <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip modal-icon" style='font-size:30px'
+          aria-hidden="true"></i>Enter Comment</h4>
+      <form class="search-form" #rejectReasonForm="ngForm">
+        <div class="modal-body padding-20">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-sm-12 col-form-label">Enter Comment <span class="req-field">*</span>
+                &nbsp;:</label>
+              <div class="col-sm-12">
+                <input type="text" id="candReason" class="form-control mb-10" placeholder="Enter Comment" name="candReason" [(ngModel)]="candidateDetails.comment" #candReason="ngModel" [ngClass]="{ 'is-invalid': rejectReasonForm.submitted && candReason.invalid }" required>
+                <div *ngIf="candReason.touched && candReason.invalid" class="invalid-feedback">
+                  <div *ngIf="candReason.errors.required">Please Enter Comment</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button type="button" class="btn btn-success mlr-5" id="sendRejectReason" (click)="updateCandidateComment(rejectReasonForm)" [disabled]="!rejectReasonForm.valid">Submit</button>
+            <button type="button" class="btn btn-info" (click)="closeModal4();" id="cancelRejectReason">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- reson Popup end-->
+  
+  <!-- loader start-->
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap">
+      <img src="../../../../assets/images/loginloader.gif" alt="">
+    </div>
+  </div>
+  
+  <!-- loader end -->
+
+  
+  <!-- mail notification start-->
+  <div class="popupbox_wrap" *ngIf="isShowPopup">
+    <div class="popupbox">
+      <button class="close" type="button" id="closeAllPopup" (click)="closePopup()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+      <table class="table table-bordered">
+        <tr>
+          <td class="success text-center">
+            <h5>Mail sent successfully! </h5>
+          </td>
+        </tr>
+      </table>
+      <div class="row text-center">
+        <a class="btn btn-success" id="closeSuccessPopup" (click)="closePopup()"> <i class="fa fa-users" aria-hidden="true"></i> Close</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- mail notification  start-->
+  <!-- code added by Geeta - start -->
+  <div class="offerletter popupbox_wrap" *ngIf="eventPopup">
+    <div class="popupbox1" style="background:transparent !important;border: none !important;box-shadow:unset !important;">
+      <form  #addEvent="ngForm" name="form" (ngSubmit)="addEvent.form.valid" novalidate>
+        <div class="panel panel-primary popup-border">
+          <div class="panel-heading form-header">
+            <h4 class="modal-title"><i class="fa fa-calendar-plus-o" style='font-size:30px'
+            aria-hidden="true"></i> Interview Scheduling </h4>
+          </div>
+          <div class="panel-body">
+            <div class="padding-20" id="contentToConvert">
+              <div class="row offerContent">
+                <div class="table-responsive">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Client Company</label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="clientCompany" [(ngModel)]="eventData.clientCompany.name" #clientCompany="ngModel" required readonly>
+                          </div>
+                        </td>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Client Company Contact</label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="companyContact" [(ngModel)]="eventData.companyContact.name" #companyContact="ngModel" required readonly>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Posted By</label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="postedByName" [(ngModel)]="eventData.postedByName" #postedByName="ngModel" required readonly>
+                          </div>
+                        </td>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Technical Job Title</label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="accountOwner" [(ngModel)]="eventData.job.name" #accountOwner="ngModel" required readonly>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Recruiter</label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="recruiter" [(ngModel)]="eventData.recruiter.name" #recruiter="ngModel" required readonly>
+                          </div>
+                        </td>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Candidates<span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-7">
+                            <input type="hidden" class="form-control" name="candidatesId" #candidatesId="ngModel" [(ngModel)]="eventData.candidates[0].id">
+                            <input type="text" class="form-control" name="candidates" [(ngModel)]="eventData.candidates[0].name" #candidates="ngModel" readonly>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Interview Start Date & time <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-7">
+                            <input class="form-control" name="startDate" #startDate="ngModel" [(ngModel)]="eventData.startDate" required [owlDateTimeTrigger]="dt" [owlDateTime]="dt">
+                            <owl-date-time #dt></owl-date-time>
+                            <div *ngIf="dateError" class="invalid-feedback" style="margin: auto;">{{dateError}}</div>
+                          </div>
+                        </td>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Duration<span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-7">
+                            <ngb-timepicker name="duration" class="timepicker mb-10" [(ngModel)]="eventData.duration" #startTime="ngModel"  [spinners]="spinners"></ngb-timepicker>
+                          </div>
+                          <div *ngIf="timeNullError" class="invalid-feedback" style="margin: auto;">{{timeNullError}}</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Timezone <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-7">
+                            <select class="form-control" name="timezone" #timezone="ngModel" [(ngModel)]="eventData.timezone" required>
+                              <option value="undefined" disabled selected>Select timezone</option>
+                              <option value="IST">IST</option>
+                              <option value="PST">PST</option>
+                              <option value="MST">MST</option>
+                              <option value="CST">CST</option>
+                              <option value="EST">EST</option>
+                            </select>
+                          </div>
+                        </td>
+                        <td style="width: 50%; border: none;">
+                          <label class="col-sm-5 col-form-label">Location <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-7">
+                            <input type="text" class="form-control" name="location" [(ngModel)]="eventData.location" #location="ngModel" required>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <label class="col-sm-5 col-form-label">Agenda<span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-7">
+                            <textarea class="form-control" rows="4" name="notes" [(ngModel)]="eventData.notes" #notes="ngModel" required></textarea>
+                          </div>
+                        </td>
+                        <td>
+                          <label class="col-sm-5 col-form-label">Description<span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-7">
+                            <textarea class="form-control" rows="4" name="description" [(ngModel)]="eventData.description" #description="ngModel" required></textarea>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-footer ">
+            <div class="pull-right">
+              <button type="button" class="btn btn-danger" (click)="closeeventPopup(addEvent)"><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+              <button type="button" class="btn btn-success mlr-5" [disabled]="!addEvent.valid" (click)="submitEvent(addEvent)" id="submitEvent"> <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit</button>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--popupbox-->
+  </div>
+  <div class="popupbox_wrap" *ngIf="showEventResponse">
+    <div class="popupbox">
+      <button class="close" type="button" id="closeAllPopup" (click)="closeEventResponse()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+      <table class="table table-bordered">
+        <tr>
+          <td class="success text-center">
+            <h5>Interview Scheduled successfully and mails sent successfully </h5>
+          </td>
+        </tr>
+      </table>
+      <div class="row text-center">
+        <a class="btn btn-success" id="closeSuccessPopup" (click)="closeEventResponse()"> <i class="fa fa-users" aria-hidden="true"></i> Close</a>
+      </div>
+    </div>
+  </div>
+  <!-- code added by Geeta - end -->
+  <!-- BASIT023 modification strat 18-10-19 -->
+  <div class="popupbox_wrap" *ngIf="sendresumeToClient">
+    <div class="popupbox">
+      <button class="close" type="button" id="closeAllPopup" (click)="closePopup()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+      <table class="table ">
+        <tr *ngIf="successMsg">
+          <td class="success text-center">
+            <div class="alert alert-success">
+              <h5>{{successMsg}} </h5>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="errorMsg">
+          <td class="success text-center">
+            <div class="alert alert-success">
+              <h5>{{errorMsg}} </h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!-- assign documents - sharmistha - 10-23-2019 - start -->
+  <div class="popupbox_wrap" id="modal" *ngIf="assignDocument">
+    <div class="popupbox">
+      <h4 class="modal-title" id="assignDocument"><i class="fa fa-paperclip modal-icon" style='font-size:30px'
+          aria-hidden="true"></i>Assign Prerequisite Document</h4>
+      <form class="search-form padding-20" #assignDocForm="ngForm">
+        <div class="modal-body">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-sm-4 col-form-label">Prerequisite Documents <span class="req-field">*</span>
+              </label>
+              <div class="col-sm-8">
+                <ng-multiselect-dropdown
+                  name="document" 
+                  class="mb-10"
+                  [placeholder]="'Select document(s)'"
+                  [data]="types"
+                  [settings]="documentSettings"
+                  #department="ngModel" 
+                  [(ngModel)]="candidateData.document"
+                  required
+                  id="document">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <input type="hidden" name="jobCode" [(ngModel)]="candidateData.jobCode" #jobCode="ngModel">
+            <input type="hidden" name="canId" [(ngModel)]="candidateData.canId" #canId="ngModel">
+            <input type="hidden" name="canEmail" [(ngModel)]="candidateData.canEmail" #canEmail="ngModel">
+          </div>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success mlr-5" id="submitRecruiter" (click)="assignPreDocument(assignDocForm)" [disabled]="!assignDocForm.valid">Submit</button>
+          <button type="button" class="btn btn-info" (click)="closeModal1();" id="cancelSubmitRecruiter">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="popupbox_wrap" *ngIf="preDocPopup">
+    <div class="popupbox">
+      <button class="close" type="button" id="closeAllPopup" (click)="closeModal1()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+      <table class="table ">
+        <tr *ngIf="preDocSuccess">
+          <td class="success text-center">
+            <div *ngFor="let msg of successMsgs">
+              <div class="alert alert-success" *ngIf="msg.assign === false">
+                <h5>{{msg.documentName}} has been assigned successfully!</h5>
+              </div>
+              <div class="alert alert-danger" *ngIf="msg.assign === true">
+                  <h5>{{msg.documentName}} has been already assigned!</h5>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" *ngIf="!digitalKeystatus" (click)="uploadRecSign()">Upload Signature</button>
+          </td>
+        </tr>
+        <tr *ngIf="preDocFailure">
+          <td class="danger text-center">
+            <div class="alert alert-danger">
+              <h5>{{errorMsg}} </h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="uploadSign">
+    <div class="popupbox" *ngIf="!digitalKeystatus">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div *ngIf="signaturePad">
+            <ng-signature-pad doneButtonText="Upload Signature" format="base64" (done)="showImage($event)"></ng-signature-pad>
+            <div class="form-group row mt-10">
+              <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-info mlr-5" id="uploadImage" (click)="uploadImage()">Upload Image</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!signaturePad">
+            <form class="search-form" #addSignFrm="ngForm" name="form">
+              <div class="padding-20">
+                <div class="col-sm-12">
+                  <input type="file" (change)="fileChangeEvent($event)" name="image1" accept="image/png, image/jpeg, image/jpg" class="form-control mb-10" #image1="ngModel" [(ngModel)]="imgData.image1" required>
+                </div>
+                <div class="col-sm-12">
+                  <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" format="png" outputType="both" (imageCropped)="imageCropped($event)"></image-cropper>
+                </div>
+                <div class="form-group row mt-10">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary mlr-5" id="addimage" (click)="addimage(addSignFrm)" [disabled]="!addSignFrm.valid">Upload Image</button>
+                    <button type="submit" class="btn btn-info mlr-5" id="goBack" (click)="goBack(addSignFrm)">Back</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="popupbox_wrap" *ngIf="imagePop">
+    <div class="popupbox">
+      <div class="row">
+        <button class="close" type="button" (click)="imagepopup()" id="close"><span class="close-label"><i class="fa fa-times"
+                    aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+        </button>
+      </div>
+      <p class="bg-success" *ngIf="imagePopSuccess">Signature Uploaded successfully</p>
+      <div *ngIf="error">
+        <p class="bg-danger">>{{error}}</p>
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <button type="submit" class="btn btn-danger mlr-5" id="tryagain" (click)="tryagain()">Try again!</button>
+          </div>
+        </div>
+      </div>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+  <!-- assign documents - sharmistha - 10-23-2019 - end -->
+  <div class="popupbox_wrap" *ngIf="duplicateData">
+    <div class="popupbox">
+      <div class="row">
+        <button class="close" type="button" (click)="closeDuplicate()" id="close"><span class="close-label"><i class="fa fa-times"
+                  aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+        </button>
+      </div>
+      <p class="bg-danger">Interview already scheduled for the candidate in the selected time</p>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+
+  <!-- get assigned documents list of the candidate - sharmistha - 11-05-2019 - start -->
+  <div class="offerletter popupbox_wrap" *ngIf="getAssignedDocsView">
+    <div class="popupbox1 " style="background:transparent !important;border: none !important;box-shadow:unset !important;">
+      <!-- list view display - start -->
+      <div class="panel panel-primary popup-border" *ngIf="listViewOfDocs">
+        <div class="panel-heading form-header">
+          <h4 class="modal-title"><i class="fa fa-file-pdf-o" style='font-size:30px'
+          aria-hidden="true"></i> Document assigned to {{assignedDocData.candidate.firstName | titlecase}} {{assignedDocData.candidate.lastName | titlecase}} </h4>
+        </div>
+        <div class="panel-body">
+          <div class="padding-20" id="contentToConvert">
+            <div class="row offerContent" *ngIf="listViewOfDocs">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="form-header">
+                    <tr>
+                      <th style="width: 4%; text-align: center; border: 1px solid #c6ccd9;"></th>
+                      <th style="border: 1px solid #c6ccd9;">Document Type</th>
+                      <th style="border: 1px solid #c6ccd9;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <ng-container *ngIf="availableDocs; else noData">
+                      <tr *ngFor="let type of assignedDocData.documents, index as i">
+                        <td style="text-align: center; border: 1px solid #c6ccd9;">{{i+1}}</td>
+                        <td style="border: 1px solid #c6ccd9;">{{type.documentName}}
+                          <span class="pull-right">
+                            <ng-container *ngIf="type.status === '1'; else signed"><span style="color: #e02525;">( Pending )</span></ng-container>
+                            <ng-template #signed><span style="color: #11a700;">( Signed )</span></ng-template>
+                          </span>
+                        </td>
+                        <td style="padding: 5px 8px; border: 1px solid #c6ccd9;">
+                          <button id="viewTemplate" (click)="viewTemplate(type.id, assignedJobCode, assignedCanId)" class="tabledit-delete-button btn btn-info">View</button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    <ng-template #noData>
+                      <tr>
+                        <td colspan="12" class="text-danger" style="text-align: center;">No Records Found</td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer ">
+          <div class="pull-right">
+            <button type="button" class="btn btn-danger" (click)="closeModal1()"><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <!-- list view display - end -->
+      <!-- single document view display - start -->
+      <div class="panel panel-primary popup-border" *ngIf="singleViewOfDocs">
+        <div class="panel-heading form-header">
+          <h4 class="modal-title"><i class="fa fa-file-pdf-o" style='font-size:30px'
+          aria-hidden="true"></i> {{singleDocDetails.documentName | titlecase}} 
+            <span *ngIf="singleDocDetails.status === '2'"><button class="btn btn-success pull-right" id="downloadTemplate" (click)="captureScreen()">Download</button></span>
+          </h4>
+          
+        </div>
+        <div class="panel-body">
+          <div class="padding-20" id="contentToConvert">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td style="width: 33.33%; border: none;"></td>
+                                <td style="width: 33.33%; text-align: center; border: none;">
+                                    <img src="{{logoUrl}}" style="margin: auto; width: 55%;" alt="logo">
+                                </td>
+                                <td style="width: 33.33%; border: none;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row offerContent">
+              <div class="offerContent" [innerHtml]="singleDocDetails.documentTemplate | safeHtml"></div>
+            </div>
+            <div class="row offerContent">
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td style="width: 50%; border: none;">
+                        <h5><strong>Recruiter Signature</strong></h5>
+                        <div class="row">
+                            <img src="{{assignedDocData.recruiter.signature}}" style="width:40%; margin: auto;" alt="Digital Signature" class="col-md-10"/>
+                        </div>                    
+                        <p><strong>{{assignedDocData.recruiter.firstName | titlecase}} {{assignedDocData.recruiter.lastName | titlecase}}</strong></p>
+                        <p>{{assignedDocData.recruiter.jobTitle | uppercase}}</p>
+                      </td>
+                      <td style="width: 50%; border: none;">
+                        <div *ngIf="singleDocDetails.status === '2'">
+                          <h5><strong>Candidate Signature</strong></h5>
+                          <div class="row">
+                              <img src="{{assignedDocData.candidate.signature}}" style="width:40%; margin: auto;" alt="Digital Signature" class="col-md-10"/>
+                          </div>
+                          <p><strong>{{assignedDocData.candidate.firstName | titlecase}} {{assignedDocData.candidate.lastName | titlecase}}</strong></p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer ">
+          <div class="pull-right">
+            <button type="button" class="btn btn-danger" (click)="closeModal1()"><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+            <button type="button" class="btn btn-primary mlr-5" (click)="backToListView()"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <!-- single document view display - end -->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!-- get assigned documents list of the candidate - sharmistha - 11-05-2019 - end -->
+
+<!-- Edit interview block start BASIT022 Nov 16th 2019 -->
+
+<div class="offerletter popupbox_wrap" *ngIf="editeventPopup">
+  <div class="popupbox1" style="background:transparent !important;border: none !important;box-shadow:unset !important;">
+    <form  #addEvent="ngForm" name="form" (ngSubmit)="addEvent.form.valid" novalidate>
+      <div class="panel panel-primary popup-border">
+        <div class="panel-heading form-header">
+          <h4 class="modal-title"><i class="fa fa-calendar-plus-o" style='font-size:30px'
+          aria-hidden="true"></i>Edit  Interview Scheduling </h4>
+        </div>
+        <div class="panel-body">
+          <div class="padding-20" id="contentToConvert">
+            <div class="row offerContent">
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Client Company</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" name="clientCompany" [(ngModel)]="eventData.clientCompany.name" #clientCompany="ngModel" required readonly>
+                        </div>
+                      </td>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Client Company Contact</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" name="companyContact" [(ngModel)]="eventData.companyContact.name" #companyContact="ngModel" required readonly>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Posted By</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" name="postedByName" [(ngModel)]="eventData.postedByName" #postedByName="ngModel" required readonly>
+                        </div>
+                      </td>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Technical Job Title</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" name="accountOwner" [(ngModel)]="eventData.job.name" #accountOwner="ngModel" required readonly>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Recruiter</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" name="recruiter" [(ngModel)]="eventData.recruiter.name" #recruiter="ngModel" required readonly>
+                        </div>
+                      </td>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Candidates<span class="req-field">*</span>
+                        </label>
+                        <div class="col-sm-7">
+                          <input type="hidden" class="form-control" name="candidatesId" #candidatesId="ngModel" [(ngModel)]="eventData.candidates[0].id">
+                          <input type="text" class="form-control" name="candidates" [(ngModel)]="eventData.candidates[0].name" #candidates="ngModel" readonly>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Interview Start Date & time <span class="req-field">*</span>
+                        </label>
+                        <div class="col-sm-7">
+                          <input class="form-control" name="startDate" #startDate="ngModel" [(ngModel)]="eventData.startDate" required [owlDateTimeTrigger]="dt" [owlDateTime]="dt"  hour12Timer=true >
+                          <owl-date-time #dt></owl-date-time>
+
+                          <!-- <input [owlDateTime]="dt1" class="form-control" name="startDate" #startDate="ngModel" [(ngModel)]="eventData.startDate" required>
+                          <span class="trigger" [owlDateTimeTrigger]="dt1">
+                              <i class="fas fa-calendar-alt"></i>
+                          </span>
+                          <owl-date-time #dt1></owl-date-time> -->
+
+
+                          <div *ngIf="dateError" class="invalid-feedback" style="margin: auto;">{{dateError}}</div>
+                        </div>
+                      </td>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Duration<span class="req-field">*</span>
+                        </label>
+                        <div class="col-sm-7">
+                          <ngb-timepicker name="duration" class="timepicker mb-10" [(ngModel)]="eventData.duration" #startTime="ngModel"  [spinners]="spinners"></ngb-timepicker>
+                        </div>
+                        <div *ngIf="timeNullError" class="invalid-feedback" style="margin: auto;">{{timeNullError}}</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Timezone <span class="req-field">*</span>
+                        </label>
+                        <div class="col-sm-7">
+                          <select class="form-control" name="timezone" #timezone="ngModel" [(ngModel)]="eventData.timezone" required>
+                            <option value="undefined" disabled selected>Select timezone</option>
+                            <option value="IST">IST</option>
+                            <option value="PST">PST</option>
+                            <option value="MST">MST</option>
+                            <option value="CST">CST</option>
+                            <option value="EST">EST</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td style="width: 50%; border: none;">
+                        <label class="col-sm-5 col-form-label">Location <span class="req-field">*</span>
+                        </label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" name="location" [(ngModel)]="eventData.location" #location="ngModel" required>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label class="col-sm-5 col-form-label">Agenda<span class="req-field">*</span>
+                        </label>
+                        <div class="col-sm-7">
+                          <textarea class="form-control" rows="4" name="notes" [(ngModel)]="eventData.notes" #notes="ngModel" required></textarea>
+                        </div>
+                      </td>
+                      <td>
+                        <label class="col-sm-5 col-form-label">Description<span class="req-field">*</span>
+                        </label>
+                        <div class="col-sm-7">
+                          <textarea class="form-control" rows="4" name="description" [(ngModel)]="eventData.description" #description="ngModel" required></textarea>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer ">
+          <div class="pull-right">
+            <button type="button" class="btn btn-danger" (click)="closeeventPopup(addEvent)"><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+            <button type="button" class="btn btn-success mlr-5" [disabled]="!addEvent.valid" (click)="editInterviewSlot(addEvent)" id="submitEvent"> <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit</button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!--  Edit interview block end BASIT022 Nov 16th 2019-->
+
+<style>
+/* .square-tile p {
+    color: #fff;
+    font-size: 14px;
+    margin: unset;
+}
+.square-tile img {
+    width: 10%;
+    display: inline-block;
+    margin: 0;
+} */
+</style>
+
+
+<!-- Upload resume of candidate start basit022 11-28-19 -->
+<div class="popupbox_wrap" id="modal"  *ngIf="resumeInfo">
+<div class="popupbox">
+
+    <div class="dashed-form col-md-12 col-lg-12 text-center pt-20 pb-20 pl-0 pr-0">
+        <div class="row mlr-0 text-center">
+          <div class="resume-pin">
+            <em class="fa fa-paperclip"></em>
+          </div>
+        </div>
+        <button [disabled]="fileName" class="text-lg non-button" id="Upload Resume" (click)="document.click()"><span class="blue-text">Browse files</span> to upload your resume</button>
+        <p *ngIf="fileName">{{ files[0].name }}</p>
+        <input type="file" id="document" ng2FileSelect [uploader]="uploader" name="document" accept="application/pdf,application/docx" class="form-control mb-10" #document (change)="getFiles($event)" style="display: none;">
+        <div style="color: #848484; font-size: 11px;;">Supported Formats: doc, docx, rtf, pdf, upto 2 MB</div>
+
+        <div class="col-md-12" *ngIf="fileName" class="plr-0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:70%">Progress</th>
+                <th style="width:5%">Status</th>
+                <th style="width:25%">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of uploader.queue">
+                <td>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar"
+                      [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-success btn-xs" id="uploadDocument" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                    <span class="glyphicon glyphicon-upload"></span>
+                  </button>
+                  <button type="button" class="btn btn-danger btn-xs" id="remove document" (click)="[item.remove(),fileName=false]">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </td>
+
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+<div class="popupbox">
+<p class="bg-success">Resume uploaded successfully!</p>
+<div class="row text-center">
+  <a class="btn btn-primary" id="userViews" (click)="[item.isSuccess = false,resumeInfo=false,
+  resumecontent(sendResume.jobcode,sendResume.candidateId), fileName=false, uploader.queue = []]"><em class="fa fa-arrow-right" aria-hidden="true"></em> Close</a>
+</div>
+<!--row-->
+</div>
+<!--popupbox-->
+</div>
+<!--popupbox_wrap--> 
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br><br>
+        <button type="button" class="btn btn-danger " (click)="closepopup()" ><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+      </div>
+
+
+</div>
+</div>
+
+<!-- *ngIf="resumeInfo" -->
+
+<div class="popupbox_wrap" id="modal"  *ngIf="mailcontentdoc" >
+      
+        <!-- <div class="dashed-form col-md-12 col-lg-12 text-center pt-20 pb-20 pl-0 pr-0">
+        </div> -->
+        <div class="popupbox"  style="width:65%;background:transparent !important;border: none !important;box-shadow:unset !important;">
+            <form  #sendresumeform="ngForm" name="form" (ngSubmit)="sendresumeform.form.valid" novalidate>
+                <div class="panel panel-primary popup-border">
+                  <div class="panel-heading form-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip " style='font-size:30px'
+                  aria-hidden="true"></i> Send Resume to Client  </h4>
+                  </div>
+             
+                  <div class="panel-body">
+                   
+       
+        <div class="form-group  mb-10">
+            <label for="candidateinfo" class="col-sm-12">Candidate Information from mail <span class="req-field">*</span> </label>
+            <textarea    class="form-control col-sm-12" name="candidateinfo" id="candidateinfo"  [(ngModel)]="sendresumeinfo.candidateinfo" #candidateinfo="ngModel" required placeholder="Candidate Information from mail" ></textarea>
+          </div>
+    
+          <div class="form-group mb-10">
+              <div *ngIf="candidateinfo.touched && candidateinfo.invalid " class="invalid-feedback  mb-10">
+                  <div *ngIf="candidateinfo.errors.required">Candidate Information  is required</div>
+                </div>
+                
+            </div>
+            <br>
+            <div class="form-group  mb-10">
+                <label for="summary" class="col-sm-12">Description <span class="req-field">*</span></label>
+                <textarea    class="form-control col-sm-12" name="canDesc" id="canDesc"  [(ngModel)]="sendresumeinfo.canDesc" #canDesc="ngModel" required placeholder="Description" ></textarea>
+              </div>
+        
+              <div class="form-group mb-10">
+                  <div *ngIf="canDesc.touched && canDesc.invalid " class="invalid-feedback  mb-10">
+                      <div *ngIf="canDesc.errors.required">Description is required</div>
+                    </div>
+                    
+                </div>
+                <br>
+                <div class="form-group mb-10">
+                    <label for="summary" class="col-sm-12">Documents: </label>
+                   
+                    <div class="col-sm-2" *ngFor="let docinfo  of sendresumeinfo.selectdoc " style="margin:3px;border:1px solid #80808033;border-radius: 4px;">
+                        <label>
+                            <input type="checkbox"
+                                   name="uploadeddocuments"
+                                   value="{{docinfo.document}}"
+                                   [(ngModel)]="docinfo.status"/>
+                                   &nbsp;{{docinfo.type}}
+                        </label>
+                        <a href="{{documentUrl}}{{docinfo.document}}" target="_blank" style="float:right;vertical-align: middle;"><em class="fa fa-eye" style="color:rgba(66, 65, 65, 0.527);" ></em></a>
+                    </div>
+
+                </div>
+               
+      
+        </div>
+        <div class="panel-footer ">
+            <div class="pull-right">
+                <button type="button" class="btn btn-danger" (click)="closepopup()" ><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+               
+                    <button type="button" class="btn btn-success mlr-5" (click)="sendresume(sendresumeinfo,sendresumeform)"
+                      [disabled]="!sendresumeform.valid" id="sendresumetoclientinfo"> <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send Resume</button>
+                      </div>
+              <div class="clearfix"></div>
+        </div>
+        </div>
+      </form>
+        </div>
+    
+</div>
+
+
+
+
+
+
+<!-- upload resume of candidate by recruiter Basit022 11-28-19 -->
+  <!-- assign Recruiter  start-->
+  <div class="popupbox_wrap" id="modal" *ngIf="assignHR">
+    <div class="popupbox">
+      <h4 class="modal-title" id="exampleModalLabel1"><i class="fa fa-paperclip modal-icon" style='font-size:30px'
+          aria-hidden="true"></i>Assign HR</h4>
+      <form class="search-form" #editJobForm="ngForm">
+        <div class="modal-body">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-sm-4 col-form-label">Select HR <span class="req-field">*</span> &nbsp;:</label>
+              <div class="col-sm-8">
+                <select class="form-control mb-10" name="hrId" [(ngModel)]="this.hrInfo.hrUserId" #hrId="ngModel" #hrId>
+                  <option *ngFor="let hrUser of hr" value="{{hrUser.id}}">{{hrUser.first_name}} {{hrUser.last_name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success mlr-5" id="submitHr" (click)="assignHr()">Submit</button>
+          <button type="button" class="btn btn-info" (click)="closeHr();" id="cancelSubmitHr">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="popupbox_wrap" *ngIf="assignHrtoCandidate">
+    <div class="popupbox">
+      <button class="close" type="button" id="closeHRPopup" (click)="closeHRPopup()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+      <table class="table ">
+        <tr *ngIf="successMsg">
+          <td class="success text-center">
+            <div class="alert alert-success">
+              <h5>{{successMsg}} </h5>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="errorMsg">
+          <td class="success text-center">
+            <div class="alert alert-success">
+              <h5>{{errorMsg}} </h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!-- assign Recruiter  end-->

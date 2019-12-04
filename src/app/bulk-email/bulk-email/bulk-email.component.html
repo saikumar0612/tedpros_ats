@@ -1,0 +1,106 @@
+<!--
+Author : BASIT022
+comment: bulk Emailing
+date: 08-08-19
+-->
+
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Send BulkMails &nbsp;</h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items"> 
+            <li><a routerLink='/dashboard'>Home</a></li>            
+            <li>&nbsp;/&nbsp;</li>
+            <li>Send Bulk Mails</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form role="form" #myForm="ngForm" accept-charset="UTF-8" novalidate>
+              <div class="form-header">
+                <h5>Send BulkMails</h5>
+              </div>
+              <div class="padding-20">
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <label class="col-sm-4 col-form-label">Subject<span class="error_star">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control mb-10" placeholder="Enter Subject" name="subject" id="subject"
+                          [(ngModel)]="data.subject" #subject="ngModel" required>
+                        <div *ngIf="subject.touched && subject.invalid" class="invalid-feedback">
+                          <div *ngIf="subject.touched && subject.errors.required">Subject is required</div>
+                        </div>
+                        <div *ngIf="subject.errors?.pattern" class="invalid-feedback">
+                          Enter a valid Subject
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                      <label class="col-sm-4 col-form-label">Message<span class="error_star">*</span></label>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <ckeditor
+                    #myckeditor="ngModel"
+                    name="myckeditor"
+                    [(ngModel)]="data.content"
+                    [config]="{uiColor: '#d9e4fb'}"
+                    [readonly]="false"
+                    debounce="500"
+                    required>
+                  </ckeditor>
+                </div>
+                <div class="form-group row mt-10">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary mlr-5" id="editTerms" (click)="sendmail()">Submit</button>
+                    <!-- adding reset button by suresh --09-18-2019 start -->
+                    <button type="reset" class="btn btn-info mlr-5" id="reset">Reset</button>
+                    <!-- adding reset button by suresh --09-18-2019 start -->
+                    <!-- Removed cancel button - sharmistha - 09-13-2019 -->
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+  </div>
+
+  <div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox">
+      <div class="row"><button class="close" type="button" (click)="close()" id="close"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+      <p class="bg-success">Bulk mails send successfully! </p>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+    
+    
+  <div class="popupbox_wrap" *ngIf="isFailure">
+    <div class="popupbox">
+      <div class="row"><button class="close" type="button" id="closePop" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+      <p class="bg-success">{{ result.errorMessages }}</p>
+      <!-- Removed cancel button - sharmistha - 09-13-2019 -->
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->

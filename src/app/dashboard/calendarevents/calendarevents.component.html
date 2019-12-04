@@ -1,0 +1,159 @@
+<div class="content">
+	<div class="top-header">
+		<div class="row">
+			<div class="col-md-6 col-lg-6 heading">
+				<h4>Calender</h4>
+			</div>
+			<div class="col-md-6 col-lg-6 breadcrumb">
+				<ul class="breadcrumb-items">
+					<li><a routerLink='/dashboard'>Home</a>
+					</li>
+					<li>&nbsp;/&nbsp;</li>
+					<li>Calender</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="element-content">
+		<div class="job-box">
+			<div class="row">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<div class="row text-center" style="margin: 20px;">
+						<div class="col-md-4">
+							<div class="btn-group">
+								<div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Previous</div>
+								<div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">Today</div>
+								<div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">Next</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+						</div>
+						<div class="col-md-4">
+							<div class="btn-group">
+								<div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">Month</div>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div [ngSwitch]="view">
+						<mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"></mwl-calendar-month-view>
+						<mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"></mwl-calendar-week-view>
+						<mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"></mwl-calendar-day-view>
+					</div>
+					<!-- Everything you see below is just for the demo, you don't need to include it in your app -->
+					<br />
+					<br />
+					<br />
+					<h3>
+            Events
+            <div class="clearfix"></div>
+          </h3>
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>Title</th>
+									<th>Description</th>
+									<th>Starts at</th>
+									<th>Duration(hh:mm)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let event of events">
+									<td>
+										<input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="refresh.next()" readonly />
+									</td>
+									<td>
+										<input type="text" class="form-control" [(ngModel)]="event.description" (change)="refresh.next()" readonly />
+									</td>
+									<td>
+										<p>{{event.start | date:'MM/dd/yyyy H:mm'}}</p>
+									</td>
+									<td>
+										<p>{{event.duration}}</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<ng-template #modalContent let-close="close">
+						<div class="calendereve popupbox_wrap" id="reasonModal">
+							<div class="popupbox" style="position: unset !important;">
+								<div class="modal-header">
+									<h5 class="modal-title">Interview Details</h5>
+									<button type="button" class="close" (click)="close()"> <span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<form class="search-form" #rejectReasonForm="ngForm">
+									<div class="modal-body padding-20">
+										<div class="form-group row">
+											<div class="col-md-12">
+												<div>Interview Title: <pre>{{ modalData?.event.title }}</pre>
+												</div>
+												<div>Technical Job Title: <pre>{{ modalData?.event.jobTitle }}</pre>
+												</div>
+												<div>Candidate to be Interviewed: <pre>{{ modalData?.event.candidateName }}</pre>
+												</div>
+												<div>Client Company: <pre>{{ modalData?.event.clientCompany }}</pre>
+												</div>
+												<div *ngIf="modalData?.event.description">Description: <pre>{{ modalData?.event.description }}</pre>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</ng-template>
+					<!-- event PopUp -->
+					<div class="popupbox_wrap1" *ngIf="eventPopup">
+						<div class="popupbox">
+							<button class="close" type="button" id="closebtn" (click)="closeeventPopup()"><span class="close-label"><i
+                    class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+							</button>
+							<form class="search-form" #addindFrm="ngForm" name="form" (ngSubmit)="addindFrm.form.valid" novalidate>
+								<div class="padding-20">
+									<table class="table">
+										<tr>
+											<td>
+												<label class="col-sm-5 col-form-label">Note <span class="req-field">*</span>
+												</label>
+												<div class="col-sm-7">
+													<input class="form-control" type="text" name="note" #note="ngModel" placeholder="Enter the Note" [(ngModel)]="eventData.note" required>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label class="col-sm-5 col-form-label">Start Date <span class="req-field">*</span>
+												</label>
+												<div class="col-sm-7">
+													<input class="form-control index" type="text" mwlFlatpickr name="startDate" (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true" dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" [(ngModel)]="eventData.startDate" #startDate="ngModel" required>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label class="col-sm-5 col-form-label">End Date <span class="req-field">*</span>
+												</label>
+												<div class="col-sm-7">
+													<input class="form-control index" type="text" mwlFlatpickr name="endDate" #endDate="ngModel" (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true" dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" [(ngModel)]="eventData.endDate" required>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+	<div class="loader_inner_wrap">
+		<img src="../../../assets/images/loginloader.gif" alt="">
+	</div>
+</div>

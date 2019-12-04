@@ -1,0 +1,100 @@
+<div class="content">
+    <div class="top-header">
+        <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+            <h4>Offer Letter of {{ types.firstName }}&nbsp;{{ types.lastName }}</h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+            <ul class="breadcrumb-items"> 
+                <li><a routerLink='/dashboard'>Home</a></li>
+                <li>&nbsp;/&nbsp;</li>
+                <li><a routerLink='/usersView'>Users</a></li>
+                <li>&nbsp;/&nbsp;</li>
+                <li><a routerLink='/offer-letter'>Offer Letter</a></li>            
+            </ul>
+        </div>
+        </div>
+    </div>
+    <div class="element-content">
+        <div class="job-box">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable">
+                <thead class="form-header">
+                    <tr>
+                    <th style="width: 4%; text-align: center;"></th>
+                    <th>Offer Letter Type</th>
+                    <th>Template</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="filterData">
+                    <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th style="width: 70%">
+                        <input type="text" placeholder="Search letter Type" (keyup)="search($event.target.value,'name')" class="search-filter form-control" id="Searchfiletype" style="width: 40%;">
+                    </th>
+                    <th></th>
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                    <tr *ngFor="let type of mf.data, index as i">
+                        <td style="text-align: center;">{{i+1}}</td>
+                        <td>{{type.offerLetterName}}</td>
+                        <td style="padding: 5px 8px">
+                        <button *ngIf="type.displayAdd" id="addTemplate" (click)="addOfferLetter(type.offerLetterTypeId)" class="tabledit-delete-button btn btn-primary mlr-5">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                        <button *ngIf="type.displayEdit" id="editTemplate" (click)="editOfferLetter(type.offerLetterTypeId)" class="tabledit-delete-button btn btn-success mlr-5">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button>
+                        <button *ngIf="type.displayEdit" id="viewTemplate" (click)="viewTemplate(type.offerLetterTypeId)" class="tabledit-delete-button btn btn-info mlr-5">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button>
+                        <button *ngIf="type.displayDelete" id="viewTemplate" (click)="viewTemplate(type.offerLetterTypeId)" class="tabledit-delete-button btn btn-info mlr-5">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button>
+                        <button *ngIf="type.displayDelete" id="deleteTemplate" (click)="deleteTemplate(type.offerLetterTypeId)" class="tabledit-delete-button btn btn-danger mlr-5">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                        </td>
+                    </tr>
+                    </ng-container>
+                    <ng-template #noData>
+                    <tr>
+                        <td colspan="12" class="text-danger" style="text-align: center;">No Records Found</td>
+                    </tr>
+                    </ng-template>
+                </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>  
+
+    <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+    </div>
+
+    <div class="popupbox_wrap" *ngIf="deletePopup">
+        <div class="popupbox">        
+            <div class="show_user_details" *ngIf="isConfirm">
+                <h6>Are you sure?</h6>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button class="btn btn-primary mlr-5" id="deleteSingleDoc" (click)="delete(deleteId, userId)">Yes</button>
+                        <button class="btn btn-danger mlr-5" id="cancelSingleDoc" (click)="closePopup()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="show_user_details" *ngIf="isSuccess">
+                <p class="bg-success">{{message}}</p>
+                <div class="form-group row text-center">
+                    <button class="btn btn-danger mlr-5" id="close" (click)="closePopup()">Close</button>
+                </div>
+            </div>
+      </div>
+      <!--popupbox-->
+    </div>
+    <!--popupbox_wrap-->

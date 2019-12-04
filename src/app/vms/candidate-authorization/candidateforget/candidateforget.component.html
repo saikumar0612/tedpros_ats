@@ -1,0 +1,60 @@
+<div class="body-gradient">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 col-sm-8 col-xs-12 col-md-offset-3 pt-80 pb-80 pt-sm-20 pb-sm-20">
+        <div class="login-box">
+          <div class="login-logo">
+            <img class="center" alt="Company Logo" src="{{file1_input}}">
+          </div>
+          <div class="top-header">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 heading">
+                <h4>Forget Password</h4>
+              </div>
+            </div>
+          </div>
+          <h4 style="color: red; text-align: center;" *ngIf="this.error ">
+            {{error.error}}
+
+          </h4>
+          <div class="alert alert-success alert-dismissible" data-auto-dismiss role="alert" style=" text-align: center;"
+            *ngIf="msg">
+            <h4><strong>{{msg}}</strong></h4>
+          </div>
+          <div class="alert alert-danger alert-dismissible" data-auto-dismiss role="alert" style=" text-align: center;"
+            *ngIf="error_msg">
+            <h4><strong>{{error_msg}}</strong></h4>
+          </div>
+
+          <form class="form-box" #loginForm="ngForm">
+            <div class="form-group row" style="margin-bottom: 30px;">
+              <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
+                <i class="fa fa-user-circle-o login-icon" aria-hidden="true"></i>
+              </div>
+              <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                <label class="form-label">Candidate Email</label>
+                <input type="email" class="form-control" placeholder="Enter your Email" #email="ngModel" name="email"
+                  [(ngModel)]="emailId" required invalid>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-7 col-lg-7 col-sm-7 col-xs-6"></div>
+              <div class="col-md-3 col-lg-3 col-sm-3 col-xs-4">
+                <button type="submit" class="btn btn-login" id="forgetPassword" [disabled]="!loginForm.valid" (click)="forgetpass()">Send Reset Link</button>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <a routerLink="/vms/candidate-login-register">Return to Login</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../assets/images/loginloader.gif" alt=""></div>
+</div>

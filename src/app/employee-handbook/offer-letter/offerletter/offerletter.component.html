@@ -1,0 +1,72 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Offer Letter &nbsp; 
+            <a *ngIf="userPermissions.createOfferLetter" id="addTemplate" routerLink="/offer-letter/add-offer-letter-type" class="tabledit-delete-button btn btn-primary mlr-5">
+              <i class="fa fa-plus" aria-hidden="true"></i> Add New
+            </a>
+        </h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items"> 
+            <li><a routerLink='/dashboard'>Home</a></li>
+            <li>&nbsp;/&nbsp;</li>
+            <li><a routerLink='/offer-letter'>Offer Letter</a></li>
+           
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+              <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable">
+                <thead class="form-header">
+                  <tr>
+                    <th style="width: 4%; text-align: center;"></th>
+                    <th>Offer Letter Type</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="filterData">
+                  <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th style="width: 70%">
+                      <input type="text" placeholder="Search letter Type" (keyup)="search($event.target.value,'name')" class="search-filter form-control" id="Searchfiletype" style="width: 40%;">
+                    </th>
+                    <th></th>
+                  </tr>
+                  <ng-container *ngIf="availableRecords; else noData">
+                    <tr *ngFor="let type of mf.data, index as i">
+                      <td style="text-align: center;">{{i+1}}</td>
+                      <td>{{type.type}}</td>
+                      <td style="padding: 5px 8px">
+                        <button *ngIf="type.template && userPermissions.updateOfferLetter" id="editTemplate" (click)="addTemplate(type.id)" class="tabledit-delete-button btn btn-success mlr-5">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button>
+                        <button *ngIf="type.template && userPermissions.readOfferLetter" id="viewTemplate" (click)="viewTemplate(type.id)" class="tabledit-delete-button btn btn-danger">
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-container>
+                  <ng-template #noData>
+                    <tr>
+                      <td colspan="12" class="text-danger" style="text-align: center;">No Records Found</td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+  </div>

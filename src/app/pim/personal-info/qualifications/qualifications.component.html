@@ -1,0 +1,1204 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Qualification Info
+          &nbsp;&nbsp;
+          <select class="form-control" id="selectinferamtion" #info (change)="onNavigate(info.value)" style="display: inline; width:35%;">
+            <option [ngValue]="undefined" disabled selected>-- Select --</option>
+            <option value="myInfo/personalInfo">Personal Info</option>
+            <option value="myInfo/contactInfo">Contact Info</option>
+            <option value="myInfo/dependentInfo">Dependents Info</option>
+            <option value="myInfo/qualifications">Qualification Info</option>
+            <option value="myInfo/salaryInfo">Salary Info</option>
+            <option value="myInfo/documentInfo">Documents Info</option>
+            <option value="myInfo/my-resume">My Resume</option>
+          </select>
+      </h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items">
+              <li><a routerLink="/dashboard">Home</a></li>
+              <li>&nbsp;/&nbsp;</li>
+              <li><a routerLink='/myInfo'>My Info</a></li>
+              <li>&nbsp;/&nbsp;</li>
+              <li>Qualification Info</li>
+          </ul>
+      </div>
+    </div>
+  </div>
+  <form #addQue = "ngForm" name="form" (ngSubmit)="addQue.form.valid " novalidate>
+    <ng-container *ngIf="this.displayExp==true; then a2 else a1"></ng-container>
+    <!-- view details -->
+    <ng-template #a1>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="form-header row mlr-0">
+                  <div class="col-md-6">
+                    <h5>&nbsp;WORK EXPERIENCE</h5>
+                  </div>
+                  <div class="col-md-6">
+                    <button (click)="editWork()" id="editWork" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Edit</button>
+                    <button (click)="cancel()" id="canceleditWork" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+                  </div>
+                </div>     
+                <div  class="search-form">         
+                <div class="padding-20"> 
+                    <div class="table-responsive margin-20">
+                    <table class="table table-bordered">
+                        <thead class="form-header">
+                            <tr>
+                              <th>Employer</th>
+                              <th>Job Title</th> 
+                              <th>Supervisor Name</th>   
+                              <th>Supervisor Phone</th> 
+                              <th>Start Date</th>
+                              <th>End Date</th>   
+                              <th>Responsibilities</th>   
+                              <th>Description</th>   
+                              <th>Technical Skills</th>   
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let experienceinfo of experienceslist" style="margin-bottom: 10px;">
+                              <td style="width:9%">{{experienceinfo.pastCompany}}</td>
+                              <td style="width:9%">{{experienceinfo.pastJobTitle}}</td>
+                              <td style="width:9%">{{experienceinfo.supervisorName}}</td>
+                              <td style="width:9%">{{experienceinfo.supervisorPhone}}</td>
+
+
+                              <td style="width:9%">
+                                <span *ngIf="experienceinfo.fromDate == '0000-00-00'"></span>
+                                <span *ngIf="experienceinfo.fromDate != '0000-00-00'">{{experienceinfo.fromDate | date: 'MM-dd-yyyy'}}</span>
+                              </td>
+                              <td style="width:9%"><span *ngIf="experienceinfo.isCurrent=='1'">Still Working</span>
+                                <span *ngIf="experienceinfo.isCurrent=='0'">{{experienceinfo.toDate | date: 'MM-dd-yyyy'}}</span>
+                              
+                              </td>
+                              <td style="width:9%">{{experienceinfo.responsibility}}</td>
+                              <td>{{experienceinfo.comment}}</td>
+                              
+                              <td style="width:9%">{{experienceinfo.skills}}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </ng-template>
+    <!-- edit details -->
+    <ng-template #a2>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div  class="search-form">
+                <div class="form-header padding-20">
+                 <h5> &nbsp;  &nbsp;  EDIT WORK EXPERIENCE</h5>
+                </div>
+                <form class="search-form" #addWork = "ngForm" name="form" (ngSubmit)="addWork.form.valid " novalidate>
+                <div class="padding-20">
+                  
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label"> Employer <span class="req-field">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" id="editEmployer" class="form-control mb-10"  name="pastCompany"  #pastCompany="ngModel"  [(ngModel)]="experienceslist1.pastCompany" [ngClass]="{ 'is-invalid': addWork.submitted && pastCompany.invalid }" required pattern="^(?!.*[.&*]{2})([a-zA-Z0-9.,&*]+[\s])*[a-zA-Z0-9.,&*]+$" appTitleCase>
+                            <div *ngIf="pastCompany.touched && pastCompany.invalid" class="invalid-feedback">
+                              <div *ngIf="pastCompany.touched && pastCompany.errors.required">Employer is required</div>
+                            </div>
+                            <div *ngIf="pastCompany.errors?.pattern" class="invalid-feedback">
+                              Employer name cannot contain special characters
+                            </div>    
+                          </div>
+                      </div> 
+                      <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Job Title <span class="req-field">*</span></label>
+                          <div class="col-sm-8">
+                            <input type="text" id="editJobtitle" class="form-control mb-10" name="pastJobTitle" #pastJobTitle="ngModel"  [(ngModel)]="experienceslist1.pastJobTitle" [ngClass]="{ 'is-invalid': addWork.submitted && pastJobTitle.invalid }" required [pattern]="jobTitlePattern" >
+                            <div *ngIf="pastJobTitle.touched && pastJobTitle.invalid" class="invalid-feedback">
+                              <div *ngIf="pastJobTitle.errors.required">Job title is required</div>
+                            </div>
+                            <div *ngIf="pastJobTitle.errors?.pattern" class="invalid-feedback">
+                              Enter a valid Job Title
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Supervisor Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="editSupervisorName" class="form-control mb-10" name="supervisorName" #supervisorName="ngModel" [(ngModel)]="experienceslist1.supervisorName" pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$" [ngClass]="{ 'is-invalid': addWork.submitted && supervisorName.invalid }">
+                            <div *ngIf="supervisorName.errors?.pattern" class="invalid-feedback">
+                              Enter a valid Supervisor Name
+                            </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Supervisor Phone </label>
+                        <div class="col-sm-8">
+                            <input type="text" id="editSupervisorNumber" class="form-control mb-10" name="supervisorPhone" #supervisorPhone="ngModel" [(ngModel)]="experienceslist1.supervisorPhone" 
+                            pattern="([+]?\d{1,3}[-])?\d{10}">
+                            <div *ngIf="supervisorPhone.errors?.pattern" class="invalid-feedback">
+                              Phone number not valid.
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row"> 
+                      <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Start Date</label>
+                          <div class="col-sm-8">                              
+                            <!-- Changed date picker - sharmistha - 08-07-2019 - start -->
+                            <input class="form-control mb-10" placeholder="Select start date" id="editFromDate" [owlDateTimeTrigger]="fromDate" [owlDateTime]="fromDate" name="fromDate" [(ngModel)]="experience.fromDate" #fromDate="ngModel" [max]="todayDate" >
+                            <owl-date-time [pickerType]="'calendar'" #fromDate></owl-date-time>
+                            <!-- Changed date picker - sharmistha - 08-07-2019 - end -->
+                          </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="!check1">
+                          <label class="col-sm-4 col-form-label">End Date</label>
+                          <div class="col-sm-8">
+                              <!-- Changed date picker - sharmistha - 08-07-2019 - start -->
+                              <input class="form-control mb-10" placeholder="Select end date" id="editEndDate" [owlDateTimeTrigger]="toDate" [owlDateTime]="toDate" name="toDate" [(ngModel)]="experience.toDate" #toDate="ngModel" (dateTimeInput)="dateValidate()">
+                              <owl-date-time [pickerType]="'calendar'" #toDate></owl-date-time>
+                              <!-- Changed date picker - sharmistha - 08-07-2019 - end -->
+                              <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Description <span class="req-field"></span></label>
+                          <div class="col-sm-8">
+                              <textarea class="form-control mb-10" id="editDescription" #comment="ngModel" name="comment"  [(ngModel)]="experienceslist1.comment" ></textarea>
+                            
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Responsibilities <span class="req-field"></span></label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control mb-10" id="editResponsibility" #responsibility="ngModel" name="responsibility"
+                              [(ngModel)]="experienceslist1.responsibility" ></textarea>
+                             
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Technical Skills <span class="req-field">*</span></label>
+                        <div class="col-sm-8">
+                          <textarea class="form-control mb-10" id="editSkills" #skills ="ngModel" name="skills"
+                            [(ngModel)]="experienceslist1.skills" requiredpattern="^([a-zA-Z0-9.#*+]+[\s,&_\-])*[a-zA-Z0-9.#*_+]+$" required></textarea>
+                          <div *ngIf="skills.touched && skills.invalid" class="invalid-feedback">
+                            <div *ngIf="skills.errors.required">Skills are required</div>
+                          </div>
+                          <div *ngIf="skills.errors?.pattern" class="invalid-feedback">
+                            Enter valid skills
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-6 col-form-label">I presently work here:</label>
+                        <div class="col-sm-6">
+                          <label class="switch">
+                            <input type="checkbox" id="editisCurrent" name="isCurrent" #isCurrent (change)="changeCurrent('experience')" [(ngModel)]="check1">
+                            <span class="slider round"></span>
+                          </label>  
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10 ml15">
+                            <button  [disabled]="!addWork.valid" id="insertExperience" class="btn btn-primary mlr-5" (click)="insertExperience(addWork,pastCompany.value,pastJobTitle.value,comment.value,responsibility.value,skills.value,supervisorName.value,supervisorPhone.value)">Add</button>
+                            <button type="reset" class="btn btn-info mlr-5" id="editReset">Reset</button>
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="error5">
+                      <div class="col-sm-10">
+                        <p style="color:red;font-weight:bold;">{{ error5 }}</p>
+                      </div>
+                    </div>
+                  
+
+                  <div class="table-responsive margin-20">
+                      <table class="table table-bordered">
+                          <thead class="form-header">
+                              <tr>
+                                  <th>Employer</th>
+                                  <th>Job Title</th> 
+                                  <th>Supervisor Name</th>   
+                                  <th>Supervisor Phone</th> 
+                                  <th>Start Date</th>
+                                  <th>End Date</th>   
+                                  <th>Responsibilities</th>   
+                                  <th>Description</th>   
+                                  <th>Technical Skills</th>
+
+                                  <th></th>                  
+                              </tr>
+                        </thead>
+						            <tbody>
+                          <tr *ngFor="let experienceinfo of experienceslist,let i=index" style="margin-bottom: 10px;">                              
+                              
+                            <td style="width:9%">{{experienceinfo.pastCompany}}</td>
+                            <td style="width:9%">{{experienceinfo.pastJobTitle | titlecase}}</td>
+                            <td style="width:9%">{{experienceinfo.supervisorName | titlecase}}</td>
+                            <td style="width:9%">{{experienceinfo.supervisorPhone}}</td>
+                            <td style="width:9%">{{experienceinfo.fromDate | date: 'MM-dd-yyyy'}}</td>
+                            <td style="width:9%"><span *ngIf="experienceinfo.isCurrent === '1';else elseBlock">Still Working</span>
+                              <ng-template #elseBlock>{{experienceinfo.toDate | date: 'MM-dd-yyyy'}}</ng-template>
+                            </td>
+                            <td style="width:12%">{{experienceinfo.responsibility}}</td>
+                            <td style="width:9%">{{experienceinfo.comment}}</td>
+                            <td style="width:9%">{{experienceinfo.skills}}</td>
+
+                            <td style="width:6%">
+                              <button (click)="removeExperience(experienceinfo)" id="removeExperience" class="tabledit-delete-button btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                              </button>
+                              &nbsp;
+                              <button (click)="editExperience(experienceinfo)" id="editExperience"  class="tabledit-delete-button btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                              </button>
+                            </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    
+    <ng-container *ngIf="this.displayEdu==true; then b2 else b1"></ng-container>
+    <!-- view details -->
+    <ng-template #b1>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="form-header row mlr-0">
+                  <div class="col-md-6">
+                    <h5> &nbsp;EDUCATION</h5>
+                  </div>
+                  <div class="col-md-6">
+                    <button (click)="editEdu()" id="editEdu" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Edit</button>
+                    <button (click)="cancel()" id="canceleditEdu" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+                  </div>
+                </div>  
+                <div class="search-form">         
+                <div class="padding-20"> 
+                  <div class="table-responsive margin-20">
+                    <table class="table table-bordered">
+                      <thead class="form-header">
+                          <tr>
+                            <th>Qualification</th>
+                            <th>Institution Name</th>    
+                            <th>Year</th>    
+                            <th>GPA Score</th>
+                            <th>Specialization</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let educationinfo of educationslist" style="margin-bottom: 10px;">
+                          <td>{{educationinfo.educationname}}</td>
+                          <td>{{educationinfo.institute}}</td>
+                          <td>
+                            <span *ngIf="educationinfo.isCurrent=='1'">Studying</span>
+                            <span *ngIf="educationinfo.isCurrent=='0'">{{educationinfo.year }}</span>
+                          </td>
+                          <td>{{educationinfo.gpaScore}}</td>
+                          <td>{{educationinfo.specialization}}</td>
+                        </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+    </ng-template>
+    <!-- edit details -->
+    <ng-template #b2>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="search-form"  >
+                <div class="form-header">
+                    <h5>&nbsp; &nbsp; EDUCATION</h5>
+                </div>
+                <form  class="search-form" #addEdu = "ngForm" name="form" (ngSubmit)="addEdu.form.valid" novalidate>
+                <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Select Qualification <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                              <select class="form-control mb-10" id="editQualification"  name="education"  [(ngModel)]="educationslist1.education"   #education="ngModel" [ngClass]="{ 'is-invalid': addEdu.submitted && education.invalid }" required >
+                                  <option [ngValue]="undefined" disabled selected>Choose a level</option>
+                                  <option *ngFor="let education of educationset" value="{{education.id}}">{{education.name}}</option>
+                              </select>
+                              <div *ngIf="education.touched && education.invalid" class="invalid-feedback">
+                                <div *ngIf="education.touched && education.errors.required">Select an education level</div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Institution Name <span class="req-field">*</span></label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control mb-10" id="editInstitute" #institute = "ngModel" [(ngModel)]="educationslist1.institute" name="institute" pattern="^([a-zA-Z0-9.]+[\s&*\-])*[a-zA-Z0-9.]+$" [ngClass]="{ 'is-invalid': addEdu.submitted && institute.invalid }" required>
+                              <div *ngIf="institute.touched && institute.invalid" class="invalid-feedback">
+                              <div *ngIf="institute.touched && institute.errors.required">Institution Name is required</div>
+                              </div>
+                              <div *ngIf="institute.errors?.pattern" class="invalid-feedback">
+                                Institution name cannot contain special characters
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">GPA Score</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" id="editGPAScore" placeholder="Enter GPA Score"  pattern="^(?:[0-3]\.\d{1,2}|4\.0{1,2}|[0-4]{1})$" name="gpaScore" [(ngModel)]="expinfo.gpaScore" #gpaScore="ngModel" [ngClass]="{ 'is-invalid': addEdu.submitted && gpaScore.invalid }">
+                          
+                          <div *ngIf="gpaScore.errors?.pattern" class="invalid-feedback">
+                            GPA Score is not valid.
+                          </div>
+                        </div>  
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Specialization <span class="req-field">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control mb-10" id="editSpecialization" name="specialization" pattern="^([a-zA-Z0-9]+.\s)*[a-zA-Z0-9]+$"
+                            [(ngModel)]="educationslist1.specialization" required   #specialization="ngModel" >
+                           
+                            <div *ngIf="specialization.touched && specialization.invalid" class="invalid-feedback">
+                              <div *ngIf="specialization.touched && specialization.errors.required">Specialization is required</div>
+                            </div>
+                            <div *ngIf="specialization.errors?.pattern" class="invalid-feedback">
+                              Specialization cannot contain special characters
+                            </div>
+                        </div>
+                    </div>
+                    
+                        <div class="col-md-6">
+                          <label class="col-sm-6 col-form-label">Do you currently study here:</label>
+                          <div class="col-sm-6">
+                            <label class="switch">
+                              <input type="checkbox" id="editEduIsCurrent" name="isCurrent" #isCurrent (change)="changeCurrent('education')" checked  [(ngModel)]="check2">
+                              <span class="slider round"></span>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="!check2">
+                            <label class="col-sm-4 col-form-label">Completion Year <span class="req-field">*</span>  </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control mb-10" id="editYear"  name="year"  [(ngModel)]="educationslist1.year" #year="ngModel" [ngClass] = "{ 'is-invalid': addEdu.submitted && year.invalid }"  pattern="^\d{4}$" minlength="4" maxlength="4" required>
+                                <p *ngIf="monthError" style="color:red;font-weight:bold;">{{ monthError }}</p>  
+                                <div *ngIf="year.touched && year.invalid" class="invalid-feedback">
+                                  <div *ngIf="year.touched && year.errors.required"  >Year is required</div>
+                                </div>
+                                <div *ngIf="year.errors?.pattern" class="invalid-feedback">
+                                  Enter a valid year
+                                </div>
+                            </div>
+                        </div>
+                 
+                  </div>
+                  <div class="form-group row">
+                      <div class="col-sm-10 ml15">
+                          <button [disabled]="!addEdu.valid" id="insertEducation" class="btn btn-primary mlr-5" (click)="insertEducation(addEdu, education.value,'null',institute.value,year.value,gpaScore.value,specialization.value)">Add</button>
+                          <button type="reset" class="btn btn-info mlr-5" id="resetinsertEducation">Reset</button>
+                      </div>
+                  </div>
+                  <div class="form-group row" *ngIf="error4">
+                    <div class="col-sm-10">
+                      <p style="color:red;font-weight:bold;">{{ error4 }}</p>
+                    </div>
+                  </div>
+                
+
+                <div class="table-responsive margin-20" *ngIf="educationslist">
+                  <table class="table table-bordered">
+                      <thead class="form-header">
+                          <tr>
+                            <th>Level</th>
+                            <th>Institute</th>    
+                            <th>Year</th>    
+                            <th>GPA Score</th>
+                            <th>Specialization</th>
+
+                              <th></th>                  
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let educationinfo of educationslist,let i=index " style="margin-bottom: 10px;">
+                            <td> {{educationinfo.educationname}}</td>
+                            <td>{{educationinfo.institute}}</td>
+                            <td>
+                              <span *ngIf="educationinfo.isCurrent=='1'">Studying</span>
+                              <span *ngIf="educationinfo.isCurrent=='0'">{{educationinfo.year }}</span>
+                            </td>
+                            <td>{{educationinfo.gpaScore}}</td>
+                            <td>{{educationinfo.specialization}}</td>
+                            <td>
+                              <button (click)="removeEducation(educationinfo)" class="tabledit-delete-button btn btn-danger" id="removeEducation">                                    
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                              </button>&nbsp;
+                              <button (click)="editEducation(educationinfo)" id="editEducation" class="tabledit-delete-button btn btn-primary">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                              </button>
+                            </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-container *ngIf="this.displaySkill==true; then c2 else c1"></ng-container>
+    <!-- view details -->
+    <ng-template #c1>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="form-header row mlr-0">
+                <div class="col-md-6">
+                  <h5>&nbsp;SKILL</h5>
+                </div>
+                <div class="col-md-6">
+                  <button (click)="editSkill()" id="editPersonalSkills" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Edit</button>
+                  <button (click)="cancel()" id="cancelEditPersonalSkills" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+                </div>
+              </div>  
+              <div class="search-form">           
+              <div class="padding-20"> 
+                <div class="table-responsive margin-20">
+                  <table class="table table-bordered">
+                    <thead class="form-header">
+                      <tr>
+                        <th>Skill</th>
+                        <th>Months of Experience</th>
+                        <th>Comments</th>
+                        <th>lastUsed</th>                
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let skillinfo of skillslist" style="margin-bottom: 10px;">
+                        <td>{{skillinfo.name}}</td>
+                        <td>{{skillinfo.experience}}</td>
+                        <td>{{skillinfo.comments}}</td>
+                        <td>{{skillinfo.lastUsed}}</td>                            
+                      </tr>
+                    </tbody>
+                </table>
+              </div>
+            </div>
+            </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </ng-template>
+    <!-- edit details -->
+    <ng-template #c2>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <form>
+                  
+                <div class="form-header">
+                    <h5>&nbsp; &nbsp;SKILLS</h5>
+                </div>
+                <div  class="search-form">
+                <div class="padding-20">
+                  <form #addSkill = "ngForm" name="form" (ngSubmit)="addSkill.form.valid" novalidate>
+                    <div class="form-group row">
+
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Skill <span class="req-field">*</span> </label>
+                        <div class="col-sm-6">
+                          <select class="form-control mb-10" id="editSkillName" name="skill" #skill="ngModel" [(ngModel)]="skillslist1.skill" [ngClass]="{ 'is-invalid': addSkill.submitted && skill.invalid }" required>
+                            <option [ngValue]="undefined" disabled selected>Choose a skill</option>
+                            <option *ngFor="let skill of skillset" value="{{skill.id}}">{{skill.name}}</option>
+                          </select>
+                          <div *ngIf="skill.touched && skill.invalid" class="invalid-feedback">
+                            <div *ngIf="skill.errors.required">Skill is required</div>
+                          </div>
+                        </div>
+                        <div class="col-sm-2">
+                          <a type="button" id="addskill" class="btn  text-left" (click)="addnewskill()">+ Add </a>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Experience in months <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control mb-10" id="editExp"  name="exp" #exp="ngModel" [(ngModel)]="skillslist1.exp" [ngClass]="{ 'is-invalid': addSkill.submitted && exp.invalid }" required pattern="^[0-9]*$" minlength="1" maxlength="3">
+                              <div *ngIf="exp.touched && exp.invalid" class="invalid-feedback">
+                                <div *ngIf="exp.errors.required">No. of months is required</div>
+                              </div>
+                              <div *ngIf="exp.errors?.pattern" class="invalid-feedback">
+                                Enter a valid number
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                 
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Comment</label>
+                            <div class="col-sm-8">
+                                <textarea type="date"  class="form-control mb-10" id="editSkillComment" name="comments" #comments="ngModel" [(ngModel)]="skillslist1.comments"></textarea>
+                            </div>
+                        </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Last Used: <span class="req-field">*</span></label>
+                        <div class="col-sm-8">
+                          <div class="form-group row">
+                            <div class="col-sm-6">
+                              <select class="form-control mb-20" id="editSkillMonth" name="month" [(ngModel)]="skillslist1.month" #month="ngModel"  required>
+                                <!-- saikumar 27/08/0219 started heree -->
+                                  <option [ngValue]="undefined" disabled selected>select month</option>
+                                <option *ngFor="let month of months " value="{{month}}">{{month}}</option>  
+                              </select>
+                              <p *ngIf="monthError" style="color:red;font-weight:bold;">{{ monthError }}</p>
+                            </div>
+                            <div class="col-sm-6">
+                              <select class="form-control mb-10" id="editSkillYear" name="year" [(ngModel)]="skillslist1.year" #year="ngModel"
+                                required>  
+                                <option [ngValue]="undefined" disabled selected>select year</option>
+                                <option *ngFor="let year of years " value="{{year}}">{{year}}</option>  
+                              </select>
+        <!-- saikumar 27/08/0219 ended heree -->
+                            </div>
+  
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                      <div class="col-sm-10 ml15">
+                          <button  [disabled]="!addSkill.valid" class="btn btn-primary mlr-5" id="insertSkill" (click)="insertSkill(addSkill, skill.value,'null',exp.value,comments.value,month.value,year.value)">Add</button>
+                          <button type="reset" class="btn btn-info mlr-5" id="resetInsertSkill">Reset</button>
+                      </div>
+                  </div>
+                  <div class="form-group row" *ngIf="error3">
+                    <div class="col-sm-10">
+                      <p style="color:red;font-weight:bold;">{{ error3 }}</p>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="table-responsive margin-20">
+                  <table class="table table-bordered">
+                      <thead class="form-header">
+                          <tr>
+                              <th>Skill</th>
+                              <th style="width: 15%;">Months of Experience</th>
+                              <th>Comments</th>
+                              <th>lastUsed</th>
+                              <th style="width: 15%;"></th>                  
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let skillinfo of skillslist" style="margin-bottom: 10px;">
+                              <td>{{skillinfo.name}}</td>
+                              
+                              <td>{{skillinfo.experience}}</td>
+                              <td>{{skillinfo.comments}}</td>
+                              <td>{{skillinfo.lastUsed}}</td>
+                              <td>
+                                <button (click)="editSkills(skillinfo)" id="editSkillInfo"class="tabledit-delete-button btn btn-primary">
+                                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>&nbsp;
+                                <button (click)="removeSkill('skillinfo',skillinfo)" id="removeSkill" class="tabledit-delete-button btn btn-danger">
+                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+                </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-container *ngIf="this.displayLang==true; then d2 else d1"></ng-container>
+    <!-- view details -->
+    <ng-template #d1>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="form-header row mlr-0">
+                  
+                  <div class="col-md-6">
+                    <h5>&nbsp;LANGUAGE</h5>
+                  </div>
+                  <div class="col-md-6">
+                    <button (click)="editLang()" id="editLang"  class="btn btn-danger mlr-5 mtb-5" style="float: right;">Edit</button>
+                    <button (click)="cancel()" id="cancelEditLang" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+                  </div>
+                </div>      
+                <div class="search-form">        
+                <div class="padding-20"> 
+                  <div class="table-responsive margin-20">
+                    <table class="table table-bordered">
+                      <thead class="form-header">
+                        <tr>
+                          <th>Language</th>
+                          <th>Fluency</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let languageinfo of languageslist" style="margin-bottom: 10px;">
+                              <td>{{languageinfo.langname | titlecase}}</td>
+                              <td>{{languageinfo.fluency}}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </ng-template>
+    <!-- edit details -->
+    <ng-template #d2>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <form class="search-form">
+                <div class="form-header">
+                    <h5>&nbsp; &nbsp;LANGUAGE</h5>
+                </div>
+                <div class="padding-20">
+                  <form #addLang = "ngForm" name="form" (ngSubmit)="addLang.form.valid" novalidate>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Language <span class="req-field">*</span> </label>
+                            <div class="col-sm-8">
+                                <select class="form-control mb-10" id="editLanguage" #language name="language" #language="ngModel" [(ngModel)]="languageslist1.language" [ngClass]="{ 'is-invalid': addLang.submitted && language.invalid }" required>
+                                    <option [ngValue]="undefined" disabled selected>Choose a language</option>
+                                    <option *ngFor="let language of languageset" value="{{language.id}}">{{language.name | titlecase}}</option>
+                                </select>
+                                <div *ngIf="language.touched && language.invalid" class="invalid-feedback">
+                                  <div *ngIf="language.errors.required">Language is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Fluency <span class="req-field">*</span> </label>
+                            <div class="col-sm-8">
+                                <select class="form-control mb-10" id="editFluency" #fluency name="fluency" #fluency="ngModel" [(ngModel)]="languageslist1.fluency" [ngClass]="{ 'is-invalid': addLang.submitted && fluency.invalid }" required>
+                                    <option disabled selected>Select fluency</option>
+                                    <option value="writing">Writing</option>
+                                    <option value="speaking">Speaking</option>
+                                    <option value="reading">Reading</option>
+                                </select>
+                                <div *ngIf="fluency.touched && fluency.invalid" class="invalid-feedback">
+                                  <div *ngIf="fluency.errors.required">Fluency is required</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10 ml15">
+                            
+                            <button [disabled]="!addLang.valid" id="insertLanguage" class="btn btn-primary mlr-5" (click)="insertLanguage(addLang, language.value,'null',fluency.value)">Add</button>
+                            <button type="reset" class="btn btn-info mlr-5">Reset</button>
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="error2">
+                      <div class="col-sm-10">
+                        <p style="color:red;font-weight:bold;">{{ error2 }}</p>
+                      </div>
+                    </div>
+                  </form>
+    
+                  <div class="table-responsive margin-20">
+                    <table class="table table-bordered">
+                      <thead class="form-header">
+                          <tr>
+                              <th>Language</th>
+                              <th>Fluency</th>
+                              <th></th>                  
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let languageinfo of languageslist" style="margin-bottom: 10px;">
+                              <td>{{languageinfo.langname}}</td>
+                              <td>{{languageinfo.fluency}}</td>
+                              <td>
+                                <button (click)="editLanguage(languageinfo)" class="tabledit-delete-button btn btn-primary" id="editlanguageinfo">
+                                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>&nbsp;
+                                <button (click)="removeLanguage(languageinfo)" id="removeLanguage" class="tabledit-delete-button btn btn-danger">
+                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  </div>
+                </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-container *ngIf="this.displayLicense==true; then e2 else e1"></ng-container>
+    <!-- view details -->
+    <ng-template #e1>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="form-header row mlr-0">
+                  <div class="col-md-6">
+                    <h5>&nbsp;LICENSES/ CERTIFICATIONS</h5>
+                  </div>
+                  <div class="col-md-6">
+                    <button (click)="editLicense()" id="editLicense" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Edit</button>
+                    <button (click)="cancel()" id="cancelEditLicense" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+                  </div>
+                </div>    
+                <div  class="search-form">       
+                <div class="padding-20"> 
+                    <div class="table-responsive margin-20">
+                    <table class="table table-bordered">
+                      <thead class="form-header">
+                        <tr>
+                          <th>license Name</th>
+                          <th>License Number</th>
+                          <th>Issued Date</th>
+                          <th>Expiry Date</th>  
+                          <th>Alert</th>            
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let licenseinfo of licensenames" style="margin-bottom: 10px;">
+                            <td>{{licenseinfo.name}}</td>
+                            <td>{{licenseinfo.number | uppercase}}</td>
+                            <td>
+                                <span *ngIf="licenseinfo.issued == '0000-00-00'"></span>
+                                <span *ngIf="licenseinfo.issued != '0000-00-00'">{{licenseinfo.issued}}</span>
+                              </td>
+                            <td>
+                              <span *ngIf="licenseinfo.expiry == '0000-00-00'"></span>
+                              <span *ngIf="licenseinfo.expiry != '0000-00-00'">{{licenseinfo.expiry}}</span>
+                            </td>
+                            <td>
+                              <span *ngIf="licenseinfo.alert" class="badge badge-primary"> Yes </span>
+                              <span *ngIf="!licenseinfo.alert" class="badge badge-danger"> No </span>
+                             
+                            </td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>   
+                </div>
+                <div class="padding-20"> 
+                <div class="table-responsive margin-20">
+                  <table class="table table-bordered">
+                    <thead class="form-header">
+                      <tr>
+                        <th>Certificate Name</th>
+                        <th>License Number</th>
+                        <th>Issued Date</th>
+                        <th>Expiry Date</th>  
+                        <th>Alert</th>            
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let licenseinfo of certificatenames" style="margin-bottom: 10px;">
+                        <td>{{licenseinfo.name}}</td>
+                        <td>{{licenseinfo.number | uppercase}}</td>
+                        <td>
+                            <span *ngIf="licenseinfo.issued == '0000-00-00'"></span>
+                            <span *ngIf="licenseinfo.issued != '0000-00-00'">{{licenseinfo.issued}}</span>
+                          </td>
+                        <td>
+                          <span *ngIf="licenseinfo.expiry == '0000-00-00'"></span>
+                          <span *ngIf="licenseinfo.expiry != '0000-00-00'">{{licenseinfo.expiry}}</span>
+                        </td>
+                        <td>
+                          <span *ngIf="licenseinfo.alert" class="badge badge-primary"> Yes </span>
+                          <span *ngIf="!licenseinfo.alert" class="badge badge-danger"> No </span>
+                         
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </ng-template>
+    <!-- edit details -->
+    <ng-template #e2>
+        <div class="element-content">
+          <div class="job-box">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div  class="search-form">
+                  <div class="form-header">
+                      <h5>EDIT LICENSES/ CERTIFICATIONS</h5>
+                  </div>
+                  <div class="padding-20">
+                    <form #addLic = "ngForm" name="form" (ngSubmit)="addLic.form.valid" novalidate>
+                      <div class="form-group row">
+
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Type <span class="req-field">*</span></label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" id="editType" name="type" #type="ngModel" [(ngModel)]="licenseslist1.type" [ngClass]="{ 'is-invalid': addLic.submitted && type.invalid }" required (change)="onchange(type.value)">
+                              <option [ngValue]="undefined" disabled selected>Choose a Type</option>
+                              <option value="Certification">Certificate</option>
+                              <option value="License" selected>License</option>
+                            </select>
+                            <div *ngIf="type.touched && type.invalid" class="invalid-feedback">
+                              <div *ngIf="type.errors.required">Select Type First</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div *ngIf="showform">
+                          <div class="col-md-6" [hidden]="showlicense">
+                            <label class="col-sm-4 col-form-label">Certificate Name <span class="req-field">*</span> </label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control mb-10" id="editCertificate" name="cerName" #cerName="ngModel" [(ngModel)]="licenseslist1.cerName" value=null pattern="^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+$">
+                              <div *ngIf="cerName.errors?.pattern" class="invalid-feedback">
+                                Certificate Name is not valid.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6" [hidden]="showcertificate">
+                            <label class="col-sm-4 col-form-label">License <span class="req-field">*</span></label>
+                            <div class="col-sm-6">
+                              <select class="form-control mb-10" id="editLicenseName" name="license" #license="ngModel" [(ngModel)]="licenseslist1.license" value=null >
+                                <option [ngValue]="undefined" disabled selected>Choose a license</option>
+                                <option *ngFor="let license of licenseset" value="{{license.id}}">{{license.name}}</option>
+                              </select>
+                            </div>
+                            <div class="col-sm-2">
+                              <a type="button" id="addLicense" class="btn  text-left" (click)="addnewLicense()">+ Add </a>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Issued Date</label>
+                            <div class="col-sm-8">  
+                              <!-- Changed date picker - sharmistha - 08-07-2019 - start -->
+                              <input class="form-control mb-10" placeholder="Select start date" id="editIssued" [owlDateTimeTrigger]="issued" [owlDateTime]="issued" name="issued" [(ngModel)]="licenseslist1.issued" #issued="ngModel" [max]="todayDate">
+                              <owl-date-time [pickerType]="'calendar'"  #issued></owl-date-time>
+                              <!-- Changed date picker - sharmistha - 08-07-2019 - end -->                             
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Expiry Date</label>
+                            <div class="col-sm-8">
+                              <!-- Changed date picker - sharmistha - 08-07-2019 - start -->
+                              <input class="form-control mb-10" placeholder="Select expiry date" id="editExpiryDate" [owlDateTimeTrigger]="expiry" [owlDateTime]="expiry" name="expiry" [(ngModel)]="licenseslist1.expiry" #expiry="ngModel" (dateTimeInput)="dateValidate1()">
+                              <owl-date-time [pickerType]="'calendar'" #expiry></owl-date-time>
+                              <!-- Changed date picker - sharmistha - 08-07-2019 - end -->
+                              <p *ngIf="dateError1" style="color: red;font-weight:bold;">{{ dateError1 }}</p>
+
+                            </div>
+                          </div>
+
+                          <div class="col-md-6"> 
+                            <label class="col-sm-4 col-form-label"> Number <span class="req-field">*</span></label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control mb-10" id="editNumber" placeholder="Enter Number" name="number" [(ngModel)]="licenseslist1.number" #number="ngModel" [ngClass]="{ 'is-invalid': addLic.submitted && number.invalid }" required  pattern="^[a-zA-Z0-9]{2,}$">
+                              <div *ngIf="number.errors?.pattern" class="invalid-feedback">
+                                Certificate Number is not valid.
+                              </div>
+                              <div *ngIf="number.touched && number.invalid" class="invalid-feedback">
+                                <div *ngIf="number.touched && number.errors.required">License number is required</div>
+                              </div>                                  
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Opt for alert</label>
+                            <div class="col-sm-8">
+                              <label class="switch">
+                                <input type="checkbox" id="editAlert" #alert name="alert" [(ngModel)]="licenseslist1.alert" #alert="ngModel" checked>
+                                <span class="slider round"></span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-10">
+
+                            <button *ngIf = 'type.value === "Certification"' [disabled]="!addLic.valid" class="btn btn-primary mlr-5" (click)="insertCertificate(addLic, type.value, cerName.value, number.value, null)" id="insertCertificate">Add</button>
+
+                            <button *ngIf = 'type.value === "License"' [disabled]="!addLic.valid" class="btn btn-primary mlr-5" (click)="insertLicense(addLic, type.value, license.value, 'null', number.value, null)" id="insertLicense">Add</button>
+
+                          </div>
+                        </div>
+                        
+                        <div *ngIf="error6">
+                          <div class="col-sm-10 mt-10">
+                            <p class="invalid-feedback">{{ error6 }}</p>
+                          </div>
+                        </div>
+                        <div *ngIf="emptyData">
+                          <div class="col-sm-10 mt-10">
+                            <p class="invalid-feedback">Entire all required fields</p>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+    
+                    <div class="table-responsive margin-20">
+                      <table class="table table-bordered">
+                        <thead class="form-header">
+                          <tr>
+                            <th style="width: 20%">license Name</th>
+                            <th style="width: 20%">License Number</th>
+                            <th style="width: 15%">Issued Date</th>
+                            <th style="width: 15%">Expiry Date</th> 
+                            <th style="width: 10%">Alert</th>  
+                            <th style="width: 15%"></th>              
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let licenseinfo of licensenames" style="margin-bottom: 10px;">
+                          
+                            <td>{{licenseinfo.licensename}}</td>
+                            <td>{{licenseinfo.number | uppercase}}</td>
+                            <td>
+                                <span *ngIf="licenseinfo.issued == '0000-00-00'"></span>
+                                <span *ngIf="licenseinfo.issued != '0000-00-00'">{{licenseinfo.issued}}</span>
+                              </td>
+                            <td>
+                              <span *ngIf="licenseinfo.expiry == '0000-00-00'"></span>
+                              <span *ngIf="licenseinfo.expiry != '0000-00-00'">{{licenseinfo.expiry}}</span>
+                            </td>
+                            <td>
+                              <span *ngIf="licenseinfo.alert" class="badge badge-primary"> Yes </span>
+                              <span *ngIf="!licenseinfo.alert" class="badge badge-danger"> No </span>
+                            </td>
+                            <td>
+                              <button (click)="editLicenses(licenseinfo)" class="tabledit-delete-button btn btn-primary">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                              </button>&nbsp;
+                              <button (click)="removeLicense(licenseinfo)" class="tabledit-delete-button btn btn-danger">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                    </table>
+                      
+                    </div>
+                    <div class="table-responsive  margin-20">
+                      <table class="table table-bordered">
+                        <thead class="form-header">
+                          <tr>
+                          
+                            <th style="width: 20%">Certificate Name</th>
+                            <th style="width: 20%">Certificate Number</th>
+                            <th style="width: 15%">Issued Date</th>
+                            <th style="width: 15%">Expiry Date</th>  
+                            <th style="width: 10%">Alert</th>  
+                            <th style="width: 15%"></th>           
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let certificateinfo of certificatenames" style="margin-bottom: 10px;">
+                          
+                            <td>{{certificateinfo.certificate}}</td>
+                            <td>{{certificateinfo.number | uppercase}}</td>
+                            <td>
+                                <span *ngIf="certificateinfo.issued == '0000-00-00'"></span>
+                                <span *ngIf="certificateinfo.issued != '0000-00-00'">{{certificateinfo.issued}}</span>
+                              </td>
+                            <td>
+                              <span *ngIf="certificateinfo.expiry == '0000-00-00'"></span>
+                              <span *ngIf="certificateinfo.expiry != '0000-00-00'">{{certificateinfo.expiry}}</span>
+                            </td>
+                            <td>
+                              <span *ngIf="certificateinfo.alert" class="badge badge-primary"> Yes </span>
+                              <span *ngIf="!certificateinfo.alert" class="badge badge-danger"> No </span>
+                            </td>
+                            <td>
+                              <button (click)="editCertificates(certificateinfo)" class="tabledit-delete-button btn btn-primary">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                              </button>&nbsp;
+                              <button (click)="removeCertificates(certificateinfo)" class="tabledit-delete-button btn btn-danger">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                    </table>
+                  </div>
+
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </ng-template>
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <button class="btn btn-primary mlr-5" (click)="save()" id="submit">Submit</button>
+        <button class="btn btn-primary mlr-5" (click)="draft()" id="draft">Save as Draft</button>
+        <button class="btn btn-danger mlr-5" (click)="cancel()" id="cancelDetails">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.message">
+      <button class="close" type="button" id="closePopUp" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="success text-center">
+            <h5>Qualification details updated successfully! </h5>
+          </td>
+        </tr>
+      </table>  
+      <div class="row text-center">
+        <a class="btn btn-success" id="backclosePopUp" routerLink="/myInfo">
+          <i class="fa fa-users" aria-hidden="true"></i> Go to Myinfo</a>    
+       </div>  
+  </div>
+  <div class="popupbox" *ngIf="this.error1">
+      <button class="close" type="button" id="closePopupError" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="danger text-center">
+            <h5>{{error1 }} </h5>
+          </td>
+        </tr>
+      </table>  
+      <div class="row text-center">
+        <a class="btn btn-success" id="backclosePopupError" routerLink="/myInfo">
+          <i class="fa fa-users" aria-hidden="true"></i> Go to Myinfo</a>    
+       </div>  
+  </div>
+</div>  
+
+
+<!-- new skill and license adding popups - sharmistha - 10-03-2019 - start -->
+<div class="popupbox_wrap" *ngIf="skillpopup">
+  <div class="popupbox">
+    <button class="close" type="button" id="closebtn" (click)="closeskillPopup()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <form class="search-form" #addindFrm="ngForm" name="form" (ngSubmit)="addindFrm.form.valid"
+    novalidate>
+      <div class="padding-20">
+        <table class="table">
+          <tr>
+            <td>
+              <label class="col-sm-5 col-form-label">Skill <span class="req-field">*</span></label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control mb-10" placeholder="Enter Skill Name" name="skillType"
+                pattern="^(?!.*[+]{3})(?!.*[#]{2})(?!.*[.,*/&]{2})([a-zA-Z0-9.#*&/+,]+[\s,&_\-])*[a-zA-Z0-9.#*&_/+,]+$" [(ngModel)]="newSkill.skillType"  [ngClass]="{ 'is-invalid': addindFrm.submitted && skillType.invalid }" #skillType="ngModel" required  id="popupcompany">
+                <div *ngIf="skillType.touched && skillType.invalid" class="invalid-feedback">
+
+                  <div *ngIf="skillType.touched && skillType.errors.required">Skill Name is required</div>
+                </div>
+                <div *ngIf="skillType.errors?.pattern" class="invalid-feedback">
+                  Please enter valid Skill Name
+                </div>
+              </div>
+            </td>
+          </tr>
+          <div class="row text-center">
+            <button type="button" class="btn btn-success" id="addpopup"
+              (click)="addskill(skillType.value,addindFrm)"  [disabled]="!addindFrm.valid"> Submit</button>
+          </div>
+        </table>
+      </div>
+      <p *ngIf="skillError" style="color:red;font-weight:bold">{{ skillError }}</p>
+    </form>
+  </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="licensepopup">
+  <div class="popupbox">
+    <button class="close" type="button" id="closebtn" (click)="closeLicensePopup()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <form class="search-form" #addindFrm="ngForm" name="form" (ngSubmit)="addindFrm.form.valid"
+    novalidate>
+      <div class="padding-20">
+        <table class="table">
+          <tr>
+            <td>
+              <label class="col-sm-5 col-form-label">License <span class="req-field">*</span></label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control mb-10" placeholder="Enter License Name" name="licenseType"
+                pattern="^(?!.*[+]{3})(?!.*[#]{2})(?!.*[.,*/&]{2})([a-zA-Z0-9.#*&/+,]+[\s,&_\-])*[a-zA-Z0-9.#*&_/+,]+$" [(ngModel)]="newLicense.licenseType"  [ngClass]="{ 'is-invalid': addindFrm.submitted && licenseType.invalid }" #licenseType="ngModel" required  id="popupcompany">
+                <div *ngIf="licenseType.touched && licenseType.invalid" class="invalid-feedback">
+                  <div *ngIf="licenseType.touched && licenseType.errors.required">License Name is required</div>
+                </div>
+                <div *ngIf="licenseType.errors?.pattern" class="invalid-feedback">
+                  Please enter valid License Name
+                </div>
+              </div>
+            </td>
+          </tr>
+          <div class="row text-center">
+            <button type="button" class="btn btn-success" id="addpopup"
+              (click)="addLicense(licenseType.value,addindFrm)"  [disabled]="!addindFrm.valid"> Submit</button>
+          </div>
+        </table>
+      </div>
+      <p *ngIf="licenseError" class="invalid-feedback">{{ licenseError }}</p>
+    </form>
+  </div>
+</div>
+<!-- new skill and license adding popups - sharmistha - 10-03-2019 - end -->
+
+
+
+
+
+
+
+
+

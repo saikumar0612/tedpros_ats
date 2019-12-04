@@ -1,0 +1,56 @@
+<div class="body-gradient">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 col-sm-8 col-xs-12 col-md-offset-3 pt-80 pb-80 pt-sm-20 pb-sm-20">
+        <div class="login-box"> 
+         <div class="login-logo">
+          <img class="center" alt="logoUrl.." src="{{this.logoUrl}}">
+        </div>
+          <div class="top-header">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 heading">
+                <h4>Activation</h4>
+              </div>
+            </div>
+          </div>
+          <form class="form-box" #loginForm="ngForm" (ngSubmit)="loginForm.form.valid" novalidate>           
+              <div class="form-group row" style="margin-bottom: 30px;">
+                <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
+                  <i class="fa fa-user-circle-o login-icon" aria-hidden="true"></i>
+                </div>
+                <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" placeholder="Enter your Email" #userName="ngModel"  
+                    name="userName" [(ngModel)]="user.id" required   [ngClass]="{ 'is-invalid': loginForm.submitted && userName.invalid }" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})" >
+                  </div>      
+              </div>  
+              <div class="form-group row" style="margin-bottom: 10px;">
+              <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                <div *ngIf="userName.touched && userName.invalid" class="invalid-feedback">
+                  <div *ngIf="userName.errors.required"> Email is required</div>
+                </div>
+                <div *ngIf="userName.errors?.pattern" class="invalid-feedback">
+                  Email Address is not valid.
+                </div>
+              </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-4">
+                  <button type="submit" class="btn btn-primary pull-right" [disabled]="!loginForm.valid" (click)="activation()">Submit</button>		
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+
+
+
+
+
+

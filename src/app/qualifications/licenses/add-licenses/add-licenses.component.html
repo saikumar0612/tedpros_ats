@@ -1,0 +1,86 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Add Licenses</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink="/licenses">Licenses</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Add Licenses</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addLicFrm = "ngForm" name="form" (ngSubmit)="addLicFrm.form.valid" novalidate>
+            <div class="form-header">
+              <h5>Add Licenses</h5>
+            </div>
+            <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">License Name <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <!-- changed pattern for license name - sharmistha - 08-02-2019 - start -->
+                        <input type="text" class="form-control mb-10" placeholder="Enter Name Here" name="lName" [(ngModel)]="licData.lName" #lName="ngModel" [ngClass]="{ 'is-invalid': addLicFrm.submitted && lName.invalid }" required id="lName" pattern="^(?!.*[\.\(\)]{2})([a-zA-Z0-9.()]+[\s,&-'_\-])*[a-zA-Z0-9.()]+$">
+                        <div *ngIf="lName.touched && lName.invalid" class="invalid-feedback">
+                          <div *ngIf="lName.touched && lName.errors.required">License Name is required</div>
+                        </div>
+                        <div *ngIf="lName.errors?.pattern" class="invalid-feedback">
+                          Enter valid license name
+                        </div>
+                      <!-- changed pattern for license name - sharmistha - 08-02-2019 - end -->
+                    </div>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <div class="col-sm-10">
+                      <button type="submit" class="btn btn-primary mlr-5" [disabled]="!addLicFrm.valid" (click)="addLicense(addLicFrm)" id="submit">Submit</button>
+                      <button type="reset" class="btn btn-info mlr-5" id="reset">Reset</button>
+                      <button class="btn btn-danger mlr-5" (click)="cancel()" id="cancel">Cancel</button>
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="closePopup" (click)="close()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">{{ lic.data }}</p>
+    <div class="row text-center">
+      <a class="btn btn-success mlr-5" id="viewlicenses" routerLink="/licenses"><i class="fa fa-users" aria-hidden="true"></i> View all Licenses</a>
+      <!-- <a class="btn btn-success mlr-5" id="closepop" (click)="close()"><i class="fa fa-users" aria-hidden="true"></i> Close</a> -->
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+  
+  
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+    <div class="row"><button class="close" id="close" type="button" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">{{ lic.errorMessages }}</p>
+    <!-- <div class="row text-center">
+      <a class="btn btn-success"  id="closebtn" (click)="closePopup()"><i class="fa fa-users" aria-hidden="true"></i> Close</a>
+    </div> -->
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->  

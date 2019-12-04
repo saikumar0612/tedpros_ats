@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites disabled="0" errors="0" failures="0" tests="20" time="86.547">
+ <testsuite name="Code for company number formate  under config" timestamp="2019-11-07T11:43:01" hostname="localhost" time="86.547" errors="0" tests="20" skipped="0" disabled="0" failures="0">
+  <testcase classname="Code for company number formate  under config" name="open the browser" time="26.452" />
+  <testcase classname="Code for company number formate  under config" name="Enter the username" time="1.421" />
+  <testcase classname="Code for company number formate  under config" name="Enter the password" time="0.918" />
+  <testcase classname="Code for company number formate  under config" name="click on login button" time="0.779" />
+  <testcase classname="Code for company number formate  under config" name="Mouse hover CRM icon" time="8.358" />
+  <testcase classname="Code for company number formate  under config" name="click on company Number Formats" time="2.012" />
+  <testcase classname="Code for company number formate  under config" name="Enter the UserEmployeePrefix" time="4.01" />
+  <testcase classname="Code for company number formate  under config" name="Enter the UserEmployeeNumber" time="3.687" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Client Company Prefix" time="3.683" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Client Company Number" time="3.668" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Vendor Company Prefix" time="3.671" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Vendor Company Number" time="3.679" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Client Employee Prefix" time="3.732" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Client Employee Number" time="3.75" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Vendor Employee Prefix" time="3.725" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Vendor Employee Number" time="3.773" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Invoice Prefix" time="3.635" />
+  <testcase classname="Code for company number formate  under config" name="Enter the Vendor Invoice Number" time="3.663" />
+  <testcase classname="Code for company number formate  under config" name="click on submit" time="1.48" />
+  <testcase classname="Code for company number formate  under config" name="click For Close Popup" time="0.449" />
+ </testsuite>
+</testsuites>

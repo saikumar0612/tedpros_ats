@@ -1,0 +1,193 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Timesheet for Week</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li>Employee Week Timesheeet</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="form-header row mlr-0">
+            <h5>Employee Week Timesheeet </h5>
+          </div>
+          <div class="padding-20">
+            <div class="table-responsive">
+              <table class="table table-bordered" *ngIf="timeBool">
+                <thead class="form-header">
+                  <tr>
+                    <th>Project</th>
+                    <th>Activity</th>
+                    <th style="width: 9%" *ngFor="let timeDates of timesheetData[0].activities.data">{{
+                          timeDates.date | date:'MMM dd' }}
+
+                    </th>
+                    <th style="width: 7%">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                  <tr *ngFor="let projects of timesheetData">
+                    <td>{{projects.name}}</td>
+                    <td>{{projects.activities.name}}</td>
+                    <td *ngFor="let data of projects.activities.data" style="text-align: center;">
+                      <span *ngIf="data.timesheet; else elseBlock">
+                        {{data.timesheet.hours}}
+                      </span>
+                      <button type="button" class="tabledit-edit-button btn btn-primary" id="openTimesheet"
+                        (click)="openModal('modal', data.timesheet.description)">
+                        <i class="fa fa-id-badge" aria-hidden="true"></i>
+                      </button>
+                      <ng-template #elseBlock> </ng-template>
+                    </td>
+                    <td>{{projects.activities.activityHours}}</td>
+                  </tr>
+
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="3">
+              <div class="col-sm-3">
+                <label style="margin-left: 8%;">Status : {{ timesheetStatus }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" *ngIf="timesheetStatus==='SUBMITTED'; else elseBlock">
+            <form #updateFrm="ngForm" name="form" (ngSubmit)="updateFrm.form.valid" novalidate>
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <textarea placeholder="Enter Description" id="description" class="form-control mb-10"
+                    name="description" [(ngModel)]="userTimesheetComments.description" #description="ngModel"
+                    [ngClass]="{ 'is-invalid': updateFrm.submitted && description.invalid }" required></textarea>
+                  <div *ngIf="userTimesheetComments.touched && userTimesheetComments.invalid" class="invalid-feedback">
+                    <div *ngIf="userTimesheetComments.touched && userTimesheetComments.errors.required">Please select
+                      user</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+
+                  <button type="button" id="approves" class="btn btn-success mlr-5" [disabled]="!updateFrm.valid"
+                    (click)="timesheetSubmit('APPROVED')">Approve</button>
+                  <button type="button" id="rejected" class="btn btn-danger mlr-5" [disabled]="!updateFrm.valid"
+                    (click)="timesheetSubmit('REJECTED')">Reject</button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+          <ng-template #elseBlock>
+            <div class="form-group row">
+              <div class="8">
+                <div class="col-sm-8">
+                  <label style="margin-left: 3%;">Reviewer Comment : {{userTimesheetDescription}}</label>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content"
+    *ngIf="timesheetStatus==='REJECTED' || timesheetStatus==='APPROVED' || timesheetStatus==='SUBMITTED'">
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead class="form-header">
+                  <tr>
+
+                    <th>Date</th>
+                    <th>Comment</th>
+                    <th>Commented by</th>
+                    <th>Status</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let logs of timesheetDetails.logs">
+
+                    <td>{{logs.date}}</td>
+                    <td>{{logs.description}}</td>
+                    <td>{{logs.user.firstName}} {{logs.user.lastName}}</td>
+                    <td>{{logs.status}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal -->
+  <modal id="modal">
+    <div class="modal fade" id="exampleModal">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-user modal-icon" style='font-size:30px'
+                aria-hidden="true"></i>User Comments</h4>
+            <button type="button" id="closeModel" class="close" (click)="closeModal('modal');">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form class="search-form" #editJobForm="ngForm">
+            <div class="modal-body">
+
+              <div class="form-group row">
+
+                <div class="col-md-12">
+                  <label class="col-sm-4 col-form-label">Comments <span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <textarea placeholder="Enter Description" id="selectedComments" class="form-control mb-10"
+                      name="description" [(ngModel)]="timeSheetSelected.description" #description="ngModel" required
+                      [readonly]="true"></textarea>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" id="closeForm" (click)="closeModal('modal');">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-background"></div>
+  </modal>
+  <!-- end Model -->
+
+
+  <!-- adding popup --suresh-- 08-24-2014 start -->
+  <div class="popupbox_wrap" *ngIf="statusPopup">
+    <div class="popupbox">
+      <table class="table table-bordered">
+        <tr>
+          <td class="danger text-center">
+            <h5>Timesheet Updated Successfully and Sent a Mail</h5>
+          </td>
+        </tr>
+      </table>
+      <button type="button" class="btn btn-info" id="popupError" (click)="closesubmit()">View Employee Timehseets
+        List</button>
+    </div>
+  </div>
+  <!-- adding popup --suresh-- 08-24-2014 end -->

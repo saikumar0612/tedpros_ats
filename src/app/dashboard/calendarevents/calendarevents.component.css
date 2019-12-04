@@ -1,0 +1,5 @@
+.calendereve.popupbox_wrap{
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 40px 60px;
+}

@@ -1,0 +1,59 @@
+ <!-- suresh changes 31-07-2019 end -->
+<div class="top-nav row">
+        <div class="col-md-8 col-lg-8 col-sm-8">
+          <div class="logo">
+            <a routerLink="/profile/my-profile">
+                <img src="{{file1_input}}" alt="icon" style="max-width: 100%; max-height: 100%;">
+            </a>
+            
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-4">
+          <div class="top-bar">
+            <div class="top-menu-controls">
+              <div>
+                Welcome<span> {{userData.firstName}} {{userData.lastName}}</span>
+              </div>
+              <div class="messages-notifications os-dropdown-trigger os-dropdown-position-left" *ngIf="notificationLength>0">
+                <i class="fa fa-bell" aria-hidden="true"></i>
+                <div class="new-messages-count" *ngIf="notificationLength>0">{{notificationLength}}</div>
+                <div class="os-dropdown light message-list" style="width: 350px;">
+
+                  <ul *ngIf="notificationLength>0">
+                    <li *ngFor="let item of notifications">
+                      <a *ngIf="item.isNewFlag" (click)="notificationClicked(item.id, item.action_url)"><strong>{{item.action}}</strong></a>
+                      <a *ngIf="!item.isNewFlag" (click)="notificationClicked(item.id, item.action_url)">{{item.action}}</a>
+                    </li>
+                  </ul>
+
+                </div>
+              </div>
+              <div class="logged-user-w"> 
+                <div class="logged-user-i"> 
+                    <ng-container >
+                        <img alt="" src="assets/images/avatar.png" *ngIf="userData.image == ''"
+                          style="width: 35px; height: 35px;" alt="Profile Picture">
+          
+                        <img src="{{userData.image}}"  alt="Profile Picture" *ngIf="userData.image != ''" style="width: 35px; height: 35px;">
+                      </ng-container>
+                    
+                    <nav class="logged-user-menu color-style-bright menu-width">
+                        <ul>
+                        <li><a routerLink="/profile/my-profile"><em class="ti-dashboard"></em><span> Dashboard</span></a></li>
+                        <li><a routerLink="/resume/view-resume"><em class="ti-briefcase"></em><span>My Profile</span></a></li>
+                        <li><a routerLink="/resume/preview-1"><em class="ti-file"></em><span>My Resume</span></a></li>
+                        <li><a routerLink="/job/job-list"><em class="ti-package"></em><span>Job List</span></a></li>
+                        <li><a routerLink="/job/favouriteJobs"><em class="ti-heart"></em><span>Favourite Jobs</span></a></li>
+                        <li><a routerLink="/job/appliedJobs"><em class="ti-heart"></em><span>Applied Jobs</span></a></li>	 
+                        <li><a routerLink="/job/shortlistJobs"><em class="ti-heart"></em><span>Shortlisted Jobs</span></a></li>	             
+                        <li><a (click)="logout()"><em class="ti-shift-right"></em><span>Logout</span></a></li>
+                        </ul>
+                    </nav>
+                    
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- suresh changes 31-07-2019 end -->

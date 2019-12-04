@@ -1,0 +1,441 @@
+<style>
+        input[type="file"] {
+                display: block;
+                right: 0;
+                cursor: pointer;
+                bottom: -1px;
+                font-size: 12px;
+                opacity: 1;
+                position: relative;
+                width: 100%;
+                z-index: 0;
+            }
+    </style>
+    <div class="container" style="padding-left: 0px; padding-right: 0px;">
+        <main id="jf-main" class="jf-main jf-haslayout">
+            <div class="jf-dbsectionspace jf-haslayout">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="jf-dashboardbox jf-myappliedjobs">
+                            <div class="jf-dashboardboxtitle">
+                                <h2>Account Settings</h2>
+                            </div>
+                            <form #accountFrm="ngForm" name="form" (ngSubmit)="letterFrm.form.valid">
+                                <div class="row">
+                                    <div class="col-md-8" style="margin:20px"> <strong class="col-sm-4 col-form-label">Work Authorization <span class="req-field">*</span> :</strong>
+                                        <div class="col-sm-8 ">
+                                            <select class="form-control mb-10 passwordField" name="workAuth" [(ngModel)]="submitData.workAuth" #workAuth="ngModel" required>
+                                                <option *ngFor="let work of workData" value="{{work.id}}">{{work.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8" style="margin:20px"> <strong class="col-sm-4 col-form-label">Reason for job change &nbsp;:</strong>
+                                        <div class="col-sm-8 ">
+                                            <select class="form-control mb-10 passwordField" name="to_change" [(ngModel)]="submitData.to_change" #to_change="ngModel">
+                                                <option value="0">Employed, actively looking</option>
+                                                <option value="1">Unemployed, actively looking</option>
+                                                <option value="2">Open to a change, actively manage my career</option>
+                                                <option value="3">Would only change for the perfect opportunity</option>
+                                                <option value="4">In school, looking for job after graduation</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                                <div class="row">
+                                    <div style="margin:20px">
+                                        <div class="col-md-3"> 
+                                            <strong class="col-form-label" style="margin:20px">Email Notifications &nbsp;:</strong> 
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="row">
+                                                <input type="checkbox" id="newsLetter" name="newsLetter" [(ngModel)]="newsLetter">&nbsp;&nbsp;&nbsp; <span> <strong>Newsletters:</strong> The latest tech news, career advice, skill and salary insights (weekly).</span> 
+                                            </div>
+                                            <div class="row">
+                                                <input type="checkbox" id="tedCommunication" name="tedCommunication" [(ngModel)]="tedCommunication">&nbsp;&nbsp;&nbsp; <span><strong>Tedpros Communications:</strong> Find out what's new at Tedpros, including latest jobs, product announcements and surveys (occasional).</span> 
+                                            </div>
+                                            <div class="row">
+                                                <input type="checkbox" id="special_offer" name="special_offer" [(ngModel)]="special_offer">&nbsp;&nbsp;&nbsp; <span><strong>Special Offers:</strong> Job openings, events and other opportunities from select partners and hiring companies (occasional).</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- cover letter -->
+                                <div class="row">
+                                    <div style="margin:20px">
+                                        <div class="col-sm-3"> <strong class="col-form-label" style="margin:20px">Cover Letters &nbsp;:</strong>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <table class="table" style="width: 80%;" *ngIf="resuletData">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Date added</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let x of resuletData">
+                                                        <td style="width: 20%;">{{x.title}}</td>
+                                                        <td style="width: 12%;">{{x.date_added | date:'MM/dd/yyyy'}}</td>
+                                                        <td style="width: 20%;"> <a class="btn btn-success " title="Preview" id="ViewResume" (click)="openPopup(x.id)" style="color: white;"><em class="fa fa-eye"></em></a>
+                                                            <a class="btn btn-danger " title="Delete cover letter" id="deleteResume" (click)="delete(x.id)" style="color: white;margin: 5px;"><em class="fa fa-trash" aria-hidden="true"></em></a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row" *ngIf="!formDisplay">
+                                                <button type="button" class="btn btn-default" (click)="addCoverLetters()">Add Cover Letter</button>
+                                            </div>
+                                            <div class="row" *ngIf="formDisplay">
+                                                <form #letterFrm="ngForm" name="form" (ngSubmit)="letterFrm.form.valid">
+                                                    <div class="row">
+                                                        <label class="col-sm-3" style="font-weight: bold;">Cover Letter Title <span class="req-field">*</span>
+                                                            &nbsp;:</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" id="title" class="form-control passwordField mb-10" placeholder="Enter cover letter title" name="title" [(ngModel)]="letterData.title" #title="ngModel" [ngClass]="{ 'is-invalid': letterFrm.submitted && title.invalid }" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 mb-10">
+                                                            <ckeditor id="letter" name="letter" [(ngModel)]="letterData.letter" #letter="ngModel" [ngClass]="{ 'is-invalid': letterFrm.submitted && letter.invalid }" required></ckeditor>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <button type="button" class="btn btn-success" (click)="addCoverletter(letterFrm)" [disabled]="!letterFrm.valid">Save Cover Letter</button> <a class="btn btn-danger mlr-5" (click)="closeOfferLetter(letterFrm)"><span>Cancel</span></a>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- password  -->
+                                <div class="row">
+                                    <div style="margin:20px">
+                                        <div class="col-sm-3"> 
+                                            <strong class="col-form-label" style="margin:20px">Password  &nbsp;:</strong>
+                                        </div>
+                                        <div class="col-sm-9"> 
+                                            <div class="row"> ******** <a (click)="password()">Change Password</a></div> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Email -->
+                                <div class="row">
+                                    <div style="margin:20px">
+                                        <div class="col-sm-3"> 
+                                            <strong class="col-form-label" style="margin:20px">Email  &nbsp;:</strong>
+                                        </div>
+                                        <div class="col-sm-9"> 
+                                            <div class="row"> {{filterData.email}} <a (click)="email()">Change Email</a></div> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- upload documents -->
+                                <div class="row">
+                                    <div style="margin:20px">
+                                        <div class="col-sm-3"> <strong class="col-form-label" style="margin:20px">Upload Documents :</strong>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <div class="row">
+                                                <table class="table" style="width: 100%;" *ngIf="docData">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Title</th>
+                                                            <th>Type</th>
+                                                            <th>Documents</th>
+                                                            <th>Comment</th>
+                                                            <th>Expiry Date</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let x of docData">
+                                                            <td style="width: 20%;">{{x.title | titlecase}}</td>
+                                                            <td style="width: 20%;">{{x.type}}</td>
+                                                            <td style="width: 20%;"> <a href="{{documentUrl}}{{x.document}}" target="blank">{{x.document}}</a>
+                                                            </td>
+                                                            <td style="width: 30%;">{{x.comment}}</td>
+                                                            <td>{{x.expiryDate | date:'MM-dd-yyyy'}}</td>
+                                                            <td style="width: 10%;">
+                                                                <a class="btn btn-danger " title="Delete Document" id="DeleteDocument" (click)="deleteDoc(x.id)" style="color: white;margin: 5px;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="row" *ngIf="!addDoc">
+                                                <button type="button" class="btn btn-default" (click)="addDocuments()">Add Documents</button>
+                                            </div>
+                                            <div class="row" *ngIf="addDoc">
+                                                <form #documentFrm="ngForm" name="form" (ngSubmit)="documentFrm.form.valid">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label class="col-sm-4" style="font-weight: bold;">Title <span class="req-field">*</span>
+                                                                &nbsp;:</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control mb-10 passwordField" id="title" name="title" [(ngModel)]="documentData.title" #title="ngModel" [ngClass]="{ 'is-invalid': documentFrm.submitted && title.invalid }" pattern="^([a-zA-Z0-9.&*]+\s)*[a-zA-Z0-9.&*]+$" required>
+                                                                <div *ngIf="title.touched && title.invalid" class="invalid-feedback">
+                                                                    <div *ngIf="title.errors.required">Please Enter Title</div>
+                                                                </div>
+                                                                <div *ngIf="title.errors?.pattern" class="invalid-feedback">
+                                                                    Enter valid title name
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="col-sm-4" style="font-weight: bold;">Type <span class="req-field">*</span>&nbsp;:</label>
+                                                            <div class="col-sm-8">
+                                                                <select class="form-control mb-10 passwordField" id="type" name="type" [(ngModel)]="documentData.type" #type = "ngModel" required>
+                                                                    <option selected disabled >-- Select Document --</option>
+                                                                    <option value="H1" >H1</option>
+                                                                    <option value="w4">W4</option>
+                                                                    <option value="i9">I9</option>
+                                                                    <option value="Passport">Passport</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 mb-10">
+                                                            <label class="col-sm-4" style="font-weight: bold;">Comment <span class="req-field">*</span>&nbsp;:</label>
+                                                            <div class="col-sm-8">
+                                                                <textarea class="form-control text" rows="1" id="comment" name="comment" [(ngModel)]="documentData.comment" #comment="ngModel" required></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label class="col-sm-4 col-form-label">Expiry Date <span class="req-field">*</span></label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="expiryDate" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="documentData.expiryDate" (dateTimeInput)="dateValidate()" #expiryDate="ngModel" >
+                                                                <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                                                                <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 mb-10">
+                                                            <label class="col-sm-4" style="font-weight: bold;">File <span class="req-field">*</span>&nbsp;:</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="file" id="document" ng2FileSelect [uploader]="uploader" name="document" accept="application/pdf,application/docx" (change)="getFiles($event)" [(ngModel)]="documentData.fileData" class="form-control mb-10 passwordField" [disabled]="fileName">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-12" *ngIf="fileName">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="width:30%">Name</th>
+                                                                        <th style="width:50%">Progress</th>
+                                                                        <th style="width:5%">Status</th>
+                                                                        <th style="width:15%">Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr *ngFor="let item of uploader.queue">
+                                                                        <td><strong>{{ item?.file?.name }}</strong>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-center"> <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                                                                            <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                                                                            <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button *ngIf="!dateError" type="button" class="btn btn-success" id="uploadDoc" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess || !documentFrm.valid"> <span class="glyphicon glyphicon-upload"></span> Upload</button>
+                                                                        </td>
+                                                                        <!-- on successfull insertion-->
+                                                                        <div class="popupbox_wrap" *ngIf="item.isSuccess">
+                                                                            <div class="popupbox text-center">
+                                                                                <p *ngIf="docMessage" class="bg-success">{{docMessage}}</p>
+                                                                                <p *ngIf="docErrorMessage" class="bg-danger">{{docErrorMessage}}</p>
+                                                                                <div class="row text-center"> <a class="btn btn-success" id="closei9doc" (click)="[item.isSuccess = false,fileName=false,close(documentFrm), uploader.queue = []]"><i class="fa fa-arrow-right" aria-hidden="true"></i> Close</a>
+                                                                                </div>
+                                                                                <!--row-->
+                                                                            </div>
+                                                                            <!--popupbox-->
+                                                                        </div>
+                                                                        <!--popupbox_wrap-->
+
+                                                                        <!-- on failed insertion-->
+                                                                        <div class="popupbox_wrap" *ngIf="item.isError">
+                                                                            <div class="popupbox text-center">
+                                                                                <p *ngIf="docErrorMessage" class="bg-danger">{{docErrorMessage}}</p>
+                                                                                <div class="row text-center"> <a class="btn btn-success" id="closei9doc" (click)="[item.isError = false,fileName=false,close(documentFrm), uploader.queue = []]"><i class="fa fa-arrow-right" aria-hidden="true"></i> Close</a>
+                                                                                </div>
+                                                                                <!--row-->
+                                                                            </div>
+                                                                            <!--popupbox-->
+                                                                        </div>
+                                                                        <!--popupbox_wrap-->
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <a class="btn btn-danger mlr-5" (click)="closeDocuments(documentFrm)"><span>Cancel</span></a>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin: 15px;" class="pull-right">
+                                    <button type="button" class="btn btn-success mlr-5" id="submit" (click)="addInfo()">Submit</button>
+                                    <button type="button" class="btn btn-danger mlr-5" id="cancel" (click)="cancel()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- cover letter details -->
+    <div class="popupbox_wrap" *ngIf="coverLetterDetails">
+        <div class="popupbox" style="width: 70%;">
+            <h4>Cover Letter Details :</h4>
+            <form class="search-form" #emailForm="ngForm">
+                <div class="padding-20">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="col-sm-12 " style="font-weight: bold;">{{letterDetails.title}} :</label>
+                            <div class="col-sm-12"> <span [innerHTML]="letterDetails.letter"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <button type="button" class="btn btn-info" (click)="closePopup()" id="closePopup" style="float: right;">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- change Password -->
+    <div class="popupbox_wrap" *ngIf="passwordPopup">
+        <div class="popupbox">
+            <h4>Change Password</h4>
+            <form class="search-form" #passwordForm="ngForm">
+                <div class="padding-20">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="col-sm-12 " style="font-weight: bold;">Old Password <span class="req-field">*</span>
+                                &nbsp;:</label>
+                            <div class="col-sm-12">
+                                <input type="password" id="oldPassword" class="form-control passwordField" placeholder="Enter your old password" name="oldPassword" [(ngModel)]="changesData.oldPassword " #oldPassword="ngModel" required>
+                                <!-- <p *ngIf="error" style="color: red;padding: 0px;">{{error}}</p> -->
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12 ">
+                                <label class="col-sm-12 " style="font-weight: bold;">Enter New Password <span class="req-field">*</span>
+                                    &nbsp;:</label>
+                                <div class="col-sm-12">
+                                    <input type="password" name="password" class="form-control passwordField" placeholder="Enter New Password" id="password" [(ngModel)]="changesData.password " #password="ngModel" [ngClass]="{ 'is-invalid': passwordForm.submitted && password.invalid }" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&]).{8,}" required title="Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character">
+                                </div>
+                                <div *ngIf="password.touched && password.invalid" class="invalid-feedback">
+                                    <div *ngIf="password.errors.required">Password is required</div>
+                                </div>
+                                <div *ngIf="password.errors?.pattern" class="invalid-feedback">Password should contain minimum eight characters, at least one uppercase & lowercase letter, one number and one special character</div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="col-sm-12 " style="font-weight: bold;">Confirm Password <span class="req-field">*</span>
+                                    &nbsp;:</label>
+                                <div class="col-sm-12">
+                                    <input type="password" name="cpassword" class="form-control passwordField" placeholder="Confirm New Password" id="confirmPassword" [(ngModel)]="changesData.cpassword" #cpassword="ngModel" [ngClass]="{ 'is-invalid': passwordForm.submitted && cpassword.invalid }" required>
+                                    <div *ngIf="(cpassword.touched && cpassword.errors) || changesData.password!=changesData.cpassword">
+                                        <p *ngIf="cpassword.touched && cpassword.errors" class="invalid-feedback">Please Confirm Password</p>
+                                        <p *ngIf="cpassword.touched && changesData.password!=changesData.cpassword" class="invalid-feedback">Passwords didn't match</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:10px;">
+                        <button type="button" class="btn btn-success mlr-5" id="submitPassword" (click)="changePassword(passwordForm)" [disabled]="!passwordForm.valid">Submit</button>
+                        <button type="button" class="btn btn-info" (click)="closePasswordPopup(passwordForm)" id="closePasswordPopup">Close</button>
+                        <p *ngIf="error" style="color: red;padding: 0px;">{{error}}</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- change Email -->
+    <div class="popupbox_wrap" *ngIf="emailPopup">
+        <div class="popupbox">
+            <h4>Change Email</h4>
+            <form class="search-form" #emailForm="ngForm">
+                <div class="padding-20">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="col-sm-12 " style="font-weight: bold;">New Email :</label>
+                            <div class="col-sm-12">
+                                <input type="email" id="oldPassword" class="form-control passwordField" placeholder="Enter Email" name="email" [(ngModel)]="changeEmailData.email " #email="ngModel" required (blur)="checkMail()" [ngClass]="{ 'is-invalid': emailForm.submitted && email.invalid }" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})">
+                                <p *ngIf="emailError" style="color: red;padding: 0px;">{{emailError}}</p>
+                            </div>
+                            <div *ngIf="email.errors?.pattern" class="invalid-feedback">Please enter a valid email</div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin:10px;">
+                        <button type="button" class="btn btn-success mlr-5" id="submitPassword" (click)="changeEmail(emailForm)" [disabled]="!emailForm.valid">Submit</button>
+                        <button type="button" class="btn btn-info" (click)="closeEmailPopup(emailForm)" id="closePasswordPopup">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="popupbox_wrap" *ngIf="settingsPopup">
+        <div class="popupbox">
+            <div class="row">
+                <button class="close" type="button" (click)="closeSettingsPopup()"><span class="close-label"><i class="fa fa-times" id="closebtn1"
+                            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+                </button>
+            </div>
+            <p class="bg-success">Account details updated successfully</p>
+        </div>
+    </div>
+    <div class="popupbox_wrap" *ngIf="changeMailPopup">
+        <div class="popupbox">
+            <div class="row">
+                <button class="close" type="button" (click)="closechangeMailPopup()"><span class="close-label"><i class="fa fa-times" id="closebtn1"
+                            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+                </button>
+            </div>
+            <p class="bg-success">Eamil updated successfully. Please login to continue!</p>
+        </div>
+    </div>
+    <div class="popupbox_wrap" *ngIf="changePasswordPopup">
+        <div class="popupbox">
+            <div class="row">
+                <button class="close" type="button" (click)="closechangePasswordPopup()"><span class="close-label"><i class="fa fa-times" id="closebtn1"
+                            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+                </button>
+            </div>
+            <p class="bg-success">Password changed successfully</p>
+        </div>
+    </div>
+    <div class="popupbox_wrap" *ngIf="changeEmailErrorPopup">
+        <div class="popupbox">
+            <div class="row">
+                <button class="close" type="button" (click)="closeEmailErrorPopup()"><span class="close-label"><i class="fa fa-times" id="closebtn1"
+                            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+                </button>
+            </div>
+            <p class="bg-success">{{error}}</p>
+        </div>
+    </div>

@@ -1,0 +1,220 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Leave List</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <em>&nbsp;/&nbsp;</em>
+          <li>Leave-List</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th></th>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Date</th>
+                  <th>Employee Name</th>
+                  <th>Leave Type </th>
+                  <th>Leave Balance (Days) </th>
+                  <th>Number of Days</th>
+                  <th>Status</th>
+                  <th>Comments</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="!filterData">
+                <tr>
+                  <td colspan="8">
+                    No Records Found
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="filterData">
+                  <tr>
+                      <th style="width: 3%; text-align: center;"></th>
+                      <th style="width: 3%; text-align: center;"></th>
+                      <th>
+                        <input type="text" placeholder="Search Date" (keyup)="search($event.target.value,'leaveApplication')" id="searchleaveApplication"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Employee Name" id="searchUser"
+                          (keyup)="search($event.target.value,'user')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Leave Type" id="searchLeavetype"
+                          (keyup)="search($event.target.value,'leave_type')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="number" placeholder="Search Balance Days" (keyup)="search($event.target.value,'leave_balance')" id="searchBalance"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                          <input type="number" placeholder="Search Total Days" (keyup)="search($event.target.value,'days')" id="searchTotalDays"
+                            class="search-filter form-control">
+                      </th>
+                      <th>
+                          <input type="text" placeholder="Search Status" (keyup)="search($event.target.value,'status')" id="searchStatus" class="search-filter form-control">
+                      </th>
+                      <th>
+                          <input type="text" placeholder="Search Comment" (keyup)="search($event.target.value,'comment')" id="searchComment"
+                            class="search-filter form-control">
+                      </th>
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let leavelist of mf.data; let i = index">
+                  <td style="text-align: center;">
+                    <p>{{ i+1 }}</p>
+                  </td>
+                  <td style="text-align: center;" id="submenu">
+                    <div class="activity-main-menu" >
+                      <ul class="menu-items">
+                        <li class="activity-sub-menu" >
+                          <a>
+                            <div class="icon-w">
+                              <i class="fa fa-bars" aria-hidden="true"></i>
+                            </div>
+                          </a>
+                          <div class="sub-menu-list">
+                            <div class="sub-menu-i">
+                              <ul class="sub-menu">
+                                <li>
+                                  <a class="mlr-5" title="View details"><button type="button" id="view"
+                                      (click)="leaveUpdate(leavelist)"
+                                      class="tabledit-delete-button btn btn-primary"><em
+                                        class="fa fa-eye"></em></button></a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>{{leavelist.leaveApplication}}</td>
+                  <td>{{leavelist.user | uppercase}}</td>
+                  <td>{{leavelist.leave_type | uppercase}}</td>
+                  <td>{{leavelist.leave_balance}}</td>
+                  <td>{{leavelist.days}}</td>
+                  <td>{{leavelist.status | uppercase}}</td>
+                  <td>{{leavelist.comment}}</td>
+                </tr>
+              </ng-container>
+              <ng-template #noData> 
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="12">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10]"></mfBootstrapPaginator>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- update status -->
+<div class="popupbox_wrap" *ngIf="updateStatus">
+    <div class="popupbox" style="width: 700px">
+        <div >
+            <h4 class="modal-title" id="exampleModalLabel" style='font-size:30px' aria-hidden="true"> Leave Detail</h4>
+        </div>
+        <table class="table table-bordered"> 
+          <tr>
+            <td><strong>Employee</strong>: <span>{{leave.user | uppercase}}</span></td>       
+            <td><strong>Leave Type</strong>: <span>{{leave.leave_type | uppercase}}</span></td>
+          </tr>
+          <tr>
+            <td><strong>Leave Period</strong>: <span>{{leave.leaveApplication}}</span></td>
+            <td><strong>Leave Balance</strong>: <span>{{leave.leave_balance}}</span></td>
+          </tr>
+          <tr>
+              <td><strong>Leave Pending</strong>: <span>{{leave.leave_pending}}</span></td>
+              <td><strong>Leave Scheduled</strong>: <span>{{leave.leave_scheduled}}</span></td>
+          </tr>
+          <!-- saikumar 28/08/2019 started here -->
+          <tr>
+              <td><strong>Leave Taken</strong>: <span>{{leave.leave_taken}}</span></td>
+              <td></td>
+          </tr>
+        </table>
+ <!-- saikumar 28/08/2019 ended here -->
+            <div class="form-group row">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <form #leaveFrm="ngForm" name="form" (ngSubmit)="leaveFrm.form.valid" novalidate>
+                  <div class="form-group row" *ngIf="leave.status === 'Pending'; else displayComment">
+                    <div class="col-sm-6">
+                      <textarea placeholder="Enter Description" id="comment" class="form-control mb-10" name="comment"
+                        [(ngModel)]="updateData.comment" #comment="ngModel"
+                        [ngClass]="{ 'is-invalid': leaveFrm.submitted && comment.invalid }" required></textarea>
+                      <p *ngIf="error" style="color:red;font-weight:bold">{{ error }}</p>
+                      <input type="hidden" id="id" name="id" [(ngModel)]="updateData.id" #id="ngModel" />
+                    </div>
+
+                    <div class="col-sm-6">
+                      <button type="button" class="btn btn-success mlr-5" id="approved" [disabled]="!leaveFrm.valid"
+                        (click)="update('APPROVED')">Approve</button>
+                      <button type="button" class="btn btn-danger mlr-5" id="rejected" [disabled]="!leaveFrm.valid"
+                        (click)="update('REJECTED')">Reject</button>
+                    </div>
+
+                  </div>
+                  <ng-template #displayComment>
+                    <div class="col-sm-12">
+                      <h6>
+                        {{ leave.comment }}
+                      </h6>
+                    </div>
+                  </ng-template>
+                </form>
+              </div>
+            </div>
+        
+        <div>
+            <button type="button" class="btn btn-info" id="closeModel" (click)="closeModal();">Close</button>
+        </div>
+</div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+    <div class="popupbox" *ngIf="message !=''">
+        <button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+        <div class="danger text-center">
+            <h5 style="color: #24b314;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+        </div>
+       
+    </div>
+    <div class="popupbox" *ngIf="popError">
+        <button class="close" type="button" id="closeerror" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+        <br>
+            <div class="danger text-center">
+              <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.popError}} </h5>
+       </div>
+    </div>
+  </div>
+  

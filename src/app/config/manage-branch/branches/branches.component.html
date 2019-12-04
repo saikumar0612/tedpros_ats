@@ -1,0 +1,212 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Manage Branches <a class="btn btn-primary" id="addbranch" routerLink="/manage-branch/add-branch" *ngIf="userPermissions.createBranch">+
+            Add New Branch</a></h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Branches Info</li>
+        </ul>
+      </div>
+    </div>
+  </div> 
+  
+  <div class="element-content">
+    <div class="job-box">
+
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="tab-content">
+            <div class="tab-pane active">
+              <form #branchForm="ngForm">
+                <ng-container *ngTemplateOutlet="innerTabset; "></ng-container>
+                <ng-template #innerTabset let-tabs>
+                  <ngb-tabset>
+                    <ngb-tab *ngFor="let branch of allBranches">
+                      <ng-template ngbTabTitle>
+                        {{ branch.name | titlecase }}
+                      </ng-template>
+                      <ng-template ngbTabContent>
+                        <!-- {{branch |json}} -->
+                        <div class="search-form mb-10" >
+                          <div class="form-header">
+                            <h5>Registered Address</h5>
+                          </div>
+                          <div class="padding-20">
+                            <div class="row" *ngIf="!branch.isClientLocation">
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Country: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.registeredAddress.country.name}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Phone: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.registeredAddress.phone}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row" *ngIf="!branch.isClientLocation">
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Fax: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.registeredAddress.fax}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Address: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.registeredAddress.address}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Street: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.registeredAddress.street}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">State/Province: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.registeredAddress.state.name}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">City: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.registeredAddress.city.name}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-6" *ngIf="!branch.isClientLocation">
+                                <label class="col-sm-4 col-form-label">Zip/Postal Code: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.registeredAddress.zipcode}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row" *ngIf="!branch.isClientLocation">
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Notes: </label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.notes}}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="search-form mb-10" *ngIf="!branch.isClientLocation && branch.localeSettings">
+                          <div class="form-header">
+                            <h5>Locale Settings</h5>
+                          </div>
+                          <div class="padding-20">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Default Locale:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.localeSettings.locale.name}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Default TimeZone:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.localeSettings.timeZone.name}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Currency:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.localeSettings.currency.name}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="col-sm-4 col-form-label">Language:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.localeSettings.language.name | titlecase}}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="search-form mb-10" *ngIf="!branch.isClientLocation && branch.workWeek">
+                          <div class="form-header">
+                            <h5>Work Week</h5>
+                          </div>
+                          <div class="padding-20">
+                            <div class="row">
+                              <div class="col-md-4">
+                                <label class="col-sm-4 col-form-label">Sunday:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.workWeek.sunday.name}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="col-sm-4 col-form-label">Monday:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.workWeek.monday.name}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="col-sm-4 col-form-label">Tuesday:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.workWeek.tuesday.name}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-4">
+                                <label class="col-sm-4 col-form-label">Wednesday:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.workWeek.wednesday.name | titlecase}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="col-sm-4 col-form-label">Thursday</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.workWeek.thursday.name}}</p>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <label class="col-sm-4 col-form-label">Friday:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.workWeek.friday.name | titlecase}}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-4">
+                                <label class="col-sm-4 col-form-label">Saturday:</label>
+                                <div class="col-sm-8">
+                                  <p>{{branch.workWeek.saturday.name}}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-sm-10">
+                            <button *ngIf="!isNewbranch" type="submit" class="btn btn-primary mlr-5"
+                              [disabled]="!branchForm.valid" id="editbranch" [routerLink]="['/manage-branch/edit-branch', branch.id]">Edit</button>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ngb-tab>
+                  </ngb-tabset>
+                </ng-template>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

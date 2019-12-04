@@ -1,0 +1,147 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Performance Review</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink="/reviews/manage-reviews">Manage Review</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Add Performance Review</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" enctype="multipart/form-data" #addJobFrm="ngForm" name="form"
+            (ngSubmit)="addJobFrm.form.valid" novalidate>
+            <div class="form-header row mlr-0">
+              <h5>Add Performance Review</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Employee <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" id="employee" name="userId" [(ngModel)]="trackerData.userId" #userId="ngModel"
+                      [ngClass]="{ 'is-invalid': addJobFrm.submitted && userId.invalid }" required
+                      (change)="change(userId.value)">
+                      <option [ngValue]="undefined" disabled selected>Choose an Employee</option>
+                      <option *ngFor="let user of users" value="{{user.id}}">{{user.first_name | titlecase}} {{user.last_name | titlecase}}
+                      </option>
+                    </select>
+                    <div *ngIf="userId.touched && userId.invalid" class="invalid-feedback">
+                      <div *ngIf="userId.errors.required">Select any Employee</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Supervisor Reviewer <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input class="form-control mb-10" id="supervisorReviewer" name="supervisorId" value="{{this.trackerData.name}}"
+                      [(ngModel)]="trackerData.name" #supervisorId="ngModel"
+                      [ngClass]="{ 'is-invalid': addJobFrm.submitted && supervisorId.invalid }" readonly
+                      (change)="change(supervisorId.value)" required>
+                    <div *ngIf="supervisor" class="invalid-feedback">{{ noSupervisor }}</div>
+                  </div>
+                </div>
+                <!-- changes in date picker --suresh-- on 08-07-2019 start -->
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Work period Start Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input class="form-control mb-10"  placeholder="MM/DD/YYYY" id="startDate" [owlDateTimeTrigger]="startDate" [owlDateTime]="startDate" name="startDate" [(ngModel)]="trackerData.startDate" (dateTimeInput)="dateValidate()" #startDate="ngModel" >
+                    <owl-date-time [pickerType]="'calendar'" #startDate></owl-date-time>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Work period End Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input class="form-control mb-10"  placeholder="MM/DD/YYYY" id="endDate" [owlDateTimeTrigger]="endDate" [owlDateTime]="endDate" name="endDate" [(ngModel)]="trackerData.endDate" (dateTimeInput)="dateValidate()" #endDate="ngModel" >
+                    <owl-date-time [pickerType]="'calendar'" #endDate></owl-date-time>
+                    <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Due Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input class="form-control mb-10"  placeholder="MM/DD/YYYY" id="dueDate" [owlDateTimeTrigger]="dueDate" [owlDateTime]="dueDate" name="dueDate" [(ngModel)]="trackerData.dueDate" (dateTimeInput)="dateValidate()" #dueDate="ngModel" >
+                    <owl-date-time [pickerType]="'calendar'" #dueDate></owl-date-time>
+                    <p *ngIf="dateError1" style="color: red;font-weight:bold;">{{ dateError1 }}</p>
+                  </div>
+                </div>
+            <!-- changes in date picker --suresh-- on 08-07-2019 end -->
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Kpi Type <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" id="kpiType" name="type" [(ngModel)]="trackerData.type" #type="ngModel"
+                      [ngClass]="{ 'is-invalid': addJobFrm.submitted && type.invalid }" required>
+                      <option [ngValue]="undefined" disabled selected>Choose a type</option>
+                      <option *ngFor="let type of kpitypes" value="{{type.id}}">{{type.name}}</option>
+                    </select>
+                    <div *ngIf="type.touched && type.invalid" class="invalid-feedback">
+                      <div *ngIf="type.touched && type.errors.required">KPI Type is required</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-10" style="position: initial;">
+                  <button class="btn btn-primary mlr-5" id="addReview" [disabled]="!addJobFrm.valid" (click)="save(addJobFrm)">Save</button>
+                  <button class="btn btn-success mlr-5" id="activate" [disabled]="!addJobFrm.valid"
+                    (click)="activate(addJobFrm)">Activate</button>
+                  <button class="btn btn-info mlr-5" id="back" (click)="cancel()">Back</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.message">
+    <button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table table-bordered">
+      <tr>
+        <td class="success text-center">
+          <h5>Review added successfully! </h5>
+        </td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <a class="btn btn-success" id="viewAllReview" routerLink="/reviews/manage-reviews">
+        <i class="fa fa-users" aria-hidden="true"></i> View all Reviews</a>
+    </div>
+  </div>
+
+  <div class="popupbox" *ngIf="this.error">
+    <button class="close" type="button" id="closeError" (click)="closePopup()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table table-bordered">
+      <tr>
+        <td class="danger text-center">
+          <h5>{{error }} </h5>
+        </td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <a class="btn btn-success" id="closeErrorPopup" routerLink="/reviews/manage-reviews">
+        <i class="fa fa-users" aria-hidden="true"></i> View all Reviews</a>
+    </div>
+  </div>
+</div>

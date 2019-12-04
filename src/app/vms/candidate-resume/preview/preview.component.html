@@ -1,0 +1,148 @@
+<div class="container">
+    <div class="content">
+        <div class="top-header"> 
+          <div class="row">
+              <div class="col-md-1 col-lg-1 heading">
+                  <h4>Preview  </h4>
+              </div>
+              <!-- <div class="col-md-1 col-lg-1 heading">
+                  <strong> Previews </strong>
+              </div> -->
+              <div class="col-md-3 col-lg-3 heading">
+              <select class="form-control" id="selectInfemation" #info (change)="onNavigate(info.value)" >
+                  <option value="/resume/preview" selected>Preview -1</option>
+                  <option value="/resume/preview-1">Preview -2</option>
+                  <option value="/resume/preview-2">Preview -3</option>
+                    
+                </select>
+                  
+              </div>
+            <div class="col-md-8 col-lg-8"> 
+                <button class="btn btn-primary pull-right " style="margin-right:5px;" id="saveResume" type="button" (click)="captureScreen()" ><i class="fa fa-download"> Download </i></button> 
+                <button class="btn btn-success pull-right" style="margin-right:5px;" id="saveResume" type="button"  routerLink="/resume/edit-resume"><i class="fa fa-edit"> Edit </i></button> 
+            </div>
+            
+          </div>
+        </div> 
+        <div class="element-content">
+          <div class="job-box">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" id="contentToConvert">
+                <div id="wrapper">
+                  <div class="wrapper-top"></div>
+                  <div class="wrapper-mid">
+                    <!-- Begin Paper -->
+                    <div id="paper">
+                      <div class="paper-top"></div>
+                      <div id="paper-mid">
+                        <div class="entry">
+                          <!-- Begin Personal Information --> 
+                          <div class="self header">
+                            <h1 class="name">{{candidateData.firstName }} {{candidateData.lastName }}<br />
+                              <span>{{this.jobTitle}}</span></h1>
+                            <ul>
+                              <li class="mail">{{candidateData.email}}</li>
+                              <li class="tel">{{candidateData.phoneNo}}</li>
+                            </ul>
+                            <ng-container *ngIf="candidateData.linkedin; else noData">
+                              <span><i class="fa fa-linkedin-square" ></i> {{candidateData.linkedin}}</span>
+                            </ng-container>
+                            <ng-template #noData>
+                            </ng-template>
+                           
+                          </div>
+                            <div class="self">
+                              <div  style="border:none; ">
+                                <img class="img-thumbnail" src="assets/images/avatar.png" alt="profile pic" *ngIf="candidateData.image == ''"
+                                  style="width: 80%; margin: auto;display: block;float: right;">
+      
+                                <img alt="profile pic" class="img-thumbnail" src="{{candidateData.image}}" *ngIf="candidateData.image != ''" style="width: 80%; margin: auto;display: block;float: right;">
+                              </div>
+                          </div>
+                          <!-- End Personal Information -->
+                        </div>
+                        <!-- Begin 1st Row -->
+                        <div class="entry">
+                          <h2 class="title">PROFILE</h2>
+                          <p class="contentData" style="margin-top: 0px;">{{ candidateData.summary }}</p>
+                        </div>
+                        <!-- End 1st Row -->
+                        <!-- Begin 2nd Row -->
+                        <div class="entry">
+                          <h2 class="title">EDUCATION</h2>
+                          <div class="content" *ngFor="let education of educations" style="padding-top: 0px">
+                              <h3 class="contentData" >{{education.passingYear}}</h3>
+                            <p>
+                                <span class="contentData">{{education.instituteName | uppercase }}</span><br/>
+                                <span class="contentData">{{ education.specialization }}</span>
+                            </p>
+                          </div>
+                        </div>
+                        <!-- End 2nd Row -->
+                        <!-- Begin 3rd Row -->
+                        <div class="entry" *ngIf= "experience">
+                          <h2 class="title">EXPERIENCE</h2>
+                          <div class="content" *ngFor="let exp of experience">
+                            <h3 class="contentData">{{exp.startDate | date: 'MM-dd-yyyy'}} - {{exp.endDate | date: 'MM-dd-yyyy'}}</h3>
+                            <p  class="subTitle">{{exp.employer}}<br />
+                              <span class="contentData">{{exp.jobTitle}}</span></p>
+                            <ul class="info">
+                              <li><span class="contentData">{{exp.description}}</span></li>
+                            </ul>
+                          </div>
+                        </div>
+                        <!-- End 3rd Row -->
+                        <!-- Begin 4th Row -->
+                        <div class="entry" >
+                            <h2>Other Information</h2>
+                            <br />
+                            <p class="skill">Expected Salary: <span class="contentData"> $ {{ this.candidateData.expectedPay }} / {{this.candidateData.per.pay_frequency}} </span></p>
+                            
+                        </div>
+                        <!-- End 4th Row -->
+                        <!-- Begin 5th Row -->
+                        
+                        <div class="entry" *ngIf="this.skills">
+                          <h2 class="title">SKILLS</h2>
+                            <br />
+                          <p class="contentData" style="margin: 0 0 0px;"  *ngFor="let skills of skills">{{ skills.skillName | uppercase }}</p>
+                        </div>
+                        <div class="entry">
+                          <h2 class="title">Pie Chart Showing Your Skills</h2>
+                          <div class="col-md-2">
+
+                          </div>
+                          <div class="col-md-8">
+                            <div>
+                              <canvas
+                                  baseChart
+                                  [chartType]="'pie'"
+                                  [datasets]="pieChartData"
+                                  [labels]="pieChartLabels"
+                                  [options]="pieChartOptions"
+                                  [legend]="true"
+                                  [colors]="pieChartColor"
+                                  (chartClick)="onChartClick($event)">
+                              </canvas>
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+            
+                          </div>
+                        </div>
+                      </div>
+                      <div class="clear"></div>
+                      <div class="paper-bottom"></div>
+                    </div>
+                    <!-- End Paper -->
+                  </div>
+                  <div class="wrapper-bottom"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+  
+  

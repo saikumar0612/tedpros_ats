@@ -1,0 +1,112 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Skills <a class="btn btn-primary" routerLink="/skills/add-skill" *ngIf="userPermissions.createSkills" id="addskill">+ Add</a></h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li>Skills</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">												
+          <div class="table-responsive">
+              <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="10">
+                <thead class="form-header">
+                  <tr>
+                    <th style="width: 4%; text-align: center;"></th>
+                    <th style="width: 4%; text-align: center;"></th>
+                    <th style="width: 35%;">Name</th>
+                    <th>Description</th>                  
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="2"></td>
+                    <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'name')" class="search-filter form-control" id="searchname"></td>
+                    <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'description')" class="search-filter form-control" id="searchvalue"></td>
+                  </tr>
+                  <ng-container *ngIf="availableRecords; else noData">
+                    <tr *ngFor = "let skill of mf.data, index as i">
+                      <td style="text-align: center;">
+                        {{i+1}}
+                      </td>
+                      <td style="text-align: center;" id="menutab">
+                        <div class="activity-main-menu">
+                          <ul class="menu-items">
+                            <li class="activity-sub-menu">
+                              <a>
+                                <div class="icon-w">
+                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                </div>
+                              </a>
+                              <div class="sub-menu-list">
+                                <div class="sub-menu-i">
+                                  <ul class="sub-menu"  *ngIf="userPermissions.readSkills || userPermissions.updateSkills">
+                                    <li>
+                                      <a class="mlr-5" [routerLink]="['/skills/edit-skill', skill.id]" *ngIf="userPermissions.updateSkills" id="editskill">
+                                        <button type="button" class="tabledit-edit-button btn btn-danger">
+                                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </button>
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a class="mlr-5" *ngIf="userPermissions.readSkills">
+                                        <button type="button" class="tabledit-delete-button btn btn-success"  (click)="showJobDetails(skill.id)" id="readskill">
+                                          <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </button>
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                      <td><a id="showJobDetails" (click)="showJobDetails(skill.id)">{{ skill.name | uppercase }}</a></td>
+                      <td>{{ skill.description }}</td>
+                    </tr>
+                  </ng-container>
+                  <ng-template #noData> 
+                    <tr>
+                      <td colspan="12" class="text-danger" style="text-align: center;">
+                        No Records Found 
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="4"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,35]"></mfBootstrapPaginator></td>
+                  </tr>
+                </tfoot>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+  <div class="show_user_details">
+    <table class="table table-bordered">
+      <tr><td><strong>Skill Name</strong>: <span>{{ skillInfo.name }}</span></td></tr>
+      <tr><td><strong>Skill Description</strong>: <span>{{ skillInfo.description }}</span></td></tr>
+    </table>
+    <div class="row text-center">
+      <a (click)="closePopup()" id=" closepopup" class="btn btn-danger"><i class="fa fa-times"></i> Close</a>
+      <a  *ngIf="userPermissions.updateSkills" [routerLink]="['/skills/edit-skill', skillInfo.id]" style="margin-left: 5px;" id=" editSkills" class="btn btn-success"><i class="fa fa-pencil-square-o"></i> Edit Skill</a>
+    </div>
+  </div><!--show_user_details-->
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->

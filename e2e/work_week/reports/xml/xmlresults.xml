@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites disabled="0" errors="0" failures="0" tests="17" time="52.74">
+ <testsuite name="Code for workweek under config" timestamp="2019-11-07T11:51:27" hostname="localhost" time="52.74" errors="0" tests="17" skipped="0" disabled="0" failures="0">
+  <testcase classname="Code for workweek under config" name="open the browser" time="24.392" />
+  <testcase classname="Code for workweek under config" name="Enter the username" time="1.413" />
+  <testcase classname="Code for workweek under config" name="Enter the password" time="0.967" />
+  <testcase classname="Code for workweek under config" name="click on login button" time="0.783" />
+  <testcase classname="Code for workweek under config" name="Mouse hover CRM icon" time="5.99" />
+  <testcase classname="Code for workweek under config" name="click on Work week" time="2.407" />
+  <testcase classname="Code for workweek under config" name="click on Edit" time="4.006" />
+  <testcase classname="Code for workweek under config" name="selectmonday" time="0.717" />
+  <testcase classname="Code for workweek under config" name="selectTuesday" time="1.03" />
+  <testcase classname="Code for workweek under config" name="selectwednesday" time="0.716" />
+  <testcase classname="Code for workweek under config" name="selectthursday" time="0.638" />
+  <testcase classname="Code for workweek under config" name="selectfriday" time="0.622" />
+  <testcase classname="Code for workweek under config" name="selectsaturday" time="0.617" />
+  <testcase classname="Code for workweek under config" name="selectsunday" time="0.632" />
+  <testcase classname="Code for workweek under config" name="click on save" time="0.499" />
+  <testcase classname="Code for workweek under config" name="For Verfing successfull message" time="3.763" />
+  <testcase classname="Code for workweek under config" name="View work Week" time="3.543" />
+ </testsuite>
+</testsuites>

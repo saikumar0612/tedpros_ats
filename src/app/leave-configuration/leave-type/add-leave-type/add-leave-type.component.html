@@ -1,0 +1,128 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Add Leave Type</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/&nbsp;</li>
+          <li><a routerLink='/leave-type'>Leave Type</a></li>
+          <li>/&nbsp;</li>
+          <li>Add Leave Type</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addLeaveFrm="ngForm" name="form" (ngSubmit)="addLeaveFrm.form.valid" novalidate>
+            <div class="form-header">
+              <h5>Add Leave Type</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Name <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" id="name" class="form-control mb-10" placeholder="Enter Here" name="name"
+                      [(ngModel)]="leaveData.name" #name="ngModel" pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$" [ngClass]="{ 'is-invalid': addLeaveFrm.submitted && name.invalid }" required>
+                    <div *ngIf="name.touched && name.invalid" class="invalid-feedback">
+                      <div *ngIf="name.touched && name.errors.required">Name is required</div>
+                    </div>
+                    <div *ngIf="name.errors?.pattern" class="invalid-feedback">
+                      Enter a valid Name
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Country<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" id="country" name="country" [(ngModel)]="leaveData.country" #country="ngModel"
+                      [ngClass]="{ 'is-invalid': addLeaveFrm.submitted && country.invalid }" required>
+                      <option [ngValue]="undefined" disabled selected>Choose a country</option>
+                      <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                    </select>
+                    <div *ngIf="country.touched && country.invalid" class="invalid-feedback">
+                      <div *ngIf="country.errors.required">Select any one country</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <span class="col-sm-6 col-form-label" (click)="popupMsg()"><a>Is entitlement situational</a> </span>
+                  <div class="col-sm-6">
+                    <input type="checkbox" id="check" class="form-control mb-10"
+                      style="width: 15%; height: 15px; box-shadow: none;" name="situational"
+                      [(ngModel)]="leaveData.situational" #situational="ngModel">
+                  </div>
+                </div>
+              </div><br>
+
+               <!-- saikumar 27/08/2019 started here -->
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary mlr-5" id="save" [disabled]="!addLeaveFrm.valid"
+                    (click)="addLeave(addLeaveFrm)">Save</button>
+                    
+                      <!-- saikumar 27/08/2019 ended here -->
+                  <button class="btn btn-danger mlr-5" id="cancel" (click)="cancel()">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+    <table>
+      <tbody>
+        <p>These leave will be excluded from reports unless there's some activity. E.g. maternity leave, jury duty
+          leave.</p>
+        <div class="row text-center">
+          <a class="btn btn-success" id="closePopup" (click)="closePopup()"> Close</a>
+        </div>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup1">
+  <div class="popupbox" *ngIf="this.message">
+    <button class="close" type="button" id="closeIsShowpopup" (click)="closePopup1()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <table class="table table-bordered">
+      <tr>
+        <td class="sucess text-center">
+          <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{this.message}} </h5>
+        </td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <a class="btn btn-success" id="viewLeaveTypes" routerLink="/leave-type"><i class="fa fa-users" aria-hidden="true"></i> View all Leave
+        Types</a>
+    </div>
+  </div>
+  <div class="popupbox" *ngIf="this.error">
+    <button class="close" type="button" id="closeError" (click)="closePopup1()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <br>
+    <div class="danger text-center">
+      <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+    </div>
+  </div>
+</div>

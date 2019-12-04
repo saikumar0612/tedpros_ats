@@ -1,0 +1,301 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Ownership Transfer</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Ownership Transfer</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form #addReportFrm="ngForm" name="form" (ngSubmit)="addReportFrm.form.valid" novalidate>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Search Type <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="searchType" name="type" #type="ngModel"
+                    [(ngModel)]="searchData.type" [ngClass]="{ 'is-invalid': addReportFrm.submitted && type.invalid }"
+                    required (change)="onchange(type.value)">
+                    <option [ngValue]="undefined" disabled selected>Choose a Type</option>
+                    <option value="jobPosting">Job Postings</option>
+                    <option value="accounts">Accounts</option>
+                  </select>
+                  <div *ngIf="type.touched && type.invalid" class="invalid-feedback">
+                    <div *ngIf="type.errors.required">Select Type First</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Transfer to <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="transferTo" name="transferTo" #transferTo="ngModel"
+                    [(ngModel)]="searchData.transferTo" required
+                    [ngClass]="{ 'is-invalid': addReportFrm.submitted && transferTo.invalid }">
+                    <option [ngValue]="undefined" disabled selected>Select User</option>
+                    <ng-container *ngFor="let user of users">
+                      <option *ngIf="user.id !== userId" value="{{user.id}}">{{user.first_name}} {{user.last_name}}
+                      </option>
+                    </ng-container>
+
+                  </select>
+                  <div *ngIf="transferTo.touched && transferTo.invalid" class="invalid-feedback">
+                    <div *ngIf="transferTo.touched && transferTo.errors.required">User is required</div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary mlr-5" [disabled]="!addReportFrm.valid" (click)="editOwner()"
+                id="submit">Submit</button>
+              <button type="reset" (click)="resetData(addReportFrm)" id="resetData"
+                class="btn btn-info mlr-5">Reset</button>
+              <button type="button" (click)="cancel()" id="resetData" class="btn btn-danger mlr-5">Cancel</button>
+              <p style="color:#e90000">{{ error6 }}</p>
+            </div>
+            <div class="table-responsive" *ngIf="showJobForm && getResult">
+              <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+                <thead class="form-header">
+                  <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="companyName"><span style="color: #fff;">Job Code</span></mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="owner"><span style="color: #fff;">Client Job Code</span></mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="billingContact"><span style="color: #fff;">Job Title</span></mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="phoneNumber"><span style="color: #fff;">Client</span></mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="cityId"><span style="color: #fff;">Posted On</span></mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="cityId"><span style="color: #fff;">Recruiter</span></mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="cityId"><span style="color: #fff;">Active Resumes#</span></mfDefaultSorter>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th>
+                      <input type="text" placeholder="Search Internal Code" id="searchinternalCode"
+                        (keyup)="search($event.target.value,'internalCode')" class="search-filter form-control">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Client Job Code" id="searchjobCode"
+                        (keyup)="search($event.target.value,'jobCode')" class="search-filter form-control">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Job Title" (keyup)="search($event.target.value,'job.name')"
+                        class="search-filter form-control" id="searchJobName">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Client"
+                        (keyup)="search($event.target.value,'company.name')" class="search-filter form-control"
+                        id="searchComapanyName">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Posted On"
+                        (keyup)="search($event.target.value,'datePosted')" class="search-filter form-control"
+                        id="searchDatePosted">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search Recruiter" id="searchRecruiterName"
+                        (keyup)="search($event.target.value,'recruiter.firstName')" class="search-filter form-control">
+                    </th>
+                    <th>
+                    </th>
+                  </tr>
+                  <ng-container *ngIf="availableRecords; else noData">
+                    <ng-container *ngFor="let jobs of mf.data; let i = index">
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox" [(ngModel)]="jobs.checked" name="internalCode"
+                            id="internalCode">
+                        </td>
+                        <td><a id="viewJobInternals" [routerLink]="['/jobs/view-job', jobs.internalCode]">
+                            <ng-container *ngIf="jobs.isPublished; else notPublished">
+                              <span class="dot-green"></span>
+                            </ng-container>
+                            <ng-template #notPublished>
+                              <span class="dot"></span>
+                            </ng-template>
+                            {{ jobs.internalCode }}
+                          </a></td>
+                        <td><a id="viewJobCodeInternals"
+                            [routerLink]="['/jobs/view-job', jobs.internalCode]">{{ jobs.jobCode | uppercase }}</a>
+                        </td>
+                        <td>{{ jobs.jobName | uppercase }}</td>
+                        <td><a id="viewCompanyNames"
+                            [routerLink]="['/customers/view-customer', jobs.company.id]">{{ jobs.company.name | uppercase }}</a>
+                        </td>
+                        <td>{{ jobs.datePosted | date:'MM/dd/yyyy' }}</td>
+                        <td><a id="viewRecruiters"
+                            [routerLink]="['/usersView/view-user-profile',jobs.recruiter.id]">{{ jobs.recruiter.name | uppercase }}</a>
+                        </td>
+                        <td>{{ jobs.applicationCount }}</td>
+                      </tr>
+
+                    </ng-container>
+                  </ng-container>
+                  <ng-template #noData>
+                    <tr>
+                      <td colspan="12" class="text-danger" style="text-align: center;">
+                        No Records Found
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="12">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="table-responsive" *ngIf="showAccountForm && getResult">
+              <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+                <thead class="form-header">
+                  <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="companyName"><span style="color: #fff;">Client Company Name</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="owner"><span style="color: #fff;">Account Owner</span></mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="billingContact"><span style="color: #fff;">Billing Contact</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="phoneNumber"><span style="color: #fff;">Billing Contact Phone</span>
+                      </mfDefaultSorter>
+                    </th>
+                    <th style="width: 16%;">
+                      <mfDefaultSorter by="cityId"><span style="color: #fff;">City</span></mfDefaultSorter>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th>
+                      <input type="text" placeholder="Search company" (keyup)="search($event.target.value,'company')"
+                        id="searchcompany" class="search-filter form-control">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search account owner"
+                        (keyup)="search($event.target.value,'owner')" id="searchowner"
+                        class="search-filter form-control">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search contact" (keyup)="search($event.target.value,'contact')"
+                        id="searchcontact" class="search-filter form-control">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search phone" (keyup)="search($event.target.value,'phone')"
+                        id="searchphone" class="search-filter form-control">
+                    </th>
+                    <th>
+                      <input type="text" placeholder="Search city" (keyup)="search($event.target.value,'city')"
+                        class="search-filter form-control" id="searchcity">
+                    </th>
+                  </tr>
+                  <ng-container *ngIf="availableRecords; else noData">
+                    <tr *ngFor="let customer of mf.data, index as i">
+                      <td style="text-align: center;" id="menutab">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="customer.checked" name="customerId"
+                          value="{{customer.companyId}}" id="customerId">
+                      </td>
+                      <td><a id="clickviewcustomer"
+                          [routerLink]="['/customers/view-customer', customer.companyId]">{{ customer.companyName | uppercase }}</a>
+                      </td>
+                      <td><a id="clickusersView"
+                          [routerLink]="['/usersView/view-user-profile', customer.owner.id]">{{ customer.owner.name | uppercase }}</a>
+                      </td>
+                      <td>{{ customer.billingContact | uppercase }}</td>
+                      <td>{{ customer.phoneNumber | uppercase }}</td>
+                      <td>{{ customer.cityName | uppercase }}</td>
+                    </tr>
+                  </ng-container>
+                  <ng-template #noData>
+                    <tr>
+                      <td colspan="5" class="text-danger" style="text-align: center;">
+                        No Records Found
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="12">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-10">
+
+                <!-- <a type="cancle" class="btn btn-danger mlr-5" (click)="cancel()" id="cancel">Cancel</a> -->
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+  </div>
+  <div class="popupbox_wrap" *ngIf="isShowPopup">
+    <div class="popupbox">
+      <div class="row">
+      </div>
+      <p class="bg-success">{{sucessmsg}}</p>
+      <div class="row text-center">
+        <a class="btn btn-success" id="viewusers" routerLink="/users"><i class="fa fa-users" aria-hidden="true"></i>
+          Close
+          & View all users</a>
+      </div>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+  <!--popupbox-->
+  <div class="popupbox_wrap" *ngIf="error">
+    <div class="popupbox" *ngIf="error">
+      <button class="close" type="button" id="closePopup" (click)="closeError()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+      <table class="table table-bordered">
+        <tr>
+          <td class="danger text-center">
+            <h5>{{ error }} </h5>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>

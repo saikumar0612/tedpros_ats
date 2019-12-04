@@ -1,0 +1,111 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Employee Types <a class="btn btn-primary" routerLink="/employee-type/add-employee-type" *ngIf="userPermissions.createEmployeestatus" id="addemployeetype">+ Add</a></h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Employee Types</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">												
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="10">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Employee Types</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td colspan="2"></td>
+                    <td><input type="text" placeholder="Search" (keyup)="search($event.target.value,'name')" class="search-filter form-control" id="searchname"></td>
+                  </tr>
+                  <ng-container *ngIf="availableRecords; else noData">
+                  <tr *ngFor = "let type of mf.data, index as i">
+                    <td style="text-align: center;" id="menutab">
+                      {{i+1}}
+                    </td>
+                    <td style="text-align: center;">
+                      <div class="activity-main-menu">
+                        <ul class="menu-items">
+                          <li class="activity-sub-menu">
+                            <a>
+                              <div class="icon-w">
+                                  <i class="fa fa-bars" aria-hidden="true"></i>
+                              </div>
+                            </a>
+                            <div class="sub-menu-list">
+                              <div class="sub-menu-i">
+                                <ul class="sub-menu" *ngIf="userPermissions.updateEmployeestatus || userPermissions.readEmployeestatus  ">
+                                  <li>
+                                    <a class="mlr-5" id="editemployeetype" [routerLink]="['/employee-type/edit-employee-type', type.id]" *ngIf="userPermissions.updateEmployeestatus ">
+                                      <button type="button" class="tabledit-edit-button btn btn-danger">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a class="mlr-5">
+                                      <button type="button" id="showUserDetails" class="tabledit-delete-button btn btn-success"  (click)="showUserDetails(type.id)" *ngIf="userPermissions.readEmployeestatus ">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td><a id="clickshowUserDetails"(click)="showUserDetails(type.id)">{{ type.name }}</a></td>
+                  </tr>
+                </ng-container>
+                <ng-template #noData> 
+                  <tr>
+                    <td colspan="12" class="text-danger" style="text-align: center;">
+                      No Records Found 
+                    </td>
+                  </tr>
+                </ng-template>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="6"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,35]"></mfBootstrapPaginator></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+    <button class="close" id="close" type="button" (click)="closePopup()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <div class="show_user_details" *ngIf="isShowDetails">
+      <table class="table table-bordered">
+        <tr><td colspan="2"><strong>Name:</strong> &nbsp;<span>{{single.name}}</span></td></tr>
+      </table>
+      <div class="row text-center"><a id="popupeditemployee" [routerLink]="['/employee-type/edit-employee-type', single.id]" class="btn btn-primary"><em class="fa fa-pencil-square-o"></em> Edit Type</a></div>
+    </div><!--show_user_details-->
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->

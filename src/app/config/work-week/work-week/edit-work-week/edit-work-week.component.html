@@ -1,0 +1,158 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Edit Work Week</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li><a routeLink="/work-week">Work Week</a></li>
+          <li>/</li>
+          <li>EditWorkWeek</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #editLeaveFrm="ngForm" name="form" (ngSubmit)="editLeaveFrm.form.valid" novalidate>
+            <div class="form-header">
+              <h5>Work Week</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Country :</label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="country" #country="ngModel" [(ngModel)]="weeks.country.id" id="selectcountry"
+                      required>
+                      <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Monday :</label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="monday" #monday="ngModel" [(ngModel)]="weeks.monday.id" id="selectMonday">
+                      <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Tuesday : </label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="tuesday" #tuesday="ngModel" [(ngModel)]="weeks.tuesday.id" id="selectTuesday">
+                      <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Wednesday : </label>
+                  <div class="col-sm-8" id="selectWednesday">
+                    <select name="wednesday" #wednesday="ngModel" class="form-control mb-10"
+                      [(ngModel)]="weeks.wednesday.id">
+                      <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Thursday : </label>
+                  <div class="col-sm-8" id="selectThursday">
+                    <select name="thursday" #thursday="ngModel" class="form-control mb-10"
+                      [(ngModel)]="weeks.thursday.id">
+                      <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Friday : </label>
+                  <div class="col-sm-8" id="selectFriday">
+                    <select name="friday" #friday="ngModel" class="form-control mb-10" [(ngModel)]="weeks.friday.id">
+                      <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Saturday : </label>
+                  <div class="col-sm-8" id="selectSaturday">
+                    <select name="saturday" #saturday="ngModel" class="form-control mb-10"
+                      [(ngModel)]="weeks.saturday.id">
+                      <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Sunday : </label>
+                  <div class="col-sm-8" id="selectSunday">
+                    <select name="sunday" #sunday="ngModel" class="form-control mb-10" [(ngModel)]="weeks.sunday.id">
+                      <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-10">
+                <a>
+                  <button class="btn btn-success flot-left  mlr-5" (click)="editWork()">Save</button>
+                  <button class="btn btn-danger mlr-5" (click)="cancel()">Cancel</button>
+                </a>
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="close" (click)="close()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-success">{{this.editdata.data}}</p>
+    <div class="row text-center">
+      <a class="btn btn-success ml-5" id="viewworkweek" routerLink="/work-week"><i class="fa fa-users" aria-hidden="true"></i> View work
+        Week</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-success">{{ this.editdata.errorMessages }}</p>
+    <div class="row text-center">
+      <a class="btn btn-success" id="closePop" (click)="closePopup()"><i class="fa fa-users" aria-hidden="true"></i> Close</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->

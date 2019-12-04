@@ -1,0 +1,101 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Add Document</h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items"> 
+            <li><a routerLink='/dashboard'>Home</a></li>
+            <li>&nbsp;/&nbsp;</li>
+            <li><a routerLink='/prerequisites'>Prerequisite Types</a></li>      
+            <li>&nbsp;/&nbsp;</li>
+            <li>Add Prerequisite Document</li>         
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form role="form" name="form" (ngSubmit)="myForm.form.valid" #myForm="ngForm" accept-charset="UTF-8" novalidate>    
+              <div class="form-header">
+                <h5>Prerequisite Document Template</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Type<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control mb-10" placeholder="Enter document type" name="type" value="" required pattern="^(?!.*[\.\&\*\-\_\(\)]{2})([a-zA-Z0-9.&*-_()]+\s)*[a-zA-Z0-9.&*-_()]+$" id="type" [(ngModel)]="data.type" #type="ngModel">
+                    <div *ngIf="type.errors?.pattern" class="invalid-feedback">
+                        Document type is not valid
+                    </div>
+                    <div *ngIf="type.touched && type.invalid" class="invalid-feedback">
+                      <div *ngIf="type.errors.required">Type is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <ckeditor
+                    #myckeditor="ngModel"
+                    name="myckeditor"
+                    [(ngModel)]="data.template"
+                    [readonly]="false"
+                    debounce="500"
+                    [config]="config"
+                    required>
+                  </ckeditor>
+                  <div *ngIf="myckeditor.touched && myckeditor.invalid" class="invalid-feedback" style="margin-top: 10px;">
+                    <div *ngIf="myckeditor.touched && myckeditor.errors.required">Template is required</div>
+                  </div>
+                </div>
+                <div class="form-group row mt-10">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary mlr-5" id="addTemplate" [disabled]="!myForm.valid" (click)="addTemplate()">Submit</button>
+                    <button type="cancel" class="btn btn-danger mlr-5" id="cancel" (click)="cancel()" >Cancel</button>
+                    <a class="btn btn-info mlr-5" id="reset" (click)="reset(myForm)">Reset</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+<div class="loader_wrap" *ngIf="loading">
+<div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="successPopup">
+<div class="popupbox">
+    <div class="row">
+        <button class="close" id="closePopup" type="button" (click)="close()"><span class="close-label"><em class="fa fa-times" aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-success">{{ successMsg }}</p>
+    <div class="row text-center">
+    <a class="btn btn-success" id="offerLetters" routerLink="/prerequisites"><em class="fa fa-arrow-right" aria-hidden="true"></em> Go to documents list</a>
+    </div>
+    <!--row-->
+</div>
+<!--popupbox-->
+</div>
+<!--popupbox_wrap--> 
+
+
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="errorPopup">
+<div class="popupbox">
+    <div class="row">
+        <button class="close" id="closePopup" type="button" (click)="close()"><span class="close-label"><em class="fa fa-times" aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-success">{{ errorMsg }}</p>
+    <!--row-->
+</div>
+<!--popupbox-->
+</div>
+<!--popupbox_wrap-->

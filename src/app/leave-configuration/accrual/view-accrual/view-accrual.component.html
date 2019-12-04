@@ -1,0 +1,93 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>View Accruals</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink="/accrual/accruals">Accruals</a></li>
+          <i>&nbsp;/&nbsp;</i>
+          <li>View Accruals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="job-box">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        <form class="search-form" #editLeaveFrm="ngForm" name="form" (ngSubmit)="editLeaveFrm.form.valid" novalidate>
+          <div class="form-header">
+            <h5>View Leave Accrual</h5>
+          </div>
+          <div class="padding-20">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Employee Type :</label>
+                <div class="col-sm-8">
+                  {{ userData.employeeType.name }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Leave Type :</label>
+                <div class="col-sm-8">
+                  {{ userData.leaveType.name }}
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Accrual frequency :</label>
+                <div class="col-sm-8">
+                  {{ userData.accrualFrequency.value }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Accrual Interval :</label>
+                <div class="col-sm-8"> {{ userData.accrualInterval }} Year(s)</div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Day of crediting :</label>
+                <div class="col-sm-8">
+                  {{ userData.creditDate }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Accrual Valid From :</label>
+                <div class="col-sm-8">
+                  {{ userData.validFrom.value }}
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">First accrual of new Employee :</label>
+                <div class="col-sm-8">
+                  {{ userData.firstAccrual.value }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Location :</label>
+                <div class="col-sm-8">
+                  {{ userData.location.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="padding-20">
+            <div class="row">
+              <div class="col-sm-10">
+                <button (click)="cancel()" class="btn btn-info mlr-5" id="cancel">Back</button>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

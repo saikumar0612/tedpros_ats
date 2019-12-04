@@ -1,0 +1,86 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>My Leave Entitlements</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>My Leave-Entitlements</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Leave Type</th>
+                  <th>Valid From/To </th>
+                  <th>Days</th>
+
+                </tr>
+              </thead>
+              <tbody *ngIf="!filterData">
+                <tr>
+                  <td colspan="7">
+                    No Records Found
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="filterData">
+                  <tr>
+                      <th style="width: 3%; text-align: center;"></th>
+                      <th>
+                        <input type="text" placeholder="Search Leave Type" id="searchLeaveType"
+                          (keyup)="search($event.target.value,'leave_type')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Leave Period" id="searchLeavePeriod"
+                          (keyup)="search($event.target.value,'leave_period')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Days" (keyup)="search($event.target.value,'days')"
+                         id="searchDays"  class="search-filter form-control">
+                      </th>
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let entitlement of mf.data, index as i">
+                  <td style="text-align: center;">{{i+1}}</td>
+                  <td>{{entitlement.leave_type | uppercase}}</td>
+                  <td>{{entitlement.leave_period}}</td>
+                  <td>{{entitlement.days}}</td>
+                </tr>
+              </ng-container>
+              <ng-template #noData> 
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+              <tfoot>
+                  <tr>
+                    <td colspan="12">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

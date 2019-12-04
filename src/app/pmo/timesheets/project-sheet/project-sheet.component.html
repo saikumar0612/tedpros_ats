@@ -1,0 +1,91 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Employee Timesheets</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li>Home</li>
+          <li>/</li>
+          <li>Employee Timesheets</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th>Employee Name</th>
+                  <th>Timesheet Period</th>
+                  <th>Timesheet Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th>
+                    <input type="text" placeholder="Search Employee Name" id="searchFirstName"
+                      (keyup)="search($event.target.value,'timesheet.firstName')" class="search-filter form-control">
+                  </th>
+                  <th></th>
+                  <th>
+                    <input type="text" placeholder="Search Status" id="searchStatus"
+                      (keyup)="search($event.target.value,'timesheet.status')" class="search-filter form-control">
+                  </th>
+                </tr>
+                <tr *ngFor="let timesheet of mf.data">
+                  <td style="text-align: center;"></td>
+                  <td style="text-align: center;" id="subMenu">
+                    <div class="activity-main-menu">
+                      <ul class="menu-items">
+                        <li class="activity-sub-menu">
+                          <a>
+                            <div class="icon-w">
+                              <i class="fa fa-bars" aria-hidden="true"></i>
+                            </div>
+                          </a>
+                          <div class="sub-menu-list">
+                            <div class="sub-menu-i">
+                              <ul class="sub-menu">
+                                <li *ngIf="userPermissions.readEmployeeTimesheets">
+                                  <a class="mlr-5" id="projectTimesheet" [routerLink]="['/timesheets/project-timesheets', timesheet.timesheetId]">
+                                    <button type="button" class="tabledit-delete-button btn btn-success" title="View">
+                                      <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td> {{timesheet.user.firstName}} {{timesheet.user.lastName}} </td>
+                  <td> {{timesheet.startDate | date:'MM/dd/yyyy'}} to {{timesheet.endDate | date:'MM/dd/yyyy'}} </td>
+                  <td> {{timesheet.status}} </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="5">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

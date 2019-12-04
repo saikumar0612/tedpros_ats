@@ -1,0 +1,680 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>
+          View Job
+          <span *ngIf="userPermissions.updateJob && (jobInfo.data.salesflag || jobInfo.data.recruiterfalg)" >
+              <button  type="button" [routerLink]="['/jobs/edit-jobs', jobInfo.data.internalCode]" class="tabledit-edit-button btn btn-success" title="edit job">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </button>
+          </span>
+        </h4>
+        
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/</li>
+          <li><a routerLink='/jobs'>Job Postings</a></li>
+          <li>/</li>
+          <li>View Job</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+ 
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+          <div class="form-header">
+            <h5>Essentials</h5>
+          </div>
+          <div class="padding-20">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Company Name:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.company.name }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Client Job Code :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.jobCode }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Contacts :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.contact.firstName }} {{ this.jobInfo.data.contact.lastName }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Industry Job Title :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.job.name }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Technical Job Title :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.techJobTitle }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Recruiter :</label>
+                <div class="col-sm-8">
+                  <p><span *ngIf="jobInfo.data.recruiter">{{ this.jobInfo.data.recruiter.firstName }}
+                      {{ this.jobInfo.data.recruiter.lastName }}</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Posted Date :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.datePosted  | date:'MM/dd/yyyy' }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Target Date :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.targetDate | date:'MM/dd/yyyy' }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Employment Type :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.employmentType }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Priority :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.priority }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Recruiter Employment Type :</label>
+                <div class="col-sm-8">
+                  <span>{{ this.jobInfo.data.recEmploymentType }}</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Work authorisation :</label>
+                <div class="col-sm-8">
+                  <span *ngFor="let workAuthorisation of workAuth">{{ workAuthorisation.name }},</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Country:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.country.name }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">State:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.state.name }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">City:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.city.name }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Zip Code:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.zipCode }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Job Status :</label>
+                <div class="col-sm-8">
+                  <p *ngIf="jobInfo.data.jobStatus === '1'">OPEN</p>
+                  <p *ngIf="jobInfo.data.jobStatus === '2'">INTERVIEWING</p>
+                  <p *ngIf="jobInfo.data.jobStatus === '0'">CLOSE</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Openings# :</label>
+                <div class="col-sm-8">
+                  <p>{{ this.jobInfo.data.openings }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Status :</label>
+                <div class="col-sm-8">
+                  <p *ngIf="jobInfo.data.status === '1'">ACTIVE</p>
+                  <p *ngIf="jobInfo.data.status === '0'">INACTIVE</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Internal Bill rate :</label>
+                <div class="col-sm-6">
+                  <p>${{ this.jobInfo.data.billRate }} / {{ this.jobInfo.data.perHour.pay_frequency }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">External Bill rate :</label>
+                <div class="col-sm-6">
+                  <p>{{ this.jobInfo.data.externalBillRate }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Publish Bill Rate :</label>
+                <div class="col-sm-6">
+                  <p *ngIf="jobInfo.data.publishRate==='0'">No</p>
+                  <p *ngIf="jobInfo.data.publishRate==='1'">Yes</p>
+                </div>
+              </div>
+              <div class="col-md-6"></div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-sm-2 col-form-label">Job Description:</label>
+              <div class="col-sm-10">
+                <div [innerHTML]="this.jobInfo.data.description">{{ this.jobInfo.data.description }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="userFieldPermissions.readJobInternalNotes">
+            <div class="col-md-12">
+              <label class="col-sm-2 col-form-label">Internal Notes:</label>
+              <div class="col-sm-10">
+                <p>{{ this.jobInfo.data.internalNotes }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="table-responsive col-md-8 col-md-offset-2">
+              <table class="table table-bordered">
+                <thead class="form-header">
+                  <tr>
+                    <th>Skill</th>
+                    <th>Experience</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let skill of skillData" style="margin-bottom: 10px;">
+                    <td>{{skill.skillName}}</td>
+                    <td>{{skill.experience}} Months</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        
+          <!-- <button class="btn btn-primary flot-left  mlr-5" (click)="facebookSharing(shareObj)">Facebook Share</button> -->
+          <p style="color: red; font-weight:bold;">{{ errorStr }}</p>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4" style="height: 100vh;">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card text-center">
+                <div class="card-body btn btn-primary" style="font-weight:bold;">
+                  <!-- {{ this.jobInfo.data.pipelineCount }} -->
+                  <h1 class="card-title">{{ this.jobInfo.data.applications.applicationCount }}</h1>
+                  <p class="card-text">Shortlisted</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card text-center input-group">
+                <div class="card-body btn btn-warning" style="background-color: #ff5722;border-color: #ff5722;font-weight:bold;">
+                  <h1 class="card-title">{{ jobInfo.data.applications.onholdcount }}</h1>
+                  <p class="card-text">On Hold</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card text-center">
+                <div class="card-body btn btn-success" style="font-weight:bold;">
+                  <!-- {{ this.jobInfo.data.pipelineCount }} -->
+                  <h1 class="card-title">{{ jobInfo.data.applications.selectedcount }}</h1>
+                  <p class="card-text">Selected</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card text-center">
+                <div class="card-body btn btn-danger" style="font-weight:bold;">
+                  <h1 class="card-title">{{ jobInfo.data.applications.rejectcount }}</h1>
+                  <p class="card-text">Rejected</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="overflow-auto">
+            <ul class="timeline">
+              <ng-container *ngFor="let logger of jobLog , index as id">
+                <li *ngIf="id%2 == 0">
+                  <div class="timeline-badge primary">
+                    <i class="fa fa-check"></i>
+                  </div>
+                  <div class="timeline-panel">
+                    <div class="timeline-heading">
+                      <h5 class="timeline-title">{{logger.action}}</h5>
+                      <p>
+                        <small class="text-muted">
+                          <i class="fa fa-clock-o"></i>
+                          {{logger.date | date:'MMM dd hh-mm-ss z'}}
+                        </small>
+                      </p>
+                    </div>
+                    <div class="timeline-body">
+                      <p>
+                        {{logger.comment}}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li class="timeline-inverted" *ngIf="id%2 == 1">
+                  <div class="timeline-badge success">
+                    <i class="fa fa-check"></i>
+                  </div>
+                  <div class="timeline-panel">
+                    <div class="timeline-heading">
+                      <h5 class="timeline-title">{{logger.action}}</h5>
+                      <p>
+                        <small class="text-muted">
+                          <i class="fa fa-clock-o"></i>
+                          {{logger.date | date:'MMM dd hh-mm-ss z'}}
+                        </small>
+                      </p>
+                    </div>
+                    <div class="timeline-body">
+                      <p>{{logger.comment}}</p>
+                    </div>
+                  </div>
+                </li>
+
+              </ng-container>
+
+
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="element-content" *ngIf="candidatesList.totalApplications">
+
+    
+    <div class="job-box">
+      <div class="row">
+        <div class="">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="table-responsive" > 
+
+              <ngb-tabset type="pills">
+
+                  <ngb-tab title="Shortlisted Candidates" id="Shortlisted" *ngIf="candidatesList.candidates" >
+                      <ng-template ngbTabContent>
+                        <div class="padding-20">
+                            <table class="table table-bordered" style="width:100%;"   [mfData]="candidatesList.candidates"
+                            #mf="mfDataTable" [mfRowsOnPage]="5" >
+                                <thead class="form-header">
+                                  <tr>
+                                    <th style="width: 3%; text-align: center;">
+                                    </th>
+                                    <th style="width: 16%;"> <span style="color: #fff;">Candidate Name</span>
+                                    </th>
+                                    <th style="width: 16%;"><span style="color: #fff;"> Skills</span></th>
+                                    <th style="width: 16%;"><span style="color: #fff;">Expected Pay</span></th>
+                                    <th style="width: 16%;"><span style="color: #fff;">Negotiated Pay</span></th>
+                                  </tr>
+                                  
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let onhold of  mf.data">
+                                        <td>
+                                            <div class="activity-main-menu">
+                                                <ul class="menu-items">
+                                                  <li class="activity-sub-menu">
+                                                    <a>
+                                                      <div class="icon-w">
+                                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                                      </div>
+                                                    </a>
+                                                    <div class="sub-menu-list">
+                                                      <div class="sub-menu-i">
+                                                        <ul class="sub-menu">
+                                                          <li>
+                                                            <a class="mlr-5" id="viewCandidateDetais" title="View Candidate Details"
+                                                              [routerLink]="['/candidate/view-candidate', onhold.id]">
+                                                              <button type="button" class="tabledit-delete-button btn btn-info">
+                                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                              </button>
+                                                            </a>
+                                                          </li>
+                                                        </ul>
+                                                      </div>
+                                                    </div>
+                                                  </li>
+                                                </ul>
+                                              </div>
+  
+  
+                                        </td>
+                                        <td>{{onhold.firstName}}  {{onhold.lastName}}</td>
+                                        <td>
+                                            <span *ngFor="let skills of onhold.skills">{{ skills.skillName | uppercase }},</span>
+                                        </td>
+                                        <td>{{onhold.jobExpectedPay}}</td>
+                                        <td>{{onhold.expectedPay}}</td>
+                                         
+                                        </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                      <td colspan="12">
+                                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                      </td>
+                                    </tr>
+                                  </tfoot>
+                              </table>
+                        </div>
+                      </ng-template>
+                    </ngb-tab>
+                  
+  
+                  <ngb-tab title="On Hold Candidates" id="onholdcandidates" *ngIf="candidatesList.onholdcandidates" >
+                    <ng-template ngbTabContent>
+                      <div class="padding-20">
+                          <table class="table table-bordered" style="width:100%;"   [mfData]="candidatesList.onholdcandidates"
+                          #mf="mfDataTable" [mfRowsOnPage]="5" >
+                              <thead class="form-header">
+                                <tr>
+                                  <th style="width: 3%; text-align: center;">
+                                  </th>
+                                  <th style="width: 16%;"> <span style="color: #fff;">Candidate Name</span>
+                                  </th>
+                                  <th style="width: 16%;"><span style="color: #fff;"> Skills</span></th>
+                                  <th style="width: 16%;"><span style="color: #fff;">Expected Pay</span></th>
+                                  <th style="width: 16%;"><span style="color: #fff;">Negotiated Pay</span></th>
+                                </tr>
+                                
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let onhold of  mf.data">
+                                      <td>
+                                          <div class="activity-main-menu">
+                                              <ul class="menu-items">
+                                                <li class="activity-sub-menu">
+                                                  <a>
+                                                    <div class="icon-w">
+                                                      <i class="fa fa-bars" aria-hidden="true"></i>
+                                                    </div>
+                                                  </a>
+                                                  <div class="sub-menu-list">
+                                                    <div class="sub-menu-i">
+                                                      <ul class="sub-menu">
+                                                        <li>
+                                                          <a class="mlr-5" id="viewCandidateDetais" title="View Candidate Details"
+                                                            [routerLink]="['/candidate/view-candidate', onhold.id]">
+                                                            <button type="button" class="tabledit-delete-button btn btn-info">
+                                                              <i class="fa fa-eye" aria-hidden="true"></i>
+                                                            </button>
+                                                          </a>
+                                                        </li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                                </li>
+                                              </ul>
+                                            </div>
+
+
+                                      </td>
+                                      <td>{{onhold.firstName}}  {{onhold.lastName}}</td>
+                                      <td>
+                                          <span *ngFor="let skills of onhold.skills">{{ skills.skillName | uppercase }},</span>
+                                      </td>
+                                      <td>{{onhold.jobExpectedPay}}</td>
+                                      <td>{{onhold.expectedPay}}</td>
+                                       
+                                      </tr>
+                              </tbody>
+                              <tfoot>
+                                  <tr>
+                                    <td colspan="12">
+                                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                    </td>
+                                  </tr>
+                                </tfoot>
+                            </table>
+                      </div>
+                    </ng-template>
+                  </ngb-tab>
+                  <ngb-tab title="Selected Candidates" id="selectedcandidates" *ngIf="candidatesList.selectedcandidates" >
+                      <ng-template ngbTabContent>
+                        <div class="padding-20">
+                            <table class="table table-bordered" style="width:100%;"   [mfData]="candidatesList.selectedcandidates"
+                            #mf="mfDataTable" [mfRowsOnPage]="5" >
+                                <thead class="form-header">
+                                  <tr>
+                                    <th style="width: 3%; text-align: center;">
+                                    </th>
+                                    <th style="width: 16%;"> <span style="color: #fff;">Candidate Name</span>
+                                    </th>
+                                    <th style="width: 16%;"><span style="color: #fff;"> Skills</span></th>
+                                    <th style="width: 16%;"><span style="color: #fff;">Expected Pay</span></th>
+                                    <th style="width: 16%;"><span style="color: #fff;">Negotiated Pay</span></th>
+                                  </tr>
+                                  
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let onhold of  mf.data">
+                                        <td>
+                                            <div class="activity-main-menu">
+                                                <ul class="menu-items">
+                                                  <li class="activity-sub-menu">
+                                                    <a>
+                                                      <div class="icon-w">
+                                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                                      </div>
+                                                    </a>
+                                                    <div class="sub-menu-list">
+                                                      <div class="sub-menu-i">
+                                                        <ul class="sub-menu">
+                                                          <li>
+                                                            <a class="mlr-5" id="viewCandidateDetais" title="View Candidate Details"
+                                                              [routerLink]="['/candidate/view-candidate', onhold.id]">
+                                                              <button type="button" class="tabledit-delete-button btn btn-info">
+                                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                              </button>
+                                                            </a>
+                                                          </li>
+                                                        </ul>
+                                                      </div>
+                                                    </div>
+                                                  </li>
+                                                </ul>
+                                              </div>
+
+
+                                        </td>
+                                        <td>{{onhold.firstName}}  {{onhold.lastName}}</td>
+                                        <td>
+                                            <span *ngFor="let skills of onhold.skills">{{ skills.skillName | uppercase }},</span>
+                                        </td>
+                                        <td>{{onhold.jobExpectedPay}}</td>
+                                        <td>{{onhold.expectedPay}}</td>
+                                         
+                                        </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                      <td colspan="12">
+                                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                      </td>
+                                    </tr>
+                                  </tfoot>
+                              </table>
+                        </div>
+                      </ng-template>
+                    </ngb-tab>
+
+                  <ngb-tab title="Rejected Candidates" id="rejectedcandidates" *ngIf="candidatesList.rejectedcandidates" >
+                        <ng-template ngbTabContent>
+                          <div class="padding-20">
+                              <table class="table table-bordered" style="width:100%;"   [mfData]="candidatesList.rejectedcandidates"
+                              #mf="mfDataTable" [mfRowsOnPage]="5" >
+                                  <thead class="form-header">
+                                    <tr>
+                                      <th style="width: 3%; text-align: center;">
+                                      </th>
+                                      <th style="width: 16%;"> <span style="color: #fff;">Candidate Name</span>
+                                      </th>
+                                      <th style="width: 16%;"><span style="color: #fff;"> Skills</span></th>
+                                      <th style="width: 16%;"><span style="color: #fff;">Expected Pay</span></th>
+                                      <th style="width: 16%;"><span style="color: #fff;">Negotiated Pay</span></th>
+                                    </tr>
+                                    
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngFor="let onhold of  mf.data">
+                                          <td>
+                                              <div class="activity-main-menu">
+                                                  <ul class="menu-items">
+                                                    <li class="activity-sub-menu">
+                                                      <a>
+                                                        <div class="icon-w">
+                                                          <i class="fa fa-bars" aria-hidden="true"></i>
+                                                        </div>
+                                                      </a>
+                                                      <div class="sub-menu-list">
+                                                        <div class="sub-menu-i">
+                                                          <ul class="sub-menu">
+                                                            <li>
+                                                              <a class="mlr-5" id="viewCandidateDetais" title="View Candidate Details"
+                                                                [routerLink]="['/candidate/view-candidate', onhold.id]">
+                                                                <button type="button" class="tabledit-delete-button btn btn-info">
+                                                                  <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                </button>
+                                                              </a>
+                                                            </li>
+                                                          </ul>
+                                                        </div>
+                                                      </div>
+                                                    </li>
+                                                  </ul>
+                                                </div>
+
+
+                                          </td>
+                                          <td>{{onhold.firstName}}  {{onhold.lastName}}</td>
+                                          <td>
+                                              <span *ngFor="let skills of onhold.skills">{{ skills.skillName | uppercase }},</span>
+                                          </td>
+                                          <td>{{onhold.jobExpectedPay}}</td>
+                                          <td>{{onhold.expectedPay}}</td>
+                                           
+                                          </tr>
+                                  </tbody>
+                                  <tfoot>
+                                      <tr>
+                                        <td colspan="12">
+                                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                        </td>
+                                      </tr>
+                                    </tfoot>
+                                </table>
+                          </div>
+                        </ng-template>
+                      </ngb-tab>
+
+
+                </ngb-tabset>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="padding-20 " style="position: fixed;bottom: 0px;width: 100%;background-color: #f2f4f8;">
+  <button (click)="cancel()" class="btn btn-success flot-left  mlr-5">Back</button>
+
+      <!-- <button (click)="cancel()" class="btn btn-success flot-left  mlr-5">Back</button> -->
+      <button class="btn btn-primary flot-left  mlr-5"
+        *ngIf="jobInfo.data.recruiter &&((jobInfo.data.isPublished==='1') && (recruiterId == jobInfo.data.recruiter.userId))"
+        (click)="getpublishJob()">Re-Publish
+      </button>
+      <button class="btn btn-primary flot-left  mlr-5"
+        *ngIf="jobInfo.data.recruiter &&(jobInfo.data.isPublished!=='1' && recruiterId == jobInfo.data.recruiter.userId)"
+        (click)="getpublishJob()">Publish</button>
+   
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="message">
+    <button class="close" type="button" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <table class="table table-bordered">
+      <tr>
+        <td class="success text-center">
+          <h5>{{ message }} </h5>
+        </td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <a class="btn btn-success" routerLink="/jobs"><i class="fa fa-users" aria-hidden="true"></i>
+        View all jobs</a>
+    </div>
+  </div>
+  <div class="popupbox" *ngIf="error">
+    <button class="close" type="button" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table table-bordered">
+      <tr>
+        <td class="danger text-center">
+          <h5>{{error }} </h5>
+        </td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <a class="btn btn-success" routerLink="/jobs"><i class="fa fa-users" aria-hidden="true"></i> View
+        all jobs</a>
+    </div>
+  </div>
+</div>

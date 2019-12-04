@@ -1,0 +1,107 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>My Timesheet</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li>Home</li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>My Timesheet</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="form-header row mlr-0">
+            <h5>Create Week Timesheeet </h5>
+          </div>
+          <div class="padding-20"> 
+          <!-- added suresh 08-26-2019 start -->
+            <form #newSheetFrm="ngForm" name="form" (ngSubmit)="newSheetFrm.form.valid" novalidate>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Start Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <!-- <date-range-picker name="dateRange" id="selectDate" [(dateRange)]="dateRange" (click)="changedate()" required 
+                      style="border:1px;"></date-range-picker> -->
+                        <input class="form-control mb-10" placeholder="MM/DD/YYYY" [owlDateTimeTrigger]="dateRange" [owlDateTime]="dateRange" [(ngModel)]="timesheetData.dateRange" (dateTimeInput)="cangedate1()" #dateRange="ngModel" name="dateRange" [max]="todayDate" required>
+                        <owl-date-time [pickerType]="'calendar'" #dateRange></owl-date-time>
+                  </div>
+                 
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">End Date :</label>
+                  <div class="col-sm-8">
+                    <span name="endDate" >{{timesheetData.endDate | date: "MM-dd-yyy"}}</span>
+                  </div> 
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-4">
+                  <button type="submit" class="btn btn-success mlr-5" [disabled]="!newSheetFrm.valid"
+                    (click)="createTimesheet()" id="createTimesheet">Create</button>
+                    
+                  <button class="btn btn-primary mlr-5" id="CancelTimesheet" routerLink="/timesheets/view-week-timesheet">Cancel</button>
+                </div>
+                <p *ngIf="startDateError" style="color:red;font-weight:bold;">{{ startDateError |titlecase}}</p>
+              </div>
+            </form>
+             <!-- added suresh 08-26-2019 end -->
+            <!-- <div *ngIf="error">
+
+              {{error}}
+
+            </div> -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.message">
+    <button class="close" type="button" id="closePopup" (click)="closePopup1()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table table-bordered">
+      <tr>
+        <td class="success text-center">
+          <h5>Time sheet created successfully! </h5>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="popupbox" *ngIf="this.error">
+    <button class="close" type="button" id="closeErrorPopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table table-bordered">
+      <tr>
+        <td class="danger text-center">
+          <h5>{{error }} </h5>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="popupbox" *ngIf="this.dateerror">
+    <button class="close" type="button" id="closeDateError" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table table-bordered">
+      <tr>
+        <td class="danger text-center">
+          <h5>{{dateerror}} </h5>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div>

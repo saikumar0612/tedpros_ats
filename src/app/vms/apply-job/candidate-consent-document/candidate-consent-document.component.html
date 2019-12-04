@@ -1,0 +1,96 @@
+<div class="container">
+        <main id="jf-main" class="jf-main jf-haslayout" >
+            <div class="jf-dbsectionspace jf-haslayout">
+                <div class="row"> 
+                    
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12" >    
+                        <div class="jf-dashboardbox jf-myappliedjobs" >
+                            <div class="jf-dashboardboxtitle" style="margin-bottom: 22px;">
+                                <div class="row">
+                                    <div class="col-md-2 logo">
+                                        <img src="{{siteLogo}}" alt="icon" style="max-width: 100%; max-height: 100%;">
+                                    </div>
+                                    <div class="col-md-10 text-center">
+                                        <h2 style="text-align: center;">{{documentData.documentName}}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div  class="top">
+                                <div class="col-md-12 col-sm-12 mb-40">
+                                    <div class="offerContent" [innerHtml]="documentData.documentTemplate | safeHtml"></div>
+                                </div>
+                           <div class="row">
+                                <div class="col-md-6">
+                                    <h6><strong>Recruiter</strong></h6>
+                                    <img src="{{documentData.recruiter.signature}}" alt="recruiter's signature">
+                                    <p class="mb-0">{{documentData.recruiter.firstName | titlecase}} {{documentData.recruiter.lastName | titlecase}}</p>
+                                    <h6 class="mb-0">{{documentData.recruiter.jobTitle | titlecase}}</h6>
+                                </div>
+                                <div class="col-md-6 pull-right">
+                                    <h6><strong>Candidate</strong></h6>
+                                    <ng-container *ngIf="signature.signature; else noData">
+                                        <img src="{{signature.signature}}" alt="Digital Signature" />
+                                        </ng-container>
+                                        <ng-template #noData>
+                                            <a *ngIf="signaturePad != true" (click)="uploadSignature()" class="btn btn-primary mb-10">Upload Signature </a>
+                                            <div *ngIf="signaturePad">
+                                                <ng-signature-pad 
+                                                    doneButtonText="Upload Signature"
+                                                    format="base64"
+                                                    (done)="showImage($event)"
+                                                >
+                                                </ng-signature-pad>
+                                            </div>
+                                        </ng-template>
+                                    <p class="mb-0">{{candidateName}}</p>
+                                    <h6 class="mb-0">Date : {{todayDate}}</h6>
+                                </div>
+                           </div>
+                            <div class="padding-20">
+                                <button class="btn btn-info pull-right mlr-5" id="back" (click)="back()">Back</button>
+                                <button *ngIf="documentData.status === '1'" class="btn btn-success pull-right" id="Submit" (click)="sendMail()">Submit</button>
+                            </div>
+                        </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+          </main>
+    </div>
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox" style="margin-left: 30%">
+        <p>Signature updated successfully!</p>
+        <div class="row"> 
+        <span class="btn btn-primary" style="margin-left: 40%" (click)="closeSignature()" id="close">Close</span>
+        </div>
+    </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="mailSubmit">
+    <div class="popupbox">
+      <button class="close" type="button" id="closeAllPopup" (click)="closeSubmitForm()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table">
+        <tr *ngIf="mailSuccess">
+          <td class="success text-center">
+            <div class="alert alert-success">
+              <h5>{{successMsg}} </h5>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="mailFailure">
+          <td class="danger text-center">
+            <div class="alert alert-danger">
+              <h5>{{errorMsg}} </h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+  
+    </div>
+</div>
+
+    

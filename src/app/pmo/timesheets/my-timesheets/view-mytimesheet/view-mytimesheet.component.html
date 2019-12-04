@@ -1,0 +1,90 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Timesheet</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li>Home</li>
+          <li>/</li>
+          <li>Timesheets</li>
+          <li>/</li>
+          <li>View Timesheet</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        </div>
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-control float-right">
+            <a class="btn btn-primary" id="addtimesheet" routerLink="/timesheets/my-timesheets">+ Add Timesheets</a>
+           
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let timesheet of timesheetLists">
+                  <td style="text-align: center;">
+                    <input type="checkbox" class="form-control" name="" placeholder="Enter Keword" style="height: 15px;">
+                  </td>
+                  <td style="text-align: center;" id="subMenu">
+                    <div class="activity-main-menu">
+                      <ul class="menu-items">
+                        <li class="activity-sub-menu">
+                          <a>
+                            <div class="icon-w">
+                              <i class="fa fa-bars" aria-hidden="true"></i>
+                            </div>
+                          </a>
+                          <div class="sub-menu-list">
+                            <div class="sub-menu-i">
+                              <ul class="sub-menu">
+                                <li>
+                                  <a class="mlr-5" id="editProject" [routerLink]="['/projects/edit-projects', timesheet.timesheetId]">
+                                    <button type="button" class="tabledit-edit-button btn btn-danger" title="Edit">
+                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </button>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="mlr-5" id="viewProject" [routerLink]="['/projects/view-projects', timesheet.timesheetId]">
+                                    <button type="button" class="tabledit-delete-button btn btn-success" title="View">
+                                      <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>{{ timesheet.startDate }}</td>
+                  <td>{{ timesheet.endDate }}</td>
+                  <td>{{ timesheet.status }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

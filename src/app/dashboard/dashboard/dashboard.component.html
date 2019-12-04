@@ -1,0 +1,696 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Dashboard</h4>
+      </div>
+    </div>
+  </div>
+  <!-- changed grid values - sharmistha - 08-13-2019 -start -->
+  <div class="element-content">
+    <div class="row">
+      <a routerLink="/timesheets/view-week-timesheet" id="managetimsheets">
+        <div class="square-grids">
+          <div class="rd-square-tile">
+            <img src="assets/images/timesheets.png" alt="timesheet png">
+            <h4>Timesheets</h4>
+          </div>
+        </div>
+      </a>
+      <a routerLink="/leaves/myleave-list" id="manageleave">
+        <div class="square-grids">
+          <div class="rd-square-tile">
+            <img src="assets/images/myleave.png" alt="leave png">
+            <h4>My Leaves</h4>
+          </div>
+        </div>
+      </a>
+      <a routerLink="/leaves/apply-leave" id="manageapplyleave">
+        <div class="square-grids">
+          <div class="rd-square-tile">
+            <img src="assets/images/applyleave.png" alt="applyLeave png">
+            <h4>Apply Leave</h4>
+          </div>
+        </div>
+      </a>
+      <a routerLink="/myInfo/notifications" id="myalerts">
+        <div class="square-grids">
+          <div class="rd-square-tile">
+            <img src="assets/images/alert.png" alt="task png">
+            <h4>My Alerts</h4>
+          </div>
+        </div>
+      </a>
+      <a routerLink="/timesheets/emp-timesheets" id="manageapprovals">
+        <div class="square-grids">
+          <div class="rd-square-tile">
+            <img src="assets/images/approvals.png" alt="approvals png">
+            <h4>Approvals</h4>
+          </div>
+        </div>
+      </a>
+      <a routerLink="/dashboard/calendar" id="managetickets">
+        <div class="square-grids">
+          <div class="rd-square-tile">
+            <img src="assets/images/tedpros.png" alt="ticket png">
+            <h4>Calendar</h4>
+          </div>
+        </div>
+      </a>
+      <a routerLink="/usersView" id="managehrnotifications">
+        <div class="square-grids" *ngIf="hrNotification">
+          <div class="rd-square-tile">
+            <img src="assets/images/tedpros.png" alt="ticket png">
+            <h4>New Users <span class="notification">{{newUsersCount}}</span></h4>
+          </div>
+        </div>
+      </a>
+       <!-- added sales person companies list by -suresh - 10-31-2019 start -->
+      <a routerLink="/dashboard/companies" id="manageCompaniesList" >
+        <div class="square-grids" *ngIf="companiesList">
+          <div class="rd-square-tile">
+            <img src="assets/images/tedpros.png" alt="ticket png">
+            <h4>Clients</h4>
+          </div>
+        </div>
+      </a> 
+       <!-- added sales person companies list by -suresh - 10-31-2019 end -->
+    </div>
+  </div>
+  <!-- changed grid values - sharmistha - 08-13-2019 -end -->
+  <div class="top-header" *ngIf="userPermissions.readJob">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Recent Posted Jobs <a class="btn btn-primary" routerLink="/jobs/add-jobs" *ngIf="userPermissions.createJob"
+            id="addjob">+ Add</a></h4>
+      </div>
+      <div class="col-md-6 col-lg-6 heading">
+        <button class="btn btn-success" (click)="exportAsXLSX()"
+          style="float: right;margin-left: 20px;margin-right: 20px;" id="export">
+          Export CSV </button>
+        <button class="btn btn-info" style="float: right;" id="share"><i class="fa fa-share-alt"
+            aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="element-content" *ngIf="userPermissions.readJob">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%;"></th>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th>Internal Code</th>
+                  <th>Client Job Code</th>
+                  <th>Job Title</th>
+                  <th>Client</th>
+                  <th>Posted On</th>
+                  <th>Recruiter</th>
+                  <th>Active Resume#</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th>
+                    <input type="text" placeholder="Search Internal Code"
+                      (keyup)="search($event.target.value,'internalCode')" class="search-filter form-control"
+                      id="searchinternalcode">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Client Job Code"
+                      (keyup)="search($event.target.value,'jobCode')" class="search-filter form-control"
+                      id="searchjobCode">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Job Title" (keyup)="search($event.target.value,'job.name')"
+                      class="search-filter form-control" id="searchjob">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Client" (keyup)="search($event.target.value,'company.name')"
+                      class="search-filter form-control" id="searchcompany">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Posted On" (keyup)="search($event.target.value,'datePosted')"
+                      class="search-filter form-control" id="searchdatePosted">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Recruiter"
+                      (keyup)="search($event.target.value,'recruiter.firstName')" class="search-filter form-control"
+                      id="searchrecruiter">
+                  </th>
+                  <th>
+                  </th>
+                </tr>
+                <ng-container *ngIf="availableRecords; else noData">
+                  <tr *ngFor="let jobs of mf.data; let i = index">
+                    <td style="text-align: center;">
+                      <p>{{ i+1 }}</p>
+                    </td>
+                    <td style="text-align: center;" id="menu">
+                      <div class="activity-main-menu">
+                        <ul class="menu-items">
+                          <li class="activity-sub-menu">
+                            <a>
+                              <div class="icon-w">
+                                <i class="fa fa-bars" aria-hidden="true"></i>
+                              </div>
+                            </a>
+                            <div class="sub-menu-list">
+                              <div class="sub-menu-i">
+                                <ul class="sub-menu" *ngIf="userPermissions.updateJob || userPermissions.readJob">
+                                  <li>
+                                    <a class="mlr-5" [routerLink]="['/jobs/edit-jobs', jobs.internalCode]"
+                                      *ngIf="userPermissions.updateJob" title="Edit job" id="editjob">
+                                      <button type="button" class="tabledit-edit-button btn btn-danger">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a class="mlr-5" [routerLink]="['/jobs/view-job', jobs.internalCode]"
+                                      *ngIf="userPermissions.readJob" title="Read job" id="readjob">
+                                      <button type="button" class="tabledit-delete-button btn btn-success">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                  <li *ngIf="userPermissions.readJob && recruiterIdcheck == jobs.recruiter.id">
+                                    <a class="mlr-5" title="Select Candidate" id="selectcandidate">
+                                      <button type="button" class="tabledit-edit-button btn btn-primary"
+                                        (click)="candidateSelect('applyModal',jobs.internalCode)">
+                                         <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                  <li *ngIf="userPermissions.updateJob">
+                                    <a class="mlr-5" title="Assign Recruiter" id="assignRecruiter">
+                                      <button type="button" class="tabledit-edit-button btn btn-primary"
+                                        (click)="recruiterAssign('modal',jobs.internalCode)">
+                                        <i class="fa fa-id-badge" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a class="mlr-5" title="Send Link" id="linksend">
+                                      <button type="button" class="tabledit-edit-button btn btn-primary"
+                                        (click)="linksend('linkmodal',jobs.internalCode)">
+                                        <i class="fa fa-share" aria-hidden="true"></i>
+                                      </button>
+                                    </a>
+                                  </li>
+                                  <li>
+                                    <a class="mlr-5" title="Copy Job" id="copyJob">
+                                      <button type="button" class="tabledit-edit-button btn btn-primary"
+                                        (click)="copyJob(jobs.internalCode)">
+                                        <em class="fa fa-copy" aria-hidden="true"></em>
+                                      </button>
+                                    </a>
+                                  </li>
+                                  <!-- start code added by geeta -->
+                                  <li *ngIf="jobs.applicationCount != 0 && recruiterIdcheck == jobs.recruiter.id">
+                                    <a class="mlr-5" title="Schedule Interview" id="copyJob">
+                                      <button type="button" class="tabledit-edit-button btn btn-primary"
+                                      (click)="openEventPopUp(jobs.internalCode)">
+                                        <em class="fa fa-calendar-plus-o" aria-hidden="true"></em>
+                                       
+                                      </button>
+                                    </a>
+                                 </li>
+                                <!-- end code added by geeta -->
+                                </ul>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td><a [routerLink]="['/jobs/view-job', jobs.internalCode]" id="viewjob1click">
+                        <ng-container *ngIf="jobs.isPublished; else notPublished">
+                          <span class="dot-green"></span>
+                        </ng-container>
+                        <ng-template #notPublished>
+                          <span class="dot"></span>
+                        </ng-template>
+                        {{ jobs.internalCode }}
+                      </a></td>
+                    <!-- saikumar 12/09/2019 started here -->
+                    <td><a [routerLink]="['/jobs/view-job', jobs.internalCode]"
+                        id="viewjob2click">{{ jobs.jobCode | uppercase }}</a></td>
+                    <td>{{ jobs.jobName | uppercase }}</td>
+                    <td><a [routerLink]="['/customers/view-customer', jobs.company.id]"
+                        id="viewcustomerclick">{{ jobs.company.name | uppercase }}</a>
+                    </td>
+                      <!-- saikumar 12/09/2019 ended here -->
+                    <td>{{ jobs.datePosted | date:'MM/dd/yyyy' }}</td>
+                    <td><a id="viewusersViewclick"
+                        [routerLink]="['/usersView/view-user-profile',jobs.recruiter.id]">{{ jobs.recruiter.name | uppercase }}</a>
+                    </td>
+                    <td>{{ jobs.applicationCount }}</td>
+                  </tr>
+                </ng-container>
+                <ng-template #noData>
+                  <tr>
+                    <td colspan="12" class="text-danger" style="text-align: center;">
+                      No Records Found
+                    </td>
+                  </tr>
+                </ng-template>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="12">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .popupbox {
+background:transparent !important;
+border: none !important;
+box-shadow:unset !important;
+}
+body.color1 .modal-icon,body.color2 .modal-icon,body.color3 .modal-icon,body.color4 .modal-icon,
+body.color5 .modal-icon,body.color6 .modal-icon,body.color6 .modal-icon
+{
+
+  color: #f7f5f9 !important;
+}
+</style>
+
+
+<div class="popupbox_wrap" id="applyModal" *ngIf="selectCandidate">
+    <div class="popupbox" style="width: 90%;">
+        <div class="panel panel-primary popup-border">
+            <div class="panel-heading form-header"> 
+              <div class="row">
+                  <div class="col-sm-10">
+                      <!-- modal-icon text-white -->
+                      <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip " style='font-size:30px'
+                        aria-hidden="true"></i>  Select Candidate</h4>
+                        
+                  </div>
+              </div>
+              
+             
+            </div>
+            <div class="panel-body" >
+                <!-- style="overflow:scroll;" -->
+     
+     
+        <form  #candJobForm="ngForm">
+        
+   <div class="row">
+            <div class="col-md-12">
+              <table class="table table-bordered">
+                <thead class="form-header">
+                  <tr>
+                    <th>Candidate Name</th>
+                    <th class="hidden-sm">Skills</th>
+                    <th >Rating</th>
+                    <th ></th>
+                  </tr>
+                </thead>
+                <ng-container *ngIf="candidatesAvailable; else noCanData">
+                  <tbody>
+                    <tr *ngFor="let candidate of candidates">
+                      <td>{{ candidate.firstName }} {{ candidate.lastName }}</td>
+                      <td class="hidden-sm"><span *ngFor="let skill of candidate.skills">{{ skill.skillName | uppercase }},</span></td>
+                      <td>
+                        <div class="star-ratings-sprite"><span [style.width.%]="candidate.rating * 100"
+                            class="star-ratings-sprite-rating"></span></div>
+                      </td>
+                      <td>
+                        <ng-container *ngIf="candidate.flag; else elseBlock">
+                            <button type="button" class="btn btn-primary mlr-5" id="viewCandidate"
+                            (click)="viewCandidate(candidate.id)">View
+                            Candidate</button>
+                            <button type="button" class="btn btn-success mlr-5" id="applyJob" (click)="applyJob(candidate.id,candidate.emailId,0,'')">Select
+                            Candidate</button>
+                          <button type="button" class="btn btn-danger mlr-5" id="rejectComment" (click)="candidateComment(candidate.id,candidate.emailId)">On Hold
+                          </button>
+                          <button type="button" class="btn btn-info mlr-5" id="sendLink"
+                            (click)="sendCandidateApplyLink(candidate.emailId)">Send Email
+                          </button>
+                         
+                        </ng-container>
+                        <ng-template #elseBlock>
+                          <button type="button" class="btn btn-primary mlr-5" id="viewCandidate"
+                            (click)="viewCandidate(candidate.id)">View
+                            Candidate</button>
+                        </ng-template>
+  
+                      </td>
+                    </tr>
+  
+                  </tbody>
+                </ng-container>
+                <ng-template #noCanData>
+                  <tr>
+                    <td colspan="4" class="text-danger" style="text-align: center;">
+                      No Records Found
+                    </td>
+                  </tr>
+                </ng-template>
+  
+              </table>
+            </div>
+             
+  
+          </div>
+          <br>
+    <button type="button" class="btn btn-danger pull-right" (click)="closeModal();" id="closemodal">Close</button>
+                 
+        </form>
+    
+      </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- saikumar 12/09/2019 started here -->
+<!-- assign Recruiter -->
+<div class="popupbox_wrap" id="modal" *ngIf="assignRecruiter">
+  <div class="popupbox">
+      <form  #editJobForm="ngForm">
+      <div class="panel panel-primary popup-border">
+          <div class="panel-heading form-header"><h4 class="modal-title" id="exampleModalLabel">
+            <i class="fa fa-paperclip " style='font-size:30px'
+            aria-hidden="true"></i>  Assign Recruiter</h4></div>
+          <div class="panel-body">
+           
+              <div class="padding-20">
+                
+                  <label class="col-sm-12 col-form-label">Recruiter <span class="req-field">*</span>:</label>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    
+                    <div class="col-sm-8">
+                      <select class="form-control " name="recruiterId" [(ngModel)]="this.jobData.recruiter.userId"
+                        id="selectrecruiter" #recruiterId="ngModel" #recruiterId>
+                        <option *ngFor="let recruiter of users" value="{{recruiter.id}}">{{recruiter.first_name}}
+                          {{recruiter.last_name}}</option>
+                      </select>
+                    </div>
+                  </div>
+        
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              
+            </div>
+          <div class="panel-footer ">
+
+              <div class="pull-right">
+               
+                  <button type="button" class="btn btn-danger" (click)="closeModal1();" id="closeModal1">Cancel</button>
+                  <button type="button" class="btn btn-success mlr-5" (click)="editJob()" id="editjobpopup"><em class="fa fa-sign-out"></em>Assign</button>
+                </div>
+                <div class="clearfix"></div>
+          </div>
+        </div>
+      </form>
+  </div>
+</div>
+
+<!-- job apply link -->
+<div class="popupbox_wrap" id="linkmodal" *ngIf="jobApplyLink">
+  <div class="popupbox">
+      <form  #editJobForm="ngForm" name="form" (ngSubmit)="editJobForm.form.valid" novalidate>
+      <div class="panel panel-primary popup-border">
+        <div class="panel-heading form-header">
+    <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip " style='font-size:30px'
+        aria-hidden="true"></i>  Send Job Apply Link</h4>
+        </div>
+   
+        <div class="panel-body">
+        <div class="form-group row">
+          <div class="col-md-12">
+            <label class="col-sm-12 col-form-label">Enter Email Address <span class="req-field">*</span>
+              &nbsp;:</label>
+            <div class="col-sm-12">
+              <input type="email" class="form-control mb-10" placeholder="Enter Email" name="email"
+                [(ngModel)]="emailData.email" #email="ngModel" pattern="\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})"
+                required id="email">
+
+              <div *ngIf="email.touched && email.invalid" class="invalid-feedback">
+                <div *ngIf="email.errors.required">Email is required</div>
+              </div>
+              <div *ngIf="email.errors?.pattern" class="invalid-feedback">
+                Email Address is not valid.
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="panel-footer ">
+        <div class="pull-right">
+            <button type="button" class="btn btn-info" (click)="closeModel2()" id="closeModel2">Close</button>
+           
+                <button type="button" class="btn btn-success mlr-5" (click)="sendLink()"
+                  [disabled]="!editJobForm.valid" id="sendlink"> <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send</button>
+                  </div>
+          <div class="clearfix"></div>
+    </div>
+    </div>
+  </form>
+  </div>
+</div>
+
+<!-- reson Popup -->
+<div class="popupbox_wrap" id="reasonModal" *ngIf="reasonPopUp">
+  <div class="popupbox">
+    
+      <form #rejectReasonForm="ngForm">
+      
+      <div class="panel panel-primary popup-border">
+          <div class="panel-heading form-header">
+              <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip" style='font-size:30px'
+                aria-hidden="true"></i> Enter Comment</h4>
+          </div>
+     
+          <div class="panel-body">
+
+
+   
+      
+
+        <div class="form-group row">
+          <div class="col-md-12">
+            <label class="col-sm-12 col-form-label">Enter Comment <span class="req-field">*</span>
+              &nbsp;:</label>
+            <div class="col-sm-12">
+              <input type="text" id="candReason" class="form-control mb-10" placeholder="Enter Comment"
+                name="candReason" [(ngModel)]="candidateDetails.comment" #candReason="ngModel"
+                [ngClass]="{ 'is-invalid': rejectReasonForm.submitted && candReason.invalid }" required>
+
+              <div *ngIf="candReason.touched && candReason.invalid" class="invalid-feedback">
+                <div *ngIf="candReason.errors.required">Please Enter Comment</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+       
+   
+    </div>
+    <div class="panel-footer ">
+
+        <div class="pull-right">
+            <button type="button" class="btn btn-info" (click)="closeModal4();" id="cancelRejectReason">Close</button>
+      
+            <button type="button" class="btn btn-success mlr-5" id="sendRejectReason" (click)="updateCandidateComment()"
+            [disabled]="!rejectReasonForm.valid">Submit</button>
+          
+           </div>
+          <div class="clearfix"></div>
+    </div>
+    </div>
+  </form>
+  </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+      <div class="panel panel-primary popup-border">
+         
+     
+          <div class="panel-body">
+    <button class="close" type="button" (click)="closePopup()" id="closepopupbutton"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table">
+      <tr>
+        <td class="success text-center">
+          <h5>{{message}}</h5>
+        </td>
+      </tr>
+    </table>
+   
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+<div class="offerletter popupbox_wrap" *ngIf="eventPopup">
+  <div class="popupbox1">                
+      <div class="row">
+          <button class="tabledit-delete-button btn btn-danger mlr-5 pull-right" type="button" id="close" (click)="closeeventPopup(addEvent)">
+              Close
+          </button>
+      </div>
+      <div class="padding-20" id="contentToConvert">
+          <div class="row offerContent">
+              <div class="table-responsive">
+                  <form class="search-form" #addEvent="ngForm" name="form" (ngSubmit)="addEvent.form.valid" novalidate>
+                  <table class="table">
+                      <tbody>
+                          <tr>
+                              <td style="width: 50%; border: none;">
+                                  <label class="col-sm-5 col-form-label">Client Company</label>
+                                  <div class="col-sm-7">
+                                      <input type="text" class="form-control mb-10"  name="clientCompany"
+                                      [(ngModel)]="eventData.clientCompany.name" #clientCompany="ngModel"  required readonly>
+                                  </div>
+                              </td>
+                              <td style="width: 50%; border: none;">
+                                  <label class="col-sm-5 col-form-label">Client Company Contact</label>
+                                  <div class="col-sm-7">
+                                      <input type="text" class="form-control mb-10"  name="companyContact"
+                                      [(ngModel)]="eventData.companyContact.name" #companyContact="ngModel"  required readonly>
+                                  </div>
+                              </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%; border: none;">
+                                    <label class="col-sm-5 col-form-label">Posted By</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control mb-10"  name="postedByName"
+                                        [(ngModel)]="eventData.postedByName" #postedByName="ngModel"  required readonly>
+                                    </div>
+                                </td>
+                                <td style="width: 50%; border: none;">
+                                    <label class="col-sm-5 col-form-label">Technical Job Title</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control mb-10"  name="accountOwner"
+                                        [(ngModel)]="eventData.job.name" #accountOwner="ngModel"  required readonly>
+                                    </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 50%; border: none;">
+                                      <label class="col-sm-5 col-form-label">Recruiter</label>
+                                      <div class="col-sm-7">
+                                          <input type="text" class="form-control mb-10"  name="recruiter"
+                                          [(ngModel)]="eventData.recruiter.name" #recruiter="ngModel"  required readonly>
+                                      </div>
+                                  </td>
+                                  <td style="width: 50%; border: none;">
+                                      <label class="col-sm-5 col-form-label">Candidates<span class="req-field">*</span></label>
+                                      <div class="col-sm-7">
+                                        <ng-multiselect-dropdown
+                                        name="candidates" 
+                                        class="mb-10"
+                                        [placeholder]="'Select Candidates(s)'"
+                                        [data]="selectedCandidates"
+                                        [settings]="dropdownSettings"
+                                        #candidates="ngModel" 
+                                        [(ngModel)]="eventData.candidates" 
+                                        required
+                                        id="departments">
+                                        </ng-multiselect-dropdown>
+                                      </div>
+                                  </td>
+                                </tr>
+
+                            <tr>
+                                <td style="width: 50%; border: none;">
+                                    <label class="col-sm-5 col-form-label">Interview Start Date & time <span class="req-field">*</span></label>
+                                    <div class="col-sm-7">
+                                      <input 
+                                      class="form-control mb-10"
+                                      name="startDate"
+                                      #startDate="ngModel"
+                                      [(ngModel)]="eventData.startDate" 
+                                      required
+                                      [owlDateTimeTrigger]="dt" [owlDateTime]="dt"
+                                      >
+                                      <owl-date-time #dt></owl-date-time>
+                                      <div *ngIf="dateError" class="invalid-feedback" style="margin: auto;">
+                                        {{dateError}}
+                                     </div>
+                                    </div>
+                                    
+                                </td>
+                               
+                              <td style="width: 50%; border: none;">
+                                  <label class="col-sm-5 col-form-label">Duration<span class="req-field">*</span></label>
+                                  <div class="col-sm-7">
+                                    <ngb-timepicker name="startTime" class="timepicker mb-10" [(ngModel)]="eventData.duration" #startTime="ngModel" [spinners]="spinners"></ngb-timepicker>
+                                  </div>
+                                  <div *ngIf="timeNullError"  class="invalid-feedback" style="margin: auto;">
+                                    {{timeNullError}}
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                            <td>
+                                <label class="col-sm-5 col-form-label">Interview Title<span class="req-field">*</span></label>
+                                <div class="col-sm-7">
+                                <textarea class="form-control mb-10" rows="4" name="notes"
+                                [(ngModel)]="eventData.notes" #notes="ngModel" required>
+                                </textarea>
+                                </div>
+                            </td>
+                            <td>
+                                <label class="col-sm-5 col-form-label">Description<span class="req-field">*</span></label>
+                                <div class="col-sm-7">
+                                <textarea class="form-control mb-10" rows="4"  name="description"
+                                [(ngModel)]="eventData.description" #description="ngModel" required></textarea>
+                                </div>
+                            </td>
+                          </tr>
+                          <button type="button" class="btn btn-success mlr-5 " [disabled]="!addEvent.valid"
+                          (click)="submitEvent(addEvent)" id="submitEvent">Submit</button>
+                      </tbody>
+                  </table>
+                </form>
+              </div>
+          </div>                                    
+      </div>
+  </div>
+  <!--popupbox-->
+</div>
+<div class="popupbox_wrap" *ngIf="showEventResponse">
+<div class="popupbox" style="background-color: white!important;">
+  <button class="close" type="button" id="closeAllPopup" (click)="closeEventResponse()"><span class="close-label"><i
+        class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+  <table class="table table-bordered">
+    <tr>
+      <td class="success text-center">
+        <h5>Interview Scheduled Successfully </h5>
+      </td>
+    </tr>
+  </table>
+  <div class="row text-center">
+    <a class="btn btn-success" id="closeSuccessPopup" (click)="closeEventResponse()">
+      <i class="fa fa-users" aria-hidden="true"></i> Close</a>
+  </div>
+</div>
+</div>

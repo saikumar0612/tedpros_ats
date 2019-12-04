@@ -1,0 +1,117 @@
+  <div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Work Week</h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items">
+            <li><a routerLink='/dashboard'>Home</a></li>
+            <li>/</li>
+            <li>Work Week</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form class="search-form">
+              <div class="form-header">
+                <h5>Work Week</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Country</label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" name="country" required id="selectcountry">
+                        <option value="{{weeks.country.id}}">{{weeks.country.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Monday</label>
+                    <div class="col-sm-8">
+
+                      <select name="userType" class="form-control mb-10" id="selectMonday">
+                        <option value="{{weeks.monday.id}}">{{weeks.monday.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Tuesday </label>
+                    <div class="col-sm-8">
+                      <select name="userType" class="form-control mb-10" id="selectTuesday">
+                        <option value="{{weeks.tuesday.id}}">{{weeks.tuesday.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Wednesday </label>
+                    <div class="col-sm-8">
+                      <select name="userType" class="form-control mb-10" id="selectWednesday">
+                        <option value="{{weeks.wednesday.id}}">{{weeks.wednesday.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Thursday </label>
+                    <div class="col-sm-8">
+                      <select name="userType" class="form-control mb-10" id="selectThursday">
+                        <option value="{{weeks.thursday.id}}">{{weeks.thursday.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Friday </label>
+                    <div class="col-sm-8">
+                      <select name="userType" class="form-control mb-10" id="selectFriday">
+                        <option value="{{weeks.friday.id}}">{{weeks.friday.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Saturday </label>
+                    <div class="col-sm-8">
+                      <select name="userType" class="form-control mb-10" id="selectSaturday">
+                        <option value="{{weeks.saturday.id}}">{{weeks.saturday.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Sunday </label>
+                    <div class="col-sm-8">
+                      <select name="userType" class="form-control mb-10" id="selectSunday">
+                        <option value="{{weeks.sunday.id}}">{{weeks.sunday.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-10">
+                  <a [routerLink]="['/work-week/edit-work-week']" id="editworkweek"> 
+                    <button class="btn btn-success flot-left  mlr-5">Edit</button>
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

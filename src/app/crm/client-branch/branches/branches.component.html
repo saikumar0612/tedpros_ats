@@ -1,0 +1,158 @@
+<div class="content">
+    <div class="top-header">
+        <div class="row">
+            <div class="col-md-6 col-lg-6 heading">
+                <h4>Client Companies <a *ngIf="userPermissions.createClientCompany" class="btn btn-primary"
+                        routerLink="/customers/add-customer" id="addcustomer">+ Add</a></h4>
+            </div>
+            <div class="col-md-6 col-lg-6 breadcrumb">
+                <ul class="breadcrumb-items">
+                    <li><a routerLink='/dashboard'>Home</a></li>
+                    <li>/</li>
+                    <li>Client Companies</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="element-content">
+        <div class="job-box">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+                            <thead class="form-header">
+                                <tr>
+                                    <th style="width: 3%; text-align: center;"></th>
+                                    <th style="width: 3%; text-align: center;"></th>
+                                    <th style="width: 16%;">
+                                        <mfDefaultSorter by="companyName"><span style="color: #fff;">Client Company
+                                                Name</span>
+                                        </mfDefaultSorter>
+                                    </th>
+                                    <th style="width: 16%;">
+                                        <mfDefaultSorter by="owner"><span style="color: #fff;">Account Owner</span>
+                                        </mfDefaultSorter>
+                                    </th>
+                                    <th style="width: 16%;">
+                                        <mfDefaultSorter by="billingContact"><span style="color: #fff;">Billing
+                                                Contact</span>
+                                        </mfDefaultSorter>
+                                    </th>
+                                    <th style="width: 16%;">
+                                        <mfDefaultSorter by="phoneNumber"><span style="color: #fff;">Billing Contact
+                                                Phone</span>
+                                        </mfDefaultSorter>
+                                    </th>
+                                    <th style="width: 16%;">
+                                        <mfDefaultSorter by="cityId"><span style="color: #fff;">City</span>
+                                        </mfDefaultSorter>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th style="width: 3%; text-align: center;"></th>
+                                    <th style="width: 3%; text-align: center;"></th>
+                                    <th>
+                                        <input type="text" placeholder="Search company"
+                                            (keyup)="search($event.target.value,'company')" id="searchcompany"
+                                            class="search-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input type="text" placeholder="Search account owner"
+                                            (keyup)="search($event.target.value,'owner')" id="searchowner"
+                                            class="search-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input type="text" placeholder="Search contact"
+                                            (keyup)="search($event.target.value,'contact')" id="searchcontact"
+                                            class="search-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input type="text" placeholder="Search phone"
+                                            (keyup)="search($event.target.value,'phone')" id="searchphone"
+                                            class="search-filter form-control">
+                                    </th>
+                                    <th>
+                                        <input type="text" placeholder="Search city"
+                                            (keyup)="search($event.target.value,'city')"
+                                            class="search-filter form-control" id="searchcity">
+                                    </th>
+                                </tr>
+                                <ng-container *ngIf="availableRecords; else noData">
+                                    <tr *ngFor="let customer of mf.data, index as i">
+                                        <td style="text-align: center;" id="menutab">{{i+1}}</td>
+                                        <td style="text-align: center;">
+                                            <div class="activity-main-menu">
+                                                <ul class="menu-items">
+                                                    <li class="activity-sub-menu">
+                                                        <a>
+                                                            <div class="icon-w">
+                                                                <i class="fa fa-bars" aria-hidden="true"></i>
+                                                            </div>
+                                                        </a>
+                                                        <div class="sub-menu-list">
+                                                            <div class="sub-menu-i">
+                                                                <ul class="sub-menu">
+                                                                    <li *ngIf="userPermissions.updateClientCompany">
+                                                                        <a class="mlr-5" id="editcustomer"
+                                                                            [routerLink]="['/client-branch/edit-branch', customer.companyId]">
+                                                                            <button type="button"
+                                                                                class="tabledit-edit-button btn btn-danger"
+                                                                                title="Edit">
+                                                                                <i class="fa fa-pencil-square-o"
+                                                                                    aria-hidden="true"></i>
+                                                                            </button>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li *ngIf="userPermissions.readClientCompany">
+                                                                        <a class="mlr-5" id="viewcustomer"
+                                                                            [routerLink]="['/client-branch/view-branch', customer.companyId]">
+                                                                            <button type="button"
+                                                                                class="tabledit-delete-button btn btn-success"
+                                                                                title="View">
+                                                                                <i class="fa fa-eye"
+                                                                                    aria-hidden="true"></i>
+                                                                            </button>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td><a id="clickviewcustomer"
+                                                [routerLink]="['/client-branch/view-branch', customer.companyId]">{{ customer.companyName | uppercase }}</a>
+                                        </td>
+                                        <td><a id="clickusersView"
+                                                [routerLink]="['/usersView/view-user-profile', customer.owner.id]">{{ customer.owner.name | uppercase }}</a>
+                                        </td>
+                                        <td>{{ customer.billingContact | uppercase }}</td>
+                                        <td>{{ customer.phoneNumber | uppercase }}</td>
+                                        <td>{{ customer.cityName | uppercase }}</td>
+                                    </tr>
+                                </ng-container>
+                                <ng-template #noData>
+                                    <tr>
+                                        <td colspan="12" class="text-danger" style="text-align: center;">
+                                            No Records Found
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="12">
+                                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

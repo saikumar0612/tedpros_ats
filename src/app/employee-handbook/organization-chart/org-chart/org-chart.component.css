@@ -1,0 +1,14 @@
+
+.orgchart .node.matched {
+    background-color: rgba(238, 217, 54, 0.5);
+}
+#edit-panel {
+    border-radius: 4px;
+    float: left;
+}
+.orgchart .node.matched .product-dept .title {
+    background-color: #009933;
+}
+.orgchart .node.matched .product-dept .content {
+    border-color: #009933;
+}

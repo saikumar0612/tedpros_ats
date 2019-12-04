@@ -1,0 +1,247 @@
+<div class="container">
+    <main id="jf-main" class="jf-main jf-haslayout" >
+        <div class="jf-dbsectionspace jf-haslayout">
+            <div class="row"> 
+                
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">    
+                                <div class="jf-dashboardbox jf-myappliedjobs">
+                                  <div class="jf-dashboardboxtitle">
+                                      <h2>Favourite Jobs</h2>
+                                      <!-- <span>Latest Jobs</span> -->
+                                  </div>
+                                  <ng-container *ngIf="wishdata; else noData"> 
+                                    <table  [mfData]="wishdata" #mf="mfDataTable" [mfRowsOnPage]="4" >
+                                        <div class="jf-dashbboardcontent jf-myjobsapplications jf-myjobsapplicationsvtwo">
+                                            <ul>
+                                                <li *ngFor="let job of mf.data">
+                                                    <div class="jf-featurejob">
+                                                        <div class="jf-companycontent">
+                                                            <div class="jf-companyhead">
+                                                                <a class="jf-btnjobtag jf-internship" >{{job.employmentType}}</a>
+                                                            </div>
+                                                            <div class="jf-companyname">
+                                                                <h3>{{job.jobCode}} - {{job.tech_title | titlecase}}</h3>
+                                                                <!-- <h4>{{job.jobdata.company.name | uppercase}}</h4> -->
+                                                            </div>
+                                                            <div>
+                                                                <span><strong>Salary :</strong>$ {{job.external_bill_rate}}</span>
+                                                            </div>
+                                                            <div >
+                                                                <strong>Skills :</strong><span *ngFor = "let skill of job.skills"> {{skill.skillName}},</span>
+                                                            </div>
+                                                            <div>
+                                                                <span><strong>Location :</strong> {{job.country.name}}, {{job.state.name}}, {{job.city.name}}</span>
+                                                            </div>
+                                                            <div>
+                                                                <strong>Description :</strong>
+                                                                <span [innerHTML]="job.description |slice:0:100"> </span>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="row deleteButton ">
+                                              
+                                                                <button class="btn btn-danger pull-right small" id="deletejob" (click)="deleteJob(job.jobCode)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete Job From Favourite</button>
+                                                                <button class="btn btn-info pull-right" id="jobDetails" [routerLink]="['/job/jobdetails', job.jobCode]"><i class="fa fa-external-link" aria-hidden="true"></i> Read More</button>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                    <!-- <ul class="jf-jobmatadata">
+                                                        <li>
+                                                            <em class="ti-calendar"></em>
+                                                            <div class="jf-matacontent">
+                                                                <span>Job Applied Date</span>
+                                                                <time > {{job.date | date:'MM/dd/yyyy'}}</time>
+                                                            </div>
+                                                        </li>
+                                                    </ul> -->
+                                                </li>
+                                            </ul>
+                                        </div>
+                                      <!-- <div class="jf-dashboardbox jf-myappliedjobs" *ngFor="let x of mf.data">              
+                                            <div class="row" style="margin-top:30px ">
+                                              <div class="col-md-4">
+                                                  <strong class="col-sm-4 col-form-label"> Job Title:</strong>
+                                                  <div class="col-sm-8">
+                                                    <p>{{x.tech_title}}</p>
+                                                  </div>
+                                                </div>
+                                              <div class="col-md-3">
+                                                <strong class="col-sm-4 col-form-label">Job Code :</strong>
+                                                <div class="col-sm-8">
+                                                  <p>{{x.jobCode}}</p>
+                                                </div>
+                                              </div>
+                                              <div class="col-md-5">
+                                                <strong class="col-sm-4 col-form-label">Location :</strong>
+                                                <div class="col-sm-8">
+                                                  <p>{{x.country.name}}, {{x.state.name}}, {{x.city.name}}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-4">
+                                                <strong class="col-sm-4 col-form-label">Employement Type :</strong>
+                                                <div class="col-sm-8">
+                                                  <p>{{x.employmentType}}</p>
+                                                </div>
+                                              </div>
+                                              <div class="col-md-3">
+                                                <strong class="col-sm-4 col-form-label">External BillRate :</strong>
+                                                <div class="col-sm-8">
+                                                  <p>{{x.external_bill_rate}}</p>
+                                                </div>
+                                              </div>
+                                              <div class="col-md-5">
+                                                <strong class="col-sm-4 col-form-label">No of Openings : </strong>
+                                                <div class="col-sm-8">
+                                                  <p>{{x.openings}}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-4">
+                                                <strong class="col-sm-4 col-form-label">Skills :</strong>
+                                                <div class="col-sm-8" >
+                                                  <p *ngFor="let y of x.skills">{{y.skillName}}, </p>
+                                                </div>
+                                              </div>
+                                              <div class="col-md-4">
+                                                <strong class="col-sm-4 col-form-label">Last Date to Apply: </strong>
+                                                <div class="col-sm-8">
+                                                  <p>{{x.targetDate |date:'MM/dd/yyyy'}}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row">
+                                              <div class="col-md-10">
+                                                <strong class="col-sm-4 col-form-label"> Description:</strong>
+                                                <div class="col-sm-6">
+                                                  <p [innerHTML]="x.description">{{x.description}}</p>
+                                                </div>
+                                              </div>
+                                              <div class="col-md-2">
+
+                                              </div>
+                                            </div>
+                                            <div class="row deleteButton">
+                                                
+                                                <button class="btn btn-danger pull-right small" id="deletejob" (click)="deleteJob(x.jobCode)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete Job From Favourite</button>
+                                                <button class="btn btn-info pull-right" id="jobDetails" [routerLink]="['/job/jobdetails', x.jobCode]"><i class="fa fa-external-link" aria-hidden="true"></i> Read More</button>
+                                            </div>
+                                      </div> -->
+                                      <div >
+                                        <mfBootstrapPaginator [rowsOnPageSet]="[4,8,24,32]"></mfBootstrapPaginator>
+                                      </div>
+                                    </table>
+                                  </ng-container>
+                                  <ng-template #noData>
+                                      <div style="text-align: center" >
+                                          <h4>You are not applied for any jobs </h4>
+                                      </div>
+                                  </ng-template>
+                                </div>
+                        
+                  
+                </div>
+            </div>
+        </div>
+        
+      </main>
+</div>
+
+
+<!-- <div>
+    <main id="jf-main" class="jf-main jf-haslayout" >
+        <div class="jf-dbsectionspace jf-haslayout">
+          <div class="row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                    <ng-container *ngIf="data">
+                        <div class="jf-dashboardboxtitle">
+                            <h2>Favourite Jobs</h2>
+                        </div> 
+                            <div class="jf-dashboardbox jf-myappliedjobs" *ngFor="let x of data">              
+                                    <div class="form-group row" style="margin-top:30px ">
+                                      <div class="col-md-6">
+                                        <strong class="col-sm-4 col-form-label"> Company:</strong>
+                                        <div class="col-sm-8">
+                                          <p>{{x.company.name}}</p>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <strong class="col-sm-4 col-form-label">Job Code :</strong>
+                                        <div class="col-sm-8">
+                                          <p>{{x.jobCode}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-group row">
+                                      <div class="col-md-6">
+                                        <strong class="col-sm-4 col-form-label"> Contact Person :</strong>
+                                        <div class="col-sm-8">
+                                          <p> {{x.recruiter.firstName}} {{x.recruiter.lastName}}</p>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <strong class="col-sm-4 col-form-label">Employement Type :</strong>
+                                        <div class="col-sm-8">
+                                          <p>{{x.employmentType}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-group row">
+                                      <div class="col-md-6">
+                                        <strong class="col-sm-4 col-form-label">Primary Skills :</strong>
+                                        <div class="col-sm-8">
+                                          <p>{{x.primarySkills}} </p>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <strong class="col-sm-4 col-form-label">No of Openings : </strong>
+                                        <div class="col-sm-8">
+                                          <p>{{x.openings}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-group row">
+                                      <div class="col-md-12">
+                                        <strong class="col-sm-4 col-form-label"> Description:</strong>
+                                        <div class="col-sm-8">
+                                          <p [innerHTML]="x.description">{{x.description}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                        </div>
+                                      <div class="col-sm-6">
+                                        <button class="btn btn-danger" id="deletejob" (click)="deleteJob(x.jobCode)">Delete Job From Favourite</button>
+                                      </div>
+                                    </div>
+                              </div>
+                    </ng-container>
+                    <ng-container *ngIf="!data">
+                        <div class="jf-dashboardbox jf-myappliedjobs">
+                            <h4>No Favourite Jobs. You can add to favourite jobs <a id="jobList" routerLink="/job/job-list">Click...</a></h4>
+                        </div>
+                    </ng-container>
+                
+              </div>
+          </div>
+      </div>
+        
+</main>
+</div> -->
+
+
+
+     
+    
+    
+    
+    

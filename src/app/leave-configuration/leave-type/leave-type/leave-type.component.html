@@ -1,0 +1,122 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Leave Types &nbsp;<a class="btn btn-primary" id="addleaveTypes" routerLink='/leave-type/add-leave-type'>+ Add</a></h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/</li>
+          <li>Leave Types</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="leavedata" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Leave Type</th>
+                  <th>Country</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th style="width: 3%; text-align: center;"></th>
+                  <th>
+                    <input type="text" placeholder="Search Leave Type" (keyup)="search($event.target.value,'name')"
+                     id="searchName" class="search-filter form-control">
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Country" (keyup)="search($event.target.value,'country')"
+                      class="search-filter form-control" id="searchCountry">
+                  </th>
+                </tr>
+                <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let leave of mf.data; let i = index">
+                  <td style="text-align: center;">
+                    <p>{{ i+1 }}</p>
+                  </td>
+                  <td style="text-align: center;" id="menu">
+                    <div class="activity-main-menu">
+                      <ul class="menu-items">
+                        <li class="activity-sub-menu">
+                          <a>
+                            <div class="icon-w">
+                              <i class="fa fa-bars" aria-hidden="true"></i>
+                            </div>
+                          </a>
+                          <div class="sub-menu-list">
+                            <div class="sub-menu-i">
+                              <ul class="sub-menu">
+                                <li>
+                                  <a class="mlr-5">
+                                    <button type="button" id="editleavetype" [routerLink]="['/leave-type/edit-leave-type', leave.id]"
+                                      class="tabledit-edit-button btn btn-danger">
+                                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </button>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="mlr-5">
+                                    <button type="button" id="viewLeaveType" class="tabledit-delete-button btn btn-success" (click)="showJobDetails(leave.id)">
+                                      <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td><a id="viewLeaveName" (click)="showJobDetails(leave.id)">{{leave.name | uppercase}}</a></td>
+                  <td><span *ngIf="leave.country">{{leave.country | uppercase}}</span></td>
+                </tr>
+              </ng-container>
+              <ng-template #noData> 
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+            </ng-template>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="12">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10]"></mfBootstrapPaginator>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+  <div class="show_user_details">
+    <table class="table table-bordered">
+      <tr><td><strong>Leave type</strong>: <span>{{leaveModel.name | titlecase}}</span></td></tr>
+      <tr *ngIf="leaveModel.country"><td><strong>Country</strong>: <span>{{leaveModel.country.name}}</span></td></tr>
+    </table>
+    <div class="row text-center">
+      <a id="closePopup" (click)="closePopup()" class="btn btn-danger"><em class="fa fa-times"></em> Close</a>
+      <a id="editLeaveType" style="margin-left: 5px;" [routerLink]="['/leave-type/edit-leave-type', leaveModel.id]" class="btn btn-success"><em class="fa fa-pencil-square-o"></em> Edit</a>
+    </div>
+  </div><!--show_user_details-->
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->

@@ -1,0 +1,46 @@
+<div class="content">
+        <div class="top-header">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 heading">
+                    <h4>Offer Letter &nbsp;<a class="btn btn-primary mlr-5" id="addOfferLetter" [routerLink]="['/offer-letter/add-offer-letter-template/', offerLetter.id]">Edit Offer Letter</a></h4>
+                </div>
+                <div class="col-md-6 col-lg-6 breadcrumb">
+                    <ul class="breadcrumb-items">
+                        <li><a routerLink='/dashboard'>Home</a></li>
+                        <li>&nbsp;/&nbsp;</li>
+                        <li><a routerLink='/offer-letter'>Offer Letter Types</a></li>
+                        <li>&nbsp;/&nbsp;</li>
+                        <li><a>View Offer Letter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="element-content">
+            <div class="job-box">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <form role="form" #myForm="ngForm" accept-charset="UTF-8" novalidate>
+                            <div class="form-header row mlr-0">
+                                <div class="col-md-6 plr-0">
+                                    <h5>Offer Letter for {{ offerLetter.type | titlecase }}</h5>
+                                </div>
+                                <div class="col-md-6 plr-0">
+                                    <button class="btn btn-info pull-right mtb-5" (click)="back()">Back</button>
+                                </div>                                    
+                            </div>
+                            <div class="padding-20" >
+                                <div class="col-md-12 col-sm-12">
+                                    <div class=" offerContent" [innerHtml]="offerLetter.template | safeHtml"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loader_wrap" *ngIf="loading">
+        <div class="loader_inner_wrap">
+            <img src="../../../../assets/images/loginloader.gif" alt="">
+        </div>
+    </div>

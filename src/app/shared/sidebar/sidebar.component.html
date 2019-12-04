@@ -1,0 +1,62 @@
+<div class="main-menu">
+  <ul class="menu-items">
+    <li class="selected has-sub-menu">
+      <a routerLinkActive="active">
+        <div class="icon-w">
+          <em class="fa fa-angle-double-right"></em>
+        </div>
+      </a>
+      <div class="sub-menu-list">
+        <div class="sub-menu-header">Recent Activities</div>
+        <div class="sub-menu-icon"><em class="fa fa-angle-double-right" aria-hidden="true"></em></div>
+        <div class="sub-menu-i">
+          <ul class="sub-menu">
+            <li *ngFor="let logs of logsData">
+              <a routerLink="{{logs.actionPath}}">{{logs.actionTitle}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li class="selected has-sub-menu">
+      <a routerLinkActive="active">
+        <div class="icon-w">
+          <em class="fa fa-comments-o"></em>
+        </div>
+      </a>
+      <div class="sub-menu-list">
+        <div class="sub-menu-header">Members</div>
+        <div class="sub-menu-icon"><em class="fa fa-comments-o" aria-hidden="true"></em></div>
+        <div class="sub-menu-i">
+          <ul class="sub-menu">
+            <li>
+              <div class="element-box-tp">
+                <div class="input-search-w">
+                    <input class="form-control" placeholder="Search team members..." type="search" #userSearch name="userSearch"  (keyup)="getMembersList(userSearch.value)" style="margin: 5px 2px;
+                    width: 97%;padding:unset">
+                </div>
+                <div class="users-list-w" *ngIf="userslist.length">
+                    <a href="javascript:void(0)" *ngFor="let user of userslist">
+                        <div class="user-w" #Chat (click)="chatwindow(user)">
+                            <div class="user-avatar-w" style="width:25px;border-radius: 50%;">
+                                <div class="user-avatar"><img alt="" src="{{user.avatar}}"></div>
+                            </div>
+                            <div class="user-name">
+                                <h6 class="user-title">{{user.userName}}</h6>
+                            </div>
+    
+                            <span class="dot-green" *ngIf="user.status"></span>
+                            <span class="dot" *ngIf="!user.status"></span>
+    
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

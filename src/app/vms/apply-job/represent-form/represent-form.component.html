@@ -1,0 +1,123 @@
+<div class="container">
+        <main id="jf-main" class="jf-main jf-haslayout" >
+            <div class="jf-dbsectionspace jf-haslayout">
+                <div class="row"> 
+                    
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12" >    
+                        <div class="jf-dashboardbox jf-myappliedjobs" >
+                            <div class="jf-dashboardboxtitle" style="margin-bottom: 22px;">
+                                <div class="row">
+                                    <div class="col-md-2 logo">
+                                        <img src="{{siteLogo}}" alt="icon" style="max-width: 100%; max-height: 100%;">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h2 style="text-align: center;">Right to Represent Consent Form</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div  class="top">
+                            <div class="padding-top:10px">
+                                <span >
+                                    I give exclusive permission to <strong>{{companyName}}</strong> to present my resume and qualifications to <strong>{{recruiterName}}</strong>  for the <strong>{{jobTitle}}</strong> position.
+                                </span>   
+                            </div><br/>
+                            <div>
+                                <span>
+                                    I have not submitted my resume or an application for this specific position to any other
+                                    staffing Vendor within the last thirty (30) days, nor have I signed a Right to Represent form
+                                    with another staffing vendor for this job requisition.
+                                </span>
+                            </div><br/>
+                            <div>
+                                <span>
+                                    As a candidate, my handwritten signature, date, and requisition number acknowledges my
+                                    authorization for the above listed Vendor to represent me for this posted requisition from
+                                    the date this form is signed for 30 days. 
+                                </span>
+                            </div><br/>
+                            <div>
+                                <span>
+                                    The primary staffing vendor represents and warrants that full prequalification screening
+                                    has been performed and the candidate is fully vetted.
+                                </span>
+                            </div><br/>
+                            <div>
+                                <span>
+                                    <strong>Notice:</strong> If a candidate signs a Right to Represent form with more than one staffing
+                                    vendor for the same requisition, he/she may be pulled from consideration. Eg. The
+                                    candidate may not be eligible for the requisition.
+                                </span>
+                            </div><br/>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <strong>Candidate Name :</strong><br/>
+                                    {{candidateName}}
+                                </div>
+                                
+                                <div class="col-md-4" >
+                                    <strong>Candidate Signature </strong><br/>
+                                    <ng-container *ngIf="signature.signature; else noData">     
+                                        <div class="col-md-6 col-md-offset-3">
+                                            <img src="{{signature.signature}}" style="width:100%; margin: auto;" alt="Digital Signature" />
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #noData>
+                                        <a (click)="uploadSignature()">Upload signature </a>
+                                        <div *ngIf="signaturePad">
+                                            <ng-signature-pad 
+                                                doneButtonText="Upload Signature"
+                                                format="base64"
+                                                (done)="showImage($event)"
+                                            >
+                                            </ng-signature-pad>
+                                            <!-- <div class="form-group row mt-10">
+                                                <div class="col-sm-12 text-center">
+                                                    <button type="submit" class="btn btn-primary mlr-5" id="uploadImage" (click)="showImage()">Upload Image</button>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </ng-template>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Recruiter Signature :</strong><br/>
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <img src="{{signature.signature}}" style="width:100%; margin: auto;" alt="Digital Signature" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Date :</strong> {{todayDate}}
+                            </div>
+                           
+                            <div>
+                                <button  class="btn btn-success pull-right" id="Submit" (click)="sendMail()">Submit</button>
+                            </div>
+                        </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+          </main>
+    </div>
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox" style="margin-left: 30%">
+        <p>Signature Updated Successfully!</p>
+        <div class="row"> 
+        <span class="btn btn-primary" style="margin-left: 40%" (click)="closeSignature()" id="close">Close</span>
+        </div>
+    </div>
+</div>
+
+<div class="popupbox_wrap" *ngIf="mailSubmit">
+    <div class="popupbox" style="margin-left: 30%">
+        <p>Consent Form Submitted Successfully!</p>
+        <div class="row"> 
+        <span class="btn btn-primary" style="margin-left: 40%" (click)="closeSubmitForm()" id="close">Close</span>
+        </div>
+    </div>
+</div>
+
+    

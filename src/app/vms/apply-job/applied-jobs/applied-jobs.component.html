@@ -1,0 +1,73 @@
+<div class="container">
+    <main id="jf-main" class="jf-main jf-haslayout" >
+        <div class="jf-dbsectionspace jf-haslayout">
+            <div class="row"> 
+                
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">    
+                                <div class="jf-dashboardbox jf-myappliedjobs">
+                                        <div class="jf-dashboardboxtitle">
+                                            <h2>Recent Applied Jobs</h2>
+                                            <!-- <span>Latest Jobs</span> -->
+                                        </div>
+                                        <ng-container *ngIf="availableRecords; else noData">
+                                            <table  [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="4" >
+                                                <div class="jf-dashbboardcontent jf-myjobsapplications jf-myjobsapplicationsvtwo">
+                                                    <ul>
+                                                        <li *ngFor="let job of mf.data">
+                                                            <div class="jf-featurejob">
+                                                                <div class="jf-companycontent">
+                                                                    <div class="jf-companyhead">
+                                                                        <a class="jf-btnjobtag jf-internship" >{{job.jobdata.employmentType}}</a>
+                                                                    </div>
+                                                                    <div class="jf-companyname">
+                                                                        <h3>{{job.jobdata.internalCode}} - {{job.jobdata.techJobTitle | titlecase}}</h3>
+                                                                        <!-- <h4>{{job.jobdata.company.name | uppercase}}</h4> -->
+                                                                    </div>
+                                                                    <div>
+                                                                        <span><strong>Salary :</strong> {{job.jobdata.externalBillRate}}</span>
+                                                                    </div>
+                                                                    <div >
+                                                                        <strong>Skills :</strong><span *ngFor = "let skill of job.jobdata.skill"> {{skill.skillName}},</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <span><strong>Location :</strong> {{job.jobdata.country.name}}, {{job.jobdata.state.name}}, {{job.jobdata.city.name}}</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <strong>Description :</strong><span [innerHTML]="job.jobdata.description |slice:0:200"> {{job.jobdata.description}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <ul class="jf-jobmatadata">
+                                                                <li>
+                                                                    <em class="ti-calendar"></em>
+                                                                    <div class="jf-matacontent">
+                                                                        <span>Job Applied Date</span>
+                                                                        <time > {{job.date | date:'MM/dd/yyyy'}}</time>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div >
+                                                    <mfBootstrapPaginator [rowsOnPageSet]="[4,8,24,32]"></mfBootstrapPaginator>
+                                                </div>
+                                            </table>
+                                    </ng-container>
+                                    <ng-template #noData>
+                                        <div style="text-align: center" >
+                                            <h4>You are not applied for any jobs </h4>
+                                        </div>
+                                    </ng-template>
+                                    </div>
+                        
+                  
+                </div>
+            </div>
+        </div>
+        
+      </main>
+</div>
+
+
+

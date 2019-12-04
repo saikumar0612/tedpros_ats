@@ -1,0 +1,226 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-4 col-lg-4 heading">
+        <h4>Preview <input class="btn btn-primary" id="saveResume" type="button" value="Download" (click)="captureScreen()" /> </h4>
+      </div>
+      <div class="col-md-1 col-lg-1 heading">
+          <strong> Previews </strong>
+      </div>
+      <div class="col-md-2 col-lg-2 heading" >
+          <select class="form-control" id="selectInfemation" #info (change)="onNavigate(info.value)" >
+            <option value="/candidate/preview/{{id}}">Preview -1</option>
+            <option value="/candidate/preview-1/{{id}}" selected>Preview -2</option>
+            <option value="/candidate/preview-2/{{id}}">Preview -3</option>
+              
+          </select>
+      </div>
+      <div class="col-md-4 col-lg-4 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/candidate'>Candidates</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Candidates Resume</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <div id="contentToConvert">
+              <div id="doc2" class="yui-t7">
+                <div id="inner">
+
+                  <div id="hd">
+                    <div class="yui-gc">
+                      <div class="yui-u first" id="header">
+                        <div class="topheader">
+                          <p class="title" id="name">{{ this.candidateInfo.firstName }} {{ this.candidateInfo.lastName }}</p>
+                          <p class="subTitle">{{this.jobTitle}}</p><br/>
+                          <span class="contentData"> <i class="fa fa-envelope" aria-hidden="true"></i> {{ this.candidateInfo.emailId }}</span><br/>
+                          <span class="contentData" id="contact"><i class="fa fa-phone" aria-hidden="true"></i>  {{ this.candidateInfo.phoneNo }}</span><br/>
+                          <span  class="contentData"><i class="fa fa-linkedin-square" ></i> {{this.candidateInfo.linkedin}}</span>
+                        </div>
+                      </div>
+
+                      <div class="yui-u">
+                        <div class="contact-info"> 
+                          <div class="profile-picture" style="border:none">
+                            <img src="assets/images/avatar.png" class="img-thumbnail" alt="profile pic" *ngIf="candidateInfo.image == ''"
+                              style="width: 61%; margin: auto;display: block;border: 1px solid #000">
+
+                            <img alt="profile pic" class="img-thumbnail" src="{{candidateInfo.image}}" *ngIf="candidateInfo.image != ''"
+                              style="width: 61%; margin: auto;display: block;border: 1px solid #000">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--// .yui-gc -->
+                  </div>
+                  <!--// hd -->
+
+                  <div id="bd">
+                    <div id="yui-main">
+                      <div class="yui-b">
+                        <div class="yui-gf">
+                          <div class="yui-u first">
+                            <p class="title">Profile</p>
+                          </div>
+                          <div class="yui-u">
+                            <span class="enlarge contentData">
+                              {{ this.candidateInfo.summary }}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div class="yui-gf">
+                          <div class="yui-u first" *ngIf="experienceData">
+                            <p class="title">Experience</p>
+                          </div>
+                          <!--// .yui-u -->
+                          
+                          <div class="yui-u" >
+                            <div class="job" *ngFor="let exp of experienceData" >
+                              <p class="subTitle">{{exp.employer}}</p> 
+                              <p class="contentData">{{exp.jobTitle}}</p>
+                              <span class="contentData">{{exp.startDate | date: 'MM-dd-yyyy'}}- {{exp.endDate | date: 'MM-dd-yyyy'}}</span>
+                              <span class="contentData">{{exp.description}}</span>
+                            </div>
+                          </div>
+                          <!--// .yui-u -->
+                        </div>
+                        <!--// .yui-gf -->
+
+
+                        <div class="yui-gf ">
+                          <div class="yui-u first"> 
+                            <p class="title">Education</p>
+                          </div>
+                          <!-- <p class="enlarge">
+                              <span *ngFor="let skills of skillsData">{{ skills.skillName | uppercase }},</span>
+                          </p> -->
+
+                          <div class="yui-u" >
+                            <div class="enlarge">
+                              <table class="table table-bordered">
+                                <thead >
+                                  <tr class="contentData">
+                                    <th>Qualification</th>
+                                    <th>InstituteName</th>
+                                    <th>Specialization</th>
+                                    <th>PassingYear</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let education of educationData">
+                                    <td>{{ education.qualification | uppercase }}</td>
+                                    <td>{{ education.instituteName | uppercase }}</td>
+                                    <td>{{ education.specialization | uppercase }}</td>
+                                    <td>{{ education.passingYear | uppercase }}</td>
+                                  </tr>
+                               </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <!--// .yui-gf -->
+                        <div class="yui-gf">
+                          <div class="yui-u first">
+                            <p class="title">Other Information</p>
+                          </div>
+                          
+                          <div class="yui-u">
+                            <p class="enlarge subtitle">
+                                Expected Salary: <span class="contentData">$ {{ this.candidateInfo.expectedPay }} / {{this.candidateInfo.per.pay_frequency}}</span>
+                            </p>
+                            
+                          </div>
+                        </div>
+                        <!--// .yui-gf-->
+                        <div class="yui-gf">
+                          <div class="yui-u first">
+                            <p class="title">Technical</p>
+                          </div>
+                          <div class="yui-u">
+                                <span class="contentData" *ngFor="let skills of skillsData">{{ skills.skillName | uppercase }},</span>
+                          </div>
+                        </div>
+                        <!--// .yui-gf-->
+                        <!--// .yui-gf -->
+                        <div class="yui-gf">
+                          <p class="title">Pie Chart Showing Your Skills</p>
+                          <div class="col-md-2">
+
+                            </div>
+                            <div class="col-md-8">
+                              <div>
+                                <canvas
+                                    baseChart
+                                    [chartType]="'pie'"
+                                    [datasets]="pieChartData"
+                                    [labels]="pieChartLabels"
+                                    [options]="pieChartOptions"
+                                    [legend]="true"
+                                    [colors]="pieChartColor"
+                                    (chartClick)="onChartClick($event)">
+                                </canvas>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+              
+                            </div>
+                        </div>
+                        <!--// .yui-gf-->
+                      </div>
+                      <!--// .yui-b -->
+                    </div>
+                    <!--// yui-main -->
+                  </div>
+                  <!--// bd -->
+
+                  <div id="ft">
+                    <p><span id="name">{{ this.candidateInfo.firstName }}
+                        {{ this.candidateInfo.lastName }}</span>&mdash;
+                      <a href="mailto:{{ this.candidateInfo.emailId }}" target="_blank"><span id="email">{{
+                          this.candidateInfo.emailId }}</span></a> &mdash;
+                      <span id="contact">{{ this.candidateInfo.phoneNo }}</span>
+
+                    </p>
+                  </div>
+                  <!--// footer -->
+
+                </div><!-- // inner -->
+
+
+              </div>
+              <!--// doc -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button class="btn btn-info mlr-5" id="closeResume" (click)="cancel()">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.error">
+    <br>
+    <div class="danger text-center">
+      <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{this.error}} </h5>
+    </div>
+    <div class="row text-center">
+      <button class="btn btn-primary" id="ClosePopup" (click)="closePopup()" >Back</button>   
+    </div>
+  </div>
+</div>

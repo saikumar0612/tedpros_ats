@@ -1,0 +1,104 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>User Reports</h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items">
+            <li><a routerLink='/dashboard'>Home</a>
+            </li>
+            <li>&nbsp;/&nbsp;</li>
+            <li>Users</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+              <table class="table table-bordered" [mfData]="userData" #mf="mfDataTable" [mfRowsOnPage]="10">
+                <thead class="form-header">
+                  <tr>
+                    <th style="width: 4%; text-align: center;" colspan="2"></th>
+                    <th style="width: 13%; text-align: center;">Employee Name</th>
+                    <th style="width: 13%; text-align: center;">i9 Document</th>
+                    <th style="width: 13%; text-align: center;">State w4 Document</th>
+                    <th style="width: 13%; text-align: center;">Federal w4 Document</th>
+                    <th style="width: 13%; text-align: center;">Work Authorization Document</th>
+                    <th style="text-align: center;">Profile Completion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of mf.data, index as i">
+                    <td style="text-align: center;">{{i+1}}</td>
+                    <td style="text-align: center;">
+                      <div class="activity-main-menu">
+                        <ul class="menu-items">
+                          <li class="activity-sub-menu">
+                            <a>
+                              <div class="icon-w"><em class="fa fa-bars" aria-hidden="true"></em>
+                              </div>
+                            </a>
+                            <div class="sub-menu-list">
+                              <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                  <li>
+                                    <a class="mlr-5" id="viewProfile" [routerLink]="['/usersView/view-user-profile', user.userId]" title="View Profile">
+                                      <button type="button" class="tabledit-delete-button btn btn-primary"><em class="fa fa-eye"></em>
+                                      </button>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td>{{ user.fullName | titlecase }}</td>
+                    <td style="text-align: center;">
+                      <span *ngIf="user.i9Doc; else elseBlock"><em class="fa fa-check" aria-hidden="true" style="color: green"></em></span>
+                      <ng-template #elseBlock><em class="fa fa-times" aria-hidden="true" style="color: red"></em></ng-template>
+                    </td>
+                    <td style="text-align: center;">
+                      <span *ngIf="user.workAuth; else elseBlock"><em class="fa fa-check" aria-hidden="true" style="color: green"></em></span>
+                      <ng-template #elseBlock><em class="fa fa-times" aria-hidden="true" style="color: red"></em></ng-template>
+                    </td>
+                    <td style="text-align: center;">
+                      <span *ngIf="user.statew4; else elseBlock"><em class="fa fa-check" aria-hidden="true" style="color: green"></em></span>
+                      <ng-template #elseBlock><em class="fa fa-times" aria-hidden="true" style="color: red"></em></ng-template>
+                    </td>
+                    <td style="text-align: center;">
+                      <span *ngIf="user.federalw4; else elseBlock"><em class="fa fa-check" aria-hidden="true" style="color: green"></em></span>
+                      <ng-template #elseBlock><em class="fa fa-times" aria-hidden="true" style="color: red"></em></ng-template>
+                    </td>
+                    <td>
+                      <progress-bar [progress]="user.profileCompleted" [color]="'#488aff'"></progress-bar>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="8">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,35]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap">
+      <img src="../../../../assets/images/loginloader.gif" alt="">
+    </div>
+  </div>
+
+
+  

@@ -1,0 +1,975 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>
+            <span><i class="fa fa-user-o" aria-hidden="true"></i> {{ this.candidateInfo.data.firstName }} {{ this.candidateInfo.data.lastName }}</span>
+            <span *ngIf="jobstatus.jobTitle.name"> <small > pursuing for the post of </small>  {{ jobstatus.jobTitle.name }}</span>
+            <span *ngIf="userPermissions.updateCandidates">
+              <button type="button" [routerLink]="['/candidate/edit-candidate', candidateInfo.id]" class="tabledit-edit-button btn btn-success" title="edit candidate">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </button>
+            </span>
+          </h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items">
+            <li><a routerLink='/dashboard'>Home</a></li>
+            <li>/</li>
+            <li><a routerLink='/candidate'>Candidates</a></li>
+            <li>/</li>
+            <li>View Candidate</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header mb-10">
+              <h5>Personal Information</h5>
+            </div>
+            <div class="padding-20">
+              <!--  -->
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label"> Name:</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.firstName }} {{ this.candidateInfo.data.lastName }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Phone :</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.phoneNo }}</p>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Address Line 1 :</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.addressLine1 }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Address Line 2 :</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.addressLine2 }}</p>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">City :</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.city.name }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">State :</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.state.name }}</p>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Country :</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.country.name }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Zip Code :</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.zipCode }}</p>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Email :</label>
+                      <div class="col-sm-8">
+                        <p>{{ this.candidateInfo.data.emailId }}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Expected Pay :</label>
+                      <div class="col-sm-8">
+                        <p *ngIf="candidateInfo.data.expectedPay">
+                          ${{ this.candidateInfo.data.expectedPay }}/{{ this.candidateInfo.data.per.pay_frequency }}</p>
+                      </div>
+                    </div>
+                  </div>
+                        <!-- changes --suresh-- 08-13-2018 start -->
+                  <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Gender :</label>
+                        <div class="col-sm-8">
+                          <p>{{this.candidateInfo.data.gender | uppercase}}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="this.candidateInfo.data.dob">
+                        <label class="col-sm-4 col-form-label">Date Of Birth :</label>
+                        <div class="col-sm-8">
+                          <p>{{this.candidateInfo.data.dob | date:"MM/dd/yyyy"}}</p>
+                        </div>
+                      </div>
+                  </div>
+                    <!-- changes --suresh-- 08-13-2018 end -->
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Status :</label>
+                        <div class="col-sm-8">
+                          <p>{{this.candidateInfo.data.status | titlecase}}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6"  *ngIf="this.candidateInfo.data.linkedin">
+                        <label class="col-sm-4 col-form-label">LinkedIn :</label>
+                        <div class="col-sm-8">
+                          <p>{{this.candidateInfo.data.linkedin}}</p>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <div class="profile-picture">
+                    <img alt="" src="assets/images/avatar.png" *ngIf="candidateInfo.data.image == ''"
+                      style="width: 100%;">
+  
+                    <img src="{{candidateInfo.data.image}}" alt="profile pic" *ngIf="candidateInfo.data.image != ''" style="width: 100%;">
+                  </div>
+                </div>
+              </div>
+  
+  
+            </div>
+            <div class="form-header mb-10" *ngIf="experienceData">
+              <h5>Experience</h5>
+            </div>
+  
+            <div class="padding-20" *ngFor="let experience of experienceData">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Employer :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.experience.employer }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Job Title :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.experience.jobTitle }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Start Date :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.experience.startDate | date:"MM/dd/yyyy"}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">End Date :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.experience.endDate | date:"MM/dd/yyyy"}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Supervisor Name :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.experience.supervisorName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Supervisor Phone :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.experience.supervisorPhone }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Current Job? :</label>
+                  <div class="col-sm-8">
+                    <p *ngIf="experience.isCurrent; else jobElse">Yes</p>
+                    <ng-template #jobElse>No</ng-template>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Technical Skills :</label>
+                  <div class="col-sm-8">
+                    <p>{{ experience.techSkills }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Responsibilities :</label>
+                  <div class="col-sm-8">
+                    <p>{{ experience.responsibilities }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Description :</label>
+                  <div class="col-sm-8">
+                    <p>{{ experience.description }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="form-header mb-10" *ngIf="educationData">
+              <h5>Education Information:</h5>
+            </div>
+  
+            <div class="padding-20" *ngFor="let education of educationData">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Institute Name :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.education.instituteName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Qualification :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.education.qualification }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Specialisation :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.education.specialization }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Year of passing :</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.education.passingYear }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-header mb-10">
+              <h5>Skills:</h5>
+            </div>
+  
+            <div class="padding-20" >
+              <div class="form-group row">    
+                <div class="col-md-8" >
+                  <div *ngFor="let skill of skillsData">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Skills :</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.skill.skillName }}</p>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Experience :</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.skill.experience }} Months</p>
+                          </div>
+                        </div>
+                    </div>
+          
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Last Used :</label>
+                        <div class="col-sm-8">
+                          <p>{{ this.skill.lastUsed }}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6"></div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-md-4" >
+                  <h3>Pie Chart Showing Your Skills</h3>
+                  <div>
+                    <canvas
+                        baseChart
+                        [chartType]="'pie'"
+                        [datasets]="pieChartData"
+                        [labels]="pieChartLabels"
+                        [options]="pieChartOptions"
+                        [legend]="true"
+                        [colors]="pieChartColor"
+                        (chartClick)="onChartClick($event)">
+                    </canvas>
+                  </div>
+                </div>
+              </div>
+  
+            </div>
+  
+            <div class="form-header mb-10" *ngIf="this.candidateInfo.data.summary">
+              <h5>Summary:</h5>
+            </div>
+  
+            <div class="padding-20" *ngIf="this.candidateInfo.data.summary">
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label class="col-sm-2 col-form-label">Summary :</label>
+                  <div class="col-sm-10">
+                    <p>{{ this.candidateInfo.data.summary }}</p>
+                  </div>
+                </div>
+              </div>
+  
+            </div>
+<!-- added document details by suresh on 11-28-2019 start -->
+            <div class="form-header mb-10" *ngIf="documents">
+              <h5>Documents:</h5>
+            </div>
+
+            <div class="padding-20" *ngIf="documents" >
+              <div class="form-group row">
+                <div class="col-md-12">
+                    <table class="table table-bordered" style="width: 100%; text-align: center; margin: auto">
+                        <thead class="form-header">
+                        <tr>
+                            <th style="width: 3%; text-align: center;"></th>
+                            <th style="width: 17%; text-align: center;">Document</th>
+                            <th style="width: 20%; text-align: center;">Document Type</th>
+                            <th style="text-align: center;">Title</th>
+                            <th style="text-align: center;">Expiry Date</th>
+                            <th style="text-align: center;">Comment</th>
+                            <!-- <th style="width: 15%; text-align: center;"></th> -->
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of documents ,let i = index">
+                                <td>{{i+1}}</td>
+                                <td style="width: 20%;">
+                                    <a href="{{documentUrl}}{{x.document}}" target="blank">{{x.document}}</a>
+                                </td>
+                                <td style="width: 20%;">{{x.type | titlecase}}</td>
+                                <td style="width: 20%;">{{x.title | titlecase}}</td>
+                                <td style="width: 20%;">{{x.expiryDate | date:'MM-dd-yyyy'}}</td>
+                                <td style="width: 30%;">{{x.comment}}</td>      
+                                <!-- <td style="width: 20%;">
+                                    <a class="btn btn-danger " title="Delete Document" id="DeleteDocument" (click)="deleteDoc(x.id)" style="color: white;margin: 5px;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                </td> -->
+                            </tr>
+                        </tbody>
+                    </table> 
+                </div>
+              </div>
+            </div>
+<!-- added document details by suresh on 11-28-2019 start -->
+            <div class="form-header" *ngIf="expectedPay">
+              <h5>Expected Pay:</h5>
+            </div>
+  
+            <div class="padding-20" *ngIf="expectedPay" >
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <!-- <label class="col-sm-4 col-form-label">Summary :</label> -->
+                  <!-- <div class="col-sm-8">
+                    <p>{{ this.expectedPay | json }}</p>
+                  </div> -->
+                  <table class="table table-bordered" [mfData]="expectedPay" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead class="form-header">
+                      <tr>
+                      
+                        <th style="width: 3%; text-align: center;">
+                        </th>
+                        <th>
+                          <mfDefaultSorter by="jobTitle.jobTitle"><span style="color: #fff;">Job Title</span></mfDefaultSorter>
+                        </th>
+                        <th>
+                          <mfDefaultSorter by="jobTitle.companyName"><span style="color: #fff;">Company Name</span></mfDefaultSorter>
+                        </th>
+                        <th>
+                          <mfDefaultSorter by="location.city.cityName"><span style="color: #fff;">Job Location</span></mfDefaultSorter>
+                        </th>
+                       
+                        <th>
+                          <mfDefaultSorter by="payRate"><span style="color: #fff;">Expected Pay</span></mfDefaultSorter>
+                        </th>
+                        
+                        <th>
+                          <mfDefaultSorter by="date"><span style="color: #fff;">Date</span></mfDefaultSorter>
+                        </th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                     
+                      <tr *ngFor="let paymentDetails of mf.data, index as i">
+                        <td style="text-align: center;">{{i+1}}</td>
+                       
+                        <td>{{ paymentDetails.jobTitle.jobTitle }}</td>
+                        <td>{{ paymentDetails.jobTitle.companyName }}</td>
+                        <td>{{ paymentDetails.location.city.cityName | titlecase  }},{{ paymentDetails.location.state.stateName | titlecase  }},{{ paymentDetails.location.country.countryName | titlecase  }}</td>
+                        <td>$ {{ paymentDetails.payRate }} / {{ paymentDetails.payGrade.payFrequency }} </td>
+                        <td>{{ paymentDetails.date |  date:'medium' }} </td>
+                      </tr>
+                   
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="12">
+                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+  
+            </div>
+  
+           
+          </div>
+        </div>
+      </div>
+      <div class="padding-20 " style="position: fixed;bottom: 0px;width: 100%;background-color: #f2f4f8;">
+          <div class="row">
+            <div class="col-sm-12">
+              <button class="btn btn-danger mlr-5" id="closeViewPage" (click)="goBack()">Back</button>
+             
+              <ng-container *ngIf="jobstatus.applicationStatus!=''; else elseBlock">
+                  <button type="button" class="btn btn-primary mlr-5" >{{jobstatus.applicationStatus}}</button>
+              
+            </ng-container>
+            <ng-template #elseBlock>           
+              <button type="button" *ngIf="jobstatus.recruiter && jobcode" class="btn btn-success mlr-5" id="applyJob"  (click)="applyjob(id,candidateInfo.data.emailId,0,'Shortlisted')"><em class="fa fa-check"></em> Select Candidate</button>
+              <button type="button" class="btn btn-onhold mlr-5" *ngIf="jobstatus.recruiter && jobcode" id="rejectComment" (click)="candidateComment(id,candidateInfo.data.emailId)"><em class="fa fa-ban"></em> On Hold</button>
+              <button type="button" class="btn btn-sendmail mlr-5" *ngIf="jobstatus.recruiter && jobcode" id="sendLink"  (click)="sendLink(candidateInfo.data.emailId)"> <em class="fa fa-share"></em> Send Email</button>
+            </ng-template>
+  
+              <button class="btn btn-paygrade mlr-5" (click)="payGrade()" *ngIf="jobcode && jobstatus.recruiter"><em class="fa fa-usd"></em> Enter Expected Pay </button>
+              <button class="btn btn-mail mlr-5" (click)="summarypopup()" *ngIf="jobcode && jobstatus.recruiter || jobstatus.sales"><em class="fa fa-comments"></em>  Mail Communication</button>
+              <button class="btn btn-mailmsg mlr-5" (click)="communicationpopup()" *ngIf="jobcode && messageslist.length"> <em class="fa fa-commenting"></em> View Communication</button>
+              <button class="btn btn-champions mlr-5" id="addSubscriber" *ngIf="jobstatus.recruiter || jobstatus.sales" (click)="selectCampaign()"> <em class="fa fa-ils"></em><em class="fa fa-plus" style="font-size:10px"></em>  campaign list </button>
+            </div>
+  
+            
+          </div>
+        </div>
+    </div>
+   
+  
+    <!-- {{jobDetails | json}} -->
+  
+  <!-- modification done by BASIT023 start -->
+    <div class="popupbox_wrap" *ngIf="isShowPopup">
+      <div class="popupbox" *ngIf="payfrequency" style="background:transparent !important;border: none !important;box-shadow:unset !important;">
+          <form  #addExpectPayForm="ngForm" name="form" (ngSubmit)="addExpectPayForm.form.valid" novalidate>
+              <div class="panel panel-primary popup-border">
+                <div class="panel-heading form-header">
+            <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip " style='font-size:30px'
+                aria-hidden="true"></i>  Expected Pay </h4>
+                </div>
+           
+                <div class="panel-body">
+                  <!-- {{addPayGrade | json}} -->
+       <div class="input-group  mb-10">
+                <!-- <input id="pay" type="text" class="form-control" name="text"  pattern="^[0-9]+$"> -->
+                <input type="tel" class="form-control" placeholder="Expected Pay" name="pay"
+                    [(ngModel)]="addPayGrade.pay" #pay="ngModel" pattern="^[0-9]+$" maxlength="10" minlength="1"
+                    required id="pay">
+                 <span class="input-group-addon"> &nbsp;/ &nbsp;</span>
+                 <select  id="pay_frequency"  class="form-control" name="payFrequency"  [(ngModel)]="addPayGrade.payGrade" #payFrequency="ngModel" required >
+                   <option value=''> Pay Frequency</option>
+                   <option  *ngFor="let option of payfrequencylist" value='{{option.id}}'>{{option.pay_frequency }}</option>
+  
+                  </select>
+               </div>
+      <div class="form-group mb-10">
+       <div *ngIf="pay.touched && pay.invalid " class="invalid-feedback  mb-10">
+          <div *ngIf="pay.errors.required">Expected pay is required</div>
+        </div>
+        <div *ngIf="pay.errors?.pattern" class="invalid-feedback  mb-10">
+            Expected pay is not valid.
+        </div>
+        <div *ngIf="payFrequency.touched && payFrequency.invalid " class="invalid-feedback  mb-10">
+            <div *ngIf="payFrequency.errors.required">Pay Frequency is required</div>
+          </div>
+          
+      </div>
+           
+    
+      </div>
+      <div class="panel-footer ">
+          <div class="pull-right">
+              <button type="button" class="btn btn-danger" (click)="closePopup()" ><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+             
+                  <button type="button" class="btn btn-success mlr-5" (click)="addPayGradeInfo(addPayGrade,addExpectPayForm)"
+                    [disabled]="!addExpectPayForm.valid" id="addPayGrade"> <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit</button>
+                    </div>
+            <div class="clearfix"></div>
+      </div>
+      </div>
+    </form>
+      </div>
+     
+  
+      <div class="popupbox" *ngIf="summary" style="background:transparent !important;border: none !important;box-shadow:unset !important;">
+          <form  #addsummaryForm="ngForm" name="form" (ngSubmit)="addsummaryForm.form.valid" novalidate>
+              <div class="panel panel-primary popup-border">
+                <div class="panel-heading form-header">
+            <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip " style='font-size:30px'
+                aria-hidden="true"></i> Conversation  </h4>
+                </div>
+           
+                <div class="panel-body">
+                
+        <div class="form-group  mb-10">
+          <label for="summaryUserId" class="col-sm-12">Conversation User</label>
+          <select  id="summaryUserId"  class="form-control col-sm-12" name="summaryUserId"  [(ngModel)]="addSummary.summaryUser" #summaryUserId="ngModel" required (change)="communicationUser(summaryUserId.value)" >
+              <option value=''> Communicate with</option>
+              <option  *ngFor="let option of summeryUsers" value='{{option.id}}'>{{option.name }} - {{ option.userName }}</option>
+  
+             </select>
+                
+        </div>
+
+        <!-- {{summeryUsers  | json}} -->
+
+
+      <div class="form-group mb-10">
+        <div *ngIf="summaryUserId.touched && summaryUserId.invalid " class="invalid-feedback  mb-10">
+            <div *ngIf="summaryUserId.errors.required">User is required</div>
+          </div>
+          
+      </div>
+      <div class="form-group  mb-10">
+          <label for="summary" class="col-sm-12">Message</label>
+          <textarea    class="form-control col-sm-12" name="summary" id="summary"  [(ngModel)]="addSummary.summary" #summary="ngModel" required placeholder="Conversation Message" >
+                   
+            </textarea>
+        </div>
+  
+        <div class="form-group mb-10">
+            <div *ngIf="summary.touched && summary.invalid " class="invalid-feedback  mb-10">
+                <div *ngIf="summary.errors.required">Message is required</div>
+              </div>
+              
+          </div>
+           
+    
+      </div>
+      <div class="panel-footer ">
+          <div class="pull-right">
+              <button type="button" class="btn btn-danger" (click)="closePopup()" ><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+             
+                  <button type="button" class="btn btn-success mlr-5" (click)="addSummaryInfo(addSummary,addsummaryForm)"
+                    [disabled]="!addsummaryForm.valid" id="addPayGrade"> <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit</button>
+                    </div>
+            <div class="clearfix"></div>
+      </div>
+      </div>
+    </form>
+      </div>
+  
+      <div class="popupbox" *ngIf="success">
+        <button class="close" type="button" id="closepersonalPopup" (click)="closePopup()"><span
+            class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+            class="os-icon os-icon-close"></span></button>
+        <table class="table ">
+          <tr>
+            <td></td>
+            <td class="sucess text-center">
+              <h5 style="color:#4cae4c;font-weight:bold;text-transform: capitalize">{{success}} </h5>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+       
+      </div>
+      <div class="popupbox" *ngIf="error">
+        <button class="close" type="button" id="closePersonalError" (click)="closePopup()"><span
+            class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span
+            class="os-icon os-icon-close"></span></button>
+        <br>
+        <div class="danger text-center">
+          <h5 style="color:red;font-weight:bold;text-transform: capitalize">{{error}} </h5>
+        </div>
+  
+      </div>
+      <!-- vie messages html code start -->
+      <div class="message-box"  *ngIf="viewCommunicationMsg">
+        <div style="margin-right:10px;color:#fff;" >
+             <button  type="button" id="closepersonalPopup" (click)="closePopup()" style="margin-right:10px;color:#fff;float:right;background:transparent;border:none;">
+               <i class="fa fa-times" aria-hidden="true"></i> Close </button></div>
+        
+      <div class="message">
+        <div *ngFor="let message of messageslist">
+          <div class="message-container message-left" *ngIf="message.userFlag">
+            <div class="message-content">
+              <h4><img src="{{message.profilePic}}" style="width:50px;height:50px;border-radius: 50%;border: 2px solid #cecece;">&nbsp; {{message.user}}</h4>
+              <p>{{message.msg}}</p>
+              <div style="text-align:right">{{message.timestamp |date:'medium'}}</div>
+            </div>
+          </div>
+          <div class="message-container message-right"  *ngIf="!message.userFlag">
+              <div class="message-content">
+                  <h4><img src="{{message.profilePic}}"  style="width:50px;height:50px;border-radius: 50%;border: 2px solid #cecece;">&nbsp; {{message.user}}</h4>
+                  <p>{{message.msg}}</p>
+                  <div style="text-align:right">{{message.timestamp |date:'medium'}}</div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        
+  
+      <!-- view messages code block end -->
+  
+  
+    </div>
+  
+    
+    <div class="popupbox_wrap" id="modal" *ngIf="subscribCandidate">
+      <div class="popupbox">
+        <h4 class="modal-title" id="exampleModalLabel1"><i class="fa fa-paperclip modal-icon" style='font-size:30px'
+            aria-hidden="true"></i>Add to Campaign</h4>
+        <form class="search-form" #editJobForm="ngForm">
+          <div class="modal-body">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label class="col-sm-4 col-form-label">Campaign List <span class="req-field">*</span> &nbsp;:</label>
+                <div class="col-sm-8">
+                  <ng-multiselect-dropdown name="subscribeCampaign" placeholder="Select Campaign(s)" [data]="campaigns" id="selCampaign" [(ngModel)]="selCampaign" [settings]="dropdownSettings" required>
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button type="button" class="btn btn-success mlr-5" id="addSubscriber" (click)="addSubscriber()">Submit</button>
+            <button type="button" class="btn btn-info" (click)="cancelAddSubscriber();" id="cancelAddSubscriber">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <div class="popupbox_wrap" *ngIf="isStatusShowPopup">
+      <div class="popupbox" *ngIf="this.statusMessage">
+        <button class="close" id="closeStatusPopup" type="button" (click)="closeStatusPopup()"><span class="close-label"><i
+              class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+        <table class="table table-bordered">
+          <tr>
+            <td class="success text-center">
+              <h5>Candidate added to campaign successfully!</h5>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="popupbox" *ngIf="this.statusError">
+        <button class="close" type="button" id="closeStatusError" (click)="closeStatusPopup()"><span class="close-label"><i
+              class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    
+        <table class="table table-bordered">
+          <tr>
+            <td class="danger text-center">
+              <h5>{{ statusError }} </h5>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <style>
+        /* .popupbox {
+      background:transparent !important;
+      border: none !important;
+      box-shadow:unset !important;
+      } */
+      body.color1 .modal-icon,body.color2 .modal-icon,body.color3 .modal-icon,body.color4 .modal-icon,
+      body.color5 .modal-icon,body.color6 .modal-icon,body.color6 .modal-icon
+      {
+      
+        color: #f7f5f9 !important;
+      }
+  
+      /* view messages design styles start */
+    
+    .message-box * {
+      box-sizing: border-box;
+    }
+  
+  
+  
+  .message-box {
+    background-color: #474e5d;
+    font-family: Helvetica, sans-serif;
+    height: 100vh;
+    max-width: 1200px;
+    overflow: hidden;
+    overflow-y: scroll;
+    /* text-align: center; */
+    margin: 0 auto;
+  }
+  
+  /* The actual timeline (the vertical ruler) */
+  .message {
+    position: relative;
+    max-width: 1200px;
+    margin: 30px auto 0 auto;
+     
+  }
+  
+  /* The actual timeline (the vertical ruler) */
+  .message::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+  }
+  
+  /* Container around content */
+  .message-container {
+    padding: 10px 40px;
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+  }
+  
+  /* The circles on the timeline */
+  .message-container::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: -15px;
+    background-color: white;
+    border: 4px solid #FF9F55;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  
+  /* Place the container to the left */
+  .message-left {
+    left: 0;
+  }
+  
+  /* Place the container to the right */
+  .message-right {
+    left: 50%;
+  }
+  
+  /* Add arrows to the left container (pointing right) */
+  .message-left::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    right: 30px;
+    border: medium solid white;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent white;
+  }
+  
+  /* Add arrows to the right container (pointing left) */
+  .message-right::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    left: 30px;
+    border: medium solid white;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
+  }
+  
+  /* Fix the circle for containers on the right side */
+  .message-right::after {
+    left: -16px;
+  }
+  
+  /* The actual content */
+  .message-content {
+    padding: 2px 30px;
+    background-color: white;
+    position: relative;
+    border-radius: 6px;
+  }
+  
+  /* Media queries - Responsive timeline on screens less than 600px wide */
+  @media screen and (max-width: 600px) {
+    /* Place the timelime to the left */
+    .message::after {
+    left: 31px;
+    }
+    
+    /* Full-width containers */
+    .message-container {
+    width: 100%;
+    padding-left: 70px;
+    padding-right: 25px;
+    }
+    
+    /* Make sure that all arrows are pointing leftwards */
+    .message-container::before {
+    left: 60px;
+    border: medium solid white;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
+    }
+  
+    /* Make sure all circles are at the same spot */
+    .message-left::after, .message-right::after {
+    left: 15px;
+    }
+    
+    /* Make all right containers behave like the left ones */
+    .message-right {
+    left: 0%;
+    }
+  }
+  .mlr-5 {
+      margin-left: 5px;
+      margin-right: 5px;
+      margin-top: 2px;
+      margin-bottom: 2px;
+  }
+  
+  .btn-sendmail {
+      color: #fff;
+      background-color: #e91e63;
+      border-color: #e91e63;
+  }
+  
+  .btn-paygrade {
+      color: #fff;
+      background-color: #9c27b0;
+      border-color: #9c27b0;
+  }
+  
+  .btn-mail {
+      color: #fff;
+      background-color: #ff9800;
+      border-color: #ff9800;
+  }
+  .btn-mailmsg {
+      color: #fff;
+      background-color: #795548;
+      border-color: #795548;
+  }
+  
+  .btn-onhold
+  {
+      color: #fff;
+      background-color: #ff5722;
+      border-color: #ff5722;
+  }
+  
+  .btn-champions{
+    color: #fff;
+      background-color: rgba(7, 102, 114, 1);
+      border-color:rgba(7, 102, 114, 1);
+  }
+  
+  .btn-sendmail:hover,.btn-mail:hover,.btn-mailmsg:hover,.btn-onhold:hover,.btn-champions:hover,.btn-paygrade:hover
+  {
+      color: #fff;
+      background-color: #14650b;
+      border-color: #14650b;
+  }
+      /* view messages  design style end */
+      </style>
+  
+  
+  <div class="popupbox_wrap" id="reasonModal" *ngIf="reasonPopUp">
+    <div class="popupbox"  style="background:transparent !important;border: none !important;box-shadow:unset !important;">
+      <form  #rejectReasonForm="ngForm">
+        
+   <div class="panel panel-primary popup-border">
+          <div class="panel-heading form-header">
+      <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-paperclip " style='font-size:30px'
+          aria-hidden="true"></i>  Enter Comment </h4>
+          </div>
+     
+          <div class="panel-body">
+            <!-- {{addPayGrade | json}} -->
+  
+  
+         <div class="modal-body padding-20">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-sm-12 col-form-label">Enter Comment <span class="req-field">*</span>
+                &nbsp;:</label>
+              <div class="col-sm-12">
+                <input type="text" id="candReason" class="form-control mb-10" placeholder="Enter Comment" name="candReason" [(ngModel)]="candidateDetails.comment" #candReason="ngModel" [ngClass]="{ 'is-invalid': rejectReasonForm.submitted && candReason.invalid }" required>
+                <div *ngIf="candReason.touched && candReason.invalid" class="invalid-feedback">
+                  <div *ngIf="candReason.errors.required">Please Enter Comment</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+           
+          </div>
+        </div>
+  
+  </div>
+  <div class="panel-footer ">
+    <div class="pull-right">
+      <button type="button" class="btn btn-info" (click)="closePopup();" id="cancelRejectReason">Close</button>
+      <button type="button" class="btn btn-success mlr-5" id="sendRejectReason" (click)="updateCandidateComment(rejectReasonForm)" [disabled]="!rejectReasonForm.valid">Submit</button>
+      
+              </div>
+      <div class="clearfix"></div>
+  </div>
+  </div>
+  </form>
+  </div>
+  </div>
+  
+  <div class="popupbox_wrap" *ngIf="sendmailpopup">
+  
+      <div class="popupbox"  style="background:transparent !important;border: none !important;box-shadow:unset !important;">
+        <div class="panel panel-primary popup-border">
+             
+         
+  <div class="panel-body">
+      <button class="close" type="button" id="closeAllPopup" (click)="closePopup()"><span class="close-label"><i
+        class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+      <br>
+     <h5>{{msg}}</h5>
+          
+      <!-- <div class="row text-center">
+        <a class="btn btn-success" id="closeSuccessPopup" (click)="closePopup()"> <i class="fa fa-users" aria-hidden="true"></i> Close</a>
+      </div> -->
+    </div>
+   
+    </div>
+    </div>
+  </div>
+  
+  <div class="loader_wrap" *ngIf="loading">
+      <div class="loader_inner_wrap">
+        <img src="../../../../assets/images/loginloader.gif" alt="">
+      </div>
+    </div>
+  
+  
+  
+  <!-- modification done by BASIT023 end -->

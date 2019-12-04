@@ -1,0 +1,42 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4 *ngIf="content">Terms & Conditions &nbsp;
+            <a class="btn btn-primary" routerLink="/terms&conditions/edit-terms&conditions" *ngIf="userPermissions.updateTermsConditions && content" id="editterms" >Edit</a>
+          </h4>
+          <h4 *ngIf="!content">Terms & Conditions &nbsp;
+            <a class="btn btn-primary" routerLink="/terms&conditions/add-terms&conditions" *ngIf="userPermissions.createTermsConditions && !content" id="addterms">Add</a>
+          </h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items"> 
+            <li><a routerLink='/dashboard'>Home</a></li>
+            <li>&nbsp;/&nbsp;</li>
+            <li>Terms & Condition</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header">
+              <h5>Terms & Condition</h5>
+            </div>
+            <div class="padding-20" *ngIf="content">
+              <div [innerHTML]="this.content.content"></div>
+            </div>
+            <div class="padding-20" *ngIf="!content">
+              <div>No data found</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>   
+
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+  </div>

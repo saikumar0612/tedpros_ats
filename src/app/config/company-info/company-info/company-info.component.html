@@ -1,0 +1,255 @@
+<div class="content">
+    <form #companyInfo="ngForm">
+      <div class="top-header">
+        <div class="row">
+          <div class="col-md-6 col-lg-6 heading">
+            <h4>Company Info</h4>
+          </div>
+          <div class="col-md-6 col-lg-6 breadcrumb">
+            <ul class="breadcrumb-items">
+              <li><a routerLink='/dashboard'>Home</a></li>
+              <li>/</li>
+              <li>Company Info</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  
+      <!-- {{invoiceList|json}} -->
+      <div class="element-content">
+          <div class="job-box">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="table-control float-right">
+                 
+                  <!-- if permissions *ngIf  -->
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <ngb-tabset type="pills">
+                  <ngb-tab title="Company Info" id="companyinfo">
+                    <ng-template ngbTabContent>
+                      
+                     <div class="padding-20">
+                      <div class="form-header">
+                            <h5>Company Info</h5>
+                          </div><br>
+                          <div class="form-group row">
+                            <div class="col-md-6">
+                              <label class="col-sm-4 col-form-label">Company Name <span class="req-field">*</span> </label>
+                              <div class="col-sm-8">
+                               {{compnayInfo.compay_name}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="col-sm-4 col-form-label">Primary Contact <span class="req-field">*</span> </label>
+                              <div class="col-sm-8">
+                               
+                                {{compnayInfo.primary_contact}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="col-sm-4 col-form-label">Phone <span class="req-field"></span> </label>
+                              <div class="col-sm-8">
+                                {{compnayInfo.phone}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="col-sm-4 col-form-label">Fax</label>
+                              <div class="col-sm-8">
+                               {{compnayInfo.fax}}
+                              </div>
+                            </div>
+                          </div>
+                         
+                    </div>
+                    </ng-template>
+                  </ngb-tab>
+                  
+  
+                  <ngb-tab title="Plans" id="plans">
+                    <ng-template ngbTabContent>
+                      <div class="padding-20">
+                        <div class="row">
+                          <div class="col-md-12"> 
+                            <table class="table priceTable assignCusinfo_bg plans-table">
+                              
+                              <tr>
+                                <th colspan="3">
+                                  Plan Details
+                                  <span class="pull-right" *ngIf="adminUser">
+                                    <button type="submit" class="btn btn-primary mlr-5" (click)="sendMail()">Request to Increase Plan</button>
+                                    <button type="submit" class="btn btn-info mlr-5" (click)="enterKey()">Enter access key</button>
+                                  </span>
+                                </th>
+                              </tr>
+                              
+                              <tr>
+                                <td>PlanName:&nbsp;&nbsp;<span class="badge badge-primary">&nbsp;&nbsp;
+                                  {{compnayInfo.registered_plans.planName}}
+                                    &nbsp;&nbsp;</span></td>
+                                <td>Plan price:&nbsp;&nbsp;<span class="badge badge-primary">&nbsp;&nbsp;
+                                    $ {{compnayInfo.registered_plans.planCost}} 
+                                    &nbsp;/&nbsp;One Licence</span></td>
+                                
+                                <td>Licenses:&nbsp;&nbsp;<span class="badge badge-primary">&nbsp;&nbsp;
+                                  {{compnayInfo.registered_plans.noUser}}
+                                  &nbsp;&nbsp;
+                                </span></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-tab>
+                  <ngb-tab title="Invoices" id="Invoices">
+                    <ng-template ngbTabContent>
+                      <div class="padding-20">
+                        <div class="table-responsive">
+                          <table class="table table-bordered" [mfData]="invoiceList" #mf="mfDataTable" [mfRowsOnPage]="10">
+                            <thead class="form-header">
+                              <tr>
+                                <th></th>
+              
+                                <th>Invoice Number</th>
+                                
+                                <th>Invoice Amount ($)</th>
+                                <th>Invoice Date</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            
+                              <ng-container >
+                              <tr *ngFor="let invoice of mf.data; let i = index" >
+                                <td style="text-align: center;">
+                                  <div class="activity-main-menu">
+                                    
+                                  </div>
+                                </td>
+                                <td>{{invoice.invoiceId}}</td>
+                                <td>{{invoice.invoiceAmount}}</td>
+                                <td>{{invoice.invoiceDate |date:'MM-dd-yyyy'}}</td>
+                                <td>
+                                  <a href="{{superurl}}/{{invoice.invoiceId}}"  
+                                  id="download" target="_blank" *ngIf="invoice.paymentStatus!=='completed'" >Download</a>
+                                  <a href="{{superurl!}}/{{invoice.invoiceId}}"  
+                                  id="download" target="_blank" *ngIf="invoice.paymentStatus==='completed'" >Download</a>
+                                
+                                </td>
+                              </tr>
+                              </ng-container>
+                              <ng-template #no_tmpl>
+                                <tr><td class="text-danger" colspan="4" style="text-align: center">No records Found</td></tr>
+                                </ng-template>
+                            </tbody>
+                            <tfoot>
+                              <tr>
+                                <td colspan="12">
+                                  <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                </td>
+                              </tr>
+                            </tfoot>
+                          </table>
+              
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-tab>
+                </ngb-tabset>
+              </div>
+      
+            </div>
+          </div>
+        </div>
+     
+    </form>
+  </div>
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+  </div>
+  
+    <div class="popupbox_wrap" *ngIf="popup">
+        <div class="popupbox">
+          <table class="table table-bordered">
+              <tr>
+                  <td class="success text-center" *ngIf="message != ''" >
+                   <h5>{{ message }}</h5>
+                  </td>
+              </tr>  
+              <tr>
+                  <td class="danger text-center" *ngIf="error != ''" >
+                   <h5>{{ error }}</h5>
+                  </td>
+              </tr>
+        </table>
+        <div class="row text-center">
+          <button class="btn btn-primary" (click)="closePopup()" id="closePopup">Close</button>
+        </div>
+        </div>
+        <!--popupbox-->
+      </div>
+      <!--popupbox_wrap-->
+
+  <!-- Entering key popup -->
+
+  <div class="popupbox_wrap" *ngIf="keypopup">
+      <div class="popupbox" style="width: 500px;">
+          <form class="search-form" name="form" #keyFrm="ngForm" (ngSubmit)="keyFrm.form.valid" novalidate>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label class="col-sm-5 col-form-label">Enter access key <span class="req-field">*</span> </label>
+                    <div class="col-sm-7">
+                      <input type="text" placeholder="Enter access key" name="key" class="form-control mb-10" #key="ngModel" [(ngModel)]="submitData.key" [ngClass]="{ 'is-invalid': keyFrm.submitted && key.invalid }" pattern="^[A-Z0-9]+$"  required > 
+                      <div *ngIf="key.touched && key.invalid" class="invalid-feedback">
+                          <div *ngIf="key.touched && key.errors.required">Access Key is required</div>
+                      </div>
+                      <div *ngIf="key.errors?.pattern" class="invalid-feedback">
+                         Invalid Access Key
+                        </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                      <button type="submit" class="btn btn-primary mlr-5" [disabled]="!keyFrm.valid"
+                      (click)="submitKey(keyFrm)">Submit</button>
+                      <button class="btn btn-danger mlr-5" (click)="closeKeyPopup()">Cancel</button>  
+                  </div>
+                </div>
+                </div>
+          </form>
+    </div>    
+  </div>
+<!-- increase popup message -->
+  <div class="popupbox_wrap" *ngIf="popup1">
+      <div class="popupbox" *ngIf="success">
+          <div class="row"><button class="close" type="button" (click)="closePopup1()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+        </div>
+          <p class="bg-success text-center"  >{{success }}</p>
+          
+      </div>
+      <div class="popupbox" *ngIf="keyupgrade">
+        <div class="row"></div>
+        <p class=" text-center"  >{{keyupgrade}}</p>
+        <div class="row">
+          <button class="btn btn-success mlr-5" type="button" (click)="upgrade()">Yes</button>
+          <button class="btn btn-danger mlr-5" type="button" (click)="closePopup1()">No</button>
+        </div>
+        
+    </div>
+
+    <div class="popupbox" *ngIf="errormsg">
+       <div class="row"><button class="close" type="button" (click)="closePopup1()"><span class="close-label"><i
+          class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+      </div>
+        <p class="bg-danger text-center">{{errormsg }}</p>      
+    </div>
+</div>
+
+
+
+  

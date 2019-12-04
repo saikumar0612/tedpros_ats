@@ -1,0 +1,360 @@
+    <div class="content">
+      <div class="top-header">
+        <div class="row">
+          <div class="col-md-6 col-lg-6 heading">
+            <h4>My Resume 
+              <a class="mlr-5">
+                <button type="button" class="tabledit-delete-button btn btn-success" id="showpreview"  (click)=" showpreview()">
+                  Preview
+                </button>
+              </a>
+            </h4>         
+          </div>
+          <div class="col-md-6 col-lg-6 breadcrumb">
+            <ul class="breadcrumb-items">
+              <li><a routerLink='/dashboard'>Home</a></li>
+              <li>&nbsp;/&nbsp;</li>
+              <li><a routerLink='/myInfo'>My Info</a></li>
+              <li>&nbsp;/&nbsp;</li>
+              <li>My Resume</li>          
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="element-content"> 
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12"> 
+
+              <div class="form-header" *ngIf="this.informationData">
+                <h5>Personal Information</h5>
+              </div>
+              <div class="padding-20" *ngIf="this.informationData">               
+                  <div class="form-group row">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">First Name:</label>
+                          <div class="col-sm-8">
+                            <p class="mb-10">{{ this.informationData.firstName | titlecase }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Middle Name:</label>
+                          <div class="col-sm-8">
+                            <p>{{  this.informationData.lastName | titlecase }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Last Name:</label>
+                          <div class="col-sm-8">
+                            <p>{{  this.informationData.firstName | titlecase }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Email Address:</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.informationData.email }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Contact:</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.informationData.contact  }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Driver's License Numbe:</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.informationData.driverLicenseNo  }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">LinkedIn:</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.informationData.linkedin}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">License Expiry Date:</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.informationData.licenseExpDate  }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Blood Group:</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.informationData.bloodGroup  }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Marital Status:</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.informationData.maritalStatus  }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Gender:</label>
+                          <div class="col-sm-8">
+                            <p>{{this.informationData.gender  }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Nationality:</label>
+                          <div class="col-sm-8">
+                            <p>{{ this.informationData.nationality.name }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Date of Birth:</label>
+                          <div class="col-sm-8">
+                            <p>{{this.informationData.dob  }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  </div>
+                  
+              <div class="form-header" *ngIf="this.experienceData" > 
+                <h5>Experience</h5>
+              </div>
+              <div class="padding-20"  >
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                      <thead class="form-header">
+                          <tr>
+                            <th>Employer</th>
+                            <th>Job Title</th> 
+                            <th>Supervisor Name</th>   
+                            <th>Supervisor Phone</th> 
+                            <th>Start Date</th>
+                            <th>End Date</th>   
+                            <th>Responsibilities</th>   
+                            <th>Description</th>   
+                            <th>Technical Skills</th>   
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let experience of experienceData" style="margin-bottom: 10px;">
+                            <td>{{experience.pastCompany}}</td>
+                            <td>{{experience.pastJobTitle}}</td>
+                            <td>{{experience.supervisorName}}</td>
+                            <td>{{experience.supervisorPhone}}</td>
+
+
+                            <td>
+                              <span *ngIf="experience.fromDate == '0000-00-00'"></span>
+                              <span *ngIf="experience.fromDate != '0000-00-00'">{{experience.fromDate | date: 'MM-dd-yyyy'}}</span>
+                            </td>
+                            <td><span *ngIf="experience.isCurrent=='1'">Still Working</span>
+                              <span *ngIf="experience.isCurrent=='0'">{{experience.toDate | date: 'MM-dd-yyyy'}}</span>
+                            
+                            </td>
+                            <td>{{experience.responsibility}}</td>
+                            <td>{{experience.comment}}</td>
+                            
+                            <td>{{experience.skills}}</td>
+
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div> 
+                
+
+               <div class="form-header"  *ngIf="this.educationData" >
+                <h5>Education Information:</h5>
+              </div>
+
+              <div class="padding-20">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead class="form-header">
+                          <tr>
+                            <th>Qualification</th>
+                            <th>Institution Name</th>    
+                            <th>Year</th>    
+                            <th>GPA Score</th>
+                            <th>Specialization</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let education of educationData"  style="margin-bottom: 10px;">
+                              <td>{{education.educationname | titlecase}}</td>
+                              <td>{{education.institute | titlecase}}</td>
+                              <td>
+                                <span *ngIf="education.isCurrent=='1'">Studying</span>
+                                <span *ngIf="education.isCurrent=='0'">{{education.year }}</span>
+                              </td>
+                              <td>{{education.gpaScore}}</td>
+                              <td>{{education.specialization}}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="form-header" *ngIf="this.skillsData">
+                <h5>Skills:</h5>
+              </div>
+
+              <div class="padding-20"> 
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead class="form-header">
+                      <tr>
+                        <th>Skill</th>
+                        <th>Other Skill</th>
+                        <th>Months of Experience</th>
+                        <th>Comments</th>
+                        <th>isPrimary</th> 
+                        <th>Last Used</th>       
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let skillInfo of skillsData" style="margin-bottom: 10px;">
+                          <td>{{skillInfo.name}}</td>
+                          <td>{{skillInfo.otherSkill}}</td>
+                          <td>{{skillInfo.experience}}</td>
+                          <td>{{skillInfo.comments}}</td>
+                          <td>
+                            <span *ngIf="skillInfo.isPrimary=='1'" class="badge badge-primary"> Yes </span>
+                            <span *ngIf="skillInfo.isPrimary=='0'" class="badge badge-danger"> No </span>
+                          </td>
+                          <td>{{skillInfo.lastUsed}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+            </div>
+
+              <div class="form-header" *ngIf="this.skillsData">
+                <h5>Licenses:</h5>
+              </div>
+
+              <div class="padding-20"> 
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead class="form-header">
+                    <tr>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>License Number</th>
+                      <th>Issued Date</th>
+                      <th>Expiry Date</th>              
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let licenseinfo of licenseData" style="margin-bottom: 10px;">
+                        <td>{{licenseinfo.type}}</td>
+                        <td>{{licenseinfo.name}}</td>
+                        <td>{{licenseinfo.number}}</td>
+                        <td>
+                            <span *ngIf="licenseinfo.issued == '0000-00-00'"></span>
+                            <span *ngIf="licenseinfo.issued != '0000-00-00'">{{licenseinfo.issued | date: 'MM-dd-yyyy'}}</span>
+                          </td>
+                        <td>
+                          <span *ngIf="licenseinfo.expiry == '0000-00-00'"></span>
+                          <span *ngIf="licenseinfo.expiry != '0000-00-00'">{{licenseinfo.expiry | date: 'MM-dd-yyyy'}}</span>
+                        </td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+
+               <div class="form-header" *ngIf="this.contactData" >  
+                <h5>Contact Details:</h5>
+              </div>
+
+              <div class="padding-20" *ngIf="this.contactData" >
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">Address Line 1:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.addressLine1}}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">Address Line 2:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.addressLine2}}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">Street:</label>
+                      <div class="col-sm-8">
+                          <p>{{this.contactData.street}}</p>
+                      </div>
+                    </div>  
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">City:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.city.name}}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">State/Province:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.state.name}}</p>
+                      </div>
+                    </div>  
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">Zip/Postal Code:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.zip}}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">Country:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.country.name}}</p>
+                      </div>
+                    </div>  
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">Home Telephone:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.homeTelephone}}</p>
+                      </div>
+                    </div> 
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">Work Telephone:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.workTelephone}}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label mb-10">Other Email Address:</label>
+                      <div class="col-sm-8">
+                        <p>{{this.contactData.otherEmail}}</p>
+                      </div>
+                    </div>  
+                  </div>
+                </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popupbox" *ngIf="this.preview">
+        <button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+      
+      <table  class="table table-bordered" >
+          
+        <tr >
+          <td >
+              <a  routerLink="/myInfo/view-myresume" id="preview1" title="preview 1"> 
+           <img src="assets/images/late2.png" alt="resume1.png" style="height:100px;width:70px; display:block; margin: auto;"></a>
+          </td>
+          <td >
+              <a  routerLink="/myInfo/view-myresume-1" id="preview2" title="preview 2">
+              <img src="assets/images/late3.png" alt="resume2.png" style="height:100px;width:70px; display:block; margin: auto;"></a>
+          </td>
+          <td >
+              <a  routerLink="/myInfo/view-myresume-2" id="preview3" title="preview 2">
+              <img src="assets/images/late1.png" alt="resume3.png" style="height:100px;width:70px; display:block; margin: auto;"></a>
+          </td>
+        </tr>
+      </table>
+    </div>

@@ -1,0 +1,202 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>  {{compnayInfo.compay_name}} Number Formats </h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items">
+            <li><a routerLink='/dashboard'>Home</a>
+            </li>
+            <li>&nbsp;/&nbsp;</li>
+            <li>{{compnayInfo.compay_name}}Number Formats</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form class="search-form" #f="ngForm" name="form" (ngSubmit)="f.form.valid" novalidate>
+              <div class="form-header">
+                <h5> {{compnayInfo.compay_name}} & Employee Prefix</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <!-- saikumar 13/08/2019 added the validation for input types starts here-->
+                    <label class="col-sm-6 col-form-label">{{compnayInfo.compay_name}} Employee Prefix<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter User Prefix" value="{{ prefixInfo.userPrefixData }}" name="userPrefixData" minlength="1" maxlength="3" [(ngModel)]="prefixInfo.userPrefixData" #userPrefixData="ngModel" [ngClass]="{ 'is-invalid': f.submitted && userPrefixData.invalid }" required pattern="^([a-zA-Z])*$" id="userprefix">
+                      <div *ngIf="userPrefixData.errors?.pattern" class="invalid-feedback">Employee Prefix is not valid.</div>
+                      <div *ngIf="userPrefixData.errors?.minlength " class="invalid-feedback">Enter minimum 1 & maximum 3 characters.</div>
+                      <div *ngIf="userPrefixData.touched && userPrefixData.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="userPrefixData.errors.required">Employee Prefix is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">{{compnayInfo.compay_name}} Employee Number<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter User Number" value="{{ prefixInfo.userPrefixNumber }}" name="userPrefixNumber" [(ngModel)]="prefixInfo.userPrefixNumber" #userPrefixNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && userPrefixNumber.invalid }" maxlength="5" required pattern="^([0-9-])*$" id="usernumber">
+                      <div *ngIf="userPrefixNumber.errors?.pattern" class="invalid-feedback">User Number Not Valid.</div>
+                      <div *ngIf="userPrefixNumber.touched && userPrefixNumber.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="userPrefixNumber.errors.required">User Number Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Client Company Prefix<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Client Company Prefix" value="{{ prefixInfo.companyPrefixData }}" name="companyPrefixData" [(ngModel)]="prefixInfo.companyPrefixData" #companyPrefixData="ngModel" minlength="1" maxlength="3" [ngClass]="{ 'is-invalid': f.submitted && companyPrefixData.invalid }" required pattern="^([a-zA-Z])*$" id="companyprefix">
+                      <div *ngIf="companyPrefixData.errors?.pattern" class="invalid-feedback">Client Company Data Not Valid.</div>
+                      <div *ngIf="companyPrefixData.errors?.minlength " class="invalid-feedback">Enter minimum 1 & maximum 3 characters.</div>
+                      <div *ngIf="companyPrefixData.touched && companyPrefixData.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="companyPrefixData.errors.required">Client Company Data Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Client Company Number<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Client Company Number" name="companyPrefixNumber" value="{{prefixInfo.companyPrefixNumber }}" [(ngModel)]="prefixInfo.companyPrefixNumber" #companyPrefixNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && companyPrefixNumber.invalid }" maxlength="5" required pattern="^([0-9])*$" id="companyprefixNumber">
+                      <div *ngIf="companyPrefixNumber.errors?.pattern" class="invalid-feedback">Client Company Number Not Valid.</div>
+                      <div *ngIf="companyPrefixNumber.touched && companyPrefixNumber.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="companyPrefixNumber.errors.required">Client Company Number Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Vendor Company Prefix<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Vendor Company Prefix" value="{{ prefixInfo.vendorPrefData }}" name="vendorPrefData" [(ngModel)]="prefixInfo.vendorPrefData" #vendorPrefData="ngModel" minlength="1" maxlength="3" [ngClass]="{ 'is-invalid': f.submitted && vendorPrefData.invalid }" required pattern="^([a-zA-Z])*$" id="vendorcompanyprefix">
+                      <div *ngIf="vendorPrefData.errors?.pattern" class="invalid-feedback">Vendor Company Data Not Valid.</div>
+                      <div *ngIf="vendorPrefData.errors?.minlength " class="invalid-feedback">Enter minimum 1 & maximum 3 characters.</div>
+                      <div *ngIf="vendorPrefData.touched && vendorPrefData.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="vendorPrefData.errors.required">Vendor Company Data Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Vendor Company Number<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Vendor Company Number" value="{{ prefixInfo.vendorPrefixNumber }}" name="vendorPrefixNumber" [(ngModel)]="prefixInfo.vendorPrefixNumber" #vendorPrefixNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && vendorPrefixNumber.invalid }" maxlength="5" required pattern="^([0-9])*$" id="vendorcompanyprefixNumber">
+                      <div *ngIf="vendorPrefixNumber.errors?.pattern" class="invalid-feedback">Vendor Company Number Not Valid.</div>
+                      <div *ngIf="vendorPrefixNumber.touched && vendorPrefixNumber.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="vendorPrefixNumber.errors.required">Vendor Company Number Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-6   col-form-label">Client Employee Prefix<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Client Employee Prefix" value="{{ prefixInfo.clientPrefix }}" name="clientPrefix" minlength="1" maxlength="3" [(ngModel)]="prefixInfo.clientPrefix" pattern="^([a-zA-Z])*$" #clientPrefix="ngModel" [ngClass]="{ 'is-invalid': f.submitted && clientPrefix.invalid }" required id="userPrefix">
+                      <div *ngIf="clientPrefix.errors?.pattern" class="invalid-feedback">Client Employee Data Not Valid.</div>
+                      <div *ngIf="clientPrefix.errors?.minlength " class="invalid-feedback">Enter minimum 1 & maximum 3 characters.</div>
+                      <div *ngIf="clientPrefix.touched && clientPrefix.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="clientPrefix.errors.required">Client Employee Data Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-6   col-form-label">Client Employee Number<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Client Employee Number" value="{{ prefixInfo.clientNumber}}" name="clientNumber" [(ngModel)]="prefixInfo.clientNumber" pattern="^([0-9])*$" #clientNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && clientNumber.invalid }" maxlength="5" required id="userPrefixNumber">
+                      <div *ngIf="clientNumber.errors?.pattern" class="invalid-feedback">Client Employee Number Not Valid.</div>
+                      <div *ngIf="clientNumber.touched && clientNumber.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="clientNumber.errors.required">Client Employee Number Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Vendor Employee Prefix<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Vendor Employee Prefix" value="{{ prefixInfo.vendorPrefixData }}" name="vendorPrefixData" [(ngModel)]="prefixInfo.vendorPrefixData" #vendorPrefixData="ngModel" minlength="1" maxlength="3" [ngClass]="{ 'is-invalid': f.submitted && vendorPrefixData.invalid }" required pattern="^([a-zA-Z])*$" id="vendorEmployee">
+                      <div *ngIf="vendorPrefixData.errors?.pattern" class="invalid-feedback">Vendor Employee Data Not Valid.</div>
+                      <div *ngIf="vendorPrefixData.errors?.minlength " class="invalid-feedback">Enter minimum 1 & maximum 3 characters.</div>
+                      <div *ngIf="vendorPrefixData.touched && vendorPrefixData.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="vendorPrefixData.errors.required">Vendor Employee Data Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Vendor Employee Number<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Vendor Employee Number" value="{{ prefixInfo.vendorNumber }}" name="vendorNumber" [(ngModel)]="prefixInfo.vendorNumber" #vendorNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && vendorNumber.invalid }" maxlength="5" required pattern="^([0-9])*$" id="vendorEmployeeNumber">
+                      <div *ngIf="vendorNumber.errors?.pattern" class="invalid-feedback">Vendor Employee Number Not Valid.</div>
+                      <div *ngIf="vendorNumber.touched && vendorNumber.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="vendorNumber.errors.required">Vendor Employee Number Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Invoice Prefix<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Invoice Prefix" value="{{ prefixInfo.inviocePrefix }}" name="inviocePrefix" minlength="1" maxlength="3" [(ngModel)]="prefixInfo.inviocePrefix" #inviocePrefix="ngModel" [ngClass]="{ 'is-invalid': f.submitted && inviocePrefix.invalid }" required pattern="^([a-zA-Z])*$" id="invoicePrefix">
+                      <div *ngIf="inviocePrefix.errors?.pattern" class="invalid-feedback">Invioce Prefix Data Not Valid.</div>
+                      <div *ngIf="inviocePrefix.errors?.minlength " class="invalid-feedback">Enter minimum 1 & maximum 3 characters.</div>
+                      <div *ngIf="inviocePrefix.touched && inviocePrefix.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="inviocePrefix.errors.required">Invioce Prefix Data Is Required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-6 col-form-label">Invoice Number<span class="req-field">*</span> &nbsp;:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control mb-10" placeholder="Enter Invoice Number" value="{{ prefixInfo.invoicenumber }}" name="invoicenumber" [(ngModel)]="prefixInfo.invoicenumber" #invoicenumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && invoicenumber.invalid }" maxlength="5" required pattern="^([0-9])*$" id="invoicePrefixNumber">
+                      <div *ngIf="invoicenumber.errors?.pattern" class="invalid-feedback">Invoice number Not Valid.</div>
+                      <div *ngIf="invoicenumber.touched && invoicenumber.invalid" class="invalid-feedback  mb-10">
+                        <div *ngIf="invoicenumber.errors.required">Invoice number Is Required</div>
+                      </div>
+                      <!-- saikumar 13/08/2019 added the validation for input types ended here-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="padding-20">
+                <div class="row">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-success mlr-5" [disabled]="!f.valid" (click)="addPrefix()" id="submit">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap">
+      <img src="../../../../assets/images/loginloader.gif" alt="">
+    </div>
+  </div>
+  <div class="popupbox_wrap" *ngIf="isShowPopup">
+    <div class="popupbox">
+      <table class="table table-bordered">
+        <tr *ngIf="this.message">
+          <td class="success text-center" >
+            <h5>Company formats updated successfully!</h5>
+          </td>
+        </tr>
+        <tr  *ngIf="this.errorStatus">
+          <td class="danger text-center">
+            <h5>{{errorStatus}}</h5>
+          </td>
+        </tr>
+      </table>
+      <div class="row text-center">
+        <button class="btn btn-primary" (click)="closePopup()" id="closePopup"><i class="fa fa-close" aria-hidden="true"></i> Close</button>&nbsp;&nbsp;</div>
+    </div>
+  </div>

@@ -1,0 +1,145 @@
+<div class="content">
+        <div class="top-header">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 heading">
+                    <h4>Edit Offer Letter &nbsp;</h4>
+                </div>
+                <div class="col-md-6 col-lg-6 breadcrumb">
+                    <ul class="breadcrumb-items">
+                        <li><a routerLink='/dashboard'>Home</a></li>
+                        <li>&nbsp;/&nbsp;</li>
+                        <li><a (click)="cancel()">Offer Letters</a></li>
+                        <li>&nbsp;/&nbsp;</li>
+                        <li><a>Edit Offer Letter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="element-content">
+            <div class="job-box">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <form role="form" #myForm="ngForm" accept-charset="UTF-8" novalidate>
+                            <div class="form-header">
+                                <h5>Edit Offer Letter for {{ data.user.name | titlecase }}</h5>
+                            </div>
+                            <div class="padding-20">
+                                <div class="form-group row">
+                                    <ckeditor #myckeditor="ngModel" name="myckeditor" [(ngModel)]="data.content" [config]="config" [readonly]="false" debounce="500" required></ckeditor>
+                                </div>
+                                <div class="form-group row mt-10">
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-primary mlr-5" id="editTerms" (click)="generateOfferLetter()">Submit</button>
+                                        <button type="cancle" class="btn btn-danger mlr-5" id="cancel" (click)="cancel()">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loader_wrap" *ngIf="loading">
+        <div class="loader_inner_wrap">
+            <img src="../../../../assets/images/loginloader.gif" alt="">
+        </div>
+    </div>
+    <div class="popupbox_wrap" *ngIf="imagePop">
+        <div class="popupbox">
+            <div class="row">
+                <button class="close" type="button" (click)="imagepopup()" id="close"><span class="close-label"><i class="fa fa-times"
+                        aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+                </button>
+            </div>
+            <p class="bg-success" *ngIf="imagePopSuccess">Signature Uploaded successfully</p>
+            <div *ngIf="error">
+                <p class="bg-danger">>{{error}}</p>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-danger mlr-5" id="tryagain" (click)="tryagain()">Try again!</button>
+                    </div>
+                </div>
+            </div>
+            <!--row-->
+        </div>
+        <!--popupbox-->
+    </div>
+    <!--popupbox_wrap-->
+
+    <div class="popupbox_wrap" *ngIf="offerData">
+        <div class="popupbox" *ngIf="error">
+            <div class="row">
+                <button class="close" type="button" (click)="close()" id="close"><span class="close-label"><i class="fa fa-times"
+                        aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+                </button>
+            </div>
+            <p class="bg-danger">{{error}}</p>
+        </div>
+        <div class="popupbox" *ngIf="responseStatus">
+            <p class="bg-success">Offer Letter Generated Successfully! Upload your signature</p>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary mlr-5" id="uploadSignature" (click)="uploadSignature()">Upload</button>
+                </div>
+            </div>
+        </div>
+        <div class="popupbox" *ngIf="uploadhrsignature">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <ng-container *ngIf="!digitalKeystatus; else noData">
+                        <div *ngIf="signaturePad">
+                            <ng-signature-pad 
+                                doneButtonText="Upload Signature"
+                                format="base64"
+                                (done)="showImage($event)"
+                            >
+                            </ng-signature-pad>
+                            <div class="form-group row mt-10">
+                                <div class="col-sm-12 text-center">
+                                    <button type="submit" class="btn btn-primary mlr-5" id="uploadImage" (click)="uploadImage()">Upload Image</button>
+                                    <button type="submit" class="btn btn-info mlr-5" id="goBack" (click)="goBack()">Back</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!signaturePad">
+                            <form class="search-form">
+                                <div class="col-sm-12">
+                                    <input type="file" (change)="fileChangeEvent($event)" name="image1" accept="image/png, image/jpeg, image/jpg" class="form-control mb-10" style="cursor: pointer;font-size: 14px;width: 80%;opacity:1;float:left;" required>
+                                </div>
+                                <div class="col-sm-12">
+                                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" format="png" outputType="both" (imageCropped)="imageCropped($event)"></image-cropper>
+                                </div>
+                                <div class="form-group row mt-10">
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-primary mlr-5" id="addimage" (click)="addimage()">Upload Image</button>
+                                        <button type="submit" class="btn btn-info mlr-5" id="goBack" (click)="goBack()">Back</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </ng-container>
+                    <ng-template #noData>
+                        <div class="col-md-6 col-md-offset-3">
+                            <img src="{{getdigitalKey.data.digitalKey}}" style="width:100%; margin: auto;" alt="Digital Signature" />
+                        </div>
+                        
+                        <div class="form-group row">
+                            <div class="col-sm-12 text-center">
+                                <button type="submit" class="btn btn-info mlr-5" id="uploadSignature" (click)="editSignature()">Edit Signature</button>
+                                <button type="submit" class="btn btn-primary mlr-5" id="continue" (click)="continue()">Continue</button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="popupbox" *ngIf="isSuccess">
+            <p class="bg-success">Offer Letter Submitted Successfully!</p>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary mlr-5" id="viewOfferLetter" [routerLink]="['/usersView/view-offerLetter', data.user.userId, data.offerLetterTypeId]">View Offer Letter</button>
+                </div>
+            </div>
+        </div>
+    </div>

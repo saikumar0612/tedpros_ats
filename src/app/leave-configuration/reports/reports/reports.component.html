@@ -1,0 +1,307 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Leave Entitlements and Usage Report</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li> Usage Report</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form #addReportFrm="ngForm" name="form" (ngSubmit)="addReportFrm.form.valid" novalidate>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label">Search Type <span class="req-field">*</span></label>
+                <div class="col-sm-8">
+                  <select class="form-control mb-10" id="searchType" name="type" #type="ngModel" [(ngModel)]="searchData.type"
+                    [ngClass]="{ 'is-invalid': addReportFrm.submitted && type.invalid }" required
+                    (change)="onchange(type.value)">
+                    <option [ngValue]="undefined" disabled selected>Choose a Type</option>
+                    <option value="leavetype">Leave Type</option>
+                    <option value="employee">Employee</option>
+                  </select>
+                  <div *ngIf="type.touched && type.invalid" class="invalid-feedback">
+                    <div *ngIf="type.errors.required">Select Type First</div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="showform">
+                <div *ngIf="showLeaveForm"> 
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Leave Type <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="leavetype" name="leaveType" #leaveType="ngModel"
+                        [(ngModel)]="searchData.leaveType" required
+                        [ngClass]="{ 'is-invalid': addReportFrm.submitted && leaveType.invalid }">
+                        <option [ngValue]="undefined" disabled selected>Select a type</option>
+                        <option *ngFor="let leave of leaveList" value="{{leave.id}}">{{leave.name}}</option>
+                      </select>
+                      <div *ngIf="leaveType.touched && leaveType.invalid" class="invalid-feedback">
+                        <div *ngIf="leaveType.touched && leaveType.errors.required">Leave type is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Leave Period</label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="date" name="from" #from="ngModel" [(ngModel)]="searchData.from"
+                      [ngClass]="{ 'is-invalid': addReportFrm.submitted && from.invalid }">
+                        <option value="" selected>All</option>
+                        <option *ngFor="let leave of leavePeriod" value="{{leave.id}}">
+                          {{leave.startDate}} to
+                          {{leave.endDate}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Title <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="jobtitle" name="title" #title="ngModel" [(ngModel)]="searchData.title"
+                      [ngClass]="{ 'is-invalid': addReportFrm.submitted && title.invalid }">
+                        <option value="" selected>All</option>
+                        <option *ngFor="let title of jobTitles" value="{{title.id}}">{{title.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Location<span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="license" name="license" #license="ngModel"
+                        [(ngModel)]="searchData.branch" value=null
+                        [ngClass]="{ 'is-invalid': addReportFrm.submitted && license.invalid }">
+                        <option value="" selected>All</option>
+                        <option *ngFor="let branch of branches" value="{{branch.id}}">{{branch.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div *ngIf="showEmployeeForm">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Employee <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="employee" name="employee" #employee="ngModel"
+                        [(ngModel)]="searchData.employee" required
+                        [ngClass]="{ 'is-invalid': addReportFrm.submitted && employee.invalid }">
+                        <option *ngFor="let user of users" value="{{user.id}}">{{user.first_name}} {{user.last_name}}
+                        </option>
+                      </select>
+
+                      <div *ngIf="employee.touched && employee.invalid" class="invalid-feedback">
+                        <div *ngIf="employee.touched && employee.errors.required">Please select a employee</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">From </label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="datePeriod" name="from" #from="ngModel" [(ngModel)]="searchData.from"
+                      [ngClass]="{ 'is-invalid': addReportFrm.submitted && from.invalid }">
+                        <option value="" selected>All</option>
+                        <option *ngFor="let leave of leavePeriod" value="{{leave.startDate}}-{{leave.endDate}}">
+                          {{leave.startDate}} to
+                          {{leave.endDate}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <button type="submit" class="btn btn-primary mlr-5" id="viewReports" (click)="view()"
+                [disabled]="!addReportFrm.valid">View</button>
+              <button type="reset" (click)="resetData(addReportFrm)" id="resetData" class="btn btn-info mlr-5">Reset</button>
+              <p style="color:#e90000">{{ error6 }}</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="element-content" *ngIf="showEmployeeForm && getResult">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Leave Type</th>
+                  <th>Leave Entitlements (Days)</th>
+                  <th>Leave Pending Approval (Days)</th>
+                  <th>Leave Scheduled (Days) </th>
+                  <th>Leave Taken (Days)</th>
+                  <th>Leave Balance (Days)</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="!filterData">
+                <tr>
+                  <td colspan="6">
+                    No Records Found
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="filterData">
+                  <tr>
+                      <th style="width: 3%; text-align: center;"></th>
+                      <th>
+                        <input type="text" placeholder="Search Leave Type" (keyup)="search($event.target.value,'leave_type')" id="searchLeavetype"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Days" id="searchNumberOfDays"
+                          (keyup)="search($event.target.value,'days')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Pending Days" id="SearchPendingDays"
+                          (keyup)="search($event.target.value,'leave_pending')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search scheduled Days" (keyup)="search($event.target.value,'leave_scheduled')" id="searchLeaveScheduled"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                          <input type="text" placeholder="Search Taken Days" (keyup)="search($event.target.value,'leave_taken')" id="searchleaveTacken"
+                            class="search-filter form-control">
+                      </th>
+                      <th>
+                          <input type="text" placeholder="Search Balance Days" (keyup)="search($event.target.value,'leave_balance')" id="searchbalanceDays"
+                            class="search-filter form-control">
+                      </th>
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let report of filterData; let i = index">
+                  <td style="text-align: center;">
+                      <p>{{ i+1 }}</p>
+                  </td>
+                  <td>{{report.leave_type}}</td>
+                  <td>{{report.days}}</td>
+                  <td>{{report.leave_pending}}</td>
+                  <td>{{report.leave_scheduled}}</td>
+                  <td>{{report.leave_taken}}</td>
+                  <td>{{report.leave_balance}}</td>
+                </tr>
+              </ng-container>
+              <ng-template #noData> 
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+              <tfoot>
+                  <tr>
+                    <td colspan="12">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="element-content" *ngIf="showLeaveForm && getResult">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Employee name</th>
+                  <th>Leave Entitlements (Days)</th>
+                  <th>Leave Pending Approval (Days)</th>
+                  <th>Leave Scheduled (Days) </th>
+                  <th>Leave Taken (Days)</th>
+                  <th>Leave Balance (Days)</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="!filterData">
+                <tr>
+                  <td colspan="6">
+                    No Records Found
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="filterData">
+                  <tr>
+                      <th style="width: 3%; text-align: center;"></th>
+                      <th>
+                        <input type="text" placeholder="Search Employee Name" (keyup)="search($event.target.value,'user')" id="searchReportUser"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Days" id="searchNumberOfDays"
+                          (keyup)="search($event.target.value,'days')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Pending Days" id="SearchPendingDays"
+                          (keyup)="search($event.target.value,'leave_pending')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search scheduled Days" (keyup)="search($event.target.value,'leave_scheduled')" id="searchLeaveScheduled"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                          <input type="text" placeholder="Search Leave Taken Days" (keyup)="search($event.target.value,'leave_taken')" id="searchleaveTacken"
+                            class="search-filter form-control">
+                      </th>
+                      <th>
+                          <input type="text" placeholder="Search Balance Days" (keyup)="search($event.target.value,'leave_balance')" id="searchbalanceDays"
+                            class="search-filter form-control">
+                      </th>
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let report of filterData; let i = index">
+                  <td style="text-align: center;">
+                      <p>{{ i+1 }}</p>
+                  </td>
+                  <td>{{report.user}}</td>
+                  <td>{{report.days}}</td>
+                  <td>{{report.leave_pending}}</td>
+                  <td>{{report.leave_scheduled}}</td>
+                  <td>{{report.leave_taken}}</td>
+                  <td>{{report.leave_balance}}</td> 
+                </tr>
+              </ng-container>
+              <ng-template #noData> 
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+              <tfoot>
+                  <tr>
+                    <td colspan="12">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

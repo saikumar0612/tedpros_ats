@@ -1,0 +1,171 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>New Timesheet</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li>Home</li>
+          <li>/&nbsp;</li>
+          <li>My Timesheet</li>
+          <li>/&nbsp;</li>
+          <li>Edit Timesheet</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #editSheetFrm="ngForm" name="form" (ngSubmit)="editSheetFrm.form.valid"
+            novalidate>
+            <div class="form-header">
+              <h5>Edit Timesheet</h5>
+            </div>
+            <form #editSheetFrm="ngForm" name="form" (ngSubmit)="editSheetFrm.form.valid" novalidate>
+              <input type="hidden" id="id" name="id" [(ngModel)]="timesheetData.id" #id="ngModel" value=null>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-5">
+                    <label class="col-sm-4 col-form-label">Project Name<span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="projectId" name="projectId" #projectId [(ngModel)]="timesheetData.projectId"
+                        #projectId="ngModel" (change)="getActivities(projectId.value)" required>
+
+                        <option *ngFor="let proj of projects; let i = index" value="{{proj.id}}">{{proj.name}}</option>
+                      </select>
+                      <div *ngIf="projectId.touched && projectId.invalid" class="invalid-feedback">
+                        <div *ngIf="projectId.touched && projectId.errors.required">Project Name is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <label class="col-sm-4 col-form-label">Activity Date<span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="date" class="form-control mb-10" id="date" #date name="date" [(ngModel)]="timesheetData.date"
+                        #date="ngModel" [ngClass]="{ 'is-invalid': editSheetFrm.submitted && date.invalid }" required
+                        value="{{date}}" [readonly]="true">
+                      <div *ngIf="date.touched && date.invalid" class="invalid-feedback">
+                        <div *ngIf="date.errors.required">Activity Date is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-5">
+                    <label class="col-sm-4 col-form-label">Activity Name<span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="activityName" name="activityId" #activityId [(ngModel)]="timesheetData.activityId"
+                        #activityId="ngModel" required>
+
+                        <option *ngFor="let activity of activities" value="{{activity.id}}">{{activity.name}}</option>
+                      </select>
+                      <div *ngIf="activityId.touched && activityId.invalid" class="invalid-feedback">
+                        <div *ngIf="activityId.touched && activityId.errors.required">Activity Name is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <label class="col-sm-4 col-form-label">Hours <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control mb-10" id="hours" placeholder="Enter Hrs" name="hours" [(ngModel)]="timesheetData.hours"
+                        #hours="ngModel" [ngClass]="{ 'is-invalid': editSheetFrm.submitted && hours.invalid }" required>
+                      <div *ngIf="hours.touched && hours.invalid" class="invalid-feedback">
+                        <div *ngIf="hours.touched && hours.errors.required">Actual (hrs) is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-10">
+                    <label class="col-sm-2 col-form-label">Description <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <textarea placeholder="Enter Description" id="description" class="form-control mb-10" name="description"
+                        [(ngModel)]="timesheetData.description" #description="ngModel" [ngClass]="{ 'is-invalid': editSheetFrm.submitted && description.invalid }"
+                        required></textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2">
+                    <div class="col-sm-12">
+                      <button type="button" id="addEditTimesheet" class="btn btn-success mlr-5" [disabled]="!editSheetFrm.valid" (click)="editTimesheet(id.value,projectId.value,activityId.value,date.value,hours.value,description.value,editSheetFrm)">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="table-responsive col-md-8 col-md-offset-2">
+              <div class="row">
+                <div class="col-sm-10">
+                  <p style="color: red;font-weight: bold;">{{ error }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-responsive col-md-8 col-md-offset-2">
+              <table class="table table-bordered">
+                <thead class="form-header">
+                  <tr>
+                    <th>Project Name</th>
+                    <th>Activity Name</th>
+                    <th>Activity Date</th>
+                    <th>Actual(hrs)</th>
+                    <th>Description</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let contact of timesheets" style="margin-bottom: 10px;">
+                    <td>{{contact.project.name}}</td>
+                    <td>{{contact.activity.name}}</td>
+                    <td>{{contact.date}}</td>
+                    <td>{{contact.hours}}</td>
+                    <td>{{contact.description}}</td>
+                    <td><button (click)="editTimeData(contact)" id="editTimeData">Edit</button><button (click)="removeTimesheet(contact)">Delete</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="padding-20">
+              <div class="row">
+                <div class="col-sm-10">
+                  <button type="button" class="btn btn-success mlr-5" id="submitEditsheet" [disabled]="timeBoolean" (click)="editSheet()">Submit</button>
+                  <button type="reset" class="btn btn-info mlr-5" id="reset">Reset</button>
+                  <button class="btn btn-danger mlr-5" (click)="cancel()" id="cancel">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+    <button class="close" type="button" id="closPopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+
+    <table class="table table-bordered">
+      <tr>
+        <td class="success text-center">
+          <h5>{{ timesheetResponse.message }}</h5>
+        </td>
+      </tr>
+    </table>
+    <div class="row text-center">
+      <button class="btn btn-primary" id="closePopupPrev" (click)="closePopupPrev()" *ngIf="timesheetResponse.previousDate"><i class="fa fa-chevron-left"
+          aria-hidden="true"></i> Previous Day</button>&nbsp;&nbsp;
+      <button class="btn btn-primary" id="closePopupNext" (click)="closePopupNext()" *ngIf="timesheetResponse.nextDate"> Next Day<i class="fa fa-chevron-right"
+          aria-hidden="true"></i></button>&nbsp;&nbsp;
+
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+

@@ -1,0 +1,132 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Edit Holidays</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/</li>
+          <li>&nbsp;<a routerLink='/holidays'>Holidays</a></li>
+          <li>&nbsp;/</li>
+          <li>Edit-Holidays</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addHolidayFrm="ngForm" name="form" (ngSubmit)="addHolidayFrm.form.valid"
+            novalidate>
+            <div class="form-header">
+              <h5>Edit Holidays</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Name <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" placeholder="Enter Name" name="name"
+                    [(ngModel)]="holidayData.name" #name="ngModel" pattern="^([a-zA-Z0-9+]+[\s'\-])*[a-zA-Z0-9+]+$" id="name"
+                      [ngClass]="{ 'is-invalid': addHolidayFrm.submitted && name.invalid }" required>
+                    <div *ngIf="name.touched && name.invalid" class="invalid-feedback">
+                      <div *ngIf="name.touched && name.errors.required">Name is required</div>
+                    </div>
+                    <div *ngIf="name.errors?.pattern" class="invalid-feedback">
+                      Enter a valid Name
+                    </div>
+                  </div>
+                </div>
+                 <!-- adding date pickers by suresh 08-10-2019 start -->
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Date <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <!-- <input type="date" class="form-control mb-10" name="dateAdded" [(ngModel)]="holidayData.dateAdded"
+                      #dateAdded="ngModel" [ngClass]="{ 'is-invalid': addHolidayFrm.submitted && dateAdded.invalid }"
+                      required id="date" > -->
+                      <input class="form-control mb-10"  placeholder="MM/DD/YYYY" id="date" [owlDateTimeTrigger]="dateAdded1" [owlDateTime]="dateAdded1" name="dateAdded" [(ngModel)]="holidayData.dateAdded"  #dateAdded="ngModel" [ngClass]="{ 'is-invalid': addHolidayFrm.submitted && dateAdded.invalid }" >
+                      <owl-date-time [pickerType]="'calendar'" #dateAdded1></owl-date-time>
+                    <div *ngIf="dateAdded.touched && dateAdded.invalid" class="invalid-feedback">
+                      <div *ngIf="dateAdded.touched && dateAdded.errors.required">Date is required</div>
+                    </div>
+                  </div>
+                </div>
+                 <!-- adding date pickers by suresh 08-10-2019 end -->
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Full Day/Half Day <span class="req-field">*</span></label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="day" [(ngModel)]="holidayData.day" #day="ngModel"
+                     [ngClass]="{ 'is-invalid': addHolidayFrm.submitted && day.invalid }" required id="day">
+                      <option selected value="" disabled>Select Day</option>
+                      <option selected value="FullDay">Full Day</option>
+                      <option value="HalfDay">Half Day</option>
+                    </select>
+                    <div *ngIf="day.touched && day.invalid" class="invalid-feedback">
+                      <div *ngIf="day.touched && day.errors.required">Full or Half Day is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Repeats Annually</label>
+                  <div class="col-sm-8">
+                    <input type="checkbox" class="form-control mb-10"
+                      style="width: 15%; height: 15px; box-shadow: none;" name="repeat" [(ngModel)]="holidayData.repeat"  id="repeat"
+                      #repeat="ngModel">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary mlr-5" [disabled]="!addHolidayFrm.valid"
+                    (click)="editHoliday()" id="save">Save</button>
+                  <button class="btn btn-danger mlr-5" (click)="cancel()" id="cancel">Cancel</button>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="close" (click)="close()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-success">{{ this.holiday.data }}</p>
+    <div class="row text-center">
+      <a class="btn btn-success ml-5" routerLink="/holidays"><i class="fa fa-users" aria-hidden="true"></i> View all
+        Holidays</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i
+            class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    </div>
+    <p class="bg-danger">{{ this.holiday.errorMessages }}</p>
+    <div class="row text-center">
+      <a class="btn btn-danger" id="closePop" (click)="closePopup()"><i class="fa fa-users" aria-hidden="true"></i> Close</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->

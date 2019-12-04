@@ -1,0 +1,446 @@
+<div class="content">
+	<div class="top-header">
+		<div class="row">
+			<div class="col-md-6 col-lg-6 heading">
+				<h4>Edit Job</h4>
+			</div>
+			<div class="col-md-6 col-lg-6 breadcrumb">
+				<ul class="breadcrumb-items">
+					<li><a routerLink='/dashboard'>Home</a>
+					</li>
+					<li>/</li>
+					<li><a routerLink='/jobs'>Job Postings</a>
+					</li>
+					<li>/</li>
+					<li>Edit Job</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="element-content">
+		<div class="job-box">
+			<div class="row">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<form class="search-form" #addJobFrm="ngForm" name="form" (ngSubmit)="addJobFrm.form.valid" novalidate>
+						<div class="form-header">
+							<h5>Essentials</h5>
+						</div>
+						<div class="padding-20">
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Company Name<span class="req-field">*</span></label>
+									<div class="col-sm-6">
+										<select class="form-control mb-10" id="editCompanyName" name="companyId" [(ngModel)]="jobData.company.id" #companyId="ngModel" (change)="getcontacts(companyId.value)" required>
+											<option *ngFor="let company of companies" value="{{company.companyId}}">{{company.companyName}}</option>
+										</select>
+										<div *ngIf="companyId.touched && companyId.invalid" class="invalid-feedback">
+											<div *ngIf="companyId.touched && companyId.errors.required">Company Name is required</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Client Job Code</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control mb-10" id="editJobCode" placeholder="Enter Client Job Code" name="jobCode" [(ngModel)]="jobData.jobCode" #jobCode="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && jobCode.invalid }" pattern='^[a-zA-Z0-9]{2,10}$'>
+										<div *ngIf="jobCode.touched && jobCode.invalid" class="invalid-feedback">
+											<div *ngIf="jobCode.invalid">Please enter a valid job code.Job code can contain alphabets and numbers with 2 to 10 characters</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Contacts<span class="req-field">*</span></label>
+									<div class="col-sm-6">
+										<select class="form-control mb-10" id="editContacts" name="contactId" [(ngModel)]="jobData.contact.id" #contactId="ngModel" required>
+											<option *ngFor="let contact of contacts" value="{{contact.contactId}}">{{contact.firstName}} {{contact.lastName}}</option>
+										</select>
+										<div *ngIf="contactId.touched && contactId.invalid" class="invalid-feedback">
+											<div *ngIf="contactId.touched && contactId.errors.required">Contact is required</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Industry Job Title<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editJobTitle" name="jobTitle" [(ngModel)]="jobData.job.id" #jobTitle="ngModel" required>
+											<option *ngFor="let jobTitle of jobTitles" value="{{jobTitle.id}}">{{jobTitle.jobTitle}}</option>
+										</select>
+										<div *ngIf="jobTitle.touched && jobTitle.invalid" class="invalid-feedback">
+											<div *ngIf="jobTitle.touched && jobTitle.errors.required">Job Title is required</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Technical Job Title<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control mb-10" id="editTechnicalJob" placeholder="Enter Technical Job Title" name="techJobTitle" [(ngModel)]="jobData.techJobTitle" #techJobTitle="ngModel" [pattern]="jobtitlePattern" [ngClass]="{ 'is-invalid': addJobFrm.submitted && jobCode.invalid }" required>
+										<div *ngIf="techJobTitle.touched && techJobTitle.invalid" class="invalid-feedback">
+											<div *ngIf="techJobTitle.touched && techJobTitle?.errors.required">Job Title is required</div>
+										</div>
+										<div *ngIf="techJobTitle.errors?.pattern" class="invalid-feedback">Enter a valid Job Title</div>
+									</div>
+								</div>
+								<!-- Removed recruiter as required field - sharmistha - 08-21-2019 - start -->
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Recruiter</label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editRecruiter" name="recruiter" [(ngModel)]="jobData.recruiter.userId" #recruiter="ngModel">
+											<option *ngFor="let recuiter of recuiters" value="{{recuiter.id}}">{{recuiter.first_name}} {{recuiter.last_name}}</option>
+										</select>
+									</div>
+								</div>
+								<!-- Removed recruiter as required field - sharmistha - 08-21-2019 - end -->
+							</div>
+							<!-- adding date pickers by suresh 08-10-2019 start -->
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Posted Date</label>
+									<div class="col-sm-8">
+										<input class="form-control mb-10" placeholder="MM/DD/YYYY" id="editpostedDate" [owlDateTimeTrigger]="datePosted" [owlDateTime]="datePosted" name="datePosted" [(ngModel)]="jobData.datePosted" (dateTimeInput)="dateValidate()" #datePosted="ngModel">
+										<owl-date-time [pickerType]="'calendar'" #datePosted></owl-date-time>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Target Date</label>
+									<div class="col-sm-8">
+										<input class="form-control mb-10" placeholder="MM/DD/YYYY" id="editTargetDate" [owlDateTimeTrigger]="targetDate" [owlDateTime]="targetDate" name="targetDate" [(ngModel)]="jobData.targetDate" (dateTimeInput)="dateValidate()" #targetDate="ngModel">
+										<owl-date-time [pickerType]="'calendar'" #targetDate></owl-date-time>
+										<p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+									</div>
+								</div>
+							</div>
+							<!-- adding date pickers by suresh 08-10-2019 end -->
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Employment Type<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editEmploymenttype" name="employmentType" [(ngModel)]="jobData.employmentType" placeholder="Select Employment Type" #employmentType="ngModel" required>
+											<option value="Part Time">Part Time</option>
+											<option value="Contract">Contract</option>
+											<option value="Contract to hire">Contract to hire</option>
+											<option value="Full Time">Full Time</option>
+											<option value="Contract W2">Contract W2</option>
+										</select>
+										<div *ngIf="employmentType.touched && employmentType.invalid" class="invalid-feedback">
+											<div *ngIf="employmentType.touched && employmentType.errors.required">Employment Type is required</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Recruiter Employment Type<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="recEmploymentType" name="recEmploymentType" [(ngModel)]="jobData.recEmploymentType" placeholder="Select Recruiter Employment Type" #recEmploymentType="ngModel" required>
+											<option value="Part Time">Part Time</option>
+											<option value="Contract">Contract</option>
+											<option value="Contract to hire">Contract to hire</option>
+											<option value="Full Time">Full Time</option>
+											<option value="Contract W2">Contract W2</option>
+										</select>
+										<div *ngIf="recEmploymentType.touched && recEmploymentType.invalid" class="invalid-feedback">
+											<div *ngIf="recEmploymentType.touched && recEmploymentType.errors.required">Recruiter Employment Type is required</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Priority</label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editPriority" name="priority" [(ngModel)]="jobData.priority" placeholder="Select Priority" #priority="ngModel">
+											<option value="High">High</option>
+											<option value="Medium">Medium</option>
+											<option value="Low">Low</option>
+										</select>
+										<div *ngIf="priority.touched && priority.invalid" class="invalid-feedback">
+											<div *ngIf="priority.touched && priority.errors.required">Priority is required</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Work authorisation<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<ng-multiselect-dropdown name="workAuthorisation" id="editAuthorisation" #workAuthorisation="ngModel" [placeholder]="'Select Work authorizations'" [data]="workauth" [(ngModel)]="filteredAuth" [settings]="workauthSettings" (onDeSelect)="OnItemDeSelect($event)" (onSelect)="onItemSelect($event)"></ng-multiselect-dropdown>
+										<div *ngIf="error">
+											<p style="color:red; font-weight:bold;">{{ error }}</p>
+										</div>
+										<div *ngIf="workautherror" class="invalid-feedback" style="margin-top: 0px;">
+											<div>{{ workautherror }}</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Job Status</label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editJobStatus" name="jobStatus" [(ngModel)]="jobData.jobStatus" #jobStatus="ngModel">
+											<option value="1">Open</option>
+											<option value="2">Interviewing</option>
+											<option value="0">Closed</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Status</label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editStatus" name="status" [(ngModel)]="jobData.status" #status="ngModel">
+											<option value="1">Active</option>
+											<option value="0">Inactive</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Country<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editCountry" name="countryId" #countryid [(ngModel)]="jobData.country.id" #countryId="ngModel" (change)="change(countryid.value)" [ngClass]="{ 'is-invalid': addJobFrm.submitted && countryId.invalid }" required>
+											<option [ngValue]="undefined" disabled selected>Choose a country</option>
+											<option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+										</select>
+										<div *ngIf="countryId.touched && countryId.invalid" class="invalid-feedback">
+											<div *ngIf="countryId.errors.required">Select any one country</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">State<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editState" #stateId (change)="state(stateId.value)" name="stateId" [(ngModel)]="jobData.state.id" #stateId="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && stateId.invalid }" required>
+											<option *ngFor="let state of states" value="{{state.id}}">{{state.name}}</option>
+										</select>
+										<div *ngIf="stateId.touched && stateId.invalid" class="invalid-feedback">
+											<div *ngIf="stateId.errors.required">Select any one state</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">City<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<select class="form-control mb-10" id="editCity" name="cityId" [(ngModel)]="jobData.city.id" #cityId="ngModel">
+											<option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Zip Code<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<input type="number" id="editZipcode" class="form-control mb-10" placeholder="Enter Zip Code" name="zipCode" [(ngModel)]="jobData.zipCode" #zipCode="ngModel" (blur)="getAddress()" [ngClass]="{ 'is-invalid': addJobFrm.submitted && zipCode.invalid }" required>
+										<div *ngIf="zipCode.touched && zipCode.invalid" class="invalid-feedback">
+											<div *ngIf="zipCode.touched && zipCode.errors.required">Zip code is required</div>
+										</div>
+										<p *ngIf="zipError" style="color:red;font-weight:bold;">{{zipError}}</p>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Openings<span class="req-field">*</span></label>
+									<div class="col-sm-8">
+										<input type="number" id="editOpenings" class="form-control mb-10" placeholder="Enter Number of openings" name="openings" [(ngModel)]="jobData.openings" #openings="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && openings.invalid }" required>
+										<div *ngIf="openings.touched && openings.invalid" class="invalid-feedback">
+											<div *ngIf="openings.touched && openings.errors.required">Number of openings is required</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Publish Bill Rate</label>
+									<div class="col-sm-2">
+										<label class="switch">
+											<input type="checkbox" id="editPublishBill" name="publishRate" #publishRate [checked]="publishRate" (change)="checkPublishBill($event)"> <span class="slider round"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Internal Bill rate<span class="req-field">*</span></label>
+									<div class="col-sm-3">
+										<div class="form-row">
+											<div class="input-group"> <span class="input-group-addon">$</span>
+												<input type="number" value="" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="c2" placeholder="Enter Bill Rate" name="billRate" [(ngModel)]="jobData.billRate" #billRate="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && billRate.invalid }" required>
+											</div>
+										</div>
+										<div *ngIf="billRate.touched && billRate.invalid" class="invalid-feedback">
+											<div *ngIf="billRate.touched && billRate.errors.required">Enter Bill Rate</div>
+										</div>
+									</div>
+									<div class="col-sm-1">per</div>
+									<div class="col-sm-4">
+										<select class="form-control mb-10" id="editHour" name="perHour" [(ngModel)]="jobData.perHour.id" #perHour="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && perHour.invalid }" required>
+											<option [ngValue]="undefined" disabled selected>Choose an option</option>
+											<option *ngFor="let frequency of payFrequencies" value="{{ frequency.id }}">{{ frequency.pay_frequency }}</option>
+										</select>
+										<div *ngIf="perHour.touched && perHour.invalid" class="invalid-feedback">
+											<div *ngIf="perHour.touched && perHour.errors.required">Select Pay Frequency</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">External Bill rate</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control currency" placeholder="Enter External Bill Rate" pattern="^([a-zA-Z0-9+$-.]+[\s.&_\-])*[a-zA-Z0-9+$-.]+$" id="editExternalBill" name="externalBillRate" [(ngModel)]="jobData.externalBillRate" #externalBillRate="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && externalBillRate.invalid }">
+									</div>
+									<div *ngIf="externalBillRate.errors?.pattern" class="invalid-feedback">Bill Rate connot contain special characters</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-12">
+								<label class="col-sm-2 col-form-label">Job Description</label>
+								<div class="col-sm-10 mb-10">
+									<ckeditor #description="ngModel" id="editDescription" name="description" [(ngModel)]="jobData.description" [config]="{uiColor: '#d9e4fb'}" [readonly]="false" (change)="onChange($event)" debounce="500"></ckeditor>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-12">
+								<label class="col-sm-2 col-form-label">Internal Notes</label>
+								<div class="col-sm-10">
+									<textarea class="form-control" rows="4" id="internalNotes" name="internalNotes" [(ngModel)]="jobData.internalNotes" #Internal="ngModel" style="margin-bottom: 20px;"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-md-12">
+								<label class="col-sm-2 col-form-label">Job Questionnaire</label>
+								<div class="col-sm-10 mb-10">
+									<ckeditor #description="ngModel" id="selectJobQuestionnaire" name="questionnaire" [(ngModel)]="jobData.questionnaire" [config]="{uiColor: '#d9e4fb'}" [readonly]="false" (change)="onChange($event)" debounce="500"></ckeditor>
+								</div>
+							</div>
+						</div>
+						<form #addSkills="ngForm" name="form" (ngSubmit)="addSkills.form.valid" novalidate>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Skills<span class="req-field">*</span> &nbsp;:</label>
+									<!-- saikumar 07/09/2019 started here -->
+									<div class="col-sm-6">
+										<select class="form-control mb-10" id="skillName" name="skillName" #skillName="ngModel" [(ngModel)]="cusData.skillType" required>
+											<option value="" disabled selected>Choose a skill</option>
+											<option *ngFor="let skill of skillset" value="{{ skill.name }}">{{skill.name |titlecase}}</option>
+										</select>
+										<div *ngIf="skillName.touched && skillName.invalid" class="invalid-feedback">
+											<div *ngIf="skillName.errors?.required">Skill is required</div>
+										</div>
+									</div> <a type="button" id="addskill" class="btn  text-left" (click)="addnewskill()">+ Add </a>
+								</div>
+								<!-- saikumar 07/09/2019 ended here -->
+								<div class="col-md-6">
+									<label class="col-sm-4 col-form-label">Experience<span class="req-field">*</span> &nbsp;: (In Months)</label>
+									<div class="col-sm-4">
+										<input type="number" class="form-control mb-10" id="selectExperience" name="experience" [(ngModel)]="skill.experience" #experience="ngModel" (keyup)="removeErrorText()">
+									</div>
+									<div class="col-sm-4">
+										<button type="button" class="btn btn-primary" (click)="addSkill(addSkills,skillName.value,experience.value)" id="addSkills" [disabled]="!addSkills.valid">+Add Skills</button>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<p *ngIf="skillBool" style="color: #e90000;font-weight:bold;">{{ skillBool }}</p>
+								</div>
+							</div>
+						</form>
+						<div class="table-responsive col-md-8 col-md-offset-2">
+							<table class="table table-bordered">
+								<thead class="form-header">
+									<tr>
+										<th>Skill</th>
+										<th>Experience</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let skill of skillData" style="margin-bottom: 10px;">
+										<td>{{skill.skillName | titlecase}}</td>
+										<td>{{skill.experience}} Months</td>
+										<td>
+											<button class="btn btn-danger" id="removeSkills" (click)="removeSkill(skill)"><i class="fa fa-trash-o" aria-hidden="true"></i>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="padding-20">
+							<div class="row">
+								<div class="col-sm-10">
+									<button type="button" class="btn btn-success mlr-5" [disabled]="!addJobFrm.valid" (click)="editJob()" id="submitEditForm">Submit</button>
+									<button (click)="cancel()" class="btn btn-danger mlr-5" id="cancelEditForm">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+	<div class="popupbox" *ngIf="this.message">
+		<button class="close" type="button" id="closepopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+		</button>
+		<table class="table table-bordered">
+			<tr>
+				<td class="success text-center">
+					<h5>Job updated sucessfully </h5>
+				</td>
+			</tr>
+		</table>
+		<div class="row text-center">
+			<a class="btn btn-success" id="viewAllJobs" routerLink="/jobs"> <i class="fa fa-users" aria-hidden="true"></i> View all jobs</a>
+		</div>
+	</div>
+	<div class="popupbox" *ngIf="this.error">
+		<button class="close" type="button" id="closeError" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+		</button>
+		<table class="table table-bordered">
+			<tr>
+				<td class="danger text-center">
+					<h5>{{error }} </h5>
+				</td>
+			</tr>
+		</table>
+		<div class="row text-center">
+			<a class="btn btn-success" id="closeAllErrors" routerLink="/jobs"> <i class="fa fa-users" aria-hidden="true"></i> View all jobs</a>
+		</div>
+	</div>
+</div>
+<!-- saikumar 07/09/2019 started here added the popup -->
+<div class="popupbox_wrap" *ngIf="skillpopup">
+	<div class="popupbox">
+		<button class="close" type="button" id="closebtn" (click)="closeskillPopup(addindFrm)"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span>
+		</button>
+		<form class="search-form" #addindFrm="ngForm" name="form" (ngSubmit)="addindFrm.form.valid" novalidate>
+			<div class="padding-20">
+				<table class="table">
+					<tr>
+						<td>
+							<label class="col-sm-5 col-form-label">Skill <span class="req-field">*</span>
+							</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control mb-10" placeholder="Enter Skill Name" name="skillType" pattern="^(?!.*[+]{3})(?!.*[#]{2})(?!.*[.,*/&]{2})([a-zA-Z0-9.#*&/+,]+[\s,&_\-])*[a-zA-Z0-9.#*&_/+,]+$" [(ngModel)]="industriesData.skillType" [ngClass]="{ 'is-invalid': addindFrm.submitted && skillType.invalid }" #skillType="ngModel" required id="popupcompany">
+								<div *ngIf="skillType.touched && skillType.invalid" class="invalid-feedback">
+									<div *ngIf="skillType.touched && skillType.errors.required">Skill Name is required</div>
+								</div>
+								<div *ngIf="skillType.errors?.pattern" class="invalid-feedback">Please enter valid Skill Name</div>
+							</div>
+						</td>
+					</tr>
+					<div class="row text-center">
+						<button type="button" class="btn btn-success mb-10" id="addpopup" (click)="addskill(skillType.value,addindFrm)" [disabled]="!addindFrm.valid">Submit</button>
+						<button type="button" class="btn btn-info mlr-5 mb-10" id="addpopup" (click)="resetSkillPopup(addindFrm)">Reset</button>
+						<div *ngIf="contactError" class="invalid-feedback">{{ contactError }}</div>
+					</div>
+				</table>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- end company popup -->
+<!-- saikumar 07/09/2019 ended here -->

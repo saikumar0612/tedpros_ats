@@ -1,0 +1,1015 @@
+<style>
+  input[type="file"] {
+    display: block;
+    right: 0;
+    cursor: pointer;
+    bottom: -1px;
+    font-size: 12px;
+    opacity: 1;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+  }
+ 
+</style>
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Documents Info
+          &nbsp;&nbsp;
+          <select class="form-control" id="selectInfermation" #info (change)="onNavigate(info.value)" style="display: inline; width:35%;">
+            <option [ngValue]="undefined" disabled selected>-- Select --</option>
+            <option value="myInfo/personalInfo">Personal Info</option>
+            <option value="myInfo/contactInfo">Contact Info</option>
+            <option value="myInfo/dependentInfo">Dependents Info</option>
+            <option value="myInfo/qualifications">Qualification Info</option>
+            <option value="myInfo/salaryInfo">Salary Info</option>
+            <option value="myInfo/documentInfo">Documents Info</option>
+            <option value="myInfo/my-resume">My Resume</option>
+          </select>
+        </h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink="/myInfo">My Info</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Documents Info</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<!-- Removed close button from success popups, added date validation - sharmistha - 08-07-2019 - start -->
+
+  <ng-container *ngIf="this.displayDocument==true; then a2 else a1"></ng-container>
+  <!-- view details -->
+  <ng-template #a1>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <div class="col-md-6 plr-0">
+                <h5>i9 Document</h5>
+              </div>
+              <div class="col-md-6 plr-0">
+                <button (click)="editDocument()" id="addDocuments" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Add</button>
+                <button (click)="cancel()" id="CancelDocuments" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+              </div>
+            </div>
+            <div class="padding-20">
+              <div class="form-group">
+                <div *ngIf="!i9details" class="text-center">No records found</div>
+                <div class="table-responsive" *ngIf="i9details">
+                  <table class="table table-bordered" style="width: 100%; text-align: center; margin: auto">
+                    <thead class="form-header">
+                      <tr>
+                        <th style="width: 3%; text-align: center;"></th>
+                        <th style="width: 17%; text-align: center;">Document</th>
+                        <th style="width: 20%; text-align: center;">Expiry Date</th>
+                        <th style="text-align: center;">Comment</th>
+                        <th style="width: 10%; text-align: center;">Alert</th>
+                        <th style="width: 15%; text-align: center;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let doc of i9details | slice:0:show; let i=index" style="margin-bottom: 10px;">
+                        <td>{{i+1}}</td>
+                        <td><a href="{{i9URL}}{{doc.document}}" id="doc" target="_blank">{{doc.document}}</a></td>
+                        
+                          <ng-container *ngIf="i==display; then b2 else b1"></ng-container>
+                          <ng-template #b1>
+                            <td>
+                              <span *ngIf="(doc.expiryDate == '0000-00-00') || (!doc.expiryDate)"></span>
+                              <span *ngIf="(doc.expiryDate != '0000-00-00') && (doc.expiryDate)">{{doc.expiryDate | date: 'MM-dd-yyyy'}}</span>
+                            </td>
+                            <td>{{ doc.comment }}</td>
+                            <td>
+                              <span *ngIf="doc.alert" class="badge badge-primary"> Yes </span>
+                              <span *ngIf="!doc.alert" class="badge badge-danger"> No </span>
+                            </td>
+                          </ng-template>
+                          <ng-template #b2>
+                              <!-- adding date pickers by suresh 08-12-2019 start -->
+                            <td>
+                              <input class="form-control mb-10" id="i9DocexpiryDate" placeholder="MM/DD/YYYY" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="editi9.expiryDate" #expiryDate="ngModel" (dateTimeInput)="i9Validate()" >
+                             <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                              <p *ngIf="i9Error" style="color: red;font-weight:bold;">{{ i9Error }}</p>
+                            </td>
+                              <!-- adding date pickers by suresh 08-12-2019 end -->
+                            <td>
+                              <textarea class="form-control mb-10" id="i9DocComment" #comment name="comment" id="comment" [(ngModel)]="editi9.comment" #comment="ngModel"></textarea>
+                            </td>
+                            <td>
+                              <label class="switch">
+                                <input type="checkbox" #alert id="i9DocAlert" name="alert" [(ngModel)]="editi9.alert" #alert="ngModel" checked>
+                                <span class="slider round"></span>
+                              </label>
+                            </td>
+                          </ng-template>
+                        <td>
+                          <button *ngIf="i!=display" id="editi9Doc" (click)="editi9Doc(doc)" class="tabledit-delete-button btn btn-primary mlr-5">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>
+                          <button *ngIf="i==display" id="updatei9Doc" (click)="updatei9Doc()" class="tabledit-delete-button btn btn-success mlr-5">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                          </button>
+                          <button (click)="showUserDetails(doc.id)" id="showUserDetails" class="tabledit-delete-button btn btn-danger">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  
+                  <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="show < this.length">
+                    <button class="btn btn-info text-left mlr-5 mt-10" id="increaseShow" (click)="increaseShow()">
+                      <i class="fa fa-angle-double-right"aria-hidden="true" style="font-weight: 600; font-size: 17px;">&nbsp;</i>View More
+                    </button>
+                  </div>
+                  <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="show == this.length">
+                    <button class="btn btn-info text-left mlr-5 mt-10" id="decreaseShow" (click)="decreaseShow()">
+                      <i class="fa fa-angle-double-right" aria-hidden="true" style="font-weight: 600; font-size: 17px;">&nbsp;&nbsp;</i>View less
+                    </button>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- edit details -->
+  <ng-template #a2>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form class="search-form" #addconFrm="ngForm" name="form" (ngSubmit)="addconFrm.form.valid" novalidate>
+              <div class="form-header row mlr-0">
+                <div class="col-md-6 plr-0">
+                  <h5>i9 DOCUMENT</h5>
+                </div>
+                <div class="col-md-6">
+                  <button (click)="backDocument()" id="backDocument" class="btn btn-danger mlr-5 mtb-5"
+                    style="float: right;">Cancel</button>
+                </div>
+              </div>
+              <div class="padding-20">
+                <div class="row">
+
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-form-label">Select Document</label>
+                        <div class="">
+                          <input type="file" id="i9doc" ng2FileSelect [uploader]="uploader" name="i9doc"
+                            accept="application/pdf,application/docx" class="form-control mb-10">
+                        </div>
+                      </div>
+                         <!-- adding date pickers by suresh 08-10-2019 start -->
+                      <div class="col-md-6">
+                        <label class="col-form-label">Expiry Date</label>
+                        <div class="">
+                          <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="expiryDate" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="i9Data.expiryDate" (dateTimeInput)="dateValidate()" #expiryDate="ngModel" >
+                          <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                          <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                        </div>
+                      </div>
+                          <!-- adding date pickers by suresh 08-10-2019 end -->
+                      <div class="col-md-6">
+                        <label class="col-form-label">Comment</label>
+                        <div class="">
+                          <textarea class="form-control mb-10"  name="comment" id="editi9DocComment" [(ngModel)]="i9Data.comment" #comment="ngModel"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="col-form-label">Opt for alert</label>
+                        <div class="">
+                          <label class="switch">
+                            <input type="checkbox" id="alert" #alert name="alert" [(ngModel)]="i9Data.alert" #alert="ngModel" checked>
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12" style="margin-bottom: 40px">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th style="width:20%">Name</th>
+                          <th style="width:40%">Progress</th>
+                          <th style="width:5%">Status</th>
+                          <th style="width:35%">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of uploader.queue">
+                          <td><strong>{{ item?.file?.name }}</strong></td>
+                          <td>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar"
+                                [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                            <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                            <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                          </td>
+                          <td>
+                            <button *ngIf="!dateError" type="button" class="btn btn-success" id="uploadDoc" (click)="item.upload()"
+                              [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                              <span class="glyphicon glyphicon-upload"></span> Upload
+                            </button>
+                          </td>
+                          
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+  <div class="popupbox text-center">
+    <p class="bg-success">i9 document added successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-success" id="closei9doc" (click)="move()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go to My Info</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </ng-template>
+
+  <!-- work authorization-->
+  <ng-container *ngIf="this.displayWork==true; then b2 else b1"></ng-container>
+  <!-- view details -->
+  <ng-template #b1>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <div class="col-md-6 plr-0">
+                <h5>Work Authorization</h5>
+              </div>
+              <div class="col-md-6 plr-0">
+                <button (click)="editWork()" id="addAuthorization" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Add</button>
+                <button (click)="cancel()" id="authorizationBack" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+              </div>
+            </div>
+            <div class="padding-20">
+              <div class="form-group">
+                <div *ngIf="!workDetails" class="text-center">No records found</div>
+                <table *ngIf="workDetails" class="table table-bordered" style="width: 100%; text-align: center; margin: auto">
+                  <thead class="form-header">
+                    <tr>
+                      <th style="width: 3%; text-align: center;"></th>
+                      <th style="width: 17%; text-align: center;">Document</th>
+                      <th style="width: 20%; text-align: center;">Expiry Date</th>
+                      <th style="width: 10%; text-align: center;">Type</th>
+                      <th style="text-align: center;">Comment</th>
+                      <th style="width: 10%; text-align: center;">Alert</th>
+                      <th style="width: 15%; text-align: center;"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let work of workDetails| slice:0:show1, let i=index" style="margin-bottom: 10px;">
+                      <td>{{i+1}}</td>
+                      <td>
+                        <a href="{{workAuthURL}}{{work.document}}" id="workDoc" target="_blank">{{work.document}}</a>
+                      </td>
+                      <ng-container *ngIf="i==displayWorkAuth; then b2 else b1"></ng-container>
+                      <ng-template #b1>
+                        <td>
+                          <span *ngIf="(work.expiryDate == '0000-00-00') || (!work.expiryDate)"></span>
+                          <span *ngIf="(work.expiryDate != '0000-00-00') && (work.expiryDate)">{{work.expiryDate | date: 'MM-dd-yyyy'}}</span>
+                        </td>
+                        <td>{{ work.type.name }}</td>
+                        <td>{{ work.comment }}</td>
+                        <td>
+                          <span *ngIf="work.alert" class="badge badge-primary"> Yes </span>
+                          <span *ngIf="!work.alert" class="badge badge-danger"> No </span>
+                        </td>
+                      </ng-template>
+                      <ng-template #b2>
+                        <!-- adding date pickers by suresh 08-12-2019 start -->
+                        <td>
+                          <input class="form-control mb-10" id="workExpiryDate" placeholder="MM/DD/YYYY" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="editWorkAuth.expiryDate" (dateTimeInput)="updateValidate()" #expiryDate="ngModel" >
+                          <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>  
+                          <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                        </td>
+                        <!-- adding date pickers by suresh 08-12-2019 end -->
+                        <td>
+                          <select class="form-control mb-10" id="worktype"  name="type"  [(ngModel)]="editWorkAuth.type" #type #type="ngModel">
+                              <option [ngValue]="undefined" disabled selected>Choose a type</option>
+                              <option *ngFor="let work of workauth" value="{{work.id}}">{{work.name}}</option>
+                          </select>
+                        </td>
+                        <td>  
+                          <textarea class="form-control mb-10" id="workComment" #comment name="comment" id="comment" [(ngModel)]="editWorkAuth.comment" #comment="ngModel"></textarea>
+                        </td>
+                        <td>
+                          <label class="switch">
+                            <input type="checkbox" id="workAlert" #alert name="alert" [(ngModel)]="editWorkAuth.alert" #alert="ngModel" checked>
+                            <span class="slider round"></span>
+                          </label>
+                        </td>
+                      </ng-template>
+                      <td>
+                        <button *ngIf="i!=displayWorkAuth" id="editWorkDoc" (click)="editWorkDoc(work)" class="tabledit-delete-button btn btn-primary mlr-5">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button>
+                        <button *ngIf="i==displayWorkAuth" id="updateWorkDoc" (click)="updateWorkDoc()" class="tabledit-delete-button btn btn-success mlr-5">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                        <button (click)="deletework(work.id)" id="deletework" class="tabledit-delete-button btn btn-danger">
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="show1 < this.length1">
+                  <button class="btn btn-info text-left mlr-5 mt-10" id="increaseShow1" (click)="increaseShow1()">
+                    <i class="fa fa-angle-double-right" aria-hidden="true" style="font-weight: 600; font-size: 17px;">&nbsp;</i>View More
+                  </button>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="show1 == this.length1 ">
+                  <button class="btn btn-info text-left mlr-5 mt-10" id="decreaseShow1" (click)="decreaseShow1()"><i class="fa fa-angle-double-right" aria-hidden="true" style="font-weight: 600; font-size: 17px;">&nbsp;&nbsp;</i>View less</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- edit details -->
+  <ng-template #b2>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form class="search-form" #addconFrm="ngForm" name="form" (ngSubmit)="addconFrm.form.valid" novalidate>
+              <div class="form-header row mlr-0">
+                <div class="col-md-6">
+                  <h5>Work Authorization</h5>
+                </div>
+                <div class="col-md-6">
+                  <button (click)="backWork()" id="backWork" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Cancel</button>
+                </div>
+              </div>
+              <div class="padding-20">
+                <div class="row">
+
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-form-label">Select Work Authorization</label>
+                        <div class="">
+                          <ng-multiselect-dropdown name="type" id="editAuthorization" [placeholder]="'Select Work Authorization(s)'"
+                            [data]="workauth" [settings]="dropdownSettings" #type="ngModel" [(ngModel)]="data">
+                          </ng-multiselect-dropdown>
+                        </div>
+                      </div>
+                       
+                      <div class="col-md-6">
+                        <label class="col-form-label">Expiry Date</label>
+                        <div class="">
+                          <!-- adding date pickers by suresh 08-10-2019 start -->
+                          <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="editExpiryDate" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="workData.expiryDate" (dateTimeInput)="dateValidate1()" #expiryDate="ngModel" >
+                          <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                          <p *ngIf="dateError1" style="color: red;font-weight:bold;">{{ dateError1 }}</p>
+                        </div>
+                      </div>
+                       <!-- adding date pickers by suresh 08-10-2019 end -->
+                      <div class="col-md-6">
+                        <label class="col-form-label">Select Document</label>
+                        <div class="">
+                          <input type="file" ng2FileSelect [uploader]="uploader2" id="editSelectedDoc" name="workauth"
+                            accept="application/pdf,application/docx" class="form-control mb-10">
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="col-form-label">Comment</label>
+                        <div class="">
+                          <textarea class="form-control mb-10" id="editComment" name="comment" id="comment"
+                            [(ngModel)]="workData.comment" #comment="ngModel"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="col-form-label">Opt for alert</label>
+                        <div class="">
+                          <label class="switch">
+                            <input type="checkbox" #alert id="editalert" name="alert" [(ngModel)]="workData.alert" #alert="ngModel" checked>
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-md-12" style="margin-bottom: 40px">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th style="width:20%">Name</th>
+                          <th style="width:40%">Progress</th>
+                          <th style="width:5%">Status</th>
+                          <th style="width:35%">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of uploader2.queue">
+                          <td><strong>{{ item?.file?.name }}</strong></td>
+                          <td>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar"
+                                [ngStyle]="{ 'width': uploader2.progress + '%' }"></div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                            <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                            <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                          </td>
+                          <td>
+                            <button *ngIf="!dateError1" type="button" class="btn btn-success mlr-5" (click)="item.upload()"
+                              [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                              <span class="glyphicon glyphicon-upload" id="editWorkUpload"></span> Upload
+                            </button>
+                          </td>
+                                                  
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+  <div class="popupbox">
+    <p class="bg-success text-center">Work authorization document added successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-success" id="backWorkAuth" (click)="move()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go to My Info</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- federal w4 document -->
+  <ng-container *ngIf="this.displayw4==true; then c2 else c1"></ng-container>
+  <!-- view details -->
+  <ng-template #c1>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <div class="col-md-6 plr-0">
+                <h5>Federal w4 Document</h5>
+              </div>
+              <div class="col-md-6 plr-0">
+                <button (click)="editw4()" id="addFederalDoc" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Add</button>
+                <button (click)="cancel()" id="cancelFederalDoc" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+              </div>
+            </div>
+            <div class="padding-20">
+              <div class="form-group">
+                <div *ngIf="!federal" class="text-center">No records found</div>
+                <div class="table-responsive">
+                  <table *ngIf="federal" class="table table-bordered" style="width: 100%; text-align: center; margin: auto">
+                    <thead class="form-header">
+                      <tr>
+                        <th style="width: 3%; text-align: center;"></th>
+                        <th style="width: 17; text-align: center;">Document</th>
+                        <th style="width: 20%; text-align: center;">Expiry Date</th>
+                        <th style="text-align: center;">Comment</th>
+                        <th style="width: 10%; text-align: center;">Alert</th>
+                        <th style="width: 15%; text-align: center;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let docs of federal | slice:0:show2;let i=index" style="margin-bottom: 10px;">
+                        <td>{{i+1}}</td>
+                        <td>
+                          <a href="{{w4URL}}{{docs.document}}" id="federalDoc" target="_blank">{{docs.document}}</a>
+                        </td>
+                          <ng-container *ngIf="i==displayFederalW4; then b2 else b1"></ng-container>
+                          <ng-template #b1>
+                            <td>
+                              <span *ngIf="(docs.expiryDate == '0000-00-00') || (!docs.expiryDate)"></span>
+                              <span *ngIf="(docs.expiryDate != '0000-00-00') && (docs.expiryDate)">{{docs.expiryDate | date: 'MM-dd-yyyy'}}</span>
+                            </td>
+                            <td>{{ docs.comment }}</td>
+                            <td>
+                              <span *ngIf="docs.alert" class="badge badge-primary"> Yes </span>
+                              <span *ngIf="!docs.alert" class="badge badge-danger"> No </span>
+                            </td>
+                          </ng-template>
+                          <ng-template #b2>
+                            <input type="hidden" [(ngModel)]="editfw4.id" #id name="id">
+                             <!-- adding date pickers by suresh 08-12-2019 start -->
+                            <td>
+                              <input class="form-control mb-10" id="federalExpiryDate" placeholder="MM/DD/YYYY" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="editfw4.expiryDate" #expiryDate="ngModel" (dateTimeInput)="w4Validate()" >
+                              <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                              <p *ngIf="w4Error" style="color: red;font-weight:bold;">{{ w4Error }}</p>
+                            </td>
+                             <!-- adding date pickers by suresh 08-12-2019 end -->
+                            <td>
+                              <textarea class="form-control mb-10" id="federalComment" #comment name="comment" [(ngModel)]="editfw4.comment" #comment="ngModel"></textarea>
+                            </td>
+                            <td>
+                              <label class="switch">
+                                <input type="checkbox" #alert id="federalAlert" name="alert" [(ngModel)]="editfw4.alert" #alert="ngModel" checked>
+                                <span class="slider round"></span>
+                              </label>
+                            </td>
+                          </ng-template>
+                        <td>
+                          <button *ngIf="i!=displayFederalW4" id="editFederal" (click)="editFederal(docs)" class="tabledit-delete-button btn btn-primary mlr-5">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>                          
+                          <button *ngIf="i==displayFederalW4" id="updatefw4Doc" (click)="updatefw4Doc()" class="tabledit-delete-button btn btn-success mlr-5">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                          </button>
+                          <button (click)="showDetails(docs.id)" id="federalDetails" class="tabledit-delete-button btn btn-danger">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="length2 > show2">
+                    <button class="btn btn-info text-left mlr-5 mt-10" id="moreFederals" (click)="increaseShow2()"><i class="fa fa-angle-double-right"
+                        aria-hidden="true" style="font-weight: 600; font-size: 17px;">&nbsp;</i>View More</button>
+                  </div>
+                  <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="length2 == show2">
+                    <button class="btn btn-info text-left mlr-5 mt-10" id="lessFederals" (click)="decreaseShow2()"><i class="fa fa-angle-double-right"
+                        aria-hidden="true" style="font-weight: 600; font-size: 17px;">&nbsp;&nbsp;</i>View less</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- edit details -->
+  <ng-template #c2>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form class="search-form" #addconFrm="ngForm" name="form" (ngSubmit)="addconFrm.form.valid" novalidate>
+              <div class="form-header row mlr-0">
+                <div class="col-md-6 plr-0">
+                  <h5>Federal w4 DOCUMENT</h5>
+                </div>
+                <div class="col-md-6">
+                  <button (click)="backw4()" id="backw4" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Cancel</button>
+                </div>
+              </div>
+              <div class="padding-20">
+                <div class="row">
+
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-form-label">Select Document</label>
+                        <div class="">
+                          <input type="file" id="editFederalDoc" ng2FileSelect [uploader]="uploader1" name="w4doc"
+                            accept="application/pdf,application/docx" class="form-control mb-10">
+                        </div>
+                      </div>
+                      <!-- adding date pickers by suresh 08-10-2019 start -->
+                      <div class="col-md-6">
+                        <label class="col-form-label">Expiry Date</label>
+                        <div class="">
+                          <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="editFederalExpiryDate" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="w4Data.expiryDate" (dateTimeInput)="dateValidate2()" #expiryDate="ngModel" >
+                          <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                          <p *ngIf="dateError2" style="color: red;font-weight:bold;">{{ dateError2 }}</p>
+                        </div>
+                      </div>
+                      <!-- adding date pickers by suresh 08-10-2019 end -->
+                      <div class="col-md-6">
+                        <label class="col-form-label">Comment</label>
+                        <div class="">
+                          <textarea class="form-control mb-10"  name="comment" id="editFederalComment" [(ngModel)]="w4Data.comment"
+                            #comment="ngModel"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="col-form-label">Opt for alert</label>
+                        <div class="">
+                          <label class="switch">
+                            <input type="checkbox" #alert id="editFederalAlert" name="alert" [(ngModel)]="w4Data.alert" #alert="ngModel" checked>
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-md-12" style="margin-bottom: 40px">
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th style="width:20%">Name</th>
+                          <th style="width:40%">Progress</th>
+                          <th style="width:5%">Status</th>
+                          <th style="width:35%">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of uploader1.queue">
+                          <td><strong>{{ item?.file?.name }}</strong></td>
+                          <td>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar"
+                                [ngStyle]="{ 'width': uploader1.progress + '%' }"></div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                            <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                            <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                          </td>
+                          <td>
+                            <button *ngIf="!dateError2" type="button" class="btn btn-success mlr-5" (click)="item.upload()"
+                              [disabled]="item.isReady || item.isUploading || item.isSuccess" id="uploadFederalDoc">
+                              <span class="glyphicon glyphicon-upload"></span> Upload
+                            </button>
+                          </td>
+                          
+                          
+<!-- on successfull insertion-->
+<div class="popupbox_wrap"  *ngIf="item.isSuccess">
+  <div class="popupbox">
+    <p class="bg-success text-center">Federal w4 document added successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-success" id="moveMyInfo" (click)="move()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go to My Info</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+
+  <!-- state w4 document -->
+  <ng-container *ngIf="this.displaystatew4==true; then d2 else d1"></ng-container>
+  <!-- view details -->
+  <ng-template #d1>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <div class="col-md-6 plr-0">
+                <h5>State w4 Document</h5>
+              </div>
+              <div class="col-md-6 plr-0">
+                <button (click)="editstatew4()" id="editstatew4" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Add</button>
+                <button (click)="cancel()" id="cancelstatew4" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+              </div>
+            </div>
+            <div class="padding-20">
+              <div class="form-group">
+                <div *ngIf="!state" class="text-center">No records found</div>
+                <div class="table-responsive" *ngIf="state">
+                  <table class="table table-bordered" style="width: 100%; text-align: center; margin: auto">
+                    <thead class="form-header">
+                      <tr>
+                        <th style="width: 3%; text-align: center;"></th>
+                        <th style="width: 20%; text-align: center;">Document</th>
+                        <th style="width: 20%; text-align: center;">Expiry Date</th>
+                        <th style="text-align: center;">Comment</th>
+                        <th style="width: 10%; text-align: center;">Alert</th>
+                        <th style="width: 15%; text-align: center;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let docs of state | slice:0:show3,let i=index" style="margin-bottom: 10px;">
+                        <td>{{i+1}}</td>
+                        <td>
+                          <a href="{{statew4URL}}{{docs.document}}" id="statew4Doc" target="_blank">{{docs.document}}</a>
+                        </td>
+                          <ng-container *ngIf="i==displayStateW4; then b2 else b1"></ng-container>
+                          <ng-template #b1>
+                            <td>
+                              <span *ngIf="(docs.expiryDate == '0000-00-00') || (!docs.expiryDate)"></span>
+                              <span *ngIf="(docs.expiryDate != '0000-00-00') && (docs.expiryDate)">{{docs.expiryDate | date: 'MM-dd-yyyy'}}</span>
+                            </td>
+                            <td>{{ docs.comment }}</td>
+                            <td>
+                              <span *ngIf="docs.alert" class="badge badge-primary"> Yes </span>
+                              <span *ngIf="!docs.alert" class="badge badge-danger"> No </span>
+                            </td>
+                          </ng-template>
+                          <ng-template #b2>
+                             <!-- adding date pickers by suresh 08-12-2019 start -->
+                            <td>
+                              <input class="form-control mb-10" id="w4DocExpiryDate" placeholder="MM/DD/YYYY" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="editsw4.expiryDate" #expiryDate="ngModel" (dateTimeInput)="stateValidate()" >
+                              <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                              <p *ngIf="stateError" style="color: red;font-weight:bold;">{{ stateError }}</p>
+                            </td>
+                             <!-- adding date pickers by suresh 08-12-2019 end -->
+                            <td>
+                              <textarea class="form-control mb-10" #comment name="comment" id="w4DocComment" [(ngModel)]="editsw4.comment" #comment="ngModel"></textarea>
+                            </td>
+                            <td>
+                              <label class="switch">
+                                <input type="checkbox" #alert name="alert" id="w4DocAlert" [(ngModel)]="editsw4.alert" #alert="ngModel" checked>
+                                <span class="slider round"></span>
+                              </label>
+                            </td>
+                          </ng-template>
+                        <td>
+                          <button *ngIf="i!=displayStateW4" id="editw4Doc" (click)="editState(docs)" class="tabledit-delete-button btn btn-primary mlr-5">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                          </button>                                                  
+                          <button *ngIf="i==displayStateW4" id="updatesw4Doc" (click)="updatesw4Doc()" class="tabledit-delete-button btn btn-success mlr-5">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                          </button>
+                          <button (click)="showDetails(docs.id)" id="w4DocDetails" class="tabledit-delete-button btn btn-danger">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="show3 < this.length3">
+                    <button class="btn btn-info text-left mlr-5 mt-10" id="incresew4Doc" (click)="increaseShow3()"><i class="fa fa-angle-double-right"
+                        aria-hidden="true" style="font-weight: 600; font-size: 17px;">&nbsp;</i>View More</button>
+                  </div>
+                  <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="show3 == this.length3 ">
+                    <button class="btn btn-info text-left mlr-5 mt-10" id="decreasew4Doc" (click)="decreaseShow3()"><i class="fa fa-angle-double-right"
+                        aria-hidden="true" style="font-weight: 600; font-size: 17px;">&nbsp;&nbsp;</i>View less</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- edit details -->
+  <ng-template #d2>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form class="search-form" #addconFrm="ngForm" name="form" (ngSubmit)="addconFrm.form.valid" novalidate>
+              <div class="form-header row mlr-0">
+                <div class="col-md-6 plr-0">
+                  <h5>State w4 DOCUMENT</h5>
+                </div>
+                <div class="col-md-6">
+                  <button (click)="backstatew4()" class="btn btn-danger mlr-5 mtb-5"
+                    style="float: right;">Cancel</button>
+                </div>
+              </div>
+              <div class="padding-20">
+                <div class="row">
+
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-form-label">Select Document</label>
+                        <div class="">
+                          <input type="file" id="editw4SelectedDoc" ng2FileSelect [uploader]="uploader3" name="statew4"
+                            accept="application/pdf,application/docx" class="form-control mb-10">
+                        </div>
+                      </div>
+                      <!-- adding date pickers by suresh 08-10-2019 start -->
+                      <div class="col-md-6">
+                        <label class="col-form-label">Expiry Date</label>
+                        <div class="">
+                          <input class="form-control mb-10" placeholder="MM/DD/YYYY" id="editw4DocExpiry" [owlDateTimeTrigger]="expiryDate" [owlDateTime]="expiryDate" name="expiryDate" [(ngModel)]="statew4Data.expiryDate" (dateTimeInput)="dateValidate3()" #expiryDate="ngModel" >
+                          <owl-date-time [pickerType]="'calendar'" #expiryDate></owl-date-time>
+                          <p *ngIf="dateError3" style="color: red;font-weight:bold;">{{ dateError3 }}</p>
+                        </div>
+                      </div>
+                      <!-- adding date pickers by suresh 08-10-2019 end -->
+                      <div class="col-md-6">
+                        <label class="col-form-label">Comment</label>
+                        <div class="">
+                          <textarea class="form-control mb-10" name="comment" id="editw4DocComment"
+                            [(ngModel)]="statew4Data.comment" #comment="ngModel"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="col-form-label">Opt for alert</label>
+                        <div class="">
+                          <label class="switch">
+                            <input type="checkbox" #alert id="editw4DocAlert" name="alert" [(ngModel)]="statew4Data.alert" #alert="ngModel" checked>
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-md-12" style="margin-bottom: 40px">
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th style="width:20%">Name</th>
+                          <th style="width:40%">Progress</th>
+                          <th style="width:5%">Status</th>
+                          <th style="width:35%">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of uploader3.queue">
+                          <td><strong>{{ item?.file?.name }}</strong></td>
+                          <td>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar"
+                                [ngStyle]="{ 'width': uploader3.progress + '%' }"></div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                            <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                            <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                          </td>
+                          <td>
+                            <button *ngIf="!dateError3" type="button" class="btn btn-success mlr-5" id="uploadw4Doc" (click)="item.upload()"
+                              [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                              <span class="glyphicon glyphicon-upload"></span> Upload
+                            </button>
+                          </td>
+                          
+                          
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+  <div class="popupbox text-center">
+    <p class="bg-success">State w4 document added successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-success" id="backw4Doc" (click)="move()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go to My Info</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<!-- Removed close button from success popups, added date validation - sharmistha - 08-07-2019 - end -->
+
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+    <div class="popupbox">
+    
+      <div class="show_user_details" *ngIf="isShowDetails">
+        <h6>Are you sure?</h6>
+        <div class="form-group row">
+          <div class="col-sm-10">
+            <button class="btn btn-primary mlr-5" id="deleteSingleDoc" (click)="delete(singleDoc.id)">Yes</button>
+            <button class="btn btn-danger mlr-5" id="cancelSingleDoc" (click)="closePopup()">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <!--show_user_details-->
+
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isShowModal">
+    <div class="popupbox">
+   
+      <div class="show_user_details" *ngIf="isDetails">
+        <h6>Are you sure?</h6>
+        <div class="form-group row">
+          <div class="col-sm-10">
+            <button class="btn btn-primary mlr-5" id="deletew4" (click)="deletew4(single.id)">Yes</button>
+            <button class="btn btn-danger mlr-5" id="canceldeletew4" (click)="closeModal()">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <!--show_user_details-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+
+
+
+<div class="popupbox_wrap" *ngIf="isShow">
+    <div class="popupbox">
+
+      <div class="show_user_details" *ngIf="isDetails1">
+        <h6>Are you sure?</h6>
+        <div class="form-group row">
+          <div class="col-sm-10">
+            <button class="btn btn-primary mlr-5" id="singlework" (click)="deletedoc(singlework.id)">Yes</button>
+            <button class="btn btn-danger mlr-5" id="cancelsinglework" (click)="close()">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <!--show_user_details-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox">
+      <button class="close" type="button" id="closeIsSuccess" (click)="closeIsSuccess()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+      <div class="show_user_details">
+        <table class="table table-bordered">
+          <tr>
+            <td class="success text-center">
+              <h5>Document details updated successfully!</h5>
+            </td>
+          </tr>
+        </table>
+        <div class="form-group row">
+          <div class="col-sm-12">  
+            <div class="row text-center">
+              <a class="btn btn-success" id="backIsSuccess" (click)="move()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go to My Info</a>
+            </div>        
+          </div>
+        </div>
+      </div>
+      <!--show_user_details-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+

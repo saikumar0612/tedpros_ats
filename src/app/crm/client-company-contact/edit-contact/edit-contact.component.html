@@ -1,0 +1,407 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Edit Client Company Contact</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>/ </li>
+          <li><a routerLink='/company-contacts'>Client Company Contact</a></li>
+          <li>/ </li>
+          <li>Edit Client Company Contact</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- {{contactInfo|json}} -->
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" #addComFrm="ngForm" name="form">
+            <div class="form-header">
+              <h5>Essentials</h5>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Select Client Company<span class="req-field">*</span>
+                    &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control mb-10" name="companyId" value="{{ contactInfo.companyId }}"
+                      [(ngModel)]="contactInfo.companyId" #companyId="ngModel" required id="companyId" (change)="getcontacts(companyId.value)">
+                      <option *ngFor="let company of companies" value="{{company.companyId}}">{{company.companyName}}
+                      </option>
+                    </select>
+                    <div *ngIf="companyId.touched && companyId.invalid" class="invalid-feedback">
+                      <div *ngIf="companyId.touched && companyId.errors.required">Select one company</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Department:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" value="{{ contactInfo.department }}" name="department" pattern="^([a-zA-Z0-9]+[\s,&-_\-])*[a-zA-Z0-9]+$" id="department"
+                      [(ngModel)]="contactInfo.department" #department="ngModel">
+                      <div *ngIf="department.errors?.pattern" class="invalid-feedback">
+                          Department name cannot contain special characters
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">First name<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" value="{{ contactInfo.firstName }}"
+                      [pattern]="namePattern" name="firstName" [(ngModel)]="contactInfo.firstName" #firstName="ngModel" id="firstName"
+                      [ngClass]="{ 'is-invalid': addComFrm.submitted && firstName.invalid }" required>
+                    <div *ngIf="firstName.touched && firstName.invalid" class="invalid-feedback">
+                      <div *ngIf="firstName.errors.required">First Name is required</div>
+                    </div>
+                    <div *ngIf="firstName.errors?.pattern" class="invalid-feedback">
+                      Name is not valid. Enter only characters
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Designation:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" value="{{ contactInfo.designation }}"
+                      name="designation" id="designation" [(ngModel)]="contactInfo.designation" #designation="ngModel" pattern="^([a-zA-Z0-9()]+[\s.,&-_\-])*[a-zA-Z0-9()]+$">
+					  <div *ngIf="designation.errors?.pattern" class="invalid-feedback">
+                          Enter only characters
+                      </div> 
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Middle name:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" value="{{ contactInfo.middleName }}" name="middleName"  [pattern]="namePattern" id="middleName"
+                      [(ngModel)]="contactInfo.middleName" #middleName="ngModel">
+                  </div>
+                  <div *ngIf="middleName.errors?.pattern" class="invalid-feedback">
+                   Enter a valid Middle Name
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Primary Email<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <input type="email" class="form-control mb-10" value="{{ contactInfo.emailId }}"
+                      [pattern]="emailIdPattern" name="emailId" [(ngModel)]="contactInfo.emailId" #emailId="ngModel" id="emailId"
+                      [ngClass]="{ 'is-invalid': addComFrm.submitted && emailId.invalid }" required>
+                    <div *ngIf="emailId.touched && emailId.invalid" class="invalid-feedback">
+                      <div *ngIf="emailId.errors.required">Primary Email is required</div>
+                    </div>
+                    <div *ngIf="emailId.errors?.pattern" class="invalid-feedback">
+                      Email Address is not valid.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Last name<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" value="{{ contactInfo.lastName }}"
+                      [pattern]="namePattern" name="lastName" [(ngModel)]="contactInfo.lastName" #lastName="ngModel" id="lastName"
+                      [ngClass]="{ 'is-invalid': addComFrm.submitted && lastName.invalid }" required>
+                    <div *ngIf="lastName.touched && lastName.invalid" class="invalid-feedback">
+                      <div *ngIf="lastName.errors.required">Last Name is required</div>
+                    </div>
+                    <div *ngIf="lastName.errors?.pattern" class="invalid-feedback">
+                      Name is not valid. Enter only characters
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Phone<span class="req-field">*</span> &nbsp;:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" value="{{ contactInfo.phoneNo }}"
+                      pattern="([+]?\d{1,3}[-])?\d{10}" name="phoneNo" [(ngModel)]="contactInfo.phoneNo"
+                      #phoneNo="ngModel" [ngClass]="{ 'is-invalid': addComFrm.submitted && phoneNo.invalid }" required id="phoneNo" placeholder="+XXX-XXXXXXXXXX">
+                    <div *ngIf="phoneNo.touched && phoneNo.invalid" class="invalid-feedback">
+                      <div *ngIf="phoneNo.errors.required">Phone Number is required</div>
+                    </div>
+                    <div *ngIf="phoneNo.errors?.pattern" class="invalid-feedback">
+                      Phone number not valid.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+<!-- added code in ngb-tabset tag - sharmistha - 08-13-2019 -->
+            <ngb-tabset type="pills" [destroyOnHide]="false">
+              <ngb-tab title="Details">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Referred By:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" value="{{ contactInfo.referredBy }}" name="referredBy" id="referredBy" [(ngModel)]="contactInfo.referredBy" #referredBy="ngModel">                            
+                            <option value="" disabled selected>Select Referred By</option>
+                            <option *ngFor="let user of contacts" value="{{user.contactId}}">{{user.firstName}}
+                              {{user.lastName}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-20">
+                        <div class="form-check">
+                          <label class="form-check-label col-sm-4" for="defaultCheck1">
+                            Primary Contact
+                          </label>
+                          <div class="col-sm-8">
+                            <input class="form-check-input" type="checkbox" value="{{ contactInfo.isPrimary }}"
+                              name="isPrimary" [(ngModel)]="contactInfo.isPrimary" id="isPrimary"
+                              #isPrimary="ngModel">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Status:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" value="{{ contactInfo.status }}" name="status"
+                            [(ngModel)]="contactInfo.status" #status="ngModel" id="status">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-20">
+                        <div class="form-check">
+                          <label class="form-check-label col-sm-4" for="defaultCheck1">
+                            Is Approver
+                          </label>
+                          <div class="col-sm-8">
+                            <input class="form-check-input" type="checkbox" name="isApprover"
+                              [(ngModel)]="contactInfo.isApprover" [checked]="contactInfo.isApprover"
+                              #isApprover="ngModel" id="isApprover">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Address">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Country:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" (change)="change(countryid.value)"
+                            value="{{ contactInfo.address.countryId }}" name="countryId" #countryid
+                            [(ngModel)]="contactInfo.address.countryId" #countryId="ngModel"
+                            id="countryId">
+                            <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">State:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" value="{{ contactInfo.address.stateId }}" #stateId
+                            (change)="state(stateId.value)" name="stateId" [(ngModel)]="contactInfo.address.stateId" id="stateId"
+                            #stateId="ngModel">
+                            <option *ngFor="let state of states" value="{{state.id}}">{{state.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address Line 1:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" value="{{ contactInfo.address.addressLine1 }}" id="addressLine1" name="addressLine1" [(ngModel)]="contactInfo.address.addressLine1" #addressLine1="ngModel" [pattern]="addressPattern">
+                          <div *ngIf="addressLine1.errors?.pattern" class="invalid-feedback">
+                            Enter a valid address
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Address Line 2:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" value="{{ contactInfo.address.addressLine2 }}" id="addressLine2" name="addressLine2" [(ngModel)]="contactInfo.address.addressLine2" #addressLine2="ngModel" [pattern]="addressPattern">
+                          <div *ngIf="addressLine2.errors?.pattern" class="invalid-feedback">
+                            Enter a valid address
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">City:</label>
+                        <div class="col-sm-8">
+                          <select class="form-control mb-10" value="{{ contactInfo.address.cityId }}" name="cityId" id="cityId"
+                            [(ngModel)]="contactInfo.address.cityId" #cityId="ngModel">
+                            <option *ngFor="let city of cities" value="{{city.id}}">{{city.name}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Zip Code:</label>
+                        <div class="col-sm-8">
+                          <input type="number" class="form-control mb-10" value="{{ contactInfo.address.zipCode }}" id="zipCode"
+                            [pattern]="numberPattern"
+                            [ngClass]="{ 'is-invalid': addComFrm.submitted && zipCode.invalid }" name="zipCode"
+                            [(ngModel)]="contactInfo.address.zipCode" #zipCode="ngModel" (blur)="getAddress()">
+                          <div *ngIf="zipCode.errors?.pattern" class="invalid-feedback">
+                            Zip Code is not valid. Enter only numbers.
+                          </div>
+                          <p *ngIf="zipError" style="color:red;font-weight:bold;">{{zipError}}</p>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Mobile:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" value="{{ contactInfo.address.mobileNo }}" id="mobileNo"
+                            pattern="([+]?\d{1,3}[-])?\d{10}"
+                            [ngClass]="{ 'is-invalid': addComFrm.submitted && mobileNo.invalid }" name="mobileNo" placeholder="+XXX-XXXXXXXXXX"
+                            [(ngModel)]="contactInfo.address.mobileNo" #mobileNo="ngModel">
+                          <div *ngIf="mobileNo.errors?.pattern" class="invalid-feedback">
+                            Mobile number is not valid.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Alternate Number:</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control mb-10" value="{{ contactInfo.address.alternateNo }}" id="alternateNo"
+                            pattern="([+]?\d{1,3}[-])?\d{10}"
+                            [ngClass]="{ 'is-invalid': addComFrm.submitted && alternateNo.invalid }" name="alternateNo" placeholder="+XXX-XXXXXXXXXX"
+                            [(ngModel)]="contactInfo.address.alternateNo" #alternateNo="ngModel">
+                          <div *ngIf="alternateNo.errors?.pattern" class="invalid-feedback">
+                            Mobile number is not valid.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Personal">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                       <!-- adding date pickers by suresh 08-12-2019 start -->
+                         <!-- saikumar 16/08/2019 started here -->
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Date of Birth:</label>
+                        <div class="col-sm-8">
+                          <input class="form-control mb-10" (dateTimeInput)="dateValidate()" placeholder="MM/DD/YYYY" id="doBirth" [owlDateTimeTrigger]="doBirth" [owlDateTime]="doBirth" name="doBirth" [(ngModel)]="contactInfo.personalInfo.doBirth" >
+                          <owl-date-time [pickerType]="'calendar'" #doBirth></owl-date-time>
+
+                          <div *ngIf="dateError" class="invalid-feedback">{{ dateError }}</div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Anniversary</label>
+                        <div class="col-sm-8">
+                            <input class="form-control mb-10" (dateTimeInput)="dateValidate1()" placeholder="MM/DD/YYYY" id="anniversary" [owlDateTimeTrigger]="anniversary" [owlDateTime]="anniversary" name="anniversary" [(ngModel)]="contactInfo.personalInfo.anniversary" #anniversary="ngModel">
+                            <owl-date-time [pickerType]="'calendar'" #anniversary></owl-date-time>
+
+                            <div *ngIf="dateError1" class="invalid-feedback">{{ dateError1 }}</div>
+                        </div>
+                      </div>
+                        <!-- saikumar 16/08/2019 ended here -->
+                       <!-- adding date pickers by suresh 08-12-2019 end -->
+                      <div class="col-md-12">
+                        <label class="col-sm-2 col-form-label">Likes:</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control mb-10" value="{{ contactInfo.personalInfo.likes }}" name="likes" id="likes"
+                            [(ngModel)]="contactInfo.personalInfo.likes" #likes="ngModel"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label class="col-sm-2 col-form-label">Dislikes:</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control mb-10" value="{{ contactInfo.personalInfo.dislikes }}"
+                            name="dislikes" [(ngModel)]="contactInfo.personalInfo.dislikes" id="dislikes"
+                            #dislikes="ngModel"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label class="col-sm-2 col-form-label">Internal Notes:</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control mb-10" value="{{ contactInfo.personalInfo.notes }}" name="notes" id="notes"
+                            [(ngModel)]="contactInfo.personalInfo.notes" #notes="ngModel"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Social">
+                <ng-template ngbTabContent>
+                  <div class="padding-20">
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Twitter:</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" value="{{ contactInfo.social.twitter }}" id="twitter" name="twitter" [(ngModel)]="contactInfo.social.twitter" #twitter="ngModel" [pattern]="twitterPattern">
+                            <div *ngIf="twitter.errors?.pattern" class="invalid-feedback">
+                                Twitter url is not valid.
+                            </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">LinkedIn</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" value="{{ contactInfo.social.linkedin }}" id="linkedin" name="linkedin" [(ngModel)]="contactInfo.social.linkedin" #linkedin="ngModel" [pattern]="linkedInPattern">
+                            <div *ngIf="linkedin.errors?.pattern" class="invalid-feedback">
+                                LinkedIn url is not valid.
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label class="col-sm-4 col-form-label">Facebook</label>
+                        <div class="col-sm-8">
+                          <input type="url" class="form-control mb-10" value="{{ contactInfo.social.facebook }}" id="facebook" name="facebook" [(ngModel)]="contactInfo.social.facebook" #facebook="ngModel" [pattern]="facebookPattern">
+                            <div *ngIf="facebook.errors?.pattern" class="invalid-feedback">
+                                Facebook url is not valid.
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+            <div class="padding-20">
+              <div class="row">
+                <div class="col-sm-10">
+                  <button type="button" class="btn btn-success mlr-5" [disabled]="!addComFrm.valid"
+                    (click)="checkContact()" id="submit">Submit</button>
+                  <button (click)="cancel()" class="btn btn-danger mlr-5" id="cancel">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox" *ngIf="this.message">
+    <h5 class="text-center" style="color:#4cae4c;font-weight: bold;text-transform: capitalize">{{message}} </h5>
+    <br>
+    <div class="row text-center">
+      <a class="btn btn-success" id="contactslink" routerLink="/company-contacts"><i class="fa fa-users" aria-hidden="true"></i> View
+        all</a>&nbsp;&nbsp;
+      <a class="btn btn-success" id="refreshclick" (click)="refresh()"><i class="fa fa-edit" aria-hidden="true"></i> Cont ..</a>
+    </div>
+  </div>
+  <div class="popupbox" *ngIf="this.error">
+    <button class="close" type="button" (click)="closePopup()"><span class="close-label"><i class="fa fa-times" id="closePopup"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <br>
+
+    <h5 class="text-center" style="color:red;font-weight:bold;text-transform: capitalize">{{error }} </h5>
+
+
+  </div>
+</div>

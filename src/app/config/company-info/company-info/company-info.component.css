@@ -1,0 +1,23 @@
+
+
+.plans-table{
+    background-color: #0000000d;
+    border-radius:5px;
+}
+
+.plans-table tr>th{
+    padding-top:10px;
+    padding-bottom:2px;
+    border-bottom: 1px solid #cccc;
+    /* margin:5px; */
+}
+
+.plans-table tr>th,.plans-table tr>td{
+    
+    padding-left:10px;
+    /* margin:5px; */
+}
+.plans-table tr>td{
+    padding-top:4px;
+    padding-bottom:10px;
+}

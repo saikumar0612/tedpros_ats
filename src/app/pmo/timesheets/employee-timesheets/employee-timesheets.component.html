@@ -1,0 +1,108 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>
+          Employee Timesheets
+          <a class="btn btn-primary" routerLink="/timesheets/employee-report" >Employee Report</a>
+          <!-- *ngIf="userPermissions.createProjects" -->
+          
+        </h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li>Home</li>
+          <li>/</li>
+          <li>Employee Timesheets</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 3%; text-align: center;">
+                  </th>
+                  <th style="width: 3%; text-align: center;">
+                    
+                  </th>
+                  <th>Employee Name</th>
+                  <th>Timesheet Period</th>
+                  <th>Timesheet Status</th>
+                  <!-- <th style="width: 10%;">Action</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th>
+                    <input type="text" placeholder="Search Employee Name" (keyup)="search($event.target.value,'timesheet.firstName')" id="searchFirstname"
+                      class="search-filter form-control">
+                  </th>
+                  <th>
+                  </th>
+                  <th>
+                    <input type="text" placeholder="Search Status" (keyup)="search($event.target.value,'timesheet.status')" id="searchStatus"
+                      class="search-filter form-control">
+                  </th>
+                </tr>
+                <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let timesheet of data">
+                  <td style="text-align: center;">
+                  </td>
+                  <td style="text-align: center;" id="subMenu">
+                    <div class="activity-main-menu">
+                      <ul class="menu-items">
+                        <li class="activity-sub-menu">
+                          <a>
+                            <div class="icon-w">
+                              <i class="fa fa-bars" aria-hidden="true"></i>
+                            </div>
+                          </a>
+                          <div class="sub-menu-list">
+                            <div class="sub-menu-i">
+                              <ul class="sub-menu">
+                                <li *ngIf="userPermissions.readEmployeeTimesheets">
+                                  <a class="mlr-5" id="viewEmpTimesheet" [routerLink]="['/timesheets/view-emp-timesheets', timesheet.timesheetId]">
+                                    <button type="button" class="tabledit-delete-button btn btn-success" title="View">
+                                      <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td><a>{{timesheet.firstName}} {{timesheet.lastName}}</a></td>
+                  <td>
+                    {{timesheet.startDate | date:'MM/dd/yyyy'}} to {{timesheet.endDate | date:'MM/dd/yyyy'}}
+                  </td>
+                  <td>
+                    {{timesheet.status}}
+                  </td>
+                </tr>
+              </ng-container>
+              <ng-template #noData> 
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

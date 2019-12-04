@@ -1,0 +1,367 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4> Edit Branch</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink="/manage-branch">Branches Info</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Edit Branch</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <form class="search-form" name="form" #addBranchForm="ngForm" novalidate>
+            <div class="padding-20">
+              <!-- {{branch | json}} -->
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Branch Name <span class="req-field">*</span> </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control mb-10" placeholder="Enter Branch Name" name="name"
+                      [(ngModel)]="branch.name" #name="ngModel" required
+                      [pattern]="branchNamePattern" id="branchname">
+                    <div *ngIf="name.errors?.pattern" class="invalid-feedback">
+                      Enter a valid name
+                    </div>
+                    <div *ngIf="name.touched && name.invalid" class="invalid-feedback">
+                      <div *ngIf="name.touched && name.errors.required">Branch name is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-sm-1">
+                      <input type="checkbox" class="mb-10"  name="isClientLocation"
+                        [(ngModel)]="branch.isClientLocation" #isClientLocation="ngModel" 
+                        id="isClientLocation" value="{{branch.isClientLocation}}" [checked]="branch.isClientLocation">
+                        
+                    </div>
+                    <label class="col-sm-9 col-form-label" for="isClientLocation" >Is Client location ?</label>
+                    
+  
+                  </div>
+              </div><br/>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div class="tab-pane active">
+                  <div class="search-form mb-30">
+                    <div class="form-header">
+                      <h5>Registered Address</h5>
+                    </div>
+                    <div class="padding-20">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Country <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select name="country" class="form-control mb-10"
+                              [(ngModel)]="branch.registeredAddress.country.id" #country="ngModel"
+                              (change)="getStates(country.value,0)" required value="231" id="country">
+                              <option value="">Select Country</option>
+                              <option *ngFor="let country of countriesMaster" value="{{country.id}}">{{country.name}}
+                              </option>
+                            </select>
+                            <div *ngIf="country.touched && country.errors" class="validation_errors text-danger">Please
+                              enter country</div>
+                          </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="!branch.isClientLocation">
+                          <label class="col-sm-4 col-form-label">Phone <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <input type="text" name="phone" class="form-control mb-10" placeholder="+XXX-XXXXXXXXXX"
+                              [(ngModel)]="branch.registeredAddress.phone" #phone="ngModel" required
+                              pattern="([+]?\d{1,3}[-])?\d{10}" id="phone">
+                            <div *ngIf="phone.errors?.pattern" class="invalid-feedback">
+                              Phone number not valid.
+                            </div>
+                            <div *ngIf="phone.touched && phone.invalid" class="invalid-feedback">
+                              <div *ngIf="phone.errors.required">Phone is required</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="!branch.isClientLocation">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Fax <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <input type="text" name="fax" class="form-control mb-10" placeholder="Enter Fax"
+                              [(ngModel)]="branch.registeredAddress.fax" #fax="ngModel" required
+                              pattern="([+]?\d{1,3}[-])?\d{10}" id="fax">
+                            <div *ngIf="fax.errors?.pattern" class="invalid-feedback">
+                              Fax number not valid.
+                            </div>
+                            <div *ngIf="fax.touched && fax.invalid" class="invalid-feedback">
+                              <div *ngIf="fax.errors.required">Fax is required</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Address <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <input type="text" name="address" class="form-control mb-10" placeholder="Address"
+                              [(ngModel)]="branch.registeredAddress.address" #address="ngModel" required
+                              id="address">
+                            <div *ngIf="address.touched && address.errors" class="validation_errors text-danger">Please
+                              enter Address</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6" *ngIf="!branch.isClientLocation">
+                          <label class="col-sm-4 col-form-label">Street </label>
+                          <div class="col-sm-8">
+                            <input type="text" name="street" class="form-control mb-10" placeholder="Street"
+                              [(ngModel)]="branch.registeredAddress.street" #street="ngModel" id="street">
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">State/Province <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" name="state" class="form-control mb-10"
+                              placeholder="State/Province" [(ngModel)]="branch.registeredAddress.state.id"
+                              #state="ngModel" required (change)="getCitys(state.value,0)" required
+                              id="state">
+                              <option value="">Select State/Province</option>
+                              <option *ngFor="let state of satesMaster" value="{{state.id}}">{{state.name}}</option>
+                            </select>
+                            <div *ngIf="state.touched && state.errors" class="validation_errors text-danger">Please
+                              enter
+                              state</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">City <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select name="city" class="form-control mb-10"
+                              [(ngModel)]="branch.registeredAddress.city.id" #city="ngModel" required
+                              id="city" (change)="getzip(0)" >
+                              <option value="">Select City</option>
+                              <option *ngFor="let city of cityMaster" value="{{city.id}}">{{city.name}}</option>
+                            </select>
+                            <div *ngIf="city.touched && city.errors" class="validation_errors text-danger">Please enter
+                              city</div>
+                          </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="!branch.isClientLocation">
+                          <label class="col-sm-4 col-form-label">Zip/Postal Code <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-8">
+                            <input type="text" name="zipcode" class="form-control mb-10" placeholder="Zip/Postal Code"
+                              [(ngModel)]="branch.registeredAddress.zipcode" #zipcode="ngModel" 
+                              required id="zipcode">
+                            <div *ngIf="zipcode.touched && zipcode.errors" class="validation_errors text-danger">Please
+                              enter zipcode</div>
+                            <p *ngIf="zipError" style="color:red;font-weight:bold;">{{zipError}}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row" *ngIf="!branch.isClientLocation">
+                        <div class="col-md-12">
+                          <label class="col-sm-2 col-form-label">Notes </label>
+                          <div class="col-sm-10">
+                            <textarea name="notes" class="form-control mb-10" placeholder="Enter notes"
+                              [(ngModel)]="branch.notes" #notes="ngModel" id="notes"></textarea>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="search-form mb-30" *ngIf="!branch.isClientLocation">
+                    <div class="form-header">
+                      <h5>Locale Settings</h5>
+                    </div>
+                    <div class="padding-20">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Default Locale <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" name="defaultLocale" id="defaultLocale"
+                              [(ngModel)]="branch.localeSettings.locale.id" #defaultLocale="ngModel" required>
+                              <option value="">Select Locale</option>
+                              <option *ngFor="let locale of localeMasterList" value="{{locale.id}}">{{locale.value}}, {{locale.name}}</option>
+                            </select>
+                            <div *ngIf="defaultLocale.touched && defaultLocale.errors" class="validation_errors text-danger">Please select defaultLocale</div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Default TimeZone <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" name="defTimeZone" id="defTimeZone"
+                              [(ngModel)]="branch.localeSettings.timeZone.id" #defaultTimeZone="ngModel" required>
+                              <option value="">Select Time</option>
+                              <option *ngFor="let timeZone of timeZonesMasterList" value="{{timeZone.id}}"> {{timeZone.timezone}}</option>
+                            </select>
+                            <div *ngIf="defaultTimeZone.touched && defaultTimeZone.errors" class="validation_errors text-danger">Please select default Time Zone</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Currency <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" name="currencyLocale" id="currencyLocale"
+                              [(ngModel)]="branch.localeSettings.currency.id" #currencyLocale="ngModel" required>
+                              <option value="">Select Currency</option>
+                              <option *ngFor="let currency of currencyMastList" value="{{currency.id}}">
+                                {{currency.currency}} - {{currency.country}}</option>
+                            </select>
+                            <div *ngIf="currencyLocale.touched && currencyLocale.errors"
+                              class="validation_errors text-danger">Please select currency Locale</div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Language <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" name="language" id="language"
+                              [(ngModel)]="branch.localeSettings.language.id" #language="ngModel" required>
+                              <option value="">Select Language</option>
+                              <option *ngFor="let language of languageMaster" value="{{language.id}}">
+                                {{language.name | titlecase}}
+                              </option>
+                            </select>
+                            <div *ngIf="language.touched && language.errors" class="validation_errors text-danger">
+                              Please select Language</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="search-form mb-30" *ngIf="!branch.isClientLocation">
+                    <div class="form-header">
+                      <h5>Work Week</h5>
+                    </div>
+                    <div class="padding-20">
+                      <div class="form-group row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Sunday <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" name="sunday" #sunday="ngModel" [(ngModel)]="branch.workWeek.sunday.id" id="selectSunday">
+                              <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Monday <span class="req-field">*</span>
+                          </label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" name="monday" #monday="ngModel" [(ngModel)]="branch.workWeek.monday.id" id="selectMonday">
+                              <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Tuesday <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select class="form-control mb-10" name="tuesday" #tuesday="ngModel" [(ngModel)]="branch.workWeek.tuesday.id" id="selectTuesday">
+                              <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Wednesday <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select name="wednesday" #wednesday="ngModel" class="form-control mb-10" [(ngModel)]="branch.workWeek.wednesday.id" id="selectWednesday">
+                              <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Thursday <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select name="thursday" #thursday="ngModel" class="form-control mb-10" [(ngModel)]="branch.workWeek.thursday.id" id="selectThursday">
+                              <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Friday <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select name="friday" #friday="ngModel" class="form-control mb-10" [(ngModel)]="branch.workWeek.friday.id" id="selectFriday">
+                              <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-6">
+                          <label class="col-sm-4 col-form-label">Saturday <span class="req-field">*</span> </label>
+                          <div class="col-sm-8">
+                            <select name="saturday" #saturday="ngModel" class="form-control mb-10" [(ngModel)]="branch.workWeek.saturday.id" id="selectSaturday">
+                              <option *ngFor="let weekDay of weekData" value="{{weekDay.id}}">{{weekDay.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-sm-10">
+                      <button type="submit" class="btn btn-primary mlr-5" [disabled]="!addBranchForm.valid"
+                        (click)="editBranch()" id="editBranch">Save</button>
+                      <button class="btn btn-danger mlr-5" (click)="cancle()" id="cancel">Cancel</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="popupbox_wrap" *ngIf="isSuccess">
+    <div class="popupbox">
+    
+      <p class="bg-success text-center">Branch details updated successfully!</p>
+      <div class="row text-center">
+        <a class="btn btn-success ml-5" routerLink="/manage-branch"><i class="fa fa-users" aria-hidden="true" id="viewbranches"></i> View Branches</a>
+      </div>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap-->
+    
+    
+  <div class="popupbox_wrap" *ngIf="isFailure">
+    <div class="popupbox">
+      <p class="bg-danger">{{ data.errorMessages }}</p>
+      <div class="row text-center">
+        <a class="btn btn-success" id="closePop" (click)="closePopup()"><i class="fa fa-users" aria-hidden="true"></i> Close</a>
+      </div>
+      <!--row-->
+    </div>
+    <!--popupbox-->
+  </div>
+  <!--popupbox_wrap--> 

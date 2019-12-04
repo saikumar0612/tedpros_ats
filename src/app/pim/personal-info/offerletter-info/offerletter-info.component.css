@@ -1,0 +1,24 @@
+.offerletter.popupbox_wrap{
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 40px 60px;
+}
+.popupbox{
+    top: auto !important;
+    position: unset !important;
+    width: 100% !important;
+}
+.popup-logo{
+    width:70%; 
+    margin: 0 auto 30px;
+}
+.popupbox table tbody tr td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: middle;
+    border: none
+}
+
+.offerContent>.table>tbody>tr>td{
+    border: none!important;
+}

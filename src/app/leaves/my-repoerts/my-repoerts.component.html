@@ -1,0 +1,104 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>My Leave Entitlements and Usage Report</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <em>&nbsp;/&nbsp;</em>
+          <li>My Leave Entitlements Usage Report</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+            <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead class="form-header">
+                <tr>
+                  <th style="width: 4%; text-align: center;"></th>
+                  <th>Leave Type</th>
+                  <th>Leave Entitlements (Days)</th>
+                  <th>Leave Pending Approval (Days) </th>
+                  <th>Leave Scheduled (Days) </th>
+                  <th>Leave Taken</th>
+                  <th>Leave Balance (Days)</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="!finalData">
+                <tr>
+                  <td colspan="7">
+                    No Records Found
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="filterData">
+                  <tr>
+                      <th style="width: 3%; text-align: center;"></th>
+                      <th>
+                        <input type="text" placeholder="Search Leave Type" id="searchLeave"
+                          (keyup)="search($event.target.value,'leave_type')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Total Days" id="searchDays"
+                          (keyup)="search($event.target.value,'days')" class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Pending Days" (keyup)="search($event.target.value,'leave_pending')" id="PendinfDays"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Scheduled Days" (keyup)="search($event.target.value,'leave_scheduled')" id="searchScheduledDays"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Leave Taken Days" (keyup)="search($event.target.value,'leave_taken')" id="searchLeaveTackenDays"
+                          class="search-filter form-control">
+                      </th>
+                      <th>
+                        <input type="text" placeholder="Search Balance Days" (keyup)="search($event.target.value,'leave_balance')" id="searchbalanceDays"
+                          class="search-filter form-control">
+                      </th>
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                <tr *ngFor="let report of mf.data; let i = index">
+                  <td style="text-align: center;">
+                      <p>{{ i+1 }}</p>
+                  </td>
+                  <td>{{report.leave_type}}</td>
+                  <td>{{report.days}}</td>
+                  <td>{{report.leave_pending}}</td>
+                  <td>{{report.leave_scheduled}}</td>
+                  <td>{{report.leave_taken}}</td>
+                  <td>{{report.leave_balance}}</td>
+                </tr>
+              </ng-container>
+              <ng-template #noData> 
+                <tr>
+                  <td colspan="12" class="text-danger" style="text-align: center;">
+                    No Records Found 
+                  </td>
+                </tr>
+              </ng-template>
+              </tbody>
+              <tfoot>
+                  <tr>
+                    <td colspan="12">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

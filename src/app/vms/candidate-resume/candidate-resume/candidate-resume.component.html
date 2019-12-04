@@ -1,0 +1,212 @@
+<style>
+    input[type="file"] {
+          display: block;
+          right: 0;
+          cursor: pointer;
+          bottom: -1px;
+          font-size: 12px;
+          opacity: 1;
+          position: relative;
+          width: 100%;
+          z-index: 0;
+        }
+  </style>
+      <main id="jf-main" class="jf-main jf-haslayout"  id="contentToConvert">
+        <div class="container">
+          <div class="row">
+            <div class="col-3 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <div class="jf-dashboardbox jf-basicformholder" >
+                <!-- <div class="margin-rt-10">
+                  <div>
+                   <button class="btn btn-primary pull-right" style="margin: 1px;;" title="Edit profile" id="editResume" routerLink="/resume/edit-resume"><i class="fa fa-edit"></i></button>
+                  </div>
+                  <div style="margin: 8px;;">
+                      <ng-container *ngIf="resume; else noData">
+                          <a class="btn btn-success pull-right" title="View Resume" id="ViewResume"  
+                          href="{{resumeUrl}}{{resume}}" target="blank" style="color: white;"><i class="fa fa-eye"></i></a>
+                      </ng-container>
+                      <ng-template #noData>
+                      </ng-template>
+                  </div>
+                  
+                 </div> -->
+                  <ng-container >
+                    <img alt="" class="img-thumbnail" src="assets/images/avatar.png" *ngIf="candidateData.image == ''" alt="Profile Picture" >
+      
+                    <img src="{{candidateData.image}}" class="img-thumbnail"  alt="Profile Picture" *ngIf="candidateData.image != ''">
+                  </ng-container>
+                  <div class="resume-exp-heading" style="margin-left: 33%">
+                  {{candidateData.firstName }} {{ candidateData.lastName}}
+                  </div> 
+                  <div class="margin-10">
+                    <p class="resume-content"><em class="fa fa-envelope"></em> {{ candidateData.email }}</p>
+                    <p class="resume-content"> <em class="fa fa-phone"></em> {{ candidateData.phoneNo }}</p>
+                   
+                    <ng-container *ngIf="candidateData.dob; else noData">
+                      <p class="resume-content"> <em class="fa fa-calendar"></em> {{ candidateData.dob | date:'MM/dd/yyyy'}}</p>
+                    </ng-container>
+                    <ng-template #noData>
+                    </ng-template>
+                    <ng-container *ngIf="candidateData.linkedin; else noData">
+                        <p class="resume-content"> <em class="fa fa-linkedin-square" aria-hidden="true"></em>{{candidateData.linkedin}}</p>
+                    </ng-container>
+                    <ng-template #noData>
+                    </ng-template>
+                    <!-- <p class="resume-content"> <i class="fa fa-linkedin-square" aria-hidden="true"></i>{{candidateData.linkedin}}</p> -->
+                    <p class="resume-content"> <em class="fa fa-home"></em> {{ candidateData.addressLine1 }},{{ candidateData.addressLine2 }} </p>
+                    <p class="resume-content"><em class="fa fa-map-marker"></em> {{ candidateData.country.name }}, {{ candidateData.state.name }}, {{ candidateData.city.name }}</p>
+                    <p class="resume-content">
+                      <em class="fa fa-heart" aria-hidden="true"></em>&nbsp;
+                      <a routerLink="/job/favouriteJobs">Favourite jobs -  ( {{wishlist}} )</a>
+                    </p>
+                    <p class="resume-content" >
+                      <em class="fa fa-file-text-o" aria-hidden="true"></em>&nbsp;
+                      <a routerLink="/job/appliedJobs">Applied jobs - ( {{appliedJobs}} )</a> 
+                    </p>
+                    <p class="resume-content" >
+                      <em class="fa fa-thumbs-o-up" aria-hidden="true"></em>&nbsp;
+                      <a routerLink="/job/shortlistJobs">Shortlist jobs - ( {{shortlistData}}  )</a> 
+                    </p>
+                    <!-- <a class="btn btn-success pull-left" style="color: white;" id="Calendar" routerLink="/resume/calendar">Calendar</a>
+                    <button class="btn btn-success pull-right"  id="Resume" (click)="resumePreview()">Build Resume</button> -->
+                  </div>
+              </div>
+              <div class="jf-dashboardbox jf-basicformholder" >
+                <div class="jf-dashboardboxtitle">
+                  <h2> <em class="fa fa-calendar-o" aria-hidden="true"></em> Skills</h2>
+                </div>
+                <div *ngFor="let skill of skills">
+                  <div class="margin-10 resume-content">
+                    <h4 class="resume-content">{{skill.skillName}}
+                      <span class="pull-right">( {{skill.experience}} Months )</span>
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>         
+            <div class="col-8 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin: auto" *ngIf="experience">
+                <div class="jf-dashboardbox jf-basicformholder" style="margin-top:10px">
+                  <div class="jf-dashboardboxtitle">
+                    <h2> <em class="fa fa-suitcase"></em> Experience</h2>
+                  </div>
+                  <div class="jf-dashbboardcontent jf-basicinfo">
+                    <form class="jf-formtheme jf-formbasicinfo">
+                      <div *ngFor="let x of experience" class="mb-10" style="text-align:left">
+                        <div class="row">
+                          <div class="col-sm-12">
+                           <span class="resume-exp-heading" ><em class="fa fa-tag" aria-hidden="true"></em> {{ x.jobTitle| titlecase }} </span><span class="small">( {{ x.startDate | date:'MM/dd/yyyy' }} - {{ x.endDate | date:'MM/dd/yyyy' }} )  </span>
+                          </div>
+                          </div>
+                          <div class="row">
+                          <div class="col-sm-11 margin-lr">
+                              <span class="resume-sub-heading" ><em class="fa fa-university" aria-hidden="true"></em>&nbsp;{{ x.employer| titlecase }}</span>
+                          </div>
+                          <div class="col-sm-11 margin-leftside">
+                            <ng-container *ngIf="x.responsibilities; else noData">  
+                              <strong>Responsibilities :</strong>
+                              <p class="resume-content" >{{ x.responsibilities }}</p>
+                            </ng-container>
+                            <ng-template #noData> 
+                            </ng-template>
+                          </div>
+                          <div class="col-sm-11 margin-leftside">
+                              <ng-container *ngIf="x.description; else noData">  
+                                <strong> Description :</strong>
+                                <p class="resume-content" >{{ x.description }}</p>
+                              </ng-container>
+                              <ng-template #noData>
+                              </ng-template>
+                          </div>
+                        </div>
+                        <div class="hr"></div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div> 
+                       
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin: auto">
+                <div class="jf-dashboardbox jf-basicformholder" style="margin-top:10px">
+                  <div class="jf-dashboardboxtitle">
+                    <h2><em class="fa fa-graduation-cap"></em> Education</h2>
+                  </div>
+                  <div class="jf-dashbboardcontent jf-basicinfo">
+                    <form class="jf-formtheme jf-formbasicinfo"  >
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Institute Name</th>
+                            <th>Qualification</th>
+                            <th>Specialisation</th>
+                            <th>Year of passing</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr  *ngFor="let education of educations">
+                            <td>{{ education.instituteName }}</td>
+                            <td>{{ education.qualification }}</td>
+                            <td>{{ education.specialization }}</td>
+                            <td>{{ education.passingYear }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin: auto">
+                <div class="jf-dashboardbox jf-basicformholder" style="margin-top:10px">
+                  <div class="jf-dashboardboxtitle">
+                    <h2><em class="fa fa-bar-chart" aria-hidden="true"></em> Job trends based on your skills (Last one month)</h2>
+                  </div>
+                  <div class="jf-dashbboardcontent jf-basicinfo">
+                    <div style="display: block">
+                      <canvas baseChart
+                        [datasets]="barChartData"
+                        [labels]="barChartLabels"
+                        [options]="barChartOptions"
+                        [plugins]="barChartPlugins"
+                        [legend]="barChartLegend"
+                        [chartType]="barChartType">
+                      </canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>              
+          </div>
+        </div>
+         
+      </main>
+    
+ 
+            
+<div class="popupbox" *ngIf="this.preview">
+  <button class="close" type="button" id="closeAllPopups" (click)="closePreviewPopup()"><span class="close-label"><em
+        class="fa fa-times" aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span></button><br/>
+  <div>
+      <table class="table table-bordered">
+          <tr>
+            <td>
+              <a [routerLink]="['/resume/preview']" title="preview 1" id="preview1">
+                <img src="assets/images/late2.png" alt="resume preview"
+                  style="height:100px;width:70px; display:block; margin: auto;"></a>
+            </td>
+            <td>
+              <a [routerLink]="['/resume/preview-1']" title="preview 2" id="preview2">
+                <img src="assets/images/late3.png" alt="resume preview"
+                  style="height:100px;width:70px; display:block; margin: auto;"></a>
+            </td>
+            <td>
+              <a [routerLink]="['/resume/preview-2']" title="preview 3" id="preview3">
+                <img src="assets/images/late1.png" alt="resume preview"
+                  style="height:100px;width:70px; display:block; margin: auto;"></a>
+            </td>
+          </tr>
+        </table>
+  </div>
+
+</div>

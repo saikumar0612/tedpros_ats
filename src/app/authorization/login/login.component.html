@@ -1,0 +1,68 @@
+<div class="body-gradient">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 col-sm-8 col-xs-12 col-md-offset-3 pt-80 pb-80 pt-sm-20 pb-sm-20">
+        <div class="login-box">
+          <div class="login-logo">
+            <img class="center" alt="Company Logo" src="{{file1_input}}">
+          </div>
+          <div class="top-header">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 heading">
+                <h4>Login Form</h4>
+              </div>
+            </div>
+          </div>
+          <h4 style="color: red; text-align: center;" *ngIf="error">
+            {{error.error}}
+          </h4>
+          <form class="form-box" #loginForm="ngForm">
+            <div class="form-group row" style="margin-bottom: 30px;">
+              <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
+                <i class="fa fa-user-circle-o login-icon" aria-hidden="true"></i>
+              </div>
+              <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                <label class="form-label">UserID</label>
+                <input type="text" class="form-control" placeholder="Enter your username" #userName="ngModel"
+                  name="userName" id="userName" [(ngModel)]="user.id" required invalid>
+                <div class="text-danger" *ngIf="userName.touched && userName.errors">
+                  <p *ngIf="userName.touched && userName.errors.required">Please enter User Name</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" style="margin-bottom: 30px;">
+              <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
+                <i class="fa fa-key login-icon" aria-hidden="true"></i>
+              </div>
+              <div class="col-md-11 col-lg-11 col-sm-11 col-xs-12">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" placeholder="Enter your password" #password="ngModel"
+                  name="password" id="password" [(ngModel)]="user.password" required>
+                <div class="text-danger" *ngIf="password.touched && password.errors">
+                  <p *ngIf="password.touched && password.errors.required">Please enter your Password</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-3 col-lg-3 col-sm-3 col-xs-4">
+                <button type="submit" id="login" class="btn btn-login" [disabled]="!loginForm.valid" (click)="userLogin()">Log me
+                  in</button>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                <a routerLink='/authorization/forget'>Forget Password ?</a>
+              </div>
+              <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                <a routerLink='/vms/careers' style="float: right;">Candidate Careers</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="../../../assets/images/loginloader.gif" alt=""></div>
+</div>
