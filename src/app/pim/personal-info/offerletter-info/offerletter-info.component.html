@@ -1,0 +1,133 @@
+<div class="content">
+    <div class="top-header">
+        <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+            <h4>Offer Letter of {{ userName.name | titlecase }}</h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+            <ul class="breadcrumb-items"> 
+                <li><a routerLink='/dashboard'>Home</a></li>
+                <li>&nbsp;/&nbsp;</li>
+                <li><a routerLink='/myInfo'>My Info</a></li>
+                <li>&nbsp;/&nbsp;</li>
+                <li><a routerLink='/offer-letter'>Offer Letter Info</a></li>            
+            </ul>
+        </div>
+        </div>
+    </div>
+    <div class="element-content">
+        <div class="job-box">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-bordered" [mfData]="filterData" #mf="mfDataTable">
+                <thead class="form-header">
+                    <tr>
+                    <th style="width: 4%; text-align: center;"></th>
+                    <th>Offer Letter Type</th>
+                    <th>Template</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="filterData">
+                    <tr>
+                    <th style="width: 3%; text-align: center;"></th>
+                    <th style="width: 70%">
+                        <input type="text" placeholder="Search letter Type" (keyup)="search($event.target.value,'name')" class="search-filter form-control" id="Searchfiletype" style="width: 40%;">
+                    </th>
+                    <th></th>
+                    </tr>
+                    <ng-container *ngIf="availableRecords; else noData">
+                    <tr *ngFor="let type of mf.data, index as i">
+                        <td style="text-align: center;">{{i+1}}</td>
+                        <td>{{type.offerLetter.offerLetterTypeName}}</td>
+                        <td style="padding: 5px 8px">
+                        <button *ngIf="type.displayEdit" id="editTemplate" routerLink="/usersView/user-offerletter" class="tabledit-delete-button btn btn-success mlr-5">
+                            Accept
+                        </button>
+                        <button *ngIf="type.displayDownload" id="viewTemplate" (click)="viewTemplate(type.offerLetter.id)" class="tabledit-delete-button btn btn-info mlr-5">
+                            View
+                        </button>
+                        <!-- <button *ngIf="type.displayDownload" id="downloadTemplate" (click)="downloadTemplate(type.offerLetter.id)" class="tabledit-delete-button btn btn-danger mlr-5">
+                            Download
+                        </button> -->
+                        </td>
+                    </tr>
+                    </ng-container>
+                    <ng-template #noData>
+                    <tr>
+                        <td colspan="12" class="text-danger" style="text-align: center;">No Records Found</td>
+                    </tr>
+                    </ng-template>
+                </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>  
+
+<div class="loader_wrap" *ngIf="loading">
+    <div class="loader_inner_wrap"><img src="../../../../assets/images/loginloader.gif" alt=""></div>
+</div>
+
+<div class="offerletter popupbox_wrap" *ngIf="viewLetter">
+    <div class="popupbox">                
+        <div class="row">
+            <button class="tabledit-delete-button btn btn-danger mlr-5 pull-right" type="button" id="close" (click)="closePopup()">
+                Close
+            </button>
+            <button id="downloadTemplate" (click)="captureScreen()" class="tabledit-delete-button btn btn-success mlr-5 pull-right">
+                Download
+            </button>
+        </div>
+        <div class="padding-20" id="contentToConvert">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td style="width: 33.33%; border: none;"></td>
+                                <td style="width: 33.33%; text-align: center; border: none;">
+                                    <img src="{{logoUrl}}" style="margin: auto; width: 100%;" alt="logo">
+                                </td>
+                                <td style="width: 33.33%; border: none;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offerContent" [innerHtml]="singleLetter.offerLetter.offerLetter | safeHtml"></div>
+            </div><br><br>
+            <div class="row offerContent">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%; border: none;">
+                                    <h5><strong>Employer Signature</strong></h5>
+                                    <div class="row">
+                                        <img src="{{singleLetter.hrDigitalKey.digitalKey}}" style="width:75%; margin: auto;" alt="Digital Signature" class="col-md-10"/>
+                                    </div>                    
+                                    <p><strong>{{singleLetter.offerLetter.hr.name}}</strong></p>
+                                    <p>{{singleLetter.offerLetter.hr.jobTitle.name | uppercase}}</p>
+                                </td>
+                                <td style="width: 50%; border: none;">
+                                    <h5><strong>Employee Signature</strong></h5>
+                                    <div class="row">
+                                        <img src="{{singleLetter.userDigitalKey.digitalKey}}" style="width:75%; margin: auto;" alt="Digital Signature" class="col-md-10"/>
+                                    </div>
+                                    <p><strong>{{singleLetter.offerLetter.user.name}}</strong></p>
+                                    <p>{{singleLetter.offerLetter.user.jobTitle.name | uppercase}}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>                                    
+        </div>
+    </div>
+    <!--popupbox-->
+</div>
+<!--popupbox_wrap-->

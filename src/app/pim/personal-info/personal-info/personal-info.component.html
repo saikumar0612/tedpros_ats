@@ -1,0 +1,533 @@
+<style>
+    input[type="file"] {
+      display: block;
+      right: 0;
+      cursor: pointer;
+      bottom: -1px;
+      font-size: 12px;
+      opacity: 1;
+      position: relative;
+      width: 100%;
+      z-index: 0;
+    }
+  
+  </style>
+  <div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Personal Info
+            &nbsp;&nbsp;
+            <select class="form-control" id="selectInfemation" #info (change)="onNavigate(info.value)" style="display: inline; width:35%;">
+              <option [ngValue]="undefined" disabled selected>-- Select --</option>
+              <option value="myInfo/personalInfo">Personal Info</option>
+              <option value="myInfo/contactInfo">Contact Info</option>
+              <option value="myInfo/dependentInfo">Dependents Info</option>
+              <option value="myInfo/qualifications">Qualification Info</option>
+              <option value="myInfo/salaryInfo">Salary Info</option>
+              <option value="myInfo/documentInfo">Documents Info</option>
+              <option value="myInfo/my-resume">My Resume</option>
+            </select>
+          </h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+          <ul class="breadcrumb-items">
+            <li><a routerLink='/dashboard'>Home</a></li>
+            <li>&nbsp;/&nbsp;</li>
+            <li><a routerLink='/myInfo'>My Info</a></li>
+            <li>&nbsp;/&nbsp;</li>
+            <li>Personal Info</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <ng-container *ngIf="this.display==true; then b2 else b1"></ng-container>
+    <!-- view details -->
+    <ng-template #b1>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <div class="form-header row mlr-0">
+                <div class="col-md-6">
+                  <h5>Personal Information</h5>
+                </div>
+                <div class="col-md-6">
+                  <button (click)="editInfo()" id="editInfo" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Edit</button>
+                  <button (click)="cancel()" id="canceleditInfo" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+                </div>
+              </div>
+              <div class="padding-20">
+  
+                    <div class="form-group row">
+                      <div class="col-md-5">
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">First Name:</label>
+                          <div class="col-sm-8">
+                            <p class="mb-10">{{ personalInfo.data.firstName | titlecase }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Middle Name:</label>
+                          <div class="col-sm-8">
+                            <p>{{ personalInfo.data.middleName | titlecase }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Last Name:</label>
+                          <div class="col-sm-8">
+                            <p>{{ personalInfo.data.lastName | titlecase }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Email Address:</label>
+                          <div class="col-sm-8">
+                            <p>{{ personalInfo.data.email }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Contact:</label>
+                          <div class="col-sm-8">
+                            <p>{{ personalInfo.data.contact }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Driver's License Numbe:</label>
+                          <div class="col-sm-8">
+                            <p>{{ personalInfo.data.driverLicenseNo }}</p>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label class="col-sm-4 col-form-label mb-10">Social Security Number:</label>
+                          <div class="col-sm-8">
+                            <p *ngIf="!personalInfo.data.ssn"></p>
+                            <p *ngIf="personalInfo.data.ssn">{{personalInfo.data.ssn}}</p>
+                          </div>
+                        </div>
+                      </div>
+                  <div class="col-md-5">
+                    <div class="row">
+                      <label class="col-sm-4 col-form-label mb-10">License Expiry Date:</label>
+                      <div class="col-sm-8">
+                        <p *ngIf="personalInfo.data.licenseExpDate == '0000-00-00'"></p>
+                        <p *ngIf="personalInfo.data.licenseExpDate != '0000-00-00'">{{personalInfo.data.licenseExpDate | date: 'MM-dd-yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-4 col-form-label mb-10">Blood Group:</label>
+                      <div class="col-sm-8">
+                        <p>{{ personalInfo.data.bloodGroup }}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-4 col-form-label mb-10">Marital Status:</label>
+                      <div class="col-sm-8">
+                        <p>{{ personalInfo.data.maritalStatus }}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-4 col-form-label mb-10">Gender:</label>
+                      <div class="col-sm-8">
+                        <p>{{ personalInfo.data.gender | titlecase }}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-4 col-form-label mb-10">Nationality:</label>
+                      <div class="col-sm-8">
+                        <p>{{ personalInfo.data.nationality.name }}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-4 col-form-label mb-10">Date of Birth:</label>
+                      <div class="col-sm-8">
+                        <p *ngIf="!personalInfo.data.dob"></p>
+                        <p *ngIf="personalInfo.data.dob">{{personalInfo.data.dob | date: 'MM-dd-yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-4 col-form-label mb-10">LinkedIn:</label>
+                      <div class="col-sm-8">
+                        <p >{{ personalInfo.data.linkedin }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="profile-picture">
+                      <img alt="" src="assets/images/avatar.png" *ngIf="this.picturedata.image == ''"
+                        style="width: 100%;">
+                      <img src="{{picturedata.image}}"  alt="image" *ngIf="picturedata.image != ''" style="width: 100%;">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+  
+                  <label class="col-sm-2 col-form-label mb-10">Summary/Objective:</label>
+                  <div class="col-sm-10">
+                    <p>{{ personalInfo.data.summary }}</p>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </ng-template>
+    <!-- edit details -->
+    <ng-template #b2>
+      <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <form class="search-form" #addPersonalFrm="ngForm" name="form" (ngSubmit)="addPersonalFrm.form.valid"
+                novalidate>
+                <div class="form-header">
+                  <h5>PERSONAL INFORMATION</h5>
+                </div>
+                <div class="padding-20">
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">First Name<span class="req-field">*</span></label>
+                      <div class="col-sm-8">
+                          <input type="text" id="editFirstName" class="form-control mb-10" value="{{ personalInfo.data.firstName }}" name="firstName" [(ngModel)]="personalInfo.data.firstName" #firstName="ngModel" [ngClass]="{ 'is-invalid': addPersonalFrm.submitted && firstName.invalid }" required pattern="^([a-zA-Z])*$">
+                          <div *ngIf="firstName.touched && firstName.invalid" class="invalid-feedback">
+                            <div *ngIf="firstName.touched && firstName.errors.required">First Name is required</div>
+                          </div>
+                          <div *ngIf="firstName.errors?.pattern" class="invalid-feedback">
+                            Enter a valid First Name
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Middle Name</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="editMiddleName" class="form-control mb-10" value="{{ personalInfo.data.middleName }}"
+                          name="middleName" [(ngModel)]="personalInfo.data.middleName" #middleName="ngModel" pattern="^([a-zA-Z])*$">
+                          <div *ngIf="middleName.errors?.pattern" class="invalid-feedback">
+                            Enter a valid Middle Name
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Last Name <span class="req-field">*</span></label>
+                      <div class="col-sm-8">
+                          <input type="text" id="editLastName" class="form-control mb-10" value="{{ personalInfo.data.lastName }}" name="lastName" [(ngModel)]="personalInfo.data.lastName" #lastName="ngModel" [ngClass]="{ 'is-invalid': addPersonalFrm.submitted && lastName.invalid }" required pattern="^([a-zA-Z])*$">
+                          <div *ngIf="lastName.touched && lastName.invalid" class="invalid-feedback">
+                            <div *ngIf="lastName.touched && lastName.errors.required">Last Name is required</div>
+                          </div>
+                          <div *ngIf="lastName.errors?.pattern" class="invalid-feedback">
+                            Enter a valid Last Name
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Employee Id <span class="req-field">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" id="employeeId" readonly class="form-control mb-10" value="{{ personalInfo.data.userId }}" name="userId" [(ngModel)]="personalInfo.data.userId" #userId="ngModel" required>
+                        <div *ngIf="userId.touched && userId.invalid" class="invalid-feedback">
+                          <div *ngIf="userId.touched && userId.errors.required">EmployeeID is required</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Email Address <span class="req-field">*</span> </label>
+                      <div class="col-sm-8">
+                        <input type="email" id="editEmail" class="form-control mb-10" readonly value="{{ personalInfo.data.email }}" name="email" [(ngModel)]="personalInfo.data.email" #email="ngModel" required>
+                        <div *ngIf="email.touched && email.invalid" class="invalid-feedback">
+                          <div *ngIf="email.touched && email.errors.required">Email Address is required</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Mobile <span class="req-field">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" id="editMobile" class="form-control mb-10" value="{{ personalInfo.data.contact }}"
+                          name="contact" pattern="([+]?\d{1,3}[-])?\d{10}" [(ngModel)]="personalInfo.data.contact"
+                          #contact="ngModel" [ngClass]="{ 'is-invalid': addPersonalFrm.submitted && contact.invalid }"
+                          required>
+                        <div *ngIf="contact.touched && contact.invalid" class="invalid-feedback">
+                          <div *ngIf="contact.touched && contact.errors.required">Mobile Number is required</div>
+                        </div>
+                        <div *ngIf="contact.errors?.pattern" class="invalid-feedback">
+                          Mobile number not valid.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Driver's License Number</label>
+                      <div class="col-sm-8">
+                        <input type="text" id="editLicenceNumber" class="form-control mb-10" value="{{ personalInfo.data.driverLicenseNo }}" name="driverLicenseNo" [(ngModel)]="personalInfo.data.driverLicenseNo"
+                          #driverLicenseNo="ngModel" pattern="^[A-Z0-9]{9,16}$">
+                          <div *ngIf="driverLicenseNo.errors?.pattern" class="invalid-feedback">
+                            License Number not valid.
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">License Expiry Date</label>
+                      <div class="col-sm-8">
+                        <!-- Changed date picker - sharmistha - 08-07-2019 - start -->
+                        <input class="form-control mb-10" placeholder="MM-DD-YYYY" id="editlicenseExpDate" [owlDateTimeTrigger]="licenseExpDate" [owlDateTime]="licenseExpDate" name="licenseExpDate" [(ngModel)]="personalInfo.data.licenseExpDate" #licenseExpDate="ngModel" >
+                        <owl-date-time [pickerType]="'calendar'" #licenseExpDate></owl-date-time>
+                        <!-- Changed date picker - sharmistha - 08-07-2019 - end -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Blood Group</label>
+                      <div class="col-sm-8">
+                        <select class="form-control mb-10" id="editBloodGroup" value="{{ personalInfo.data.bloodGroup }}" name="editBloodGroup" [(ngModel)]="personalInfo.data.bloodGroup" #editBloodGroup="ngModel">
+                          <option value="" disabled selected>Select blood group</option>
+                          <option value="A+">A+</option>
+                          <option value="A-">A-</option>
+                          <option value="B+">B+</option>
+                          <option value="B-">B-</option>
+                          <option value="O+">O+</option>
+                          <option value="O-">O-</option>
+                          <option value="AB+">AB+</option>
+                          <option value="AB-">AB-</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Marital Status</label>
+                      <div class="col-sm-8">
+                        <select class="form-control mb-10" id="editmaritalStatus" value="{{ personalInfo.data.maritalStatus }}"
+                          name="maritalStatus" [(ngModel)]="personalInfo.data.maritalStatus" #maritalStatus="ngModel">
+                          <option value="" disabled selected>Select Status</option>
+                          <option value="married">Married</option>
+                          <option value="single">Single</option>
+                          <option value="other">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Gender</label>
+                      <div class="col-sm-8">
+                        <select class="form-control mb-10" id="editGender" value="{{ personalInfo.data.gender }}" name="gender"
+                          [(ngModel)]="personalInfo.data.gender" #gender="ngModel">
+                          <option disabled selected>Select Gender</option>
+                          <option value="female">Female</option>
+                          <option value="male">Male</option>
+                          <option value="trans">Transgender</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Nationality</label>
+                      <div class="col-sm-8">
+                        
+                        <select class="form-control mb-10" id="editNationality" name="nationality" #nationality
+                          [(ngModel)]="personalInfo.data.nationality.id" #nationality="ngModel">
+                          <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Date of Birth</label>
+                      <div class="col-sm-8">
+                        <!-- Changed date picker - sharmistha - 08-07-2019 - start -->
+   <!-- suresh 08/23/2019 started here  -->
+                        <input class="form-control mb-10" placeholder="MM-DD-YYYY" id="editdob" [owlDateTimeTrigger]="dob" [owlDateTime]="dob" name="dob" [(ngModel)]="personalInfo.data.dob" #dob="ngModel" (dateTimeInput)="dateOfBirthValidation()" >
+                        <owl-date-time [pickerType]="'calendar'" #dob></owl-date-time>
+                       <p *ngIf="dateOfBirthValidation" class="invalid-feedback">{{ doberror }}</p>
+  <!--suresh 08/23/2019 ended  here  -->
+                        <!-- Changed date picker - sharmistha - 08-07-2019 - end -->
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Smoker</label>
+                      <div class="col-sm-8">
+                        <select class="form-control mb-10" id="editSmoker" value="{{ personalInfo.data.smoker }}" name="smoker"
+                          [(ngModel)]="personalInfo.data.smoker" #gender="ngModel">
+                          <option disabled selected>Select</option>
+                          <option value="1">Yes</option>
+                          <option value="0">No</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">Social Security Number<span
+                          class="req-field">*</span></label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control mb-10" id="editSSN" name="ssn" [(ngModel)]="personalInfo.data.ssn" #ssn="ngModel"[ngClass]="{ 'is-invalid': addPersonalFrm.submitted && ssn.invalid }" required pattern="^\d{3}-?\d{2}-?\d{4}$">
+                        <div *ngIf="ssn.touched && ssn.invalid" class="invalid-feedback">
+                          <div *ngIf="ssn.touched && ssn.errors.required">SSN is required</div>
+                        </div>
+                        <div *ngIf="ssn.errors?.pattern" class="invalid-feedback">
+                          Enter a valid SSN(xxx-xx-xxxx)
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="col-sm-4 col-form-label">LinkedIn :</label>
+                      <div class="col-sm-8">
+                        <input type="url" class="form-control mb-10" placeholder="Enter LinkedIn Url"
+                          id="linkedin" name="linkedin" [(ngModel)]="personalInfo.data.linkedin" #linkedin="ngModel" [pattern]="linkedInPattern" [ngClass]="{ 'is-invalid': addPersonalFrm.submitted && linkedin.invalid }" >
+                        <div *ngIf="linkedin.errors?.pattern" class="invalid-feedback">
+                          LinkedIn url is not valid.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label class="col-sm-2 col-form-label">Summay/objective</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control mb-10" id="editSummary" name="summary" #summary
+                          [(ngModel)]="personalInfo.data.summary" #summary="ngModel"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-10">
+                      <button type="submit" class="btn btn-primary mlr-5" (click)="editPersonalInfo()"
+                        [disabled]="!addPersonalFrm.valid" id="editPersonalInfo">Submit</button>
+                      <button (click)="resetForm(addPersonalFrm)" id="reseteditPersonalInfo" class="btn btn-info mlr-5">Reset</button>
+                      <button class="btn btn-danger mlr-5" id="cancelEditPersonalInfo" (click)="back()">Cancel</button>
+                    </div>
+                  </div><br/>
+                  <div class="form-group row">
+                    <div class="col-sm-10" *ngIf="errormsg">
+                      <p class="invalid-feedback" style="margin-top: 0px;">{{ errormsg }}</p>
+                    </div>
+                    <div class="col-sm-10" *ngIf="licenseExpError">
+                      <p *ngIf="licenseExpError" class="invalid-feedback">{{ licenseExpError }}</p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <form class="search-form">
+              <div class="form-header">
+                <h5>PROFILE PICTURE</h5>
+              </div>
+              <div class="padding-20">
+                <div class="row">
+  
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <div class="col-md-12">
+                        <label class="col-form-label">Select Profile Picture</label>
+                        <div class="">
+                          <input type="file" id="file" (change)="fileChangeEvent($event)" accept="image/png, image/jpeg, image/jpg"
+                            class="form-control mb-10">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <button type="submit" id="uploadPic" [disabled]="image == null || image == ''" class="btn btn-primary mlr-5" (click)="uploadPic()">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="col-md-6">
+                      <img [src]="image" *ngIf="image != null || image == ''" alt="image" class="picture" />
+                    </div>
+                    <div class="col-md-6">
+                      <div class="profile-picture" style="margin: 0 35px;">
+                        <img alt="" src="assets/images/avatar.png" *ngIf="this.picturedata.image == ''"
+                          style="width: 100%;">
+                        <img src="{{picturedata.image}}" alt="image" *ngIf="picturedata.image != ''" style="width: 100%;">
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="col-md-6" style="margin-bottom: 40px">
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
+                      [aspectRatio]="1/1" [resizeToWidth]="128" format="png" outputType="both" autoCrop="true"
+                      (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()"></image-cropper>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  <div class="popupbox_wrap" *ngIf="isShowPopup">
+    <div class="popupbox" *ngIf="this.message">
+      <button class="close" type="button" id="closePopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="success text-center">
+            <h5>Profile picture uploaded successfully! </h5>
+          </td>
+        </tr>
+      </table>
+      <div class="row text-center">
+        <a class="btn btn-success" id="backMyInfo" routerLink="/myInfo">
+          <i class="fa fa-users" aria-hidden="true"></i>Go to My Info</a>
+      </div>
+    </div>
+    <div class="popupbox" *ngIf="this.error">
+      <button class="close" type="button" id="closeError" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="danger text-center">
+            <h5>{{error }} </h5>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="popupbox_wrap" *ngIf="isShowPopup1">
+    <div class="popupbox" *ngIf="this.message1">
+      <button class="close" type="button" id="closePopup1" (click)="closePopup1()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="success text-center">
+            <h5>Personal information updated successfully! </h5>
+          </td>
+        </tr>
+      </table>
+      <div class="row text-center">
+        <a class="btn btn-success" id="backClosePopup" routerLink="/myInfo">
+          <i class="fa fa-users" aria-hidden="true"></i>Go to My Info</a>
+      </div>
+    </div>
+    <div class="popupbox" *ngIf="this.error1">
+      <button class="close" type="button" id="closeErrorPopup1" (click)="closePopup1()"><span class="close-label"><i class="fa fa-times"
+            aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+  
+      <table class="table table-bordered">
+        <tr>
+          <td class="danger text-center">
+            <h5>{{error1 }} </h5>
+          </td>
+        </tr>
+      </table>
+      <div class="row text-center">
+        <a class="btn btn-success" id="backClosePopup1" routerLink="/myInfo">
+          <i class="fa fa-users" aria-hidden="true"></i> Go to myInfo</a>
+      </div>
+    </div>
+  </div>
+  

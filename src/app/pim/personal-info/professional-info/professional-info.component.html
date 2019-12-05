@@ -1,0 +1,246 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Salary Info
+          &nbsp;&nbsp;
+          <select class="form-control" #info id="selectInfermation" (change)="onNavigate(info.value)" style="display: inline; width:35%;">
+            <option [ngValue]="undefined" disabled selected>-- Select --</option>
+            <option value="myInfo/personalInfo">Personal Info</option>
+            <option value="myInfo/contactInfo">Contact Info</option>
+            <option value="myInfo/dependentInfo">Dependents Info</option>
+            <option value="myInfo/qualifications">Qualification Info</option>
+            <option value="myInfo/salaryInfo">Salary Info</option>
+            <option value="myInfo/documentInfo">Documents Info</option>
+            <option value="myInfo/my-resume">My Resume</option>
+          </select>
+        </h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink="/dashboard">Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/myInfo'>My Info</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Salary Info</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<!-- Code changes for preview - sharmistha - start -->
+  <!-- view job details -->
+  <div class="element-content" *ngIf="professionalInfo">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="form-header row mlr-0">
+            <div class="col-md-6">
+              <h5>JOB DETAILS</h5>
+            </div>
+            <div class="col-md-6">
+              <button (click)="cancel()" id="backJobDetails" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+            </div>
+          </div>
+          <div class="padding-20">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label mb-10">Job Category:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.professionalInfo.jobCategory.name | uppercase }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label mb-10">Job Title:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.professionalInfo.jobTitle.name | titlecase }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label mb-10">Technical Job Title:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.professionalInfo.technicalTitle | titlecase }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label mb-10">Job Specification:</label>
+                <div class="col-sm-8">
+                  <p>{{ this.professionalInfo.jobSpecification | titlecase }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label mb-10">Joined Date:</label>
+                <div class="col-sm-8">
+                  <p>{{ professionalInfo.joiningDate | date: 'MM-dd-yyyy' }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label mb-10">Location:</label>
+                <div class="col-sm-8">
+                  <p>{{ professionalInfo.jobLocation.name | titlecase }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label mb-10">Start Date:</label>
+                <div class="col-sm-8">
+                  <p>{{ professionalInfo.startDate | date: 'MM-dd-yyyy' }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="col-sm-4 col-form-label mb-10">End Date:</label>
+                <div class="col-sm-8">
+                  <p>{{ professionalInfo.endDate | date: 'MM-dd-yyyy' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- view salary details -->
+  <div class="element-content" *ngIf="salaryInfo">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <div class="col-md-6">
+                <h5>SALARY DETAILS</h5>
+              </div>
+              <div class="col-md-6">
+               
+                <button (click)="cancel()" id="backSalaryDetails" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+              </div>
+            </div>
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Pay Grade:</label>
+                  <div class="col-sm-8">
+                    <p>{{ salaryInfo.payGrade }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Total Salary:</label>
+                  <div class="col-sm-8">
+                    <p>$ {{ salaryInfo.amount }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Pay Frequecy:</label>
+                  <div class="col-sm-8">
+                    <p>{{ salaryInfo.payFrequency.name }}</p>
+                  </div>
+                </div>
+              </div>
+              <!--Direct deposit-->
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <h4 class="col-sm-4 col-form-label user-title">Direct Deposit #1:</h4>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Routing Number:</label>
+                  <div class="col-sm-8">
+                    <p>{{ salaryInfo.deposit1.routingNumber }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Account Number:</label>
+                  <div class="col-sm-8">
+                    <p>{{ salaryInfo.deposit1.accountNumber }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Account Type:</label>
+                  <div class="col-sm-8">
+                    <p>{{ salaryInfo.deposit1.accountType.name }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="additionalDeposit">
+                  <label class="col-sm-4 col-form-label mb-10">Split Amount:</label>
+                  <div class="col-sm-8">
+                    <p>$ {{ salaryInfo.deposit1.directAmount }}</p>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="additionalDeposit">
+                <!-- Additional account -->                
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <h4 class="col-sm-4 col-form-label user-title">Direct Deposit #2:</h4>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label mb-10">Routing Number:</label>
+                    <div class="col-sm-8">
+                      <p>{{ salaryInfo.deposit2.routingNumber }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label mb-10">Account Number:</label>
+                    <div class="col-sm-8">
+                      <p>{{ salaryInfo.deposit2.accountNumber }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label mb-10">Account Type:</label>
+                    <div class="col-sm-8">
+                      <p>{{ salaryInfo.deposit2.accountType.name }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label mb-10">Split Amount:</label>
+                    <div class="col-sm-8">
+                      <p>$ {{ salaryInfo.deposit2.directAmount }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Code changes for preview - sharmistha - end -->
+
+  <!-- view details -->
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="form-header row mlr-0">
+            <div class="col-md-6">
+              <h5>EMPLOYMENT CONTRACT</h5>
+            </div>
+            <div class="col-md-6">
+              
+              <button (click)="cancel()" id="backEmploment" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+            </div>
+          </div>
+          <div class="padding-20">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label class="col-sm-4 col-form-label mb-10">Contract Details:</label>
+                <div class="col-sm-8">
+                  <p><a href="{{professionalInfo.documents}}" id="contractDetails" target="_blank">{{ professionalInfo.documents }}</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

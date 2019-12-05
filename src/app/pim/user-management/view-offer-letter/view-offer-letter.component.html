@@ -1,0 +1,94 @@
+<div class="content">
+        <div class="top-header">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 heading">
+                    <h4>Offer Letter &nbsp;<a class="btn btn-primary mlr-5" id="addOfferLetter" [routerLink]="['/usersView/edit-offerLetter', offerLetter.user.userId, offerLetter.offerLetterTypeId]" *ngIf="offerLetter.offerLetter && offerLetter.status === '1'">Edit Offer Letter</a></h4>
+                </div>
+                <div class="col-md-6 col-lg-6 breadcrumb">
+                    <ul class="breadcrumb-items">
+                        <li><a routerLink='/dashboard'>Home</a></li>
+                        <li>&nbsp;/&nbsp;</li>
+                        <li><a [routerLink]="['/usersView/user-offerLetters', offerLetter.user.userId]">Offer Letters</a></li>
+                        <li>&nbsp;/&nbsp;</li>
+                        <li><a>View Offer Letter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="element-content">
+            <div class="job-box">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <form role="form" #myForm="ngForm" accept-charset="UTF-8" novalidate>
+                            <div class="form-header row mlr-0">
+                                <div class="col-md-6 plr-0">
+                                    <h5>Offer Letter for {{ offerLetter.user.name | titlecase }}</h5>
+                                </div>
+                                <div class="col-md-6 plr-0">
+                                    <button class="btn btn-info pull-right mtb-5" (click)="back()">Back</button>
+                                </div>                                    
+                            </div>
+                            <ng-container *ngIf="offerLetter.offerLetter; else noData">
+                                <div class="padding-20" >
+                                    <div class="row">
+                                        <div class="col-sm-4 col-sm-offset-4">
+                                            <img src="{{logoUrl}}" alt="Logo" style="width:100%; margin: auto;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class=" offerContent" [innerHtml]="offerLetter.offerLetter | safeHtml"></div>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="digitalKeystatus">
+                                        <h5><strong>Employer Signature</strong></h5>
+                                        <img src="{{gethrdigitalKey.data.digitalKey}}" style="width:55%;" alt="Digital Signature" class="col-md-10"/>
+                                        <div class="col-md-12">
+                                            <p><strong>{{offerLetter.hr.name}}</strong></p>
+                                            <p>{{offerLetter.hr.jobTitle.name | titlecase}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="userDigitalKeystatus">
+                                        <h5><strong>Employee Signature</strong></h5>
+                                        <img src="{{getuserDigitalKey.data.digitalKey}}" style="width:55%;" alt="Digital Signature" class="col-md-10"/>
+                                        <div class="col-md-12">
+                                            <p><strong>{{offerLetter.user.name}}</strong></p>
+                                            <p>{{offerLetter.user.jobTitle.name | titlecase}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-template #noData> 
+                                <div class="padding-20">
+                                    <h4 class="invalid-feedback text-center">Offer Letter not yet assigned</h4>
+                                    <div class="form-group row mt-10">
+                                        <form #addJobFrm="ngForm" name="form">
+                                            <div class="col-md-12">
+                                                <label class="col-md-3 col-form-label">Select Offer Letter Type <span class="req-field">*</span></label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control mb-10" id="templateType" name="templateType" #templateType [(ngModel)]="template.id" #templateType="ngModel" required>
+                                                    <option value="" disabled selected>Choose a type</option>
+                                                    <option *ngFor="let type of types" value="{{ type.id }}">{{ type.type }}</option>
+                                                    </select>
+                            
+                                                    <div *ngIf="templateType.touched && templateType.invalid" class="invalid-feedback">
+                                                    <div *ngIf="templateType.touched && templateType.errors.required">Template type is required</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5 text-center">
+                                                    <button class="btn btn-success mlr-5" id="addOfferLetter" (click)="addOfferLetter(templateType.value)" [disabled]="!addJobFrm.valid">Generate Offer Letter</button>
+                                                </div>
+                                            </div>                                            
+                                        </form>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loader_wrap" *ngIf="loading">
+        <div class="loader_inner_wrap">
+            <img src="../../../../assets/images/loginloader.gif" alt="">
+        </div>
+    </div>

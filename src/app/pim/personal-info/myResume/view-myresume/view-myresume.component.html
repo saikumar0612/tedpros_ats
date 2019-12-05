@@ -1,0 +1,145 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-4 col-lg-4 heading">
+        <h4>Preview <input class="btn btn-primary" type="button" id="captureScreen" value="Download" (click)="captureScreen()"/></h4>
+      </div>
+      <div class="col-md-1 col-lg-1 ">
+          <strong> Previews </strong>
+      </div>
+
+      <div class="col-md-2 col-lg-2 " >
+        <select class="form-control" id="selectInfemation" #info (change)="onNavigate(info.value)" >
+          <option value="/myInfo/view-myresume" selected>Preview -1</option>
+          <option value="/myInfo/view-myresume-1">Preview -2</option>
+          <option value="/myInfo/view-myresume-2">Preview -3</option>
+            
+        </select>
+      </div>
+      <div class="col-md-4 col-lg-4 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/myInfo'>MyInfo</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/myInfo/my-resume'>My-Resume</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Preview</li>
+        </ul> 
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" id="contentToConvert">
+          <div id="wrapper">
+            <div class="wrapper-top"></div>
+            <div class="wrapper-mid">
+              <!-- Begin Paper -->
+              <div id="paper">
+                <div class="paper-top"></div>
+                <div id="paper-mid">
+                  <div class="entry">
+                    <!-- Begin Image -->
+                    <img alt="" class="portrait img-thumbnail" src="assets/images/avatar.png" *ngIf="informationData.image == ''">
+                        
+                    <img  alt="profilepic" class="portrait img-thumbnail" src="{{informationData.profilePic  }}" *ngIf="informationData.image != ''">
+                    <!-- End Image -->
+                    <!-- Begin Personal Information -->
+                    <div class="self">
+                      <h1 class="name title">{{informationData.firstName }} {{informationData.lastName }}<br />
+                        <span class="subTitle">Interactive Designer</span></h1>
+                      <ul>
+                        <li class="ad contentData">{{contactData.addressLine1}}, {{contactData.addressLine2}}, {{contactData.city.name}}, {{contactData.state.name}}, {{contactData.country.name}}</li>
+                        <li class="mail contentData">{{informationData.email}}</li>
+                        <li class="tel contentData">{{informationData.contact}}</li>
+                      </ul>
+                      <span *ngIf="informationData.linkedin"><em class="fa fa-linkedin-square"></em>&nbsp;&nbsp; {{informationData.linkedin}}</span>
+                    </div>
+                    <!-- End Personal Information -->
+                  </div>
+                  <!-- Begin 1st Row -->
+                  <div class="entry" *ngIf="informationData.summary">
+                    <h2 class="title">OBJECTIVE</h2>
+                    <p class="contentData" style="margin-top: 0px;">{{informationData.summary }}</p>
+                  </div>
+                  <!-- End 1st Row -->
+                  <!-- Begin 2nd Row -->
+                  <div class="entry" *ngIf="educationData">
+                    <h2 class="title">EDUCATION</h2>
+                    <div class="content" *ngFor="let education of educationData">
+                      <h3 class="contentData">{{education.year}}</h3>
+                      <p style="margin-top: 0px;">
+                        <span class="contentData">{{education.institute | uppercase }}</span><br />
+                        <span class="contentData">{{ education.educationname | uppercase  }}</span><br/>
+                        <span class="contentData">{{education.gpaScore | uppercase }}</span></p>
+                    </div>
+                  </div>
+                  <!-- End 2nd Row -->
+                  <!-- Begin 3rd Row -->
+                  <div class="entry" *ngIf="experienceData">
+                    <h2 class="title">EXPERIENCE</h2>
+                    <div class="content" *ngFor="let experience of experienceData">
+                      <h3 class="contentData">{{experience.fromDate | date: 'MM-dd-yyyy' }} - {{experience.toDate | date: 'MM-dd-yyyy' }}</h3>
+                      <p  class="subTitle">{{experience.pastCompany }}<br />
+                        <span class="contentData">{{experience.pastJobTitle }}</span></p>
+                      <ul class="info">
+                        <li><span class="contentData">{{experience.comment }}</span></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="entry" *ngIf="licenseData">
+                    <h2 class="title">Licenses/Certification</h2>
+                    <div class="content" *ngFor="let licenseinfo of licenseData">
+                      <p class="subTitle">{{ licenseinfo.name | uppercase }}, <span>{{ licenseinfo.type }}</span></p>
+                      <ul class="info">
+                        <span class="contentData">{{licenseinfo.issued | date: 'MM-dd-yyyy' }} -
+                            {{licenseinfo.expiry | date: 'MM-dd-yyyy' }}</span><br/>
+                          <span  class="contentData">{{ licenseinfo.type }} No. - {{licenseinfo.number}} </span>
+                      </ul>
+                     
+                    </div>
+                  </div>
+                  <!-- End 3rd Row -->
+                  <!-- Begin 4th Row -->
+                  <div class="entry" *ngIf="this.skillsData">
+                    <h2 class="title">SKILLS</h2>
+                    <div class="content">
+                      <p class="contentData" *ngFor="let skill of skillsData" style="margin:0 0 0px">{{ skill.name | uppercase }}</p>
+                    </div><br/>
+                    <div>
+                      <canvas
+                          baseChart
+                          [chartType]="'pie'"
+                          [datasets]="pieChartData"
+                          [labels]="pieChartLabels"
+                          [options]="pieChartOptions"
+                          [legend]="true"
+                          [colors]="pieChartColor"
+                          (chartClick)="onChartClick($event)">
+                      </canvas>
+                    </div>
+                  </div>
+                  <!-- End 4th Row -->
+                  <!-- Begin 5th Row -->
+                </div>
+                <div class="clear"></div>
+                <div class="paper-bottom"></div>
+              </div>
+              <!-- End Paper -->
+            </div>
+            <div class="wrapper-bottom"></div>
+          </div>
+        </div>
+      </div>     
+
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button class="btn btn-info mlr-5" id="cancel" routerLink="/myInfo/my-resume">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

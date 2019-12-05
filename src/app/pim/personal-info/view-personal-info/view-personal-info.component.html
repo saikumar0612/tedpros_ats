@@ -1,0 +1,471 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Personal Info <a class="btn btn-primary" routerLink="/personalInfoBackup">Update</a> </h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/myInfo'>My Info</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Personal Info</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header">
+              <h5>Personal Information</h5>
+            </div>              
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">First Name:</label>
+                  <div class="col-sm-8">
+                    <p class="mb-10">{{ this.data.personalInformation.firstName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Middle Name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.middleName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Last Name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.lastName }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Email Address:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.email }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Contact:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.contact }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Driver's License Numbe:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.driverLicenseNo }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">License Expiry Date:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.licenseExpDate }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Blood Group:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.bloodGroup }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Marital Status:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.maritalStatus }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Gender:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.gender }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Nationality:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.nationality }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Date of Birth:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.personalInfo.dob }}</p>
+                  </div>
+                </div>  
+              </div>
+            </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header">
+              <h5>Contact Details</h5>
+            </div>              
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Address Line 1:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.addressLine1 }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Address Line 2:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.addressLine2 }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Street:</label>
+                  <div class="col-sm-8">
+                      <p>{{ this.contactinfo.street }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">City:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.city.name }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">State/Province:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.state.name }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Zip/Postal Code:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.zip }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Country:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.country.name }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Home Telephone:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.homeTelephone }}</p>
+                  </div>
+                </div> 
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Work Telephone:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.workTelephone }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Other Email Address:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.contactinfo.otherEmail }}</p>
+                  </div>
+                </div>  
+              </div>
+            </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header">
+              <h5>Emergency Contact Details</h5>
+            </div>              
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.emergencyInfo.emergencyContactName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Relationship:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.emergencyInfo.emergencyContactRelation }}</p>
+                  </div>
+                </div> 
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Contact:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.emergencyInfo.emergencyContactNumber }}</p>
+                  </div>
+                </div> 
+              </div>
+            </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header">
+              <h5>Professional Details</h5>
+            </div>              
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Salary(Anuual):</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.annualSalary }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Job Title:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.jobTitle.name }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Job Specification:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.jobSpecification }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Employment Status:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.empStatus.name }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Job Category:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.jobCategory.name }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Job Joining Date:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.joiningDate }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Job Location:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.jobLocation }}</p>
+                  </div>
+                </div>  
+              </div>
+            </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header">
+              <h5>Family Details</h5>
+            </div>              
+            <div class="padding-20">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Father Name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.familyInfo.fatherName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Mother Name:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.familyInfo.motherName }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Home Telephone:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.familyInfo.homeTelephone }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Home Mobile:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.familyInfo.homeMobile }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Siblings (if any):</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.familyInfo.noSiblings }}</p>
+                  </div>
+                </div>  
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label">Relation:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.familyInfo.relation }}</p>
+                  </div>
+                </div>  
+              </div>
+            </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+
+
+
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <ngb-tabset type="pills">
+                <ngb-tab title="Work Experience">
+                    <ng-template ngbTabContent>
+                        <div class="search-form">    
+                            <div class="table-responsive margin-20">
+                                <table class="table table-bordered">
+                                    <thead class="form-header">
+                                        <tr>
+                                            <th>Company</th>
+                                            <th>Job Title</th>    
+                                            <th>From</th>
+                                            <th>To</th>   
+                                            <th>Comments</th>                  
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let experienceinfo of this.experienceInfo" style="margin-bottom: 10px;">
+                                          <td>{{experienceinfo.pastCompany}}</td>
+                                          <td>{{experienceinfo.pastJobTitle}}</td>
+                                          <td>{{experienceinfo.fromDate}}</td>
+                                          <td>{{experienceinfo.toDate}}</td>
+                                          <td>{{experienceinfo.comment}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+
+                <ngb-tab title="Education">
+                    <ng-template ngbTabContent>
+                        <div class="search-form">
+                            <div class="table-responsive margin-20">
+                                <table class="table table-bordered">
+                                    <thead class="form-header">
+                                        <tr>
+                                            <th>Level</th>
+                                            <th>Institute</th>    
+                                            <th>Year</th>    
+                                            <th>GPA Score</th>
+                                            <th>Start Date</th>    
+                                            <th>End Date</th>                  
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let educationinfo of this.educationInfo" style="margin-bottom: 10px;">
+                                            <td>{{educationinfo.educationname}}</td>
+                                            <td>{{educationinfo.institute}}</td>
+                                            <td>{{educationinfo.year}}</td>
+                                            <td>{{educationinfo.gpaScore}}</td>
+                                            <td>{{educationinfo.startDate}}</td>
+                                            <td>{{educationinfo.endDate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+
+                <ngb-tab title="Skills">
+                    <ng-template ngbTabContent>
+                        <div class="search-form">
+                            <div class="table-responsive margin-20">
+                              <table class="table table-bordered">
+                                  <thead class="form-header">
+                                      <tr>
+                                          <th>Skill Name</th>
+                                          <th>Experience</th>    
+                                          <th>Comments</th>            
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngFor="let skillInfo of this.skillInfo" style="margin-bottom: 10px;">
+                                          <td>{{skillInfo.name}}</td>
+                                          <td>{{skillInfo.experience}}</td>
+                                          <td>{{skillInfo.comments}}</td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+
+                <ngb-tab title="Language">
+                    <ng-template ngbTabContent>
+                        <div class="search-form">
+                            <div class="table-responsive margin-20">
+                                <table class="table table-bordered">
+                                    <thead class="form-header">
+                                        <tr>
+                                            <th>Language</th>
+                                            <th>Fluency</th>
+                                            <th>Comments</th>               
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let languageinfo of languageInfo" style="margin-bottom: 10px;">
+                                            <td>{{languageinfo.langname}}</td>
+                                            <td>{{languageinfo.fluency}}</td>
+                                            <td>{{languageinfo.langcomments}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+
+                <ngb-tab title="Licenses">
+                    <ng-template ngbTabContent>
+                        <div class="search-form">
+                            <div class="table-responsive margin-20">
+                                <table class="table table-bordered">
+                                    <thead class="form-header">
+                                        <tr>
+                                            <th>License Type</th>
+                                            <th>License Number</th>
+                                            <th>Issued Date</th>
+                                            <th>Expiry Date</th>              
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let licenseinfo of licenseInfo" style="margin-bottom: 10px;">
+                                            <td>{{licenseinfo.licensename}}</td>
+                                            <td>{{licenseinfo.number}}</td>
+                                            <td>{{licenseinfo.issued}}</td>
+                                            <td>{{licenseinfo.expiry}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+input[type="file"] {
+    display: block;
+    right: 0;
+    cursor: pointer;
+    bottom: -1px;
+    font-size: 12px;
+    opacity: 1;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+}

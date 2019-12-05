@@ -1,0 +1,595 @@
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>Notifications</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items"> 
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>Notifications</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="element-content">
+    <div class="job-box">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="table-responsive">
+              <table class="table table-bordered" [mfData]="alertDetails" #mf="mfDataTable" [mfRowsOnPage]="5">
+                <thead class="form-header">
+                  <tr>
+                    <th style="width: 5%; text-align: center; vertical-align: middle;">Mark as read</th>
+                    <th style="vertical-align: middle;">Notification</th>
+                    <th style="vertical-align: middle;">Alert</th>
+                    <th style="vertical-align: middle;">Link</th>                     
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor = "let alert of mf.data, index as i">
+                      <td style="text-align: center;">
+                        <input type="checkbox" id="markAsRead" [name]="alert.id" [(ngModel)]="alert.markAsRead" #markasread="ngModel" (click)="showDetails(alert.id, $event)" checked>
+                        
+                      </td>
+                      <td *ngIf="alert.certificateName === ''"><a href="#"><strong>{{alert.license.name}}</strong> {{alert.type}} {{alert.alertMessage}}</a></td>
+                      <td *ngIf="alert.certificateName != '' && alert.license == null"><a href="#"><strong>{{alert.certificateName}}</strong> {{alert.type}} {{alert.alertMessage}}</a></td>
+                      <td *ngIf="alert.alert">
+                        <label class="switch">
+                          <input type="checkbox"  id="alert" name="alert" value="{{alert.alert}}" (change)="onselect(alert.id)" checked>
+                          <span class="slider round"></span>
+                        </label>
+                      </td>
+                      <td *ngIf="(alert.type == 'Certification') || (alert.type == 'License')">
+                        <a class="mlr-5" (click)="updateDetails(alert.id, alert.type)" id="update"  title="Update Record">
+                          <button type="button" class="tabledit-delete-button btn btn-primary" >Update</button>
+                        </a>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="docalertDetails.i9AlertDetails">
+                      <td style="text-align: center;">
+                        <input type="checkbox" [name]="docalertDetails.i9AlertDetails.id" [(ngModel)]="docalertDetails.i9AlertDetails.markAsRead" id="i9AlertDetails" #markasread="ngModel" (click)="showPopup(docalertDetails.i9AlertDetails.id, $event, 'i9Doc')" checked>
+                        
+                      </td>
+                      <td><a href="#"><strong>{{docalertDetails.i9AlertDetails.documentType}} </strong> for the {{docalertDetails.i9AlertDetails.year}} {{docalertDetails.i9AlertDetails.alertMessage}}</a></td>
+                      <td *ngIf="docalertDetails.i9AlertDetails.alert">
+                        <label class="switch">
+                          <input type="checkbox" id="alert" name="alert" value="{{docalertDetails.i9AlertDetails.alert}}" (change)="onChange(docalertDetails.i9AlertDetails.id, 'i9Doc')" checked>
+                          <span class="slider round"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <button type="button" class="tabledit-delete-button btn btn-info" id="openi9DocUpload" (click)="openi9DocUpload()"  title="Add Record">Add New</button>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="docalertDetails.federalw4AlertDetails">
+                      <td style="text-align: center;">
+                        <input type="checkbox" [name]="docalertDetails.federalw4AlertDetails.id" id="federalw4AlertDetails" [(ngModel)]="docalertDetails.federalw4AlertDetails.markAsRead" #markasread="ngModel" (click)="showPopup(docalertDetails.federalw4AlertDetails.id, $event, 'fw4Doc')" checked>
+                        
+                      </td>
+                      <td><a href="#"><strong>{{docalertDetails.federalw4AlertDetails.documentType}} </strong> for the {{docalertDetails.federalw4AlertDetails.year}} {{docalertDetails.federalw4AlertDetails.alertMessage}}</a></td>
+                      <td *ngIf="docalertDetails.federalw4AlertDetails.alert">
+                        <label class="switch">
+                          <input type="checkbox" id="alert" name="alert" value="{{docalertDetails.federalw4AlertDetails.alert}}" (change)="onChange(docalertDetails.federalw4AlertDetails.id, 'fw4Doc')" checked>
+                          <span class="slider round"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <button type="button" class="tabledit-delete-button btn btn-info" id="openfw4DocUpload" (click)="openfw4DocUpload()"  title="Add Record">Add New</button>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="docalertDetails.statew4AlertDetails">
+                      <td style="text-align: center;">
+                        <input type="checkbox" [name]="docalertDetails.statew4AlertDetails.id" id="statew4AlertDetails" [(ngModel)]="docalertDetails.statew4AlertDetails.markAsRead" #markasread="ngModel" (click)="showPopup(docalertDetails.statew4AlertDetails.id, $event, 'sw4Doc')" checked>
+                        
+                      </td>
+                      <td><a href="#"><strong>{{docalertDetails.statew4AlertDetails.documentType}} </strong> for the {{docalertDetails.statew4AlertDetails.year}} {{docalertDetails.statew4AlertDetails.alertMessage}}</a></td>
+                      <td *ngIf="docalertDetails.statew4AlertDetails.alert">
+                        <label class="switch">
+                          <input type="checkbox" id="alert" name="alert" value="{{docalertDetails.statew4AlertDetails.alert}}" (change)="onChange(docalertDetails.statew4AlertDetails.id, 'sw4Doc')" checked>
+                          <span class="slider round"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <button type="button" class="tabledit-delete-button btn btn-info" (click)="opensw4DocUpload()"  title="Add Record">Add New</button>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="docalertDetails.workAuthAlertDetails">
+                      <td style="text-align: center;">
+                        <input type="checkbox" [name]="docalertDetails.workAuthAlertDetails.id" [(ngModel)]="docalertDetails.workAuthAlertDetails.markAsRead" #markasread="ngModel" (click)="showPopup(docalertDetails.workAuthAlertDetails.id, $event, 'WorkDoc')" checked>
+                        
+                      </td>
+                      <td><a href="#"><strong>{{docalertDetails.workAuthAlertDetails.documentType}} </strong> for the {{docalertDetails.workAuthAlertDetails.year}} {{docalertDetails.workAuthAlertDetails.alertMessage}}</a></td>
+                      <td *ngIf="docalertDetails.workAuthAlertDetails.alert">
+                        <label class="switch">
+                          <input type="checkbox" id="alert" name="alert" value="{{docalertDetails.workAuthAlertDetails.alert}}" (change)="onChange(docalertDetails.workAuthAlertDetails.id, 'WorkDoc')" checked>
+                          <span class="slider round"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <button type="button" class="tabledit-delete-button btn btn-info" (click)="openWorkDocUpload()"  title="Add Record">Add New</button>
+                      </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="6"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,35]"></mfBootstrapPaginator></td>
+                  </tr>
+                </tfoot>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loader_wrap" *ngIf="loading">
+  <div class="loader_inner_wrap"><img src="assets/images/loginloader.gif" alt=""></div>
+</div>
+
+
+
+<!-- Update record -->
+<div class="popupbox_wrap" *ngIf="isShowPopup">
+  <div class="popupbox">
+    
+    <form #addLic = "ngForm" name="form" (ngSubmit)="addLic.form.valid" novalidate style="display: block !important;">
+      <button class="close" type="button" (click)="closePopup()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+      <div class="show_user_details" *ngIf="isShowDetails">
+        <table class="table table-bordered">
+          <input type="hidden" [(ngModel)]="licenseData.type" #type="ngModel" name="type">
+          <input type="hidden" [(ngModel)]="licenseData.recordId" #recordId="ngModel" name="recordId">
+          <tr *ngIf="licenseData.type == 'Certification'">
+            <td style="width: 10%;"><strong>Certificate: <span class="req-field">*</span></strong></td>
+            <td>
+              <span>
+                <input type="text" class="form-control mb-10" name="certificateName" #certificateName="ngModel" [(ngModel)]="licenseData.certificateName" value=null pattern="^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+$">
+                <div *ngIf="certificateName.errors?.pattern" class="invalid-feedback">
+                  Certificate Name is not valid.
+                </div>
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="licenseData.type == 'License'">
+            <td style="width: 10%;"><strong>License: <span class="req-field">*</span></strong></td>
+            <td>
+              <span>
+                <select class="form-control mb-10" name="license" #license="ngModel" [(ngModel)]="licenseData.license" value = "null">
+                  <option [ngValue]="undefined" disabled selected>Choose a license</option>
+                  <option *ngFor="let license of licenseset" value="{{license.id}}">{{license.name}}</option>
+                </select>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Issued Date: <span class="req-field">*</span></strong></td>
+            <td>
+              <date-picker [(date)]="licenseData.issued" name="issued" #issued></date-picker>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Expiry Date: <span class="req-field">*</span></strong></td>
+            <td>
+              <date-picker [(date)]="licenseData.expiry" name="expiry" #expiry (dateChange)="dateValidate()"></date-picker>
+              <p *ngIf="dateError" class="invalid-feedback">{{ dateError }}</p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Number: <span class="req-field">*</span></strong></td>
+            <td>
+              <input type="text" class="form-control mb-10" placeholder="Enter Number" name="number" [(ngModel)]="licenseData.number" #number="ngModel" [ngClass]="{ 'is-invalid': addLic.submitted && number.invalid }" required  pattern="^[a-zA-Z0-9]{2,}$">
+              <div *ngIf="number.errors?.pattern" class="invalid-feedback">
+                Number is not valid.
+              </div>
+              <div *ngIf="number.touched && number.invalid" class="invalid-feedback">
+                <div *ngIf="number.touched && number.errors.required">Number is required</div>
+              </div> 
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Opt for Alert:</strong></td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" #alert name="alert" [(ngModel)]="licenseData.alert" #alert="ngModel" checked>
+                <span class="slider round"></span>
+              </label>
+            </td>
+          </tr>
+        </table>
+        <div class="row text-center"><a (click)="submit()" class="btn btn-success"> Submit</a></div>
+      </div><!--show_user_details-->    
+    </form>
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->
+
+
+<!-- popup for confirmation for mark as read-->
+<div class="popupbox_wrap" *ngIf="isShowModal">
+  <div class="popupbox">
+    <button class="close" type="button" (click)="closeModal()"><span class="close-label"><i class="fa fa-times"
+          aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <div class="show_user_details">
+      <h6>Are you sure?</h6>
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button class="btn btn-primary mlr-5" (click)="changeRead(value.id, value.isRead)">Yes</button>
+          <button class="btn btn-danger mlr-5" (click)="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!--show_user_details-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<!-- popup for confirmation for mark as read-->
+<div class="popupbox_wrap" *ngIf="showModal">
+  <div class="popupbox">
+    <button class="close" type="button" (click)="close()"><span class="close-label"><i class="fa fa-times" aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    <div class="show_user_details">
+      <h6>Are you sure?</h6>
+      <div class="form-group row">
+        <div class="col-sm-10">
+          <button *ngIf="value.type == 'i9Doc'" class="btn btn-primary mlr-5" (click)="changeDocReadValue(value.id, value.isRead, value.type)">Yes</button>
+
+          <button *ngIf="value.type == 'fw4Doc'" class="btn btn-primary mlr-5" (click)="changeDocReadValue(value.id, value.isRead, value.type)">Yes</button>
+
+          <button *ngIf="value.type == 'sw4Doc'" class="btn btn-primary mlr-5" (click)="changeDocReadValue(value.id, value.isRead, value.type)">Yes</button>
+
+          <button *ngIf="value.type == 'WorkDoc'" class="btn btn-primary mlr-5" (click)="changeDocReadValue(value.id, value.isRead, value.type)">Yes</button>
+
+          <button class="btn btn-danger mlr-5" (click)="close()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!--show_user_details-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<!-- i9 document upload -->
+<div class="popupbox_wrap" *ngIf="isi9Document">
+  <div class="popupbox">
+    <form class="search-form" #addconFrm="ngForm" name="form" (ngSubmit)="addconFrm.form.valid" novalidate>
+      <div class="form-header row mlr-0">
+        <div class="col-md-6 plr-0">
+          <h5>i9 DOCUMENT</h5>
+        </div>        
+        <div class="col-md-6 plr-0">
+          <button class="btn btn-danger mlr-5 mtb-5" style="float: right;" type="button" (click)="closeDocUploadModal('i9Doc')">Close</button>
+        </div>
+      </div>
+      <div class="padding-20">
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label class="col-form-label">Select Document</label>
+                <div class="">
+                  <input type="file" ng2FileSelect [uploader]="uploader" name="i9doc"
+                    accept="application/pdf,application/docx" class="form-control mb-10">
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Year</label>
+                <div class="">
+                  <input type="text" class="form-control mb-10" name="i9year" [(ngModel)]="i9Data.i9year"
+                    #i9year="ngModel" pattern="^\d{4}$"
+                    [ngClass]="{ 'is-invalid': addconFrm.submitted && i9year.invalid }" minlength="4"
+                    maxlength="4">
+                  <div *ngIf="i9year.errors?.pattern" class="invalid-feedback">
+                    Enter a valid year
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Expiry Date</label>
+                <div class="">
+                  <date-picker [(date)]="i9Data.expiryDate" name="expiryDate" #expiryDate (dateChange)="dateValidate()" required ></date-picker>
+                  <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Comment</label>
+                <div class="">
+                  <textarea class="form-control mb-10" name="comment" id="comment" [(ngModel)]="i9Data.comment" #comment="ngModel"></textarea>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-form-label">Opt for alert</label>
+                <div class="">
+                  <label class="switch">
+                    <input type="checkbox" #alert name="alert" [(ngModel)]="i9Data.alert" #alert="ngModel" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <div *ngFor="let item of uploader.queue">
+                  <button type="submit" class="btn btn-primary mlr-5" (click)="item.upload()"
+                  [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
+                  <button type="reset" class="btn btn-info mlr-5">Reset</button>
+                  <button class="btn btn-danger mlr-5" (click)="closeDocUploadModal('i9Doc')">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->
+
+
+<!-- federal w4 document upload -->
+<div class="popupbox_wrap" *ngIf="isfw4Document">
+  <div class="popupbox">    
+    <form class="search-form" #addconFrm="ngForm" name="form" (ngSubmit)="addconFrm.form.valid" novalidate>
+      <div class="form-header row mlr-0">
+        <div class="col-md-6 plr-0">
+          <h5>FEDERAL w4 DOCUMENT</h5>
+        </div>
+        <div class="col-md-6 plr-0">
+          <button class="btn btn-danger mlr-5 mtb-5" style="float: right;" type="button" (click)="closeDocUploadModal('fw4Doc')">Close</button>
+        </div>
+      </div>
+      <div class="padding-20">
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label class="col-form-label">Select Document</label>
+                <div class="">
+                  <input type="file" ng2FileSelect [uploader]="uploader1" name="w4doc"
+                    accept="application/pdf,application/docx" class="form-control mb-10">
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Year</label>
+                <div class="">
+                  <input type="text" class="form-control mb-10" name="w4year" [(ngModel)]="w4Data.w4year"
+                    #w4year="ngModel" pattern="^\d{4}$"
+                    [ngClass]="{ 'is-invalid': addconFrm.submitted && w4year.invalid }" minlength="4"
+                    maxlength="4">
+                  <div *ngIf="w4year.errors?.pattern" class="invalid-feedback">
+                    Enter a valid year
+                  </div>
+                </div>
+              </div>                     
+
+              <div class="col-md-12">
+                <label class="col-form-label">Expiry Date</label>
+                <div class="">
+                  <date-picker [(date)]="w4Data.expiryDate" name="expiryDate" #expiryDate (dateChange)="dateValidate()" required ></date-picker>
+                  <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Comment</label>
+                <div class="">
+                  <textarea class="form-control mb-10" name="comment" id="comment" [(ngModel)]="w4Data.comment"
+                    #comment="ngModel"></textarea>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Opt for alert</label>
+                <div class="">
+                  <label class="switch">
+                    <input type="checkbox" #alert name="alert" [(ngModel)]="w4Data.alert" #alert="ngModel" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <div *ngFor="let item of uploader1.queue">
+                  <button type="submit" class="btn btn-primary mlr-5" (click)="item.upload()"
+                  [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
+                  <button type="reset" class="btn btn-info mlr-5">Reset</button>
+                  <button class="btn btn-danger mlr-5" (click)="closeDocUploadModal('fw4Doc')">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->
+
+
+<!-- state w4 document upload -->
+<div class="popupbox_wrap" *ngIf="issw4Document">
+  <div class="popupbox">    
+    <form class="search-form" #addconFrm="ngForm" name="form" (ngSubmit)="addconFrm.form.valid" novalidate>
+      <div class="form-header row mlr-0">
+        <div class="col-md-6 plr-0">
+          <h5>STATE w4 DOCUMENT</h5>
+        </div>
+        <div class="col-md-6 plr-0">
+          <button class="btn btn-danger mlr-5 mtb-5" style="float: right;" type="button" (click)="closeDocUploadModal('sw4Doc')">Close</button>
+        </div>
+      </div>
+      <div class="padding-20">
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label class="col-form-label">Select Document</label>
+                <div class="">
+                  <input type="file" ng2FileSelect [uploader]="uploader3" name="statew4"
+                    accept="application/pdf,application/docx" class="form-control mb-10">
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Year</label>
+                <div class="">
+                  <input type="text" class="form-control mb-10" name="w4year" [(ngModel)]="statew4Data.w4year" #w4year="ngModel" pattern="^\d{4}$" [ngClass]="{ 'is-invalid': addconFrm.submitted && w4year.invalid }" minlength="4"
+                    maxlength="4">
+                  <div *ngIf="w4year.errors?.pattern" class="invalid-feedback">
+                    Enter a valid year
+                  </div>
+                </div>
+              </div>                     
+
+              <div class="col-md-12">
+                <label class="col-form-label">Expiry Date</label>
+                <div class="">
+                  <date-picker [(date)]="statew4Data.expiryDate" name="expiryDate" #expiryDate (dateChange)="dateValidate()" required ></date-picker>
+                  <p *ngIf="dateError" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Comment</label>
+                <div class="">
+                  <textarea class="form-control mb-10" name="comment" id="comment"
+                    [(ngModel)]="statew4Data.comment" #comment="ngModel"></textarea>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Opt for alert</label>
+                <div class="">
+                  <label class="switch">
+                    <input type="checkbox" #alert name="alert" [(ngModel)]="statew4Data.alert" #alert="ngModel" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <div *ngFor="let item of uploader3.queue">
+                  <button type="submit" class="btn btn-primary mlr-5" (click)="item.upload()"
+                  [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
+                  <button type="reset" class="btn btn-info mlr-5">Reset</button>
+                  <button class="btn btn-danger mlr-5" (click)="closeDocUploadModal('sw4Doc')">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->
+
+
+<!-- work authorization document upload -->
+<div class="popupbox_wrap" *ngIf="isWorkDocument">
+  <div class="popupbox">    
+    <form class="search-form" #addconFrm="ngForm" name="form" (ngSubmit)="addconFrm.form.valid" novalidate>
+      <div class="form-header row mlr-0">
+        <div class="col-md-6 plr-0">
+          <h5>WORK AUTHORIZATION DOCUMENT</h5>
+        </div>
+        <div class="col-md-6 plr-0">
+          <button class="btn btn-danger mlr-5 mtb-5" style="float: right;" type="button" (click)="closeDocUploadModal('workDoc')">Close</button>
+        </div>
+      </div>
+      <div class="padding-20">
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label class="col-form-label">Select Work Authorization</label>
+                <div class="">
+                  <ng-multiselect-dropdown name="type" [placeholder]="'Select Work Authorization(s)'"
+                    [data]="workauth" [settings]="dropdownSettings" #type="ngModel" [(ngModel)]="data">
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Year</label>
+                <div class="">
+                  <input type="text" class="form-control mb-10" name="workyear" [(ngModel)]="workData.workyear"
+                    #workyear="ngModel" pattern="^\d{4}$"
+                    [ngClass]="{ 'is-invalid': addconFrm.submitted && workyear.invalid }" minlength="4"
+                    maxlength="4">
+                  <div *ngIf="workyear.errors?.pattern" class="invalid-feedback">
+                    Enter a valid year
+                  </div>
+                </div>
+              </div>                      
+
+              <div class="col-md-12">
+                <label class="col-form-label">Expiry Date</label>
+                <div class="">
+                  <date-picker [(date)]="workData.expiryDate" name="expiryDate" #expiryDate (dateChange)="dateValidate1()" required ></date-picker>
+                  <p *ngIf="dateError1" style="color: red;font-weight:bold;">{{ dateError }}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Select Document</label>
+                <div class="">
+                  <input type="file" ng2FileSelect [uploader]="uploader2" name="workauth"
+                    accept="application/pdf,application/docx" class="form-control mb-10">
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Comment</label>
+                <div class="">
+                  <textarea class="form-control mb-10" name="comment" id="comment"
+                    [(ngModel)]="workData.comment" #comment="ngModel"></textarea>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label class="col-form-label">Opt for alert</label>
+                <div class="">
+                  <label class="switch">
+                    <input type="checkbox" #alert name="alert" [(ngModel)]="workData.alert" #alert="ngModel" checked>
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <div *ngFor="let item of uploader2.queue">
+                  <button type="submit" class="btn btn-primary mlr-5" (click)="item.upload()"
+                  [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
+                  <button type="reset" class="btn btn-info mlr-5">Reset</button>
+                  <button class="btn btn-danger mlr-5" (click)="closeDocUploadModal('workDoc')">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div><!--popupbox-->
+</div><!--popupbox_wrap-->

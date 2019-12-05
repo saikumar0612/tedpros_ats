@@ -1,0 +1,305 @@
+<div class="content">
+    <div class="top-header">
+      <div class="row">
+        <div class="col-md-6 col-lg-6 heading">
+          <h4>Dependents Info
+            &nbsp;&nbsp;
+            <select class="form-control" id="selectInfermation" #info (change)="onNavigate(info.value)" style="display: inline; width:35%;">
+              <option [ngValue]="undefined" disabled selected>-- Select --</option>
+              <option value="myInfo/personalInfo">Personal Info</option>
+              <option value="myInfo/contactInfo">Contact Info</option>
+              <option value="myInfo/dependentInfo">Dependents Info</option>
+              <option value="myInfo/qualifications">Qualification Info</option>
+              <option value="myInfo/salaryInfo">Salary Info</option>
+              <option value="myInfo/documentInfo">Documents Info</option>
+              <option value="myInfo/my-resume">My Resume</option>
+            </select>
+        </h4>
+        </div>
+        <div class="col-md-6 col-lg-6 breadcrumb">
+            <ul class="breadcrumb-items">
+                <li><a routerLink="/dashboard">Home</a></li>
+                <li>&nbsp;/&nbsp;</li>
+                <li><a routerLink='/myInfo'>My Info</a></li>
+                <li>&nbsp;/&nbsp;</li>
+                <li>Dependents Info</li>
+            </ul>
+        </div>
+      </div>
+    </div>
+    
+    <ng-container *ngIf="this.displayContact==true; then a2 else a1"></ng-container>
+    <ng-template #a1>
+      
+    <div class="element-content">
+        <div class="job-box">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="form-header row mlr-0">
+                  <div class="col-md-6">
+                    <h5>DEPENDENTS</h5>
+                  </div>
+                  <div class="col-md-6">
+                    <button (click)="editContact()" id="editDependents" class="btn btn-danger mlr-5 mtb-5" style="float: right;">Edit</button>
+                    <button (click)="cancel()" id="cancel" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+                  </div>
+                </div>              
+                <div class="padding-20"> 
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead class="form-header">
+                          <tr>
+                              <th>Name</th>
+                              <th>Relation</th>
+                              <!-- changes --suresh-- 08-13-2018 start -->
+                              <th>Gender</th>  
+                              <!-- changes --suresh-- 08-13-2018 end -->
+                              <th>Country</th>  
+                              <th>Identification #1</th>  
+                              <th>Identification #2</th>  
+                              <th>Date of Birth</th>            
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let dependentinfo of dependentslist1" style="margin-bottom: 10px;">
+                            <td>{{dependentinfo.name | titlecase}}</td>
+                            <td>{{dependentinfo.relationname | titlecase}}</td>
+                            <!-- changes --suresh-- 08-13-2018 start -->
+                            <td>{{dependentinfo.gender | titlecase}}</td>
+                            <!-- changes --suresh-- 08-13-2018 end -->
+                            <td>{{dependentinfo.countryname | titlecase}}</td>
+                            <td>{{dependentinfo.identity1}}</td>
+                            <td>{{dependentinfo.identity2}}</td>
+                            <!-- Added date pipe - sharmistha - 08-07-2019 - start -->
+                            <td>{{dependentinfo.dob | date: 'MM-dd-yyyy'}}</td>
+                            <!-- Added date pipe - sharmistha - 08-07-2019 - end -->
+                          </tr>
+                      </tbody>
+                    </table>
+                  </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #a2>
+        <div class="element-content">
+            <div class="job-box">
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div  class="search-form">
+                    <div class="form-header">
+                        <h5>EDIT DEPENDENTS</h5>
+                    </div>
+                    <div class="padding-20">
+                      <form #addUser="ngForm" name="form" (ngSubmit)="addUser.form.valid" novalidate>
+                        <div class="form-group row">
+                          <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Name <span class="req-field">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" id="editDependentName" class="form-control mb-10" name="name" #name="ngModel"  [(ngModel)]="dependentslist.name" [ngClass]="{ 'is-invalid': addUser.submitted && name.invalid }" required pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$">
+                                <div *ngIf="name.touched && name.invalid" class="invalid-feedback">
+                                  <div *ngIf="name.errors.required">Name is required</div>
+                                </div>
+                                <div *ngIf="name.errors?.pattern" class="invalid-feedback">
+                                  Enter a valid name
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Relation <span class="req-field">*</span> </label>
+                            <div class="col-sm-8">
+                              <select class="form-control mb-10" id="editDependentRelation" name="relation" #relation="ngModel" [(ngModel)]="dependentslist.relation" [ngClass]="{ 'is-invalid': addUser.submitted && relation.invalid }" required>
+                                <option value="" disabled selected>Choose a Relation</option>
+                                <option *ngFor="let relation of relationset" value="{{relation.id}}">{{relation.relation}}</option>
+                              </select>
+                              <div *ngIf="relation.touched && relation.invalid" class="invalid-feedback">
+                                <div *ngIf="relation.errors.required">Relation is required</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Country <span class="req-field">*</span> </label>
+                            <div class="col-sm-8">
+                              <select class="form-control mb-10" id="editCountry" name="country" [(ngModel)]="dependentslist.country.id" #country="ngModel" (change)="change(country.value)" required>
+                                <option value="" disabled selected>Select country</option>
+                                <option *ngFor="let country of countries" value="{{country.id}}">{{country.name}}</option>
+                              </select>
+                              <div *ngIf="country.touched && country.invalid" class="invalid-feedback">
+                                <div *ngIf="country.touched && country.errors.required">Country is required</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6" *ngIf="isAmerica">
+                            <label class="col-sm-4 col-form-label">SSN</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control mb-10" id="ssn" name="ssn" #ssn="ngModel"  [(ngModel)]="dependentslist.ssn" [ngClass]="{ 'is-invalid': addUser.submitted && ssn.invalid }" pattern="^\d{3}-\d{2}-\d{4}$" placeholder="xxx-xx-xxxx">
+                              <div *ngIf="ssn.errors?.pattern" class="invalid-feedback">
+                                Enter a valid SSN (xxx-xx-xxxx)
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6" *ngIf="isOther">
+                            <label class="col-sm-4 col-form-label">Identificatin No.</label>
+                            <div class="col-sm-8">
+                              <input type="text" class="form-control mb-10" id="identification" name="identification" #identification="ngModel"  [(ngModel)]="dependentslist.identification" pattern="">
+                            </div>
+                          </div>
+                          <div>                            
+                            <div class="col-md-6" *ngIf="isIndia">
+                              <label class="col-sm-4 col-form-label">Aadhar No.</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control mb-10" id="aadhar" name="aadhar" #aadhar="ngModel"  [(ngModel)]="dependentslist.aadhar" [ngClass]="{ 'is-invalid': addUser.submitted && aadhar.invalid }" pattern="^\d{12}$" placeholder="xxxx xxxx xxxx">
+                                <div *ngIf="aadhar.errors?.pattern" class="invalid-feedback">
+                                  Enter a valid Aadhar No. (xxxx xxxx xxxx)
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="isIndia">
+                              <label class="col-sm-4 col-form-label">PAN</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control mb-10" id="pan" name="pan" #pan="ngModel"  [(ngModel)]="dependentslist.pan" [ngClass]="{ 'is-invalid': addUser.submitted && pan.invalid }" pattern="^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$">
+                                <div *ngIf="pan.errors?.pattern" class="invalid-feedback">
+                                  Enter a valid PAN no.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- changes --suresh-- 08-13-2018 start -->
+                        <div class="form-group row">
+                          <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Date of Birth</label>
+                            <div class="col-sm-8">
+                              <!-- Changed date picker - sharmistha - 08-07-2019 - start -->
+                              <input class="form-control mb-10" (dateTimeInput)="dateValidate()" placeholder="Select date of birth" id="dob" [owlDateTimeTrigger]="dob1"   [owlDateTime]="dob1" name="dob" [(ngModel)]="dependentslist.dob" #dob="ngModel" >
+                              <owl-date-time [pickerType]="'calendar'" #dob1></owl-date-time>
+                              <p *ngIf="dateError"  class="invalid-feedback" >{{ dateError }}</p>
+                              <!-- Changed date picker - sharmistha - 08-07-2019 - end -->
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="col-sm-4 col-form-label">Gender<span class="req-field">*</span> :</label>
+                              <div class="col-sm-8">
+                                <select class="form-control mb-10" id="editGender" name="gender" [(ngModel)]="dependentslist.gender" #gender="ngModel" [ngClass]="{ 'is-invalid': addUser.submitted && gender.invalid }" required  >
+                                  <option value="" disabled selected>Select Gender</option>
+                                  <option value="female">Female</option>
+                                  <option value="male">Male</option>
+                                  <option value="trans">Transgender</option>
+                                </select>
+                                <div *ngIf="gender.touched && gender.invalid" class="invalid-feedback">
+                                    <div *ngIf="gender.touched && gender.errors.required">Select Gender</div>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                        <!-- changes --suresh-- 08-13-2018 end -->
+                        <div class="form-group row">
+                          <div class="col-sm-10">
+                            <button type="button" class="btn btn-primary mlr-5" id="insertDependent" (click)="insertDependent(addUser,name.value,relation.value,null,gender.value,dob.value,country.value,null)" [disabled]="!addUser.valid">Add</button>
+                            <button type="reset" class="btn btn-info mlr-5" (click)="resetForm(addUser)" id="editResetForm">Reset</button>
+                          </div>
+                        </div>
+                        <div class="form-group row" *ngIf="errormsg">
+                          <div class="col-sm-10">
+                            <p class="invalid-feedback" style="margin-top: 0px;">{{ errormsg }}</p>
+                          </div>
+                        </div>
+                      </form>
+      
+                      <div class="table-responsive margin-20">
+                        <table class="table table-bordered">
+                          <thead class="form-header">
+                            <tr>
+                              <th>Name</th>
+                              <th>Relation</th>
+                              <th>Gender</th>
+                              <th>Country</th>
+                              <th>Identification #1</th>
+                              <th>Identification #2</th>    
+                              <th>Date of Birth</th> 
+                              <th></th>                  
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let dependentinfo of dependentslist1" style="margin-bottom: 10px;">
+                              <td>{{dependentinfo.name | titlecase }}</td>
+                              <td>{{dependentinfo.relationname}}</td>
+                              <td>{{dependentinfo.gender| titlecase}}</td>
+                              <td>{{dependentinfo.countryname| titlecase}}</td>
+                              <td>{{dependentinfo.identity1}}</td>
+                              <td>{{dependentinfo.identity2}}</td>
+                              <td>{{dependentinfo.dob | date: 'MM-dd-yyyy'}}</td>
+                              <td>
+                                <button (click)="editDependent(dependentinfo)" class="tabledit-delete-button btn btn-primary mlr-5" id="editDependentInfo">
+                                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>
+                                <button (click)="removeDependent(dependentinfo)" id="removeDependent" class="tabledit-delete-button btn btn-danger mlr-5">
+                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <button class="btn btn-primary mlr-5" id="submitEditDependent" (click)="addDependents()" [disabled]="dependentslist1.length == 0">Submit</button>
+                                <button class="btn btn-danger mlr-5" id="backEditDependent" (click)="backContact(addUser)">Cancel</button>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </ng-template>
+  </div>
+  <div class="popupbox_wrap" *ngIf="isShowPopup">
+    <div class="popupbox" *ngIf="this.message">
+        <button class="close" type="button" id="closepopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    
+        <table class="table table-bordered">
+          <tr>
+            <td class="success text-center">
+              <h5>Dependents details updated successfully!</h5>
+            </td>
+          </tr>
+        </table>  
+          
+      <div class="row text-center">
+        <a class="btn btn-success" id="backMyInfo" routerLink="/myInfo">
+          <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>Go to My Info
+        </a>    
+      </div> 
+    </div>
+    <div class="popupbox" *ngIf="this.error">
+        <button class="close" type="button" id="closeErrorpopup" (click)="closePopup()"><span class="close-label"><i class="fa fa-times"
+              aria-hidden="true"></i> Close</span><span class="os-icon os-icon-close"></span></button>
+    
+        <table class="table table-bordered">
+          <tr>
+            <td class="danger text-center">
+              <h5>{{error }} </h5>
+            </td>
+          </tr>
+        </table>  
+    </div>
+  </div>  
+
+
+
+
+
+
+
+
+
+
+
+

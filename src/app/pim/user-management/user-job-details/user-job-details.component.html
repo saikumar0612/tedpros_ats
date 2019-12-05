@@ -1,0 +1,636 @@
+<style>
+  input[type="file"] {
+    display: block;
+    right: 0;
+    cursor: pointer;
+    bottom: -1px;
+    font-size: 12px;
+    opacity: 1;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+  }
+
+</style>
+<div class="content">
+  <div class="top-header">
+    <div class="row">
+      <div class="col-md-6 col-lg-6 heading">
+        <h4>User Job Details</h4>
+      </div>
+      <div class="col-md-6 col-lg-6 breadcrumb">
+        <ul class="breadcrumb-items">
+          <li><a routerLink='/dashboard'>Home</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li><a routerLink='/usersView'>Users</a></li>
+          <li>&nbsp;/&nbsp;</li>
+          <li>User Job Details</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="this.displayContact==true; then a2 else a1"></ng-container>
+  <!-- view details -->
+  <ng-template #a1>
+    <div class="element-content">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <div class="form-header row mlr-0">
+              <div class="col-md-6">
+                <h5>JOB DETAILS OF {{ userName | uppercase }}</h5>
+              </div>
+              <div class="col-md-6">
+                <button *ngIf="this.professionalInfo!=null" id="editContact" (click)="editContact()" class="btn btn-danger mlr-5 mtb-5"
+                  style="float: right;">Edit</button>
+                <button *ngIf="this.professionalInfo==null" id="addContact" (click)="editContact()" class="btn btn-danger mlr-5 mtb-5"
+                  style="float: right;">Add</button>
+                <!-- changed router link for back button - sharmistha - start - 08-14-2019 -->
+                <button routerLink='/usersView' id="back" class="btn btn-info mlr-5 mtb-5" style="float: right;">Back</button>
+                <!-- changed router link for back button - sharmistha - end - 08-14-2019 -->
+              </div>
+            </div>
+            <div class="padding-20" *ngIf="this.professionalInfo!=null">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Job Category:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.jobCategory.name | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Job Title:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.jobTitle.name | titlecase }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Technical Job Title:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.technicalTitle | titlecase }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Job Specification:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.jobSpecification | titlecase }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Joined Date:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.joiningDate | date: 'MM-dd-yyyy' }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Location:</label>
+                  <div class="col-sm-8">
+                    <p>{{ this.professionalInfo.jobLocation.name | titlecase }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Contract Start Date:</label>
+                  <div class="col-sm-8">
+                    <p>{{ professionalInfo.startDate | date: 'MM-dd-yyyy' }}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label mb-10">Contract End Date:</label>
+                    <div class="col-sm-8">
+                      <p>{{ this.professionalInfo.endDate | date: 'MM-dd-yyyy' }}</p>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-header" *ngIf="this.professionalInfo!=null">
+              <h5>EMPLOYMENT CONTRACT DETAILS</h5>
+            </div>
+            <div class="padding-20" *ngIf="this.professionalInfo!=null">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label class="col-sm-4 col-form-label mb-10">Contract Document:</label>
+                  <div class="col-sm-8">
+                    <p><a href="{{professionalInfo.documents}}" target="_blank">{{ professionalInfo.documents }}</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- edit details -->
+  <ng-template #a2>
+    <div class="element-content" *ngIf="this.professionalInfo!=null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <!-- edit job details-->
+            <form class="search-form" #addJobFrm="ngForm" name="form" (ngSubmit)="addJobFrm.form.valid" novalidate>
+              <div class="form-header">
+                <h5>JOB DETAILS OF {{ userName | uppercase }}</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Category <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="jobCategory" #jobCategory name="jobCategory"
+                        [(ngModel)]="professionalInfo.jobCategory.id" #jobCategory="ngModel"
+                        [ngClass]="{ 'is-invalid': addJobFrm.submitted && jobCategory.invalid }" required
+                        (change)="onItemSelect(jobCategory.value)">
+                        <option value="undefined" disabled selected>Choose a Category</option>
+                        <option *ngFor="let category of categoryTitles" value="{{category.id}}">{{category.name | titlecase}}
+                        </option>
+                      </select>
+                      <div *ngIf="jobCategory.touched && jobCategory.invalid" class="invalid-feedback">
+                        <div *ngIf="jobCategory.touched && jobCategory.errors.required">Job Category is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Title<span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <!-- added ng-multiselect dropdown for job title - sharmistha - 08-29-2019 - start --> 
+                      <ng-multiselect-dropdown
+                        name="jobTitle" 
+                        class="mb-10"
+                        [placeholder]="'Select Job Title(s)'"
+                        [data]="selectedJobTitles"
+                        [settings]="jobTitlesDropdownSettings"
+                        #jobTitle="ngModel" 
+                        [(ngModel)]="selectedTitle"
+                        required 
+                        id="addJobtitle">
+                      </ng-multiselect-dropdown>
+                      <!-- added ng-multiselect dropdown for job title - sharmistha - 08-29-2019 - end --> 
+                      <div *ngIf="jobTitle.touched && jobTitle.invalid" class="invalid-feedback">
+                        <div *ngIf="jobTitle.touched && jobTitle.errors.required">Job Title is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <!-- Added technical job title - sharmistha - 08-08-2019 - start -->
+                  <div class="col-md-6">
+                    <!-- saikumar 13/08/2019 added the require field  started here -->
+                    <label class="col-sm-4 col-form-label">Technical Job Title <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="technicalTitle" value="{{ professionalInfo.technicalTitle }}" name="technicalTitle" [(ngModel)]="professionalInfo.technicalTitle" #technicalTitle="ngModel" required [pattern]="jobtitlePattern" placeholder="Enter technical job title">
+                      <div *ngIf="technicalTitle.touched && technicalTitle.invalid" class="invalid-feedback">
+                        <div *ngIf="technicalTitle.touched && technicalTitle.errors.required">Technical Job Title is required</div>
+                      </div>                      
+                      <div *ngIf="technicalTitle.errors?.pattern" class="invalid-feedback">
+                        Please enter valid data
+                      </div>
+                    </div>
+                  </div>
+
+
+                      <!-- saikumar 13/08/2019 added the require field  ended here -->
+                  <!-- Added technical job title - sharmistha - 08-08-2019 - end -->
+
+                  <!-- job specification required removed saikumar 13/08/2019 started here -->
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Specification</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="specification" value="{{ professionalInfo.jobSpecification }}" name="jobSpecification" [(ngModel)]="professionalInfo.jobSpecification" #jobSpecification="ngModel"  pattern="^([a-zA-Z0-9.&*]+\s)*[a-zA-Z0-9.&*]+$" placeholder="Enter job specification">
+                                       
+                      <div *ngIf="jobSpecification.errors?.pattern" class="invalid-feedback">
+                        Please enter valid data
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Joining Date <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input class="form-control mb-10" placeholder="mm/dd/yyyy" id="joiningDate" [owlDateTimeTrigger]="joiningDate1" [owlDateTime]="joiningDate1" name="joiningDate" [(ngModel)]="professionalInfo.joiningDate" #joiningDate="ngModel" required>
+                      <owl-date-time [pickerType]="'calendar'" #joiningDate1></owl-date-time>
+                      <div *ngIf="joiningDate.touched && joiningDate.invalid" class="invalid-feedback">
+                        <div *ngIf="joiningDate.touched && joiningDate.errors.required">Joining Date is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Contract Start Date <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input class="form-control mb-10" placeholder="mm/dd/yyyy" id="startDate" [owlDateTimeTrigger]="startDate1" [owlDateTime]="startDate1" name="startDate" [(ngModel)]="professionalInfo.startDate" #startDate="ngModel" required>
+                      <owl-date-time [pickerType]="'calendar'" #startDate1></owl-date-time>
+
+                      <div *ngIf="startDate.touched && startDate.invalid" class="invalid-feedback">
+                        <div *ngIf="startDate.touched && startDate.errors.required">Start Date is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Location <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                     
+                      <select class="form-control mb-10" id="jobLocation" name="jobLocation"
+                        [(ngModel)]="professionalInfo.jobLocation.id" #jobLocation="ngModel"
+                        [ngClass]="{ 'is-invalid': addJobFrm.submitted && jobLocation.invalid }" required>
+                        <option value="" disabled selected>Choose an option</option>
+                        <option *ngFor="let jobLocation of locations" value="{{ jobLocation.id }}">{{
+                          jobLocation.name }}</option>
+                      </select>
+                      <div *ngIf="jobLocation.touched && jobLocation.invalid" class="invalid-feedback">
+                        <div *ngIf="jobLocation.touched && jobLocation.errors.required">Location is required</div>
+                      </div>
+                    </div>
+                  </div>
+
+                         <!-- saikumar 31/08/2019 started here -->
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Contract End Date <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input class="form-control mb-10" placeholder="mm/dd/yyyy" id="endDate" [owlDateTimeTrigger]="endDate1" [owlDateTime]="endDate1" name="endDate" [(ngModel)]="professionalInfo.endDate" #endDate="ngModel" required>
+                      <owl-date-time [pickerType]="'calendar'" #endDate1></owl-date-time>
+                      <p *ngIf="contractError" style="color:red;font-weight:bold;">{{ contractError }}</p>
+                      <div *ngIf="endDate.touched && endDate.invalid" class="invalid-feedback">
+                        <div *ngIf="endDate.touched && endDate.errors.required">End Date is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  <!-- saikumar 31/08/2019 started here -->
+                <div class="form-group row">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary mlr-5" id="editUser" (click)="editUser()"
+                      [disabled]="!addJobFrm.valid">Submit</button>
+                    <button (click)="cancel()" id="cancel" class="btn btn-danger mlr-5">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="element-content" *ngIf="this.professionalInfo!=null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <!-- edit job details-->
+            <form class="search-form">
+              <div class="form-header">
+                <h5>EMPLOYMENT CONTRACT DOCUMENT</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label class="col-sm-3 col-form-label mb-10">Contract Document :</label>
+                    <div class="col-sm-9">
+                      <p><a href="{{professionalInfo.documents}}" target="_blank">{{ professionalInfo.documents }}</a></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <label class="col-sm-4 col-form-label">Upload New Contract Document :</label>
+                    <div class="col-sm-8">
+                      <div class="">
+                        <input type="file" id="document" ng2FileSelect [uploader]="uploader" name="document"
+                          accept="application/pdf,application/docx" class="form-control mb-10">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12" style="margin-bottom: 40px">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th style="width:20%">Name</th>
+                          <th style="width:40%">Progress</th>
+                          <th style="width:5%">Status</th>
+                          <th style="width:35%">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of uploader.queue">
+                          <td><strong>{{ item?.file?.name }}</strong></td>
+                          <td>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar"
+                                [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                            <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                            <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                          </td>
+                          <td>
+                            <button type="button" class="btn btn-success btn-xs mlr-5" id="uploadDocument" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                              <span class="glyphicon glyphicon-upload"></span> Upload
+                            </button>
+                            <button type="button" class="btn btn-danger btn-xs mlr-5" id="removeDocument" (click)="item.remove()">
+                              <span class="glyphicon glyphicon-trash"></span> Remove
+                            </button>
+                          </td>
+
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+  <div class="popupbox">
+    <div class="row"><button class="close" id="closePopup" type="button" (click)="move()"><span class="close-label"><em class="fa fa-times" aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">Document uploaded successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-success" id="userViews" (click)="move()"><em class="fa fa-arrow-right" aria-hidden="true"></em> Go to My Users View</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap--> 
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="element-content" *ngIf="this.professionalInfo==null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <!-- add job details-->
+            <form class="search-form" #addJobFrm="ngForm" name="form" (ngSubmit)="addJobFrm.form.valid" novalidate>
+              <div class="form-header">
+                <h5>ADD JOB DETAILS OF {{ userName | uppercase }}</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Category <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control mb-10" id="addJobCategory" #jobCategory name="jobCategory"
+                        [(ngModel)]="jobInfo.jobCategory.id" #jobCategory="ngModel"
+                        [ngClass]="{ 'is-invalid': addJobFrm.submitted && jobCategory.invalid }" required
+                        (change)="onCategorySelect(jobCategory.value)">
+                        <option value="undefined" disabled selected>Choose a Category</option>
+                        <option *ngFor="let category of categoryTitles" value="{{category.id}}">{{category.name | titlecase}}</option>
+                      </select>
+                      <div *ngIf="jobCategory.touched && jobCategory.invalid" class="invalid-feedback">
+                        <div *ngIf="jobCategory.touched && jobCategory.errors.required">Job Category is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Title <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <!-- added ng-multiselect dropdown for job title - sharmistha - 08-29-2019 - start -->
+                      <ng-multiselect-dropdown
+                        name="jobTitle" 
+                        class="mb-10"
+                        [placeholder]="'Select Job Title(s)'"
+                        [data]="selectedJobTitles"
+                        [settings]="jobTitlesDropdownSettings"
+                        #jobTitle="ngModel" 
+                        [(ngModel)]="jobInfo.jobTitle"
+                        required 
+                        id="addJobtitle">
+                      </ng-multiselect-dropdown>
+                      <!-- added ng-multiselect dropdown for job title - sharmistha - 08-29-2019 - end -->
+                      <div *ngIf="jobTitleError" class="invalid-feedback">
+                        <div>Job Title is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <!-- Added technical job title - sharmistha - 08-08-2019 - start -->
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Technical Job Title <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="addtechnicalTitle" name="technicalTitle"
+                        [(ngModel)]="jobInfo.technicalTitle" #technicalTitle="ngModel" required [pattern]="jobtitlePattern" placeholder="Enter technical job title">
+                      <div *ngIf="technicalTitle.touched && technicalTitle.invalid" class="invalid-feedback">
+                        <div *ngIf="technicalTitle.touched && technicalTitle.errors.required">Technical Job Title is
+                          required</div>
+                      </div>              
+                      <div *ngIf="technicalTitle.errors?.pattern" class="invalid-feedback">
+                        Please enter valid data
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Added technical job title - sharmistha - 08-08-2019 - end -->
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Specification <span class="req-field"></span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control mb-10" id="addSpecification" name="jobSpecification"
+                        [(ngModel)]="jobInfo.jobSpecification" #jobSpecification="ngModel"  pattern="^([a-zA-Z0-9.&*]+\s)*[a-zA-Z0-9.&*]+$" placeholder="Enter specification">
+                                
+                      <div *ngIf="jobSpecification.errors?.pattern" class="invalid-feedback">
+                        Please enter valid data
+                      </div>
+                         <!-- job specification required removed saikumar 13/08/2019 started here -->
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Joining Date <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input class="form-control mb-10" placeholder="mm/dd/yyyy" id="addJoiningdate" [owlDateTimeTrigger]="joiningDate1" [owlDateTime]="joiningDate1" name="joiningDate" [(ngModel)]="jobInfo.joiningDate" #joiningDate="ngModel" required>
+                      <owl-date-time [pickerType]="'calendar'" #joiningDate1></owl-date-time>
+                      <div *ngIf="joiningDate.touched && joiningDate.invalid" class="invalid-feedback">
+                        <div *ngIf="joiningDate.touched && joiningDate.errors.required">Job Joining Date is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Contract Start Date <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input class="form-control mb-10" placeholder="mm/dd/yyyy" id="addStartDate" [owlDateTimeTrigger]="startDate1" [owlDateTime]="startDate1" name="startDate" [(ngModel)]="jobInfo.startDate" #startDate="ngModel" required>
+                      <owl-date-time [pickerType]="'calendar'" #startDate1></owl-date-time>
+                      <div *ngIf="startDate.touched && startDate.invalid" class="invalid-feedback">
+                        <div *ngIf="startDate.touched && startDate.errors.required">Start Date is required</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Job Location <span class="req-field">*</span></label>
+                    <div class="col-sm-8">                     
+                      <select class="form-control mb-10" id="addLoacation" name="jobLocation" [(ngModel)]="jobInfo.jobLocation.id"
+                        #jobLocation="ngModel" [ngClass]="{ 'is-invalid': addJobFrm.submitted && jobLocation.invalid }"
+                        required>
+                        <option value="" disabled selected>Choose an option</option>
+                        <option *ngFor="let jobLocation of locations" value="{{ jobLocation.id }}">{{
+                          jobLocation.name }}</option>
+                      </select>
+                      <div *ngIf="jobLocation.touched && jobLocation.invalid" class="invalid-feedback">
+                        <div *ngIf="jobLocation.touched && jobLocation.errors.required">Job Location is required</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- changes --suresh 09-07-2019 start -->
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Contract End Date <span class="req-field">*</span></label>
+                    <div class="col-sm-8">
+                      <input class="form-control mb-10" placeholder="mm/dd/yyyy" id="endDate" [owlDateTimeTrigger]="endDate1" [owlDateTime]="endDate1" name="endDate" [(ngModel)]="jobInfo.endDate" #endDate="ngModel" required>
+                      <owl-date-time [pickerType]="'calendar'" #endDate1></owl-date-time>
+                      <p *ngIf="contractError" style="color:red;font-weight:bold;">{{ contractError }}</p>
+                      <div *ngIf="endDate.touched && endDate.invalid" class="invalid-feedback">
+                        <div *ngIf="endDate.touched && endDate.errors.required">End Date is required</div>
+                      </div>
+                    </div>
+                  </div>
+                   <!-- changes --suresh 09-07-2019 end -->
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary mlr-5" (click)="addUser()"
+                      [disabled]="!addJobFrm.valid" id="userSubmit">Submit</button>
+                    <button type="reset" class="btn btn-info mlr-5" id="reset">Reset</button>
+                    <button (click)="cancel()" class="btn btn-danger mlr-5" id="addCancel">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="element-content" *ngIf="this.professionalInfo==null">
+      <div class="job-box">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <!-- edit job details-->
+            <form class="search-form">
+              <div class="form-header">
+                <h5>EMPLOYMENT CONTRACT DOCUMENT</h5>
+              </div>
+              <div class="padding-20">
+                <div class="form-group row">
+                  
+                  <div class="col-md-6">
+                    <label class="col-sm-4 col-form-label">Contract Documents</label>
+                    <div class="col-sm-8">
+                      <div class="">
+                        <input type="file" id="editDocument" ng2FileSelect [uploader]="uploader" name="document"
+                          accept="application/pdf,application/docx" class="form-control mb-10">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-12" style="margin-bottom: 40px">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th style="width:20%">Name</th>
+                          <th style="width:40%">Progress</th>
+                          <th style="width:5%">Status</th>
+                          <th style="width:35%">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of uploader.queue">
+                          <td><strong>{{ item?.file?.name }}</strong></td>
+                          <td>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar"
+                                [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <span *ngIf="item.isSuccess"><em class="glyphicon glyphicon-ok"></em></span>
+                            <span *ngIf="item.isCancel"><em class="glyphicon glyphicon-ban-circle"></em></span>
+                            <span *ngIf="item.isError"><em class="glyphicon glyphicon-remove"></em></span>
+                          </td>
+                          <td>
+                            <button type="button" id="editUploadDocument" class="btn btn-success btn-xs mlr-5" (click)="item.upload()"
+                              [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                              <span class="glyphicon glyphicon-upload"></span> Upload
+                            </button>
+                            <button type="button" id="editRemovingDocument" class="btn btn-danger btn-xs mlr-5" (click)="item.remove()">
+                              <span class="glyphicon glyphicon-trash"></span> Remove
+                            </button>
+                          </td>
+
+<!-- on successfull insertion-->
+<div class="popupbox_wrap" *ngIf="item.isSuccess">
+  <div class="popupbox">
+    <div class="row"><button class="close" type="button" id="successPopup" (click)="move()"><span class="close-label"><em class="fa fa-times" aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span></button></div>
+    <p class="bg-success">Document uploaded successfully!</p>
+    <div class="row text-center">
+      <a class="btn btn-success" id="userListpopup" (click)="move()"><em class="fa fa-arrow-right" aria-hidden="true"></em> Go to My Users View</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->                          
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-template>
+</div>
+
+
+<div class="popupbox_wrap" *ngIf="success">
+  <div class="popupbox">
+    <div class="row">
+      <button class="close" type="button" id="labelClose" (click)="close()"><span class="close-label"><em class="fa fa-times" aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+    </div>
+    <p class="bg-success">{{ result.data }}</p>
+    <div class="row text-center">
+      <a class="btn btn-success" id="userViewClosePopup" routerLink="/usersView"><em class="fa fa-users" aria-hidden="true"></em> View all
+        users</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
+
+
+<div class="popupbox_wrap" *ngIf="isFailure">
+  <div class="popupbox">
+    <div class="row">
+      <button class="close" type="button" id="closeError" (click)="closePopup()"><span class="close-label">
+        <em class="fa fa-times" aria-hidden="true"></em> Close</span><span class="os-icon os-icon-close"></span>
+      </button>
+    </div>
+    <p class="bg-danger">{{ result.errorMessages }}</p>
+    <div class="row text-center">
+      <a class="btn btn-danger" id="closeErrorPopup" (click)="closePopup()"><em class="fa fa-times" aria-hidden="true"></em> Close</a>
+    </div>
+    <!--row-->
+  </div>
+  <!--popupbox-->
+</div>
+<!--popupbox_wrap-->
