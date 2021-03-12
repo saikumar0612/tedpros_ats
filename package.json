@@ -45,7 +45,7 @@
     "g": "^2.0.1",
     "html2canvas": "^1.0.0-rc.3",
     "intl": "^1.2.5",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "karma-phantomjs-launcher": "^1.0.4",
     "ng-multiselect-dropdown": "^0.2.3",
     "ng-pick-datetime": "^7.0.0",
